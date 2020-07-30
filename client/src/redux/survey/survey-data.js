@@ -1,4 +1,4 @@
-const surveyData = [
+export const surveyData = [
 	{
 		id: "p1",
 		title: "Page 1",
