@@ -2,15 +2,38 @@
 	"name": "vet-connect",
 	"version": "1.0.0",
 	"description": "App that facilitates communication with vet clinics.",
-	"main": "index.js",
+	"author": "Sebastian Rosloniec",
+	"main": "server.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"client": "npm start --prefix client",
+		"client-test": "npm test --prefix client",
+		"client-install": "npm install --prefix client",
+		"client-build": "npm run build --prefix client",
+		"start": "node server.js",
+		"server": "nodemon server.js",
+		"dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+		"heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+	},
+	"dependencies": {
+		"compression": "^1.7.4",
+		"concurrently": "^5.2.0",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"mongoose": "^5.9.26"
+	},
+	"devDependencies": {
+		"morgan": "^1.10.0",
+		"nodemon": "^2.0.4"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Sebsterio/vet-connect.git"
 	},
-	"author": "Sebastian Rosloniec",
+	"engines": {
+		"node": "14.x",
+		"npm": "6.x"
+	},
 	"license": "ISC",
 	"bugs": {
 		"url": "https://github.com/Sebsterio/vet-connect/issues"
