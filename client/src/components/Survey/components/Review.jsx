@@ -7,7 +7,7 @@ export const Review = ({ surveyData }) => {
 
 	return (
 		<div className="answers">
-			{surveyData.map((s) => (
+			{[...surveyData.main, ...surveyData.optional].map((s) => (
 				<div className="answers__section" key={s.route}>
 					{s.questions.map((q) => (
 						<div className="answers__question" key={q.route}>

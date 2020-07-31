@@ -20,13 +20,13 @@ const Survey = ({
 	// -------------------------- Routing --------------------------------
 
 	if (!sectionRoute) {
-		const firstSectionRoute = surveyData[0].route;
+		const firstSectionRoute = surveyData.main[0].route;
 		return <Redirect to={`/survey/${firstSectionRoute}`} />;
 	}
 
 	if (sectionRoute === "review") return <Review surveyData={surveyData} />;
 
-	const sectionData = surveyData.find(
+	const sectionData = surveyData.main.find(
 		(section) => section.route === sectionRoute
 	);
 
@@ -41,26 +41,20 @@ const Survey = ({
 
 	// -------------------------- Handlers ---------------------------------
 
-	const goToNextQuestion = () => {
-		// Check if there are more questions in current section
-		const { questions } = sectionData;
-		const thisQuestionIndex = questions.findIndex(
-			(q) => q.route === questionRoute
-		);
-		if (thisQuestionIndex < questions.length - 1) {
-			const nextQuestionRoute = questions[thisQuestionIndex + 1].route;
-			return history.push(nextQuestionRoute);
-		}
+	const getNextRoute = (group, route) => {
+		const thisIndex = group.findIndex((el) => el.route === route);
+		if (thisIndex < group.length - 1) return group[thisIndex + 1].route;
+	};
 
-		// Check if there are more sections
-		const sections = surveyData;
-		const thisSectionIndex = sections.findIndex(
-			(s) => s.route === sectionRoute
-		);
-		if (thisSectionIndex < sections.length - 1) {
-			const nextSectionRoute = sections[thisSectionIndex + 1].route;
-			return history.push(`/survey/${nextSectionRoute}`);
-		}
+	const goToNextQuestion = () => {
+		// Go to next question in section if it exists
+		const { questions } = sectionData;
+		let nextRoute = getNextRoute(questions, questionRoute);
+		if (nextRoute) return history.push(nextRoute);
+
+		// Go to next section if it exists
+		nextRoute = getNextRoute(surveyData.main, sectionRoute);
+		if (nextRoute) return history.push(`/survey/${nextRoute}`);
 
 		// Go to review page
 		return history.push("/survey/review");
