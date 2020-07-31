@@ -17,14 +17,14 @@ export const routes = [
 		inNav: true,
 	},
 	{
-		path: "/survey/:set",
+		path: "/survey/:section",
 		name: "Survey",
 		component: Survey,
 		exact: true,
 		inNav: false,
 	},
 	{
-		path: "/survey/:set/:question",
+		path: "/survey/:section/:question",
 		name: "Survey",
 		component: Survey,
 		exact: true,
