@@ -1,7 +1,7 @@
 import React from "react";
 
 const Survey = ({ surveyData, pageStack }) => {
-	return <div className="survey-page">Survey Page</div>;
+	return <div className="Survey">Survey Page</div>;
 };
 
 export default Survey;

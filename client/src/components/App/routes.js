@@ -15,5 +15,3 @@ export const routes = [
 		inNav: true,
 	},
 ];
-
-export default routes;
