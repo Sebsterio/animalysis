@@ -6,6 +6,8 @@ import {
 	getSurveyPageStack,
 } from "redux/survey/survey-selectors";
 
+import { submitAnswer } from "redux/survey/survey-actions";
+
 import Survey from "./Survey";
 
 const mapStateToProps = (state) => ({
@@ -13,7 +15,9 @@ const mapStateToProps = (state) => ({
 	pageStack: getSurveyPageStack(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+	submitAnswer: (data) => dispatch(submitAnswer(data)),
+});
 
 const SurveyContainer = (props) => <Survey {...props} />;
 

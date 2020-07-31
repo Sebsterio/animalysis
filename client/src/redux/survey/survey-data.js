@@ -39,7 +39,7 @@ export const surveyData = [
 		],
 	},
 	{
-		route: "p1",
+		route: "p2",
 		title: "Page 2",
 		questions: [
 			{

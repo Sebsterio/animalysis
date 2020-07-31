@@ -10,7 +10,7 @@ export const RadioInput = ({ text, i, handleInput }) => {
 				className="RadioInput__input"
 				type="radio"
 				name="RadioInput-group"
-				onInput={handleInput}
+				onInput={() => handleInput(i)}
 			/>
 			<label htmlFor={id} className="RadioInput__label">
 				{text}
