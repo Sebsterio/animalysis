@@ -1,6 +1,8 @@
 import React from "react";
 
-export const RadioInput = ({ text, i, handleInput }) => {
+export const RadioInput = ({ data, i, handleInput }) => {
+	const { text, selected } = data;
+
 	const id = `RadioInput-${i}`;
 
 	return (
@@ -9,8 +11,9 @@ export const RadioInput = ({ text, i, handleInput }) => {
 				id={id}
 				className="RadioInput__input"
 				type="radio"
+				checked={selected}
 				name="RadioInput-group"
-				onInput={() => handleInput(i)}
+				onChange={() => handleInput(i)}
 			/>
 			<label htmlFor={id} className="RadioInput__label">
 				{text}

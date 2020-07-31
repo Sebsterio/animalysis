@@ -1,6 +1,6 @@
 import React from "react";
-
 import { RadioInput, TextInput } from "./index";
+import "./Question.scss";
 
 export const Question = ({ data, handleInput }) => {
 	const { route, label, type, answers } = data;
@@ -18,7 +18,7 @@ export const Question = ({ data, handleInput }) => {
 					<RadioInput
 						key={`${route}-${i}`}
 						i={i}
-						text={a.text}
+						data={a}
 						handleInput={handleInput}
 					/>
 				))}
