@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 import { Question, Review } from "./components";
+import { getNextRoute } from "./Survey-utils";
 
 import "./Survey.scss";
 
@@ -41,28 +42,20 @@ const Survey = ({
 
 	// -------------------------- Handlers ---------------------------------
 
-	const getNextRoute = (group, route) => {
-		const thisIndex = group.findIndex((el) => el.route === route);
-		if (thisIndex < group.length - 1) return group[thisIndex + 1].route;
-	};
-
-	const goToNextQuestion = () => {
-		// Go to next question in section if it exists
+	// Go to next question OR section OR the review page
+	const goToNextRoute = () => {
 		const { questions } = sectionData;
-		let nextRoute = getNextRoute(questions, questionRoute);
-		if (nextRoute) return history.push(nextRoute);
-
-		// Go to next section if it exists
-		nextRoute = getNextRoute(surveyData.main, sectionRoute);
-		if (nextRoute) return history.push(`/survey/${nextRoute}`);
-
-		// Go to review page
-		return history.push("/survey/review");
+		const sections = surveyData.main;
+		let nextRoute =
+			getNextRoute(null, questions, questionRoute) ||
+			getNextRoute("/survey/", sections, sectionRoute) ||
+			"/survey/review";
+		history.push(nextRoute);
 	};
 
 	const handleInput = (i) => {
 		submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
-		goToNextQuestion();
+		goToNextRoute();
 	};
 
 	// --------------------------- Render ----------------------------------
