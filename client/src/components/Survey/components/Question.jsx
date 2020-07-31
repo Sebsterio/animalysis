@@ -3,7 +3,7 @@ import React from "react";
 import { RadioInput, TextInput } from "./index";
 
 export const Question = ({ data, handleInput }) => {
-	const { label, type, answers } = data;
+	const { route, label, type, answers } = data;
 
 	const id = "Question";
 
@@ -15,7 +15,12 @@ export const Question = ({ data, handleInput }) => {
 
 			{type === "radio" &&
 				answers.map((a, i) => (
-					<RadioInput key={i} i={i} text={a.text} handleInput={handleInput} />
+					<RadioInput
+						key={`${route}-${i}`}
+						i={i}
+						text={a.text}
+						handleInput={handleInput}
+					/>
 				))}
 
 			{type === "text" && <TextInput id={id} />}

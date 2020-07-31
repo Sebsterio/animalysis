@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import { Question } from "./components";
+import { Question, Review } from "./components";
 
 import "./Survey.scss";
 
@@ -13,15 +13,18 @@ const Survey = ({
 	submitAnswer,
 	// router
 	match,
+	history,
 }) => {
 	const { section: sectionRoute, question: questionRoute } = match.params;
 
-	// --------------- Correct the path if incomplete ---------------------
+	// -------------------------- Routing --------------------------------
 
 	if (!sectionRoute) {
 		const firstSectionRoute = surveyData[0].route;
-		return <Redirect to={`survey/${firstSectionRoute}`} />;
+		return <Redirect to={`/survey/${firstSectionRoute}`} />;
 	}
+
+	if (sectionRoute === "review") return <Review surveyData={surveyData} />;
 
 	const sectionData = surveyData.find(
 		(section) => section.route === sectionRoute
@@ -29,7 +32,7 @@ const Survey = ({
 
 	if (!questionRoute) {
 		const firstQuestionRoute = sectionData.questions[0].route;
-		return <Redirect to={`${sectionRoute}/${firstQuestionRoute}`} />;
+		return <Redirect to={`/survey/${sectionRoute}/${firstQuestionRoute}`} />;
 	}
 
 	const questionData = sectionData.questions.find(
@@ -38,44 +41,40 @@ const Survey = ({
 
 	// -------------------------- Handlers ---------------------------------
 
-	const handleInput = (i) => {
-		submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
+	const goToNextQuestion = () => {
+		// Check if there are more questions in current section
+		const { questions } = sectionData;
+		const thisQuestionIndex = questions.findIndex(
+			(q) => q.route === questionRoute
+		);
+		if (thisQuestionIndex < questions.length - 1) {
+			const nextQuestionRoute = questions[thisQuestionIndex + 1].route;
+			return history.push(nextQuestionRoute);
+		}
 
-		// TODO: redirect to next question
+		// Check if there are more sections
+		const sections = surveyData;
+		const thisSectionIndex = sections.findIndex(
+			(s) => s.route === sectionRoute
+		);
+		if (thisSectionIndex < sections.length - 1) {
+			const nextSectionRoute = sections[thisSectionIndex + 1].route;
+			return history.push(`/survey/${nextSectionRoute}`);
+		}
+
+		// Go to review page
+		return history.push("/survey/review");
 	};
 
-	// -------------------------- TEMPORARY --------------------------------
-
-	const isAnswered = (q) => q.answers.some((a) => a.selected);
-
-	const getAnswer = (q) => q.answers.findIndex((a) => a.selected);
-
-	const answers = (
-		<div className="answers">
-			{surveyData.map((s) => (
-				<div className="answers__section" key={s.route}>
-					{s.questions.map((q) => (
-						<div className="answers__question" key={q.route}>
-							{isAnswered(q) && (
-								<>
-									{s.route}
-									{q.route}
-									{getAnswer(q)}
-								</>
-							)}
-						</div>
-					))}
-				</div>
-			))}
-		</div>
-	);
+	const handleInput = (i) => {
+		submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
+		goToNextQuestion();
+	};
 
 	// --------------------------- Render ----------------------------------
 
 	return (
 		<div className="Survey">
-			{answers}
-
 			<h1>Survey Page</h1>
 
 			<Question data={questionData} handleInput={handleInput} />
