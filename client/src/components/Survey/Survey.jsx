@@ -58,6 +58,10 @@ const Survey = ({
 		goToNextRoute();
 	};
 
+	// TEMP. TODO: traverse surveyData instead of history
+	const handleGoBack = () => history.goBack();
+	const handleGoForward = () => history.goForward();
+
 	// --------------------------- Render ----------------------------------
 
 	return (
@@ -67,6 +71,10 @@ const Survey = ({
 			<Question data={questionData} handleInput={handleInput} />
 
 			{/* Buttons "back" and "next" (history) */}
+			<div className="Survey__footer">
+				<button onClick={handleGoBack}>Back</button>
+				<button onClick={handleGoForward}>Next</button>
+			</div>
 		</div>
 	);
 };

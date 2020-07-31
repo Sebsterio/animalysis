@@ -1,9 +1,19 @@
-.answers {
-	position: fixed;
-	top: 1em;
-	left: 1em;
-}
-.answers__section {
-}
-.answers__question {
+.Survey {
+	// TEMP
+	&__footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100vw;
+
+		display: flex;
+		flex-flow: row nowrap;
+		justify-items: stretch;
+
+		button {
+			flex: 1 0 auto;
+			padding: 1rem;
+			font-size: 1em;
+		}
+	}
 }
