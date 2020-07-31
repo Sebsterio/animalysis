@@ -1,10 +1,10 @@
 export const surveyData = [
 	{
-		id: "p1",
+		route: "p1",
 		title: "Page 1",
 		questions: [
 			{
-				id: "p1q1",
+				route: "q1",
 				label: "Question 1",
 				type: "radio",
 				answers: [
@@ -20,7 +20,7 @@ export const surveyData = [
 				],
 			},
 			{
-				id: "p1q2",
+				route: "q2",
 				label: "Question 2",
 				type: "radio",
 				answers: [
@@ -31,7 +31,7 @@ export const surveyData = [
 						text: "Answer 2",
 					},
 					{
-						text: "Answer 3",
+						text: "Answer 3 (-> addl. questions)",
 						redirect: "px1",
 					},
 				],
@@ -39,11 +39,11 @@ export const surveyData = [
 		],
 	},
 	{
-		id: "p1",
+		route: "p1",
 		title: "Page 2",
 		questions: [
 			{
-				id: "p2q1",
+				route: "q1",
 				label: "Question 1",
 				type: "radio",
 				answers: [
@@ -59,7 +59,7 @@ export const surveyData = [
 				],
 			},
 			{
-				id: "p2q2",
+				route: "q2",
 				label: "Question 2",
 				type: "radio",
 				answers: [
@@ -80,11 +80,11 @@ export const surveyData = [
 	// ------------------------- Bonus pages -------------------------
 
 	{
-		id: "px1",
+		route: "px1",
 		title: "Bonus Page 1",
 		questions: [
 			{
-				id: "p2q1",
+				route: "q1",
 				label: "Question 1",
 				type: "radio",
 				answers: [
@@ -100,7 +100,7 @@ export const surveyData = [
 				],
 			},
 			{
-				id: "p2q2",
+				route: "q2",
 				label: "Question 2",
 				type: "radio",
 				answers: [

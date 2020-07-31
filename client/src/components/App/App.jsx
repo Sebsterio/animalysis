@@ -7,8 +7,8 @@ import "./App.scss";
 
 export const App = () => {
 	const pages = routes.map((route) => {
-		const { path, component } = route;
-		return <Route exact path={path} component={component} key={path} />;
+		const { path, component, exact } = route;
+		return <Route exact={exact} path={path} component={component} key={path} />;
 	});
 
 	return (
