@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 
 import { Question, Review } from "./components";
@@ -9,7 +9,6 @@ import "./Survey.scss";
 const Survey = ({
 	// state
 	surveyData,
-	pageStack,
 	// dispatch
 	submitAnswer,
 	// router
@@ -17,6 +16,8 @@ const Survey = ({
 	history,
 }) => {
 	const { section: sectionRoute, question: questionRoute } = match.params;
+
+	const [pageStack, setPageStack] = useState([]);
 
 	// -------------------------- Routing --------------------------------
 
@@ -55,9 +56,13 @@ const Survey = ({
 		history.push(nextRoute);
 	};
 
-	const handleAnswer = (i) => {
-		submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
-		goToNextRoute();
+	const handleAnswer = (i, selected, redirect) => {
+		if (!selected)
+			submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
+		if (redirect) {
+			// save location of next route (to return to)
+			// go to optional section
+		} else goToNextRoute();
 	};
 
 	// TEMP. TODO: traverse surveyData instead of history
