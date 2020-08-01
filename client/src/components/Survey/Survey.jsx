@@ -55,7 +55,7 @@ const Survey = ({
 		history.push(nextRoute);
 	};
 
-	const handleInput = (i) => {
+	const handleAnswer = (i) => {
 		submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
 		goToNextRoute();
 	};
@@ -68,12 +68,16 @@ const Survey = ({
 
 	return (
 		<div className="Survey">
-			<Question data={questionData} handleInput={handleInput} />
+			<Question data={questionData} handleAnswer={handleAnswer} />
 
 			{/* Buttons "back" and "next" (history) */}
 			<div className="Survey__footer">
-				<button onClick={handleGoBack}>Back</button>
-				<button onClick={handleGoForward}>Next</button>
+				<button className="Survey__nav-link" onClick={handleGoBack}>
+					&#60; Back
+				</button>
+				<button className="Survey__nav-link" onClick={handleGoForward}>
+					Next &#62;
+				</button>
 			</div>
 		</div>
 	);

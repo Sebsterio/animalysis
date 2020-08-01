@@ -1,8 +1,8 @@
 import React from "react";
-import { RadioInput, TextInput } from "./index";
+import { AnswerButton, TextInput } from "./index";
 import "./Question.scss";
 
-export const Question = ({ data, handleInput }) => {
+export const Question = ({ data, handleAnswer }) => {
 	const { route, label, type, answers } = data;
 
 	const id = "Question";
@@ -13,16 +13,18 @@ export const Question = ({ data, handleInput }) => {
 				{label}
 			</label>
 
-			{type === "radio" &&
-				answers.map((a, i) => (
-					<RadioInput
-						key={`${route}-${i}`}
-						i={i}
-						data={a}
-						handleInput={handleInput}
-					/>
-				))}
-
+			{type === "select-one" && (
+				<div className="Question__answers" id={id}>
+					{answers.map((a, i) => (
+						<AnswerButton
+							key={`${route}-${i}`}
+							i={i}
+							data={a}
+							handler={handleAnswer}
+						/>
+					))}
+				</div>
+			)}
 			{type === "text" && <TextInput id={id} />}
 		</div>
 	);

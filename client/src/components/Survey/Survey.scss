@@ -1,4 +1,14 @@
 .Survey {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+
 	// TEMP
 	&__footer {
 		position: absolute;
@@ -8,12 +18,18 @@
 
 		display: flex;
 		flex-flow: row nowrap;
-		justify-items: stretch;
+		justify-content: space-between;
+	}
 
-		button {
-			flex: 1 0 auto;
-			padding: 1rem;
-			font-size: 1em;
+	&__nav-link {
+		flex: 0 0 auto;
+		margin: 1rem;
+		font-size: 1.3em;
+		background: none;
+		border: none;
+
+		&:hover {
+			text-decoration: underline;
 		}
 	}
 }

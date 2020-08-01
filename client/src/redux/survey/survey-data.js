@@ -7,7 +7,7 @@ export const surveyData = {
 				{
 					route: "q1",
 					label: "Question 1",
-					type: "radio",
+					type: "select-one",
 					answers: [
 						{
 							text: "Answer 1",
@@ -23,7 +23,7 @@ export const surveyData = {
 				{
 					route: "q2",
 					label: "Question 2",
-					type: "radio",
+					type: "select-one",
 					answers: [
 						{
 							text: "Answer 1",
@@ -46,7 +46,7 @@ export const surveyData = {
 				{
 					route: "q1",
 					label: "Question 1",
-					type: "radio",
+					type: "select-one",
 					answers: [
 						{
 							text: "Answer 1",
@@ -62,7 +62,7 @@ export const surveyData = {
 				{
 					route: "q2",
 					label: "Question 2",
-					type: "radio",
+					type: "select-one",
 					answers: [
 						{
 							text: "Answer 1",
@@ -89,7 +89,7 @@ export const surveyData = {
 				{
 					route: "q1",
 					label: "Question 1",
-					type: "radio",
+					type: "select-one",
 					answers: [
 						{
 							text: "Answer 1",
@@ -105,7 +105,7 @@ export const surveyData = {
 				{
 					route: "q2",
 					label: "Question 2",
-					type: "radio",
+					type: "select-one",
 					answers: [
 						{
 							text: "Answer 1",

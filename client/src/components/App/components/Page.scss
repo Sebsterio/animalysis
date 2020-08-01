@@ -8,10 +8,12 @@
 	align-items: stretch;
 
 	&__header {
+		position: relative;
 		flex: 0 0 auto;
 	}
 
 	&__main {
+		position: relative;
 		flex: 1 1 0;
 		width: 100%;
 		max-width: 1200px;

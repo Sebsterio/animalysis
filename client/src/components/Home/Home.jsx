@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
 	return (
 		<div>
-			<Link to="/new-report">Report New Problem</Link>
+			<Link to="/new-report">Report a Problem</Link>
 		</div>
 	);
 };

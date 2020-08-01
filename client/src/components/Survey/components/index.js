@@ -1,4 +1,4 @@
 export * from "./Question";
-export * from "./RadioInput";
+export * from "./AnswerButton";
 export * from "./TextInput";
 export * from "./Review";
