@@ -1,6 +1,4 @@
 .Question {
-	max-width: 300px;
-
 	&__info {
 		margin-bottom: 1.4rem;
 	}
@@ -15,7 +13,6 @@
 		border: none;
 		display: grid;
 		grid-gap: 1em;
-		max-width: 300px;
 		margin: auto;
 	}
 }
