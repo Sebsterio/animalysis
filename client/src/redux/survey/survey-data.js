@@ -2,7 +2,7 @@ export const surveyData = {
 	main: [
 		{
 			route: "p1",
-			title: "Section 1",
+			title: "Activity Level",
 			questions: [
 				{
 					route: "q1",
@@ -42,7 +42,7 @@ export const surveyData = {
 		},
 		{
 			route: "p2",
-			title: "Section 2",
+			title: "Bleeding",
 			questions: [
 				{
 					route: "q1",
@@ -85,7 +85,7 @@ export const surveyData = {
 	optional: [
 		{
 			route: "px1",
-			title: "Clarification Section A",
+			title: "Activity - clarification",
 			questions: [
 				{
 					route: "q1",

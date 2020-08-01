@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 import { Question, Review } from "./components";
-import { getNextRoute } from "./Survey-utils";
+import { getNextRoute, getRouteIndex } from "./Survey-utils";
 
 import "./Survey.scss";
 
@@ -66,11 +66,22 @@ const Survey = ({
 
 	// --------------------------- Render ----------------------------------
 
+	const { questions } = sectionData;
+	const questionIndex = getRouteIndex(questions, questionRoute) + 1;
+	const numQuestions = questions.length;
+
 	return (
 		<div className="Survey">
-			<Question data={questionData} handleAnswer={handleAnswer} />
+			<div className="Survey__section-title">{sectionData.title}</div>
 
-			{/* Buttons "back" and "next" (history) */}
+			<Question
+				data={questionData}
+				index={questionIndex}
+				numQuestions={numQuestions}
+				handleAnswer={handleAnswer}
+			/>
+
+			{/* Buttons "back" and "next" */}
 			<div className="Survey__footer">
 				<button className="Survey__nav-link" onClick={handleGoBack}>
 					&#60; Back
