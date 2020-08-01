@@ -1,5 +1,5 @@
 // Get the route prop of next element in a group (sections | questions)
-export const getNextRoute = (prefix, group, route) => {
+export const getNextRouteInGroup = (prefix, group, route) => {
 	const thisIndex = getRouteIndex(group, route);
 	if (thisIndex < group.length - 1) {
 		const nextRoute = group[thisIndex + 1].route;

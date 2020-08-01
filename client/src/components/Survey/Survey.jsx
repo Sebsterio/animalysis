@@ -2,33 +2,35 @@ import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 
 import { Question, Review } from "./components";
-import { getNextRoute, getRouteIndex } from "./Survey-utils";
+import { getNextRouteInGroup, getRouteIndex } from "./Survey-utils";
 
 import "./Survey.scss";
 
 const Survey = ({
 	// state
 	surveyData,
+	returnStack,
 	// dispatch
 	submitAnswer,
+	pushToStack,
+	popFromStack,
 	// router
 	match,
 	history,
 }) => {
 	const { section: sectionRoute, question: questionRoute } = match.params;
-
-	const [pageStack, setPageStack] = useState([]);
+	const { main, optional } = surveyData;
 
 	// -------------------------- Routing --------------------------------
 
 	if (!sectionRoute) {
-		const firstSectionRoute = surveyData.main[0].route;
+		const firstSectionRoute = main[0].route;
 		return <Redirect to={`/new-report/${firstSectionRoute}`} />;
 	}
 
 	if (sectionRoute === "review") return <Review surveyData={surveyData} />;
 
-	const sectionData = surveyData.main.find(
+	const sectionData = [...main, ...optional].find(
 		(section) => section.route === sectionRoute
 	);
 
@@ -45,23 +47,43 @@ const Survey = ({
 
 	// -------------------------- Handlers ---------------------------------
 
-	// Go to next question OR section OR the review page
-	const goToNextRoute = () => {
+	const getNextRoute = () => {
 		const { questions } = sectionData;
 		const sections = surveyData.main;
-		let nextRoute =
-			getNextRoute(null, questions, questionRoute) ||
-			getNextRoute("/new-report/", sections, sectionRoute) ||
-			"/new-report/review";
-		history.push(nextRoute);
+
+		// Next question in section
+		let nextRoute = getNextRouteInGroup(null, questions, questionRoute);
+
+		// Section saved in redirect stack
+		if (!nextRoute && !!returnStack.length) {
+			nextRoute = returnStack[returnStack.length - 1];
+			popFromStack();
+		}
+
+		// Next section in main sequence
+		if (!nextRoute)
+			nextRoute = getNextRouteInGroup("/new-report/", sections, sectionRoute);
+
+		// Final page
+		if (!nextRoute) nextRoute = "/new-report/review";
+
+		return nextRoute;
 	};
+
+	const goToRoute = (route) => history.push(route);
+
+	const goToNextRoute = () => {
+		goToRoute(getNextRoute());
+	};
+
+	console.log(returnStack);
 
 	const handleAnswer = (i, selected, redirect) => {
 		if (!selected)
 			submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
 		if (redirect) {
-			// save location of next route (to return to)
-			// go to optional section
+			pushToStack(getNextRoute());
+			goToRoute("/new-report/" + redirect);
 		} else goToNextRoute();
 	};
 
@@ -77,7 +99,7 @@ const Survey = ({
 
 	return (
 		<div className="Survey">
-			<div className="Survey__section">{sectionData.title}</div>
+			<div className="Survey__section">Section: {sectionData.title}</div>
 
 			<div className="Survey__question">
 				<Question

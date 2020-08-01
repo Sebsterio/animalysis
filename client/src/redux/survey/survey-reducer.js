@@ -6,13 +6,34 @@ import { getDataWithAddedAnswer } from "./survey-utils";
 // Answers get added to surveyData and submitted altogether
 // pageStack (FILO) keeps track of pages to return to upon completing current page (which is at the top of the stack)
 
-const INITIAL_STATE = { ...surveyData };
+const INITIAL_STATE = {
+	data: surveyData,
+	returnStack: [],
+};
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case $.SUBMIT_ANSWER: {
-			return getDataWithAddedAnswer(state, action.payload);
+			return {
+				...state,
+				data: getDataWithAddedAnswer(state.data, action.payload),
+			};
 		}
+
+		case $.PUSH_TO_STACK: {
+			return {
+				...state,
+				returnStack: [...state.returnStack, action.payload],
+			};
+		}
+
+		case $.POP_FROM_STACK: {
+			return {
+				...state,
+				returnStack: [...state.returnStack.pop()],
+			};
+		}
+
 		default:
 			return state;
 	}

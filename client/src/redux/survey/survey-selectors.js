@@ -1,1 +1,3 @@
-export const getSurveyData = (state) => state.survey;
+export const getSurveyData = (state) => state.survey.data;
+
+export const getReturnStack = (state) => state.survey.returnStack;
