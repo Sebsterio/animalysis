@@ -72,16 +72,17 @@ const Survey = ({
 
 	return (
 		<div className="Survey">
-			<div className="Survey__section-title">{sectionData.title}</div>
+			<div className="Survey__section">{sectionData.title}</div>
 
-			<Question
-				data={questionData}
-				index={questionIndex}
-				numQuestions={numQuestions}
-				handleAnswer={handleAnswer}
-			/>
+			<div className="Survey__question">
+				<Question
+					data={questionData}
+					index={questionIndex}
+					numQuestions={numQuestions}
+					handleAnswer={handleAnswer}
+				/>
+			</div>
 
-			{/* Buttons "back" and "next" */}
 			<div className="Survey__footer">
 				<button className="Survey__nav-link" onClick={handleGoBack}>
 					&#60; Back

@@ -9,14 +9,23 @@
 	flex-flow: column nowrap;
 	justify-content: center;
 
-	&__section-title {
+	&__section {
+		flex: 0 0 auto;
+		text-align: center;
+		padding-top: 1em;
+		font-size: 1.3em;
+	}
+
+	&__question {
+		flex: 1 0 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	// TEMP
 	&__footer {
-		position: absolute;
-		bottom: 0;
-		left: 0;
+		flex: 0 0 auto;
 		width: 100vw;
 
 		display: flex;
