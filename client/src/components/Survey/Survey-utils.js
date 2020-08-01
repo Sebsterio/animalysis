@@ -9,3 +9,7 @@ export const getNextRouteInGroup = (prefix, group, route) => {
 
 export const getRouteIndex = (group, route) =>
 	group.findIndex((el) => el.route === route);
+
+export const isQuestionAnswered = (questionData) => {
+	questionData.answers.some((answer) => !!answer.selected);
+};

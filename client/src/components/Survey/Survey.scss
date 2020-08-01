@@ -42,5 +42,9 @@
 		&:hover {
 			text-decoration: underline;
 		}
+
+		&:disabled {
+			color: silver;
+		}
 	}
 }

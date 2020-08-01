@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
 
 import { Question, Review } from "./components";
-import { getNextRouteInGroup, getRouteIndex } from "./Survey-utils";
+import {
+	getNextRouteInGroup,
+	getRouteIndex,
+	isQuestionAnswered,
+} from "./Survey-utils";
 
 import "./Survey.scss";
 
@@ -47,26 +51,24 @@ const Survey = ({
 
 	// -------------------------- Handlers ---------------------------------
 
+	// Get the route of next question
+	// OR next section in main sequence
+	// OR next section after completing a clarification section
+	// OR final page
 	const getNextRoute = () => {
 		const { questions } = sectionData;
 		const sections = surveyData.main;
-
-		// Next question in section
 		let nextRoute = getNextRouteInGroup(null, questions, questionRoute);
-
-		// Section saved in redirect stack
-		if (!nextRoute && !!returnStack.length) {
-			nextRoute = returnStack[returnStack.length - 1];
-			popFromStack();
+		if (!nextRoute) {
+			if (!!returnStack.length) {
+				nextRoute = returnStack[returnStack.length - 1];
+				popFromStack();
+			} else {
+				nextRoute =
+					getNextRouteInGroup("/new-report/", sections, sectionRoute) ||
+					"/new-report/review";
+			}
 		}
-
-		// Next section in main sequence
-		if (!nextRoute)
-			nextRoute = getNextRouteInGroup("/new-report/", sections, sectionRoute);
-
-		// Final page
-		if (!nextRoute) nextRoute = "/new-report/review";
-
 		return nextRoute;
 	};
 
@@ -76,8 +78,9 @@ const Survey = ({
 		goToRoute(getNextRoute());
 	};
 
-	console.log(returnStack);
-
+	// Submit answer if different that current
+	// Handle redirect to clarification section
+	// Show next question
 	const handleAnswer = (i, selected, redirect) => {
 		if (!selected)
 			submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
@@ -99,8 +102,10 @@ const Survey = ({
 
 	return (
 		<div className="Survey">
+			{/* Section info*/}
 			<div className="Survey__section">Section: {sectionData.title}</div>
 
+			{/* Question */}
 			<div className="Survey__question">
 				<Question
 					data={questionData}
@@ -110,11 +115,21 @@ const Survey = ({
 				/>
 			</div>
 
+			{/* Footer buttons */}
 			<div className="Survey__footer">
-				<button className="Survey__nav-link" onClick={handleGoBack}>
+				<button
+					className="Survey__nav-link"
+					onClick={handleGoBack}
+					disabled={!history.length}
+				>
 					&#60; Back
 				</button>
-				<button className="Survey__nav-link" onClick={handleGoForward}>
+
+				<button
+					className="Survey__nav-link"
+					onClick={handleGoForward}
+					disabled={!isQuestionAnswered(questionData)}
+				>
 					Next &#62;
 				</button>
 			</div>
