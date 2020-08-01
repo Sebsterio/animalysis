@@ -2,11 +2,12 @@ export const surveyData = {
 	main: [
 		{
 			route: "p1",
-			title: "Page 1",
+			title: "Section 1",
 			questions: [
 				{
 					route: "q1",
-					label: "Question 1",
+					label:
+						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor?",
 					type: "select-one",
 					answers: [
 						{
@@ -22,7 +23,7 @@ export const surveyData = {
 				},
 				{
 					route: "q2",
-					label: "Question 2",
+					label: "Excepteur sint occaecat cupidatat non proident?",
 					type: "select-one",
 					answers: [
 						{
@@ -41,11 +42,11 @@ export const surveyData = {
 		},
 		{
 			route: "p2",
-			title: "Page 2",
+			title: "Section 2",
 			questions: [
 				{
 					route: "q1",
-					label: "Question 1",
+					label: "Ut enim ad minim veniam, quis nostrud exercitation?",
 					type: "select-one",
 					answers: [
 						{
@@ -61,7 +62,7 @@ export const surveyData = {
 				},
 				{
 					route: "q2",
-					label: "Question 2",
+					label: "Sed ut perspiciatis unde omnis iste natus?",
 					type: "select-one",
 					answers: [
 						{
@@ -84,11 +85,11 @@ export const surveyData = {
 	optional: [
 		{
 			route: "px1",
-			title: "Bonus Page 1",
+			title: "Clarification Section A",
 			questions: [
 				{
 					route: "q1",
-					label: "Question 1",
+					label: "Nemo enim ipsam voluptatem quia voluptas?",
 					type: "select-one",
 					answers: [
 						{
@@ -104,7 +105,7 @@ export const surveyData = {
 				},
 				{
 					route: "q2",
-					label: "Question 2",
+					label: "Quis autem vel eum iure reprehenderit qui in ea voluptate?",
 					type: "select-one",
 					answers: [
 						{
