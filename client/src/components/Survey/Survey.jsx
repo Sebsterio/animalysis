@@ -22,7 +22,7 @@ const Survey = ({
 
 	if (!sectionRoute) {
 		const firstSectionRoute = surveyData.main[0].route;
-		return <Redirect to={`/survey/${firstSectionRoute}`} />;
+		return <Redirect to={`/new-report/${firstSectionRoute}`} />;
 	}
 
 	if (sectionRoute === "review") return <Review surveyData={surveyData} />;
@@ -33,7 +33,9 @@ const Survey = ({
 
 	if (!questionRoute) {
 		const firstQuestionRoute = sectionData.questions[0].route;
-		return <Redirect to={`/survey/${sectionRoute}/${firstQuestionRoute}`} />;
+		return (
+			<Redirect to={`/new-report/${sectionRoute}/${firstQuestionRoute}`} />
+		);
 	}
 
 	const questionData = sectionData.questions.find(
@@ -48,8 +50,8 @@ const Survey = ({
 		const sections = surveyData.main;
 		let nextRoute =
 			getNextRoute(null, questions, questionRoute) ||
-			getNextRoute("/survey/", sections, sectionRoute) ||
-			"/survey/review";
+			getNextRoute("/new-report/", sections, sectionRoute) ||
+			"/new-report/review";
 		history.push(nextRoute);
 	};
 

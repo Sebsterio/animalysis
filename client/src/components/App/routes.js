@@ -10,22 +10,22 @@ export const routes = [
 		inNav: true, // Is listed in nav menu
 	},
 	{
-		path: "/survey",
-		title: "Survey",
+		path: "/new-report",
+		title: "New Report",
 		component: Survey,
 		exact: true,
 		inNav: true,
 	},
 	{
-		path: "/survey/:section",
-		title: "Survey",
+		path: "/new-report/:section",
+		title: "New Report",
 		component: Survey,
 		exact: true,
 		inNav: false,
 	},
 	{
-		path: "/survey/:section/:question",
-		title: "Survey",
+		path: "/new-report/:section/:question",
+		title: "New Report",
 		component: Survey,
 		exact: true,
 		inNav: false,
