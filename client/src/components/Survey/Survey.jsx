@@ -66,8 +66,6 @@ const Survey = ({
 
 	return (
 		<div className="Survey">
-			<h1>Survey Page</h1>
-
 			<Question data={questionData} handleInput={handleInput} />
 
 			{/* Buttons "back" and "next" (history) */}

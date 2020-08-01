@@ -1,0 +1,22 @@
+.Page {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: stretch;
+	align-items: stretch;
+
+	&__header {
+		flex: 0 0 auto;
+	}
+
+	&__main {
+		flex: 1 1 0;
+		width: 100%;
+		max-width: 1200px;
+		margin: auto;
+		padding: 0.6rem;
+		box-sizing: border-box;
+	}
+}

@@ -1,0 +1,26 @@
+.Navbar {
+	min-height: 2rem;
+	width: 100vw;
+	background-color: silver;
+
+	&__wrap {
+		max-width: 1200px;
+		margin: auto;
+		padding: 0.6rem;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	&__title {
+		display: inline-block;
+		margin: 0;
+		text-transform: capitalize;
+	}
+
+	&__hamburger {
+		// temp
+		font-size: 2rem;
+	}
+}

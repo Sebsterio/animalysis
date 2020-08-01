@@ -3,29 +3,29 @@ import { Survey } from "components/Survey";
 
 export const routes = [
 	{
-		path: "/",
-		name: "Home",
-		component: Home,
-		exact: true,
-		inNav: true,
+		path: "/", // URL
+		title: "Home", // Appers in header
+		component: Home, // To render
+		exact: true, // Switch match
+		inNav: true, // Is listed in nav menu
 	},
 	{
 		path: "/survey",
-		name: "Survey",
+		title: "Survey",
 		component: Survey,
 		exact: true,
 		inNav: true,
 	},
 	{
 		path: "/survey/:section",
-		name: "Survey",
+		title: "Survey",
 		component: Survey,
 		exact: true,
 		inNav: false,
 	},
 	{
 		path: "/survey/:section/:question",
-		name: "Survey",
+		title: "Survey",
 		component: Survey,
 		exact: true,
 		inNav: false,
