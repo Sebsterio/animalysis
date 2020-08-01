@@ -28,9 +28,11 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 		}
 
 		case $.POP_FROM_STACK: {
+			const newReturnStack = [...state.returnStack];
+			newReturnStack.pop();
 			return {
 				...state,
-				returnStack: [...state.returnStack.pop()],
+				returnStack: newReturnStack,
 			};
 		}
 

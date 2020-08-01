@@ -49,7 +49,7 @@ const Survey = ({
 		(question) => question.route === questionRoute
 	);
 
-	// -------------------------- Handlers ---------------------------------
+	// ---------------------------- Aux ----------------------------------
 
 	// Get the route of next question
 	// OR next section in main sequence
@@ -78,6 +78,8 @@ const Survey = ({
 		goToRoute(getNextRoute());
 	};
 
+	// -------------------------- Handlers ---------------------------------
+
 	// Submit answer if different that current
 	// Handle redirect to clarification section
 	// Show next question
@@ -90,8 +92,8 @@ const Survey = ({
 		} else goToNextRoute();
 	};
 
-	// TEMP. TODO: traverse surveyData instead of history
 	const handleGoBack = () => history.goBack();
+
 	const handleGoForward = () => history.goForward();
 
 	// --------------------------- Render ----------------------------------
@@ -99,6 +101,8 @@ const Survey = ({
 	const { questions } = sectionData;
 	const questionIndex = getRouteIndex(questions, questionRoute) + 1;
 	const numQuestions = questions.length;
+
+	console.log(isQuestionAnswered(questionData));
 
 	return (
 		<div className="Survey">
