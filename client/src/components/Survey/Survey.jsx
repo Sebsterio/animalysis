@@ -56,12 +56,7 @@ const Survey = ({
 	// Handle redirect to clarification section and return from it
 	const goToNextLocation = (redirect) => {
 		const nextLocationInSequence = getNextLocationInSequence();
-		const nextLocationIsInSameSection =
-			nextLocationInSequence !== null &&
-			nextLocationInSequence.sequence === sequence &&
-			nextLocationInSequence.section === sectionIndex;
 
-		// Go to clarification section
 		if (redirect) {
 			setLocation(nextLocationInSequence);
 			pushLocation({
@@ -69,19 +64,9 @@ const Survey = ({
 				section: 0,
 				question: 0,
 			});
-		}
-		// Continue sequence after completing a clarification section
-		else if (!nextLocationIsInSameSection && location.length > 1) {
-			popLocation();
-		}
-		// Go to next question OR next section in sequence
-		else if (nextLocationInSequence) {
-			setLocation(nextLocationInSequence);
-		}
-		// Go to the final review page
-		else {
-			history.push("/new-report/review");
-		}
+		} else if (nextLocationInSequence) setLocation(nextLocationInSequence);
+		else if (location.length > 1) popLocation();
+		else history.push("/new-report/review");
 	};
 
 	// -------------------------- Handlers ---------------------------------
