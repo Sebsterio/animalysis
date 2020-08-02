@@ -1,16 +1,21 @@
 import React from "react";
-import { AnswerButton, TextInput } from "./index";
+import { AnswerButton, TextInput } from "../index";
 import "./Question.scss";
 
-export const Question = ({ data, index, numQuestions, handleAnswer }) => {
-	const { route, label, type, answers } = data;
+const Question = ({
+	question,
+	questionIndex,
+	lastQuestionIndex,
+	handleAnswer,
+}) => {
+	const { route, label, type, answers } = question;
 
 	const id = "Question";
 
 	return (
 		<div className="Question">
 			<div className="Question__info">
-				Question {index}/{numQuestions}
+				Question {questionIndex + 1}/{lastQuestionIndex + 1}
 			</div>
 
 			<label htmlFor={id} className="Question__text">
@@ -19,11 +24,11 @@ export const Question = ({ data, index, numQuestions, handleAnswer }) => {
 
 			{type === "select-one" && (
 				<div className="Question__answers" id={id}>
-					{answers.map((a, i) => (
+					{answers.map((answer, i) => (
 						<AnswerButton
 							key={`${route}-${i}`}
 							i={i}
-							data={a}
+							data={answer}
 							handler={handleAnswer}
 						/>
 					))}
@@ -33,3 +38,5 @@ export const Question = ({ data, index, numQuestions, handleAnswer }) => {
 		</div>
 	);
 };
+
+export default Question;

@@ -1,3 +1,5 @@
+import { shallowCompare } from "utils/object";
+
 // --- Location history ---
 
 export const getLocationHistory = (state) => state.survey.history;
@@ -47,18 +49,21 @@ export const getCurrentQuestion = (state) => {
 	return section ? section.questions[questionIndex] : null;
 };
 
-export const getLastQuestionIndex = (section) => section.questions.length - 1;
+// Index of last question in current section
+export const getLastQuestionIndex = (state) =>
+	getCurrentSection(state).questions.length - 1;
 
-export const getLastSectionIndex = (sequence) => sequence.length - 1;
+// Index of last sectionin current sequence
+export const getLastSectionIndex = (state) =>
+	getCurrentSequence(state).length - 1;
 
 // Get next location disregarding redirects
 export const getNextLocationInSequence = (state) => {
-	const lastSectionIndex = getLastSectionIndex(getCurrentSequence(state));
-	const lastQuestionIndex = getLastQuestionIndex(getCurrentSection(state));
+	const lastSectionIndex = getLastSectionIndex(state);
+	const lastQuestionIndex = getLastQuestionIndex(state);
 	const { sequenceName, sectionIndex, questionIndex } = getCurrentLocation(
 		state
 	);
-
 	if (questionIndex < lastQuestionIndex) {
 		return {
 			sequenceName,
@@ -72,4 +77,13 @@ export const getNextLocationInSequence = (state) => {
 			questionIndex: 0,
 		};
 	} else return null;
+};
+
+// Is next location in sequence equal to last landmark
+export const getIsNextLocationInSequenceLandmarked = (state) => {
+	const lastLandmark = getLastLandmark(state);
+	if (!lastLandmark) return null;
+	const nextLocationInSequence = getNextLocationInSequence(state);
+	if (!nextLocationInSequence) return null;
+	return shallowCompare(nextLocationInSequence, lastLandmark);
 };

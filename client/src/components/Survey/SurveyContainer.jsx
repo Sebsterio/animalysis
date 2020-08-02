@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import {
 	getLocationHistory,
 	getLastLandmark,
-	getCurrentSequence,
 	getCurrentSection,
 	getCurrentQuestion,
 	getNextLocationInSequence,
+	getIsNextLocationInSequenceLandmarked,
 } from "redux/survey/survey-selectors";
 import {
 	submitAnswer,
@@ -20,12 +20,14 @@ import {
 import Survey from "./Survey";
 
 const mapStateToProps = (state) => ({
-	sequence: getCurrentSequence(state),
 	section: getCurrentSection(state),
 	question: getCurrentQuestion(state),
 	locationHistory: getLocationHistory(state),
 	lastLandmark: getLastLandmark(state),
 	nextLocationInSequence: getNextLocationInSequence(state),
+	nextLocationInSequenceIsLandmarked: getIsNextLocationInSequenceLandmarked(
+		state
+	),
 });
 
 const mapDispatchToProps = (dispatch) => ({

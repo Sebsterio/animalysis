@@ -2,18 +2,22 @@ import React, { useEffect } from "react";
 
 import { Question } from "./components";
 import { isQuestionAnswered } from "./Survey-utils";
-import { shallowCompare } from "utils/object";
 
 import "./Survey.scss";
 
+/*************************************************
+ * Manages survey location, history, and landmarks
+ * Submits Question answers
+ *************************************************/
+
 const Survey = ({
 	// state
-	sequence,
 	section,
 	question,
 	locationHistory,
 	lastLandmark,
 	nextLocationInSequence,
+	nextLocationInSequenceIsLandmarked,
 	// dispatch
 	submitAnswer,
 	pushLocation,
@@ -23,12 +27,9 @@ const Survey = ({
 	// router
 	history,
 }) => {
-	// Handle obsolete landmarks after going "back"
+	// Remove obsolete landmark after going "back"
 	useEffect(() => {
-		const nextLoc = nextLocationInSequence;
-		if (!nextLoc || !lastLandmark) return;
-		const nextLocationIsLandmarked = shallowCompare(nextLoc, lastLandmark);
-		if (nextLocationIsLandmarked) popLandmark();
+		if (nextLocationInSequenceIsLandmarked) popLandmark();
 	});
 
 	// ---------------------------- Aux ----------------------------------
@@ -39,9 +40,9 @@ const Survey = ({
 		if (redirect) {
 			pushLandmark(nextLocationInSequence);
 			pushLocation({
-				sequence: redirect,
-				section: 0,
-				question: 0,
+				sequenceName: redirect,
+				sectionIndex: 0,
+				questionIndex: 0,
 			});
 		} else if (nextLocationInSequence) pushLocation(nextLocationInSequence);
 		else if (lastLandmark) {
@@ -80,12 +81,7 @@ const Survey = ({
 
 			{/* Question */}
 			<div className="Survey__question">
-				<Question
-					data={question}
-					// index={questionIndex + 1}
-					// numQuestions={lastQuestionIndex + 1}
-					handleAnswer={handleAnswer}
-				/>
+				<Question handleAnswer={handleAnswer} />
 			</div>
 
 			{/* Footer buttons */}
