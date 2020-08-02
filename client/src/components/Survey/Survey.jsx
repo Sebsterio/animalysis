@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Question } from "./components";
 import { isQuestionAnswered } from "./Survey-utils";
+import { shallowCompare } from "utils/object";
 
 import "./Survey.scss";
 
@@ -82,9 +83,21 @@ const Survey = ({
 		goToNextLocation(redirect);
 	};
 
-	// TODO: handle obsolete landmarks
-	const handleGoBack = () => popLocation();
+	// Trace back location history
+	const handleGoBack = () => {
+		popLocation();
+		// Obsolete landmark removed in useEffect
+	};
 
+	// Handle obsolete landmarks after going "back"
+	useEffect(() => {
+		const nextLocation = getNextLocationInSequence();
+		if (!nextLocation || !lastLandmark) return;
+		const nextLocationIsLandmarked = shallowCompare(nextLocation, lastLandmark);
+		if (nextLocationIsLandmarked) popLandmark();
+	});
+
+	// Go to next question following redirects
 	const handleGoForward = () => {
 		const redirect = question.answers.find((a) => a.selected).redirect;
 		goToNextLocation(redirect);
@@ -112,7 +125,7 @@ const Survey = ({
 				<button
 					className="Survey__nav-link"
 					onClick={handleGoBack}
-					disabled={!history.length}
+					disabled={locationHistory.length <= 1}
 				>
 					&#60; Back
 				</button>

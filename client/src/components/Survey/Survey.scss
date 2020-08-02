@@ -39,7 +39,7 @@
 		background: none;
 		border: none;
 
-		&:hover {
+		&:hover:not(:disabled) {
 			text-decoration: underline;
 		}
 
