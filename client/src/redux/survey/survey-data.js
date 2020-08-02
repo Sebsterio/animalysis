@@ -1,11 +1,11 @@
 export const surveyData = {
 	main: [
 		{
-			route: "p1",
+			id: "p1",
 			title: "Activity Level",
 			questions: [
 				{
-					route: "q1",
+					id: "q1",
 					label:
 						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor?",
 					type: "select-one",
@@ -22,7 +22,7 @@ export const surveyData = {
 					],
 				},
 				{
-					route: "q2",
+					id: "q2",
 					label: "Excepteur sint occaecat cupidatat non proident?",
 					type: "select-one",
 					answers: [
@@ -34,18 +34,18 @@ export const surveyData = {
 						},
 						{
 							text: "Answer 3 (-> addl. questions)",
-							redirect: "px1",
+							redirect: "activity",
 						},
 					],
 				},
 			],
 		},
 		{
-			route: "p2",
+			id: "p2",
 			title: "Bleeding",
 			questions: [
 				{
-					route: "q1",
+					id: "q1",
 					label: "Ut enim ad minim veniam, quis nostrud exercitation?",
 					type: "select-one",
 					answers: [
@@ -61,7 +61,7 @@ export const surveyData = {
 					],
 				},
 				{
-					route: "q2",
+					id: "q2",
 					label: "Sed ut perspiciatis unde omnis iste natus?",
 					type: "select-one",
 					answers: [
@@ -82,13 +82,13 @@ export const surveyData = {
 
 	// ------------------------- Bonus sections -------------------------
 
-	optional: [
+	activity: [
 		{
-			route: "px1",
+			id: "px1",
 			title: "Activity - clarification",
 			questions: [
 				{
-					route: "q1",
+					id: "q1",
 					label: "Nemo enim ipsam voluptatem quia voluptas?",
 					type: "select-one",
 					answers: [
@@ -104,7 +104,7 @@ export const surveyData = {
 					],
 				},
 				{
-					route: "q2",
+					id: "q2",
 					label: "Quis autem vel eum iure reprehenderit qui in ea voluptate?",
 					type: "select-one",
 					answers: [

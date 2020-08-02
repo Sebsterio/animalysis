@@ -1,38 +1,58 @@
 import { surveyData } from "./survey-data";
 
 import * as $ from "./survey-actions";
-import { getDataWithAddedAnswer } from "./survey-utils";
+import {
+	getDataWithUpdatedAnswer,
+	popLocation,
+	setLocation,
+} from "./survey-utils";
 
-// Answers get added to surveyData and submitted altogether
-// pageStack (FILO) keeps track of pages to return to upon completing current page (which is at the top of the stack)
+// Answers get added to surveyData
+// Location (FILO) keeps track of pages to return to upon completing current page
+//   (which is at the top of the stack)
 
 const INITIAL_STATE = {
-	data: surveyData,
-	returnStack: [],
+	sequences: surveyData,
+	location: [
+		{
+			sequence: "main",
+			section: 0,
+			question: 0,
+		},
+	],
 };
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		// --- Survey sequences ---
+
 		case $.SUBMIT_ANSWER: {
 			return {
 				...state,
-				data: getDataWithAddedAnswer(state.data, action.payload),
+				sequences: getDataWithUpdatedAnswer(state, action.payload),
 			};
 		}
 
-		case $.PUSH_TO_STACK: {
+		// --- Location ---
+
+		case $.SET_LOCATION: {
 			return {
 				...state,
-				returnStack: [...state.returnStack, action.payload],
+				location: setLocation(state.location, action.payload),
 			};
 		}
 
-		case $.POP_FROM_STACK: {
-			const newReturnStack = [...state.returnStack];
-			newReturnStack.pop();
+		case $.PUSH_LOCATION: {
 			return {
 				...state,
-				returnStack: newReturnStack,
+				location: [...state.location, action.payload],
+			};
+		}
+
+		case $.POP_LOCATION: {
+			return {
+				...state,
+				location: popLocation(state.location),
 			};
 		}
 

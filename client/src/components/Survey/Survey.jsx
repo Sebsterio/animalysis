@@ -1,120 +1,118 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 
-import { Question, Review } from "./components";
-import {
-	getNextRouteInGroup,
-	getRouteIndex,
-	isQuestionAnswered,
-} from "./Survey-utils";
+import { Question } from "./components";
+import { isQuestionAnswered } from "./Survey-utils";
 
 import "./Survey.scss";
 
 const Survey = ({
 	// state
-	surveyData,
-	returnStack,
+	location,
+	currentLocation,
+	sequence,
+	section,
+	question,
 	// dispatch
 	submitAnswer,
-	pushToStack,
-	popFromStack,
+	setLocation,
+	pushLocation,
+	popLocation,
 	// router
-	match,
 	history,
 }) => {
-	const { section: sectionRoute, question: questionRoute } = match.params;
-	const { main, optional } = surveyData;
+	const {
+		sequence: sequenceName,
+		section: sectionIndex,
+		question: questionIndex,
+	} = currentLocation;
+	const { questions } = section;
 
-	// -------------------------- Routing --------------------------------
-
-	if (!sectionRoute) {
-		const firstSectionRoute = main[0].route;
-		return <Redirect to={`/new-report/${firstSectionRoute}`} />;
-	}
-
-	if (sectionRoute === "review") return <Review surveyData={surveyData} />;
-
-	const sectionData = [...main, ...optional].find(
-		(section) => section.route === sectionRoute
-	);
-
-	if (!questionRoute) {
-		const firstQuestionRoute = sectionData.questions[0].route;
-		return (
-			<Redirect to={`/new-report/${sectionRoute}/${firstQuestionRoute}`} />
-		);
-	}
-
-	const questionData = sectionData.questions.find(
-		(question) => question.route === questionRoute
-	);
+	// TODO: extract
+	const lastQuestionIndex = questions.length - 1;
+	const lastSectionIndex = sequence.length - 1;
 
 	// ---------------------------- Aux ----------------------------------
 
-	// Get the route of next question
-	// OR next section in main sequence
-	// OR next section after completing a clarification section
-	// OR final page
-	const getNextRoute = () => {
-		const { questions } = sectionData;
-		const sections = surveyData.main;
-		let nextRoute = getNextRouteInGroup(null, questions, questionRoute);
-		if (!nextRoute) {
-			if (!!returnStack.length) {
-				nextRoute = returnStack[returnStack.length - 1];
-				popFromStack();
-			} else {
-				nextRoute =
-					getNextRouteInGroup("/new-report/", sections, sectionRoute) ||
-					"/new-report/review";
-			}
-		}
-		return nextRoute;
+	// TODO: extract
+
+	// Get next location disregarding redirects
+	const getNextLocationInSequence = () => {
+		if (questionIndex < lastQuestionIndex) {
+			return {
+				sequence: sequenceName,
+				section: sectionIndex,
+				question: questionIndex + 1,
+			};
+		} else if (sectionIndex < lastSectionIndex) {
+			return {
+				sequence: sequenceName,
+				section: sectionIndex + 1,
+				question: 0,
+			};
+		} else return null;
 	};
 
-	const goToRoute = (route) => history.push(route);
+	// Go to next question OR section OR the final page
+	// Handle redirect to clarification section and return from it
+	const goToNextLocation = (redirect) => {
+		const nextLocationInSequence = getNextLocationInSequence();
+		const nextLocationIsInSameSection =
+			nextLocationInSequence !== null &&
+			nextLocationInSequence.sequence === sequence &&
+			nextLocationInSequence.section === sectionIndex;
 
-	const goToNextRoute = () => {
-		goToRoute(getNextRoute());
+		// Go to clarification section
+		if (redirect) {
+			setLocation(nextLocationInSequence);
+			pushLocation({
+				sequence: redirect,
+				section: 0,
+				question: 0,
+			});
+		}
+		// Continue sequence after completing a clarification section
+		else if (!nextLocationIsInSameSection && location.length > 1) {
+			popLocation();
+		}
+		// Go to next question OR next section in sequence
+		else if (nextLocationInSequence) {
+			setLocation(nextLocationInSequence);
+		}
+		// Go to the final review page
+		else {
+			history.push("/new-report/review");
+		}
 	};
 
 	// -------------------------- Handlers ---------------------------------
 
 	// Submit answer if different that current
-	// Handle redirect to clarification section
 	// Show next question
 	const handleAnswer = (i, selected, redirect) => {
-		if (!selected)
-			submitAnswer({ sectionRoute, questionRoute, answerIndex: i });
-		if (redirect) {
-			pushToStack(getNextRoute());
-			goToRoute("/new-report/" + redirect);
-		} else goToNextRoute();
+		if (!selected) submitAnswer(i);
+		goToNextLocation(redirect);
 	};
 
 	const handleGoBack = () => history.goBack();
 
-	const handleGoForward = () => history.goForward();
+	const handleGoForward = () => {
+		const redirect = question.answers.find((a) => a.selected).redirect;
+		goToNextLocation(redirect);
+	};
 
 	// --------------------------- Render ----------------------------------
-
-	const { questions } = sectionData;
-	const questionIndex = getRouteIndex(questions, questionRoute) + 1;
-	const numQuestions = questions.length;
-
-	console.log(isQuestionAnswered(questionData));
 
 	return (
 		<div className="Survey">
 			{/* Section info*/}
-			<div className="Survey__section">Section: {sectionData.title}</div>
+			<div className="Survey__section">Section: {section.title}</div>
 
 			{/* Question */}
 			<div className="Survey__question">
 				<Question
-					data={questionData}
-					index={questionIndex}
-					numQuestions={numQuestions}
+					data={question}
+					index={questionIndex + 1}
+					numQuestions={lastQuestionIndex + 1}
 					handleAnswer={handleAnswer}
 				/>
 			</div>
@@ -132,7 +130,7 @@ const Survey = ({
 				<button
 					className="Survey__nav-link"
 					onClick={handleGoForward}
-					disabled={!isQuestionAnswered(questionData)}
+					disabled={!isQuestionAnswered(question)}
 				>
 					Next &#62;
 				</button>
