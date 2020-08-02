@@ -6,13 +6,7 @@ export const submitAnswer = (data) => ({
 	payload: data,
 });
 
-// --- location ---
-
-export const SET_LOCATION = "SET_LOCATION";
-export const setLocation = (data) => ({
-	type: SET_LOCATION,
-	payload: data,
-});
+// --- location history ---
 
 export const PUSH_LOCATION = "PUSH_LOCATION";
 export const pushLocation = (data) => ({
@@ -23,4 +17,17 @@ export const pushLocation = (data) => ({
 export const POP_LOCATION = "POP_LOCATION";
 export const popLocation = () => ({
 	type: POP_LOCATION,
+});
+
+// --- location landmarks ---
+
+export const PUSH_LANDMARK = "PUSH_LANDMARK";
+export const pushLandmark = (data) => ({
+	type: PUSH_LANDMARK,
+	payload: data,
+});
+
+export const POP_LANDMARK = "POP_LANDMARK";
+export const popLandmark = () => ({
+	type: POP_LANDMARK,
 });

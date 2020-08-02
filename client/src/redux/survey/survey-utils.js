@@ -1,7 +1,9 @@
+import { getPoppedArray } from "utils/array";
+
 // Mark selected answer and unmark alternative answers
 export const getDataWithUpdatedAnswer = (state, answerIndex) => {
-	const { location, sequences } = state;
-	const currentLocation = location[location.length - 1];
+	const { history, sequences } = state;
+	const currentLocation = history[history.length - 1];
 	const { sequence, section, question } = currentLocation;
 
 	const newSequences = { ...sequences };
@@ -14,17 +16,16 @@ export const getDataWithUpdatedAnswer = (state, answerIndex) => {
 	return newSequences;
 };
 
-export const popLocation = (location) => {
-	const newLocation = [...location];
-	newLocation.pop();
-	return newLocation;
+export const getStateWithPushedItem = (state, arr, item) => {
+	return {
+		...state,
+		[arr]: [...state[arr], item],
+	};
 };
 
-export const setLocation = (location, newProps) => {
-	const currentLocation = location[location.length - 1];
-	const newCurrentLocation = {
-		...currentLocation,
-		...newProps,
+export const getStateWithPoppedItem = (state, arr) => {
+	return {
+		...state,
+		[arr]: getPoppedArray(state[arr]),
 	};
-	return [...popLocation(location), newCurrentLocation];
 };

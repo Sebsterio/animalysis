@@ -1,10 +1,10 @@
-// --- Location ---
+// --- Location history ---
 
-export const getLocation = (state) => state.survey.location;
+export const getLocationHistory = (state) => state.survey.history;
 
 export const getCurrentLocation = (state) => {
-	const location = getLocation(state);
-	return location[location.length - 1];
+	const history = getLocationHistory(state);
+	return history[history.length - 1];
 };
 
 export const getCurrentSequenceIndex = (state) =>
@@ -15,6 +15,15 @@ export const getCurrentSectionIndex = (state) =>
 
 export const getCurrentQuestionIndex = (state) =>
 	getCurrentLocation(state).question;
+
+// -- Location landmarks ---
+
+export const getLocationLandmarks = (state) => state.survey.landmarks;
+
+export const getLastLandmark = (state) => {
+	const landmarks = getLocationLandmarks(state);
+	return landmarks[landmarks.length - 1];
+};
 
 // --- Data ---
 

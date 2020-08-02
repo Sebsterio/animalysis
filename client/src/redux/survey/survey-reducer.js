@@ -3,8 +3,8 @@ import { surveyData } from "./survey-data";
 import * as $ from "./survey-actions";
 import {
 	getDataWithUpdatedAnswer,
-	popLocation,
-	setLocation,
+	getStateWithPushedItem,
+	getStateWithPoppedItem,
 } from "./survey-utils";
 
 // Answers get added to surveyData
@@ -13,13 +13,15 @@ import {
 
 const INITIAL_STATE = {
 	sequences: surveyData,
-	location: [
+	history: [
 		{
 			sequence: "main",
 			section: 0,
 			question: 0,
 		},
 	],
+	// stack of locations to go to when ran out of questions
+	landmarks: [],
 };
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
@@ -33,27 +35,24 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			};
 		}
 
-		// --- Location ---
-
-		case $.SET_LOCATION: {
-			return {
-				...state,
-				location: setLocation(state.location, action.payload),
-			};
-		}
+		// --- Location History ---
 
 		case $.PUSH_LOCATION: {
-			return {
-				...state,
-				location: [...state.location, action.payload],
-			};
+			return getStateWithPushedItem(state, "history", action.payload);
 		}
 
 		case $.POP_LOCATION: {
-			return {
-				...state,
-				location: popLocation(state.location),
-			};
+			return getStateWithPoppedItem(state, "history");
+		}
+
+		// --- Location Landmarks ---
+
+		case $.PUSH_LANDMARK: {
+			return getStateWithPushedItem(state, "landmarks", action.payload);
+		}
+
+		case $.POP_LANDMARK: {
+			return getStateWithPoppedItem(state, "landmarks");
 		}
 
 		default:

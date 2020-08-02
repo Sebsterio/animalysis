@@ -7,16 +7,18 @@ import "./Survey.scss";
 
 const Survey = ({
 	// state
-	location,
+	locationHistory,
+	lastLandmark,
 	currentLocation,
 	sequence,
 	section,
 	question,
 	// dispatch
 	submitAnswer,
-	setLocation,
 	pushLocation,
 	popLocation,
+	pushLandmark,
+	popLandmark,
 	// router
 	history,
 }) => {
@@ -58,15 +60,17 @@ const Survey = ({
 		const nextLocationInSequence = getNextLocationInSequence();
 
 		if (redirect) {
-			setLocation(nextLocationInSequence);
+			pushLandmark(nextLocationInSequence);
 			pushLocation({
 				sequence: redirect,
 				section: 0,
 				question: 0,
 			});
-		} else if (nextLocationInSequence) setLocation(nextLocationInSequence);
-		else if (location.length > 1) popLocation();
-		else history.push("/new-report/review");
+		} else if (nextLocationInSequence) pushLocation(nextLocationInSequence);
+		else if (lastLandmark) {
+			pushLocation(lastLandmark);
+			popLandmark();
+		} else history.push("/new-report/review");
 	};
 
 	// -------------------------- Handlers ---------------------------------
@@ -78,7 +82,8 @@ const Survey = ({
 		goToNextLocation(redirect);
 	};
 
-	const handleGoBack = () => history.goBack();
+	// TODO: handle obsolete landmarks
+	const handleGoBack = () => popLocation();
 
 	const handleGoForward = () => {
 		const redirect = question.answers.find((a) => a.selected).redirect;

@@ -2,7 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 
 import {
-	getLocation,
+	getLocationHistory,
+	getLastLandmark,
 	getCurrentLocation,
 	getCurrentSequence,
 	getCurrentSection,
@@ -10,15 +11,17 @@ import {
 } from "redux/survey/survey-selectors";
 import {
 	submitAnswer,
-	setLocation,
 	pushLocation,
 	popLocation,
+	pushLandmark,
+	popLandmark,
 } from "redux/survey/survey-actions";
 
 import Survey from "./Survey";
 
 const mapStateToProps = (state) => ({
-	location: getLocation(state),
+	locationHistory: getLocationHistory(state),
+	lastLandmark: getLastLandmark(state),
 	currentLocation: getCurrentLocation(state),
 	sequence: getCurrentSequence(state),
 	section: getCurrentSection(state),
@@ -27,9 +30,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	submitAnswer: (data) => dispatch(submitAnswer(data)),
-	setLocation: (data) => dispatch(setLocation(data)),
 	pushLocation: (data) => dispatch(pushLocation(data)),
 	popLocation: () => dispatch(popLocation()),
+	pushLandmark: (data) => dispatch(pushLandmark(data)),
+	popLandmark: () => dispatch(popLandmark()),
 });
 
 const SurveyContainer = (props) => <Survey {...props} />;
