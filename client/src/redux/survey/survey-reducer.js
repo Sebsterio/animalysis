@@ -15,9 +15,9 @@ const INITIAL_STATE = {
 	sequences: surveyData,
 	history: [
 		{
-			sequence: "main",
-			section: 0,
-			question: 0,
+			sequenceName: "main",
+			sectionIndex: 0,
+			questionIndex: 0,
 		},
 	],
 	// stack of locations to go to when ran out of questions

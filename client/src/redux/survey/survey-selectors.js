@@ -7,14 +7,14 @@ export const getCurrentLocation = (state) => {
 	return history[history.length - 1];
 };
 
-export const getCurrentSequenceIndex = (state) =>
-	getCurrentLocation(state).sequence;
+export const getCurrentSequenceName = (state) =>
+	getCurrentLocation(state).sequenceName;
 
 export const getCurrentSectionIndex = (state) =>
-	getCurrentLocation(state).section;
+	getCurrentLocation(state).sectionIndex;
 
 export const getCurrentQuestionIndex = (state) =>
-	getCurrentLocation(state).question;
+	getCurrentLocation(state).questionIndex;
 
 // -- Location landmarks ---
 
@@ -31,8 +31,8 @@ export const getSequences = (state) => state.survey.sequences;
 
 export const getCurrentSequence = (state) => {
 	const sequences = getSequences(state);
-	const sequenceIndex = getCurrentSequenceIndex(state);
-	return sequences ? sequences[sequenceIndex] : null;
+	const sequenceName = getCurrentSequenceName(state);
+	return sequences ? sequences[sequenceName] : null;
 };
 
 export const getCurrentSection = (state) => {
@@ -45,4 +45,31 @@ export const getCurrentQuestion = (state) => {
 	const section = getCurrentSection(state);
 	const questionIndex = getCurrentQuestionIndex(state);
 	return section ? section.questions[questionIndex] : null;
+};
+
+export const getLastQuestionIndex = (section) => section.questions.length - 1;
+
+export const getLastSectionIndex = (sequence) => sequence.length - 1;
+
+// Get next location disregarding redirects
+export const getNextLocationInSequence = (state) => {
+	const lastSectionIndex = getLastSectionIndex(getCurrentSequence(state));
+	const lastQuestionIndex = getLastQuestionIndex(getCurrentSection(state));
+	const { sequenceName, sectionIndex, questionIndex } = getCurrentLocation(
+		state
+	);
+
+	if (questionIndex < lastQuestionIndex) {
+		return {
+			sequenceName,
+			sectionIndex,
+			questionIndex: questionIndex + 1,
+		};
+	} else if (sectionIndex < lastSectionIndex) {
+		return {
+			sequenceName,
+			sectionIndex: sectionIndex + 1,
+			questionIndex: 0,
+		};
+	} else return null;
 };

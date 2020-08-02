@@ -4,10 +4,12 @@ import { getPoppedArray } from "utils/array";
 export const getDataWithUpdatedAnswer = (state, answerIndex) => {
 	const { history, sequences } = state;
 	const currentLocation = history[history.length - 1];
-	const { sequence, section, question } = currentLocation;
+	const { sequenceName, sectionIndex, questionIndex } = currentLocation;
 
 	const newSequences = { ...sequences };
-	const questionData = newSequences[sequence][section].questions[question];
+	const questionData =
+		newSequences[sequenceName][sectionIndex].questions[questionIndex];
+
 	questionData.answers.forEach((answer, i) => {
 		if (i === answerIndex) answer.selected = true;
 		else answer.selected = false;

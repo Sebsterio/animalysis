@@ -8,12 +8,12 @@ import "./Survey.scss";
 
 const Survey = ({
 	// state
-	locationHistory,
-	lastLandmark,
-	currentLocation,
 	sequence,
 	section,
 	question,
+	locationHistory,
+	lastLandmark,
+	nextLocationInSequence,
 	// dispatch
 	submitAnswer,
 	pushLocation,
@@ -23,43 +23,19 @@ const Survey = ({
 	// router
 	history,
 }) => {
-	const {
-		sequence: sequenceName,
-		section: sectionIndex,
-		question: questionIndex,
-	} = currentLocation;
-	const { questions } = section;
-
-	// TODO: extract
-	const lastQuestionIndex = questions.length - 1;
-	const lastSectionIndex = sequence.length - 1;
+	// Handle obsolete landmarks after going "back"
+	useEffect(() => {
+		const nextLoc = nextLocationInSequence;
+		if (!nextLoc || !lastLandmark) return;
+		const nextLocationIsLandmarked = shallowCompare(nextLoc, lastLandmark);
+		if (nextLocationIsLandmarked) popLandmark();
+	});
 
 	// ---------------------------- Aux ----------------------------------
-
-	// TODO: extract
-
-	// Get next location disregarding redirects
-	const getNextLocationInSequence = () => {
-		if (questionIndex < lastQuestionIndex) {
-			return {
-				sequence: sequenceName,
-				section: sectionIndex,
-				question: questionIndex + 1,
-			};
-		} else if (sectionIndex < lastSectionIndex) {
-			return {
-				sequence: sequenceName,
-				section: sectionIndex + 1,
-				question: 0,
-			};
-		} else return null;
-	};
 
 	// Go to next question OR section OR the final page
 	// Handle redirect to clarification section and return from it
 	const goToNextLocation = (redirect) => {
-		const nextLocationInSequence = getNextLocationInSequence();
-
 		if (redirect) {
 			pushLandmark(nextLocationInSequence);
 			pushLocation({
@@ -86,16 +62,8 @@ const Survey = ({
 	// Trace back location history
 	const handleGoBack = () => {
 		popLocation();
-		// Obsolete landmark removed in useEffect
+		// Obsolete landmarks removed in useEffect
 	};
-
-	// Handle obsolete landmarks after going "back"
-	useEffect(() => {
-		const nextLocation = getNextLocationInSequence();
-		if (!nextLocation || !lastLandmark) return;
-		const nextLocationIsLandmarked = shallowCompare(nextLocation, lastLandmark);
-		if (nextLocationIsLandmarked) popLandmark();
-	});
 
 	// Go to next question following redirects
 	const handleGoForward = () => {
@@ -114,8 +82,8 @@ const Survey = ({
 			<div className="Survey__question">
 				<Question
 					data={question}
-					index={questionIndex + 1}
-					numQuestions={lastQuestionIndex + 1}
+					// index={questionIndex + 1}
+					// numQuestions={lastQuestionIndex + 1}
 					handleAnswer={handleAnswer}
 				/>
 			</div>
