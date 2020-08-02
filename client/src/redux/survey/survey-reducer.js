@@ -7,12 +7,10 @@ import {
 	getStateWithPoppedItem,
 } from "./survey-utils";
 
-// Answers get added to surveyData
-// Location (FILO) keeps track of pages to return to upon completing current page
-//   (which is at the top of the stack)
-
 const INITIAL_STATE = {
+	// Questions with dynamically added answers
 	sequences: surveyData,
+	// Location history stack (FILO)
 	history: [
 		{
 			sequenceName: "main",
@@ -20,7 +18,7 @@ const INITIAL_STATE = {
 			questionIndex: 0,
 		},
 	],
-	// stack of locations to go to when ran out of questions
+	// Stack of locations to go to upon completing an optional section (FILO)
 	landmarks: [],
 };
 

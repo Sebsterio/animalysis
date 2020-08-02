@@ -7,8 +7,10 @@ export const AnswerButton = ({ data, i, handler }) => {
 	let classes = "AnswerButton";
 	if (selected) classes += " AnswerButton--selected";
 
+	const handleClick = () => handler(i, selected, redirect);
+
 	return (
-		<button className={classes} onClick={() => handler(i, selected, redirect)}>
+		<button className={classes} onClick={handleClick}>
 			{text}
 		</button>
 	);
