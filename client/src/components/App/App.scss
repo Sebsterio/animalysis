@@ -16,9 +16,10 @@
 		position: relative;
 		flex: 1 1 0;
 		width: 100%;
-		max-width: 300px;
+		max-width: 30rem;
 		margin: auto;
 		padding: 0.6rem;
-		box-sizing: border-box;
+		display: flex;
+		align-items: center;
 	}
 }
