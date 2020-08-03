@@ -1,7 +1,7 @@
-import { Home } from "components/Home";
-import { Survey } from "components/Survey";
-import { Review } from "components/Review";
-import { AccountPage } from "components/AccountPage";
+import { Home } from "pages/Home";
+import { Survey } from "pages/Survey";
+import { Review } from "pages/Review";
+import { Account } from "pages/Account";
 
 export const routes = [
 	{
@@ -28,14 +28,14 @@ export const routes = [
 	{
 		path: "/account",
 		title: "My Account",
-		component: AccountPage,
+		component: Account,
 		exact: true,
 		inNav: true,
 	},
 	{
 		path: "/account/:mode",
 		title: "My Account",
-		component: AccountPage,
+		component: Account,
 		exact: true,
 		inNav: false,
 	},

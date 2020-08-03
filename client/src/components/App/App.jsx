@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import { routes } from "./routes";
 import { Header } from "./components";
-import { AccountPage } from "components/AccountPage";
+import { Account } from "pages/Account";
 
 import "./App.scss";
 
@@ -21,8 +21,8 @@ export const App = ({ isAuthenticated }) => {
 
 	const authRoutes = (
 		<>
-			<Route path="/account/:mode" component={AccountPage} />
-			<Route component={AccountPage} />
+			<Route path="/account/:mode" component={Account} />
+			<Route component={Account} />
 		</>
 	);
 

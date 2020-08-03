@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import { authModes } from "../Account-modes";
-import { useStyles } from "../AccountPage-styles";
+import { useStyles } from "../Account-styles";
 
 // --------------------------------------------------------------
 

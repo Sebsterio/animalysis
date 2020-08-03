@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { getIsAuthenticated } from "redux/user/user-selectors";
 
-import AccountPage from "./AccountPage";
+import Account from "./Account";
 
 const mapStateToProps = (state) => ({
 	isAuthenticated: getIsAuthenticated(state),
@@ -17,9 +17,6 @@ const mapDispatchToProps = (dispatch) => ({
 	// remove: (data) => dispatch(closeAccount(data)),
 });
 
-const AccountPageContainer = (props) => <AccountPage {...props} />;
+const AccountContainer = (props) => <Account {...props} />;
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(AccountPageContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountContainer);
