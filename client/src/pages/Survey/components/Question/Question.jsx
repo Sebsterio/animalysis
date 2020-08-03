@@ -1,6 +1,15 @@
 import React from "react";
-import { AnswerButton, TextInput } from "../index";
-import "./Question.scss";
+import { makeStyles } from "@material-ui/core/styles";
+
+import { Box, Button, Typography } from "@material-ui/core";
+
+// ---------------------------------------------------------------
+
+const useStyles = makeStyles((theme) => ({
+	question: {
+		display: "block",
+	},
+}));
 
 const Question = ({
 	question,
@@ -10,32 +19,42 @@ const Question = ({
 }) => {
 	const { route, label, type, answers } = question;
 
-	const id = "Question";
+	const clx = useStyles();
+	const id = label === "text" ? "Question" : null;
 
 	return (
-		<div className="Question">
-			<div className="Question__info">
-				Question {questionIndex + 1}/{lastQuestionIndex + 1}
-			</div>
+		<Box>
+			<Box mb={3}>
+				<Typography
+					variant="caption"
+					children={`Question ${questionIndex + 1}/${lastQuestionIndex + 1}`}
+				/>
+			</Box>
 
-			<label htmlFor={id} className="Question__text">
-				{label}
-			</label>
+			<Box mb={4}>
+				<Typography
+					component="label"
+					variant="h5"
+					className={clx.question}
+					htmlFor={id}
+					children={label}
+				/>
+			</Box>
 
-			{type === "select-one" && (
-				<div className="Question__answers" id={id}>
-					{answers.map((answer, i) => (
-						<AnswerButton
-							key={`${route}-${i}`}
-							i={i}
-							data={answer}
-							handler={handleAnswer}
+			{type === "select-one" &&
+				answers.map(({ text, selected, redirect }, i) => (
+					<Box mb={2} key={`${route}-${i}`}>
+						<Button
+							fullWidth
+							variant="outlined"
+							color={selected ? "primary" : "default"}
+							children={text}
+							className={clx.button}
+							onClick={() => handleAnswer(i, selected, redirect)}
 						/>
-					))}
-				</div>
-			)}
-			{type === "text" && <TextInput id={id} />}
-		</div>
+					</Box>
+				))}
+		</Box>
 	);
 };
 
