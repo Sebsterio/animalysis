@@ -15,8 +15,16 @@ export const getCurrentSequenceName = (state) =>
 export const getCurrentSectionIndex = (state) =>
 	getCurrentLocation(state).sectionIndex;
 
+// Index of last section in current sequence
+export const getLastSectionIndex = (state) =>
+	getCurrentSequence(state).length - 1;
+
 export const getCurrentQuestionIndex = (state) =>
 	getCurrentLocation(state).questionIndex;
+
+// Index of last question in current section
+export const getLastQuestionIndex = (state) =>
+	getCurrentSection(state).questions.length - 1;
 
 // -- Location landmarks ---
 
@@ -49,14 +57,10 @@ export const getCurrentQuestion = (state) => {
 	return section ? section.questions[questionIndex] : null;
 };
 
-// Index of last question in current section
-export const getLastQuestionIndex = (state) =>
-	getCurrentSection(state).questions.length - 1;
+export const getCurrentSectionTitle = (state) =>
+	getCurrentSection(state).title || null;
 
-// Index of last sectionin current sequence
-export const getLastSectionIndex = (state) =>
-	getCurrentSequence(state).length - 1;
-
+//
 // Get next location disregarding redirects
 export const getNextLocationInSequence = (state) => {
 	const lastSectionIndex = getLastSectionIndex(state);
