@@ -21,7 +21,7 @@ export const Header = () => {
 	});
 
 	return (
-		<AppBar>
+		<AppBar position="static">
 			<Toolbar>
 				<Typography variant="h6" className={classes.title}>
 					<Switch>{titles}</Switch>

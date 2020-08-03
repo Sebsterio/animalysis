@@ -1,16 +1,26 @@
 import React, { useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { Question } from "./components";
+import { Section, Question, Nav } from "./components";
+import { Container } from "@material-ui/core";
+
 import { isQuestionAnswered } from "./Survey-utils";
-
-import "./Survey.scss";
 
 /*************************************************
  * Manages survey location, history, and landmarks
  * Submits Question answers
  *************************************************/
 
-const Survey = ({
+const useStyles = makeStyles((theme) => ({
+	container: {
+		display: "flex",
+		flexFlow: "column nowrap",
+		justifyContent: "space-between",
+		padding: theme.spacing(3),
+	},
+}));
+
+export const Survey = ({
 	// state
 	section,
 	question,
@@ -72,38 +82,20 @@ const Survey = ({
 		goToNextLocation(redirect);
 	};
 
-	// --------------------------- Render ----------------------------------
+	// --------------------------- View ----------------------------------
 
 	return (
-		<div className="Survey">
-			{/* Section info*/}
-			<div className="Survey__section">Section: {section.title}</div>
+		<Container maxWidth="xs" className={useStyles().container}>
+			<Section section={section} />
 
-			{/* Question */}
-			<div className="Survey__question">
-				<Question handleAnswer={handleAnswer} />
-			</div>
+			<Question handleAnswer={handleAnswer} />
 
-			{/* Footer buttons */}
-			<div className="Survey__footer">
-				<button
-					className="Survey__nav-link"
-					onClick={handleGoBack}
-					disabled={locationHistory.length <= 1}
-				>
-					&#60; Back
-				</button>
-
-				<button
-					className="Survey__nav-link"
-					onClick={handleGoForward}
-					disabled={!isQuestionAnswered(question)}
-				>
-					Next &#62;
-				</button>
-			</div>
-		</div>
+			<Nav
+				questionIsNotAnswered={!isQuestionAnswered(question)}
+				isFirstQuestion={locationHistory.length <= 1}
+				handleGoBack={handleGoBack}
+				handleGoForward={handleGoForward}
+			/>
+		</Container>
 	);
 };
-
-export default Survey;

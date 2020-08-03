@@ -17,7 +17,7 @@ import {
 	popLandmark,
 } from "redux/survey/survey-actions";
 
-import Survey from "./Survey";
+import { Survey } from "./Survey";
 
 const mapStateToProps = (state) => ({
 	section: getCurrentSection(state),
