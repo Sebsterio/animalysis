@@ -24,7 +24,7 @@ const Question = ({
 
 	return (
 		<Box>
-			<Box mb={3}>
+			<Box mb={2}>
 				<Typography
 					variant="caption"
 					children={`Question ${questionIndex + 1}/${lastQuestionIndex + 1}`}
