@@ -1,24 +1,39 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { routes } from "routes";
-import "./Header.scss";
 
-const Header = () => {
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+
+import { routes } from "routes";
+import { useStyles } from "./Header-styles";
+
+// ----------------------------------------------------------------
+
+export const Header = () => {
+	const classes = useStyles();
+
 	const titles = routes.map((route) => {
 		const { path, title, exact } = route;
 		return <Route exact={exact} path={path} render={() => title} key={path} />;
 	});
 
 	return (
-		<nav className="Header">
-			<div className="Header__wrap">
-				<h1 className="Header__title">
+		<AppBar>
+			<Toolbar>
+				<Typography variant="h6" className={classes.title}>
 					<Switch>{titles}</Switch>
-				</h1>
-				<div className="Header__hamburger">=</div>
-			</div>
-		</nav>
+				</Typography>
+				<IconButton
+					className={classes.menuButton}
+					color="inherit"
+					aria-label="menu"
+				>
+					<MenuIcon />
+				</IconButton>
+			</Toolbar>
+		</AppBar>
 	);
 };
-
-export default Header;
