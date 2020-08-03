@@ -22,8 +22,11 @@ const useStyles = makeStyles((theme) => ({
 
 export const Survey = ({
 	// state
+	sequenceName,
 	section,
+	sectionIndex,
 	question,
+	questionIndex,
 	locationHistory,
 	lastLandmark,
 	nextLocationInSequence,
@@ -54,8 +57,9 @@ export const Survey = ({
 				sectionIndex: 0,
 				questionIndex: 0,
 			});
-		} else if (nextLocationInSequence) pushLocation(nextLocationInSequence);
-		else if (lastLandmark) {
+		} else if (nextLocationInSequence) {
+			pushLocation(nextLocationInSequence);
+		} else if (lastLandmark) {
 			pushLocation(lastLandmark);
 			popLandmark();
 		} else history.push("/new-report/review");
@@ -71,9 +75,11 @@ export const Survey = ({
 	};
 
 	// Trace back location history
+	// When entering clarification section, add landmark
 	const handleGoBack = () => {
+		if (questionIndex === 0)
+			pushLandmark({ sequenceName, sectionIndex, questionIndex });
 		popLocation();
-		// Obsolete landmarks removed in useEffect
 	};
 
 	// Go to next question following redirects
