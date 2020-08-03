@@ -1,10 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import App from "./App";
+import { getIsAuthenticated } from "redux/user/user-selectors";
+
+import { App } from "./App";
 
 const mapStateToProps = (state) => ({
-	isAuthenticated: true,
+	isAuthenticated: getIsAuthenticated(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});

@@ -1,9 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import { getIsAuthenticated } from "redux/user/user-selectors";
+
 import AccountPage from "./AccountPage";
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+	isAuthenticated: getIsAuthenticated(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
 	// clearError: () => dispatch(clearError()),

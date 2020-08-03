@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import { routes } from "./routes";
 import { Header } from "./components";
-import { AccountPage } from "components/Account";
+import { AccountPage } from "components/AccountPage";
 
 import "./App.scss";
 
@@ -13,11 +13,18 @@ import "./App.scss";
  *******************************/
 
 export const App = ({ isAuthenticated }) => {
-	// Create Route & Page components from routes array
+	// Create Routes from routes array
 	const pages = routes.map((route) => {
 		const { path, component, exact } = route;
 		return <Route exact={exact} path={path} component={component} key={path} />;
 	});
+
+	const authRoutes = (
+		<>
+			<Route path="/account/:mode" component={AccountPage} />
+			<Route component={AccountPage} />
+		</>
+	);
 
 	return (
 		<div className="App">
@@ -27,7 +34,7 @@ export const App = ({ isAuthenticated }) => {
 				</header>
 			)}
 			<main className="App__main">
-				{isAuthenticated ? <Switch>{pages}</Switch> : <AccountPage />}
+				<Switch>{isAuthenticated ? pages : authRoutes}</Switch>
 			</main>
 		</div>
 	);

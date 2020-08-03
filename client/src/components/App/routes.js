@@ -1,6 +1,7 @@
 import { Home } from "components/Home";
 import { Survey } from "components/Survey";
 import { Review } from "components/Review";
+import { AccountPage } from "components/AccountPage";
 
 export const routes = [
 	{
@@ -21,6 +22,20 @@ export const routes = [
 		path: "/new-report/review",
 		title: "Review Report",
 		component: Review,
+		exact: true,
+		inNav: false,
+	},
+	{
+		path: "/account",
+		title: "My Account",
+		component: AccountPage,
+		exact: true,
+		inNav: true,
+	},
+	{
+		path: "/account/:mode",
+		title: "My Account",
+		component: AccountPage,
 		exact: true,
 		inNav: false,
 	},

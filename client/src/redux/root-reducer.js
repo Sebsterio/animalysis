@@ -8,7 +8,7 @@ import surveyReducer from "redux/survey/survey-reducer";
 const persistConfig = {
 	key: "root",
 	storage,
-	whitelist: ["user", "survey"],
+	whitelist: [],
 };
 
 const rootReducer = combineReducers({
