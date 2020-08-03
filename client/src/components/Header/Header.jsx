@@ -1,8 +1,9 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
+import { routes } from "routes";
 import "./Header.scss";
 
-const Header = ({ routes }) => {
+const Header = () => {
 	const titles = routes.map((route) => {
 		const { path, title, exact } = route;
 		return <Route exact={exact} path={path} render={() => title} key={path} />;

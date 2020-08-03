@@ -19,21 +19,16 @@ import { useStyles } from "../Account-styles";
 export const Auth = ({ mode, signIn }) => {
 	const classes = useStyles();
 
-	const handleSignIn = (e) => {
-		e.preventDefault();
-		signIn();
-	};
-
 	const modesData = {
 		[authModes.signIn]: {
 			btnText: "Sign In",
-			btnHandler: handleSignIn,
+			btnHandler: signIn,
 			linkText: "Don't have an account? Sing up",
 			linkHref: authModes.signUp,
 		},
 		[authModes.signUp]: {
 			btnText: "Sign Up",
-			btnHandler: handleSignIn,
+			btnHandler: signIn,
 			linkText: "Already have an account? Sign in",
 			optIn: OptIn,
 			userInfo: UserInfo,

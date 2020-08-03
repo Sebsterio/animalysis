@@ -1,14 +1,14 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { routes } from "./routes";
-import { Header } from "./components";
+import { Header } from "components/Header";
 import { Account } from "pages/Account";
 
+import { routes } from "routes";
 import "./App.scss";
 
 /*******************************
- * Routing
+ * Root-level Routing
  * Trigger authentication (TODO)
  *******************************/
 
@@ -30,7 +30,7 @@ export const App = ({ isAuthenticated }) => {
 		<div className="App">
 			{isAuthenticated && (
 				<header className="App__header">
-					<Header routes={routes} />
+					<Header />
 				</header>
 			)}
 			<main className="App__main">

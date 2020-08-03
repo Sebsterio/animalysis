@@ -1,2 +1,4 @@
-export { default as Auth } from "./AuthContainer";
-export * from "./Auth-components";
+export * from "./Auth";
+export * from "./UserInfo";
+export * from "./OptIn";
+export * from "./Main";

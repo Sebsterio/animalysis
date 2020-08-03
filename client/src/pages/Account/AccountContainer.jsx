@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import { getIsAuthenticated } from "redux/user/user-selectors";
 
+import { signIn } from "redux/user/user-actions";
+
 import Account from "./Account";
 
 const mapStateToProps = (state) => ({
@@ -10,11 +12,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	// clearError: () => dispatch(clearError()),
-	// register: (data) => dispatch(register(data)),
-	// login: (data) => dispatch(login(data)),
-	// logout: () => dispatch(logout()),
-	// remove: (data) => dispatch(closeAccount(data)),
+	signIn: () => dispatch(signIn()),
 });
 
 const AccountContainer = (props) => <Account {...props} />;
