@@ -1,7 +1,7 @@
 import * as $ from "./user-actions";
 
 const INITIAL_STATE = {
-	isAuthenticated: true,
+	isAuthenticated: false,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {

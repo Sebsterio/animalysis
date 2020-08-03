@@ -1,27 +1,56 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 
 // Components
 import { OptIn, UserInfo } from "./index";
 import { Copyright } from "components/Copyright";
 import {
-	Button,
-	TextField,
-	Link,
-	Grid,
-	Box,
-	Typography,
 	Container,
+	Box,
+	Grid,
+	Typography,
+	TextField,
+	Button,
+	Link,
 } from "@material-ui/core";
 
 // Other
 import { authModes } from "../Account-modes";
-import { useStyles } from "../Account-styles";
 
 // --------------------------------------------------------------
 
+export const useStyles = makeStyles((theme) => ({
+	container: {
+		paddingTop: theme.spacing(6),
+		paddingBottom: theme.spacing(4),
+		display: "flex",
+		flexFlow: "column nowrap",
+		alignItems: "stretch",
+		justifyContent: "space-between",
+	},
+	head: {
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	paper: {
+		marginTop: theme.spacing(6),
+		marginBottom: theme.spacing(6),
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2),
+	},
+}));
+
 export const Auth = ({ mode, signIn }) => {
-	const classes = useStyles();
+	const clx = useStyles();
 
 	const modesData = {
 		[authModes.signIn]: {
@@ -41,8 +70,8 @@ export const Auth = ({ mode, signIn }) => {
 	};
 
 	return (
-		<Container maxWidth="xs">
-			<div className={classes.paper}>
+		<Container maxWidth="xs" className={clx.container}>
+			<Box className={clx.head}>
 				<Typography component="h1" variant="h2">
 					VetCheck
 				</Typography>
@@ -52,8 +81,10 @@ export const Auth = ({ mode, signIn }) => {
 				<Typography component="h1" variant="h6">
 					(Logo)
 				</Typography>
+			</Box>
 
-				<form className={classes.form} noValidate>
+			<Box className={clx.paper}>
+				<form className={clx.form} noValidate>
 					<Grid container spacing={2}>
 						{modesData[mode].userInfo || ""}
 
@@ -88,7 +119,7 @@ export const Auth = ({ mode, signIn }) => {
 						fullWidth
 						variant="contained"
 						color="primary"
-						className={classes.submit}
+						className={clx.submit}
 						onClick={modesData[mode].btnHandler}
 					>
 						{modesData[mode].btnText || ""}
@@ -106,10 +137,9 @@ export const Auth = ({ mode, signIn }) => {
 						</Grid>
 					</Grid>
 				</form>
-			</div>
-			<Box mt={5}>
-				<Copyright />
 			</Box>
+
+			<Copyright />
 		</Container>
 	);
 };
