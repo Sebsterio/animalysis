@@ -8,6 +8,8 @@ import {
 } from "./survey-utils";
 
 const INITIAL_STATE = {
+	// Highest level of urgency resulting from answers so far
+	alert: 0,
 	// Questions with dynamically added answers
 	sequences: surveyData,
 	// Location history stack (FILO)
@@ -20,6 +22,21 @@ const INITIAL_STATE = {
 	],
 	// Stack of locations to go to upon completing an optional section (FILO)
 	landmarks: [],
+
+	// ---- NEW ----
+
+	// locations in survey, along with selectd answers
+	// used to 'goBack' and to compile final report
+	history: [
+		// {
+		// 	sectionName
+		//  questionIndex
+		//  answer: index | array-of-indexes | text
+		//  queue - sections to visit next; leftmost = current
+		// }
+	],
+	// locations popped during 'goBack'; used to restore history on 'goNext'
+	futureHistory: [],
 };
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
