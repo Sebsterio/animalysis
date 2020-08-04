@@ -1,5 +1,5 @@
 /*
- * queue: ['sectionName' | ['sectionName', questionIndex], ... ]
+ * queue: ['sectionName' | {location Object}, ... ]
  * sections (Arr)
  * -sectionName (Obj)
  * --title (Str): displayed in UI
