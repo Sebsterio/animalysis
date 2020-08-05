@@ -33,9 +33,11 @@ export const goForward = (history) => (dispatch, getState) => {
 	dispatch($.shiftNextLocationFromQueue());
 };
 
-// Extract questions from section redirect-to and add them to correct place in queue
-export const addFollowUpToQueue = (redirect) => (dispatch, getState) => {
-	const { priority, target, after } = redirect;
+// Extract questions from target section
+// And questions to correct place in queue
+// TODO: Remove target section from optionalQueue
+export const addFollowUpToQueue = (followUp) => (dispatch, getState) => {
+	const { priority, target, after } = followUp;
 	const newQuestions = getLocationsFromSection(getState(), target);
 	switch (priority) {
 		case 1:
@@ -44,6 +46,8 @@ export const addFollowUpToQueue = (redirect) => (dispatch, getState) => {
 			return dispatch($.injectLocationsToQueue({ newQuestions, after }));
 		case 3:
 			return dispatch($.pushLocationsToQueue({ newQuestions }));
+		default:
+			return;
 	}
 	// TODO: remove section from optionalQueue
 };

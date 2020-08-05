@@ -38,14 +38,14 @@ export const surveyData = {
 							text: "Nose",
 							followUp: {
 								priority: 3,
-								target: "nose",
+								target: "nose_exam",
 							},
 						},
 						{
 							text: "Ears",
 							followUp: {
 								priority: 3,
-								target: "ears",
+								target: "ears_exam",
 							},
 						},
 						{
@@ -106,7 +106,7 @@ export const surveyData = {
 							},
 						},
 						{
-							text: "Doesnt respond at all and cant move",
+							text: "Doesn't respond at all and can't move",
 							print: "Comatose",
 							alert: 3,
 						},
@@ -130,7 +130,7 @@ export const surveyData = {
 						},
 						{
 							text: "More than normal",
-							redirect: {
+							followUp: {
 								priority: 1,
 								target: "increased_urination",
 							},
@@ -144,7 +144,10 @@ export const surveyData = {
 						{
 							text: "Yes",
 							alert: 1,
-							followUp: "bleeding",
+							followUp: {
+								priority: 1,
+								target: "bleeding_exam",
+							},
 						},
 						{
 							text: "No",
@@ -215,6 +218,18 @@ export const surveyData = {
 						},
 					],
 				},
+				{
+					label: `Another nose question...`,
+					type: "select-one",
+					answers: [
+						{
+							text: "Answer 1",
+						},
+						{
+							text: "Answer 2",
+						},
+					],
+				},
 			],
 		},
 
@@ -263,7 +278,7 @@ export const surveyData = {
 					answers: [
 						{
 							text: "Skin wound",
-							redirect: {
+							followUp: {
 								priority: 1,
 								target: "skin_wound",
 							},
@@ -302,7 +317,7 @@ export const surveyData = {
 					answers: [
 						{
 							text: "yes",
-							redirect: {
+							followUp: {
 								priority: 1,
 								target: "skin_wound",
 							},
