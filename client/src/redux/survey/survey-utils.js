@@ -1,16 +1,37 @@
-import { getPoppedArray, getLastIndexOf, arrayify } from "utils/array";
+import {
+	getPoppedArray,
+	getLastIndexOf,
+	arrayify,
+	getArrayWithRemovedItem,
+} from "utils/array";
 
-export const getStateWithPushedItem = (state, arr, item) => {
+// ----------------- State ------------------
+
+export const getStateWithReplacedItems = (state, prop, data) => {
 	return {
 		...state,
-		[arr]: [...state[arr], item],
+		[prop]: [...data],
 	};
 };
 
-export const getStateWithPoppedItem = (state, arr) => {
+export const getStateWithPushedItem = (state, prop, item) => {
 	return {
 		...state,
-		[arr]: getPoppedArray(state[arr]),
+		[prop]: [...state[prop], item],
+	};
+};
+
+export const getStateWithPoppedItem = (state, prop) => {
+	return {
+		...state,
+		[prop]: getPoppedArray(state[prop]),
+	};
+};
+
+export const getStateWithRemovedItem = (state, prop, item) => {
+	return {
+		...state,
+		[prop]: getArrayWithRemovedItem(state[prop], item),
 	};
 };
 
