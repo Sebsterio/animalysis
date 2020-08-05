@@ -2,46 +2,32 @@ import React from "react";
 import { connect } from "react-redux";
 
 import {
-	getLocationHistory,
-	getLastLandmark,
-	getCurrentSequenceName,
-	getCurrentSection,
-	getCurrentSectionIndex,
-	getCurrentQuestion,
-	getCurrentQuestionIndex,
-	getNextLocationInSequence,
-	getIsNextLocationInSequenceLandmarked,
+	getIsHistoryEmpty,
+	getIsCurrentQuestionAnswered,
+	getIsSurveyLoaded,
 } from "redux/survey/survey-selectors";
+import { addAnswerToCurrentLocation } from "redux/survey/survey-actions";
 import {
-	submitAnswer,
-	pushLocation,
-	popLocation,
-	pushLandmark,
-	popLandmark,
-} from "redux/survey/survey-actions";
+	initSurvey,
+	addFollowUpToQueue,
+	goForward,
+	goBack,
+} from "redux/survey/survey-operations";
 
 import { Survey } from "./Survey";
 
 const mapStateToProps = (state) => ({
-	sequenceName: getCurrentSequenceName(state),
-	section: getCurrentSection(state),
-	sectionIndex: getCurrentSectionIndex(state),
-	question: getCurrentQuestion(state),
-	questionIndex: getCurrentQuestionIndex(state),
-	locationHistory: getLocationHistory(state),
-	lastLandmark: getLastLandmark(state),
-	nextLocationInSequence: getNextLocationInSequence(state),
-	nextLocationInSequenceIsLandmarked: getIsNextLocationInSequenceLandmarked(
-		state
-	),
+	surveyIsLoaded: getIsSurveyLoaded(state),
+	historyIsEmpty: getIsHistoryEmpty(state),
+	isQuestionAnswered: getIsCurrentQuestionAnswered(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	submitAnswer: (data) => dispatch(submitAnswer(data)),
-	pushLocation: (data) => dispatch(pushLocation(data)),
-	popLocation: () => dispatch(popLocation()),
-	pushLandmark: (data) => dispatch(pushLandmark(data)),
-	popLandmark: () => dispatch(popLandmark()),
+	initSurvey: (data) => dispatch(initSurvey(data)),
+	addAnswer: (data) => dispatch(addAnswerToCurrentLocation(data)),
+	addFollowUpToQueue: (data) => dispatch(addFollowUpToQueue(data)),
+	goForward: () => dispatch(goForward()),
+	goBack: () => dispatch(goBack()),
 });
 
 const SurveyContainer = (props) => <Survey {...props} />;

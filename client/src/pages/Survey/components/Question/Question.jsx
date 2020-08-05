@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import shortid from "shortid";
 
 import { Box, Button, Typography } from "@material-ui/core";
 
@@ -17,9 +18,11 @@ const Question = ({
 	lastQuestionIndex,
 	handleAnswer,
 }) => {
-	const { route, label, type, answers } = question;
-
 	const clx = useStyles();
+	if (!question) return null;
+
+	const { label, type, answers } = question;
+
 	const id = label === "text" ? "Question" : null;
 
 	return (
@@ -42,15 +45,30 @@ const Question = ({
 			</Box>
 
 			{type === "select-one" &&
-				answers.map(({ text, selected, redirect }, i) => (
-					<Box mb={2} key={`${route}-${i}`}>
+				answers.map(({ text, followUp }, i) => (
+					<Box mb={2} key={shortid.generate()}>
 						<Button
 							fullWidth
 							variant="outlined"
-							color={selected ? "primary" : "default"}
+							color="default"
 							children={text}
 							className={clx.button}
-							onClick={() => handleAnswer(i, selected, redirect)}
+							onClick={() => handleAnswer({ answer: i, followUp })}
+						/>
+					</Box>
+				))}
+
+			{/* --- TEMP --- */}
+			{type === "select-multiple" &&
+				answers.map(({ text, followUp }, i) => (
+					<Box mb={2} key={shortid.generate()}>
+						<Button
+							fullWidth
+							variant="outlined"
+							color="default"
+							children={text}
+							className={clx.button}
+							onClick={() => handleAnswer({ answer: i, followUp })}
 						/>
 					</Box>
 				))}

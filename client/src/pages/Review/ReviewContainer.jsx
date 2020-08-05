@@ -6,7 +6,7 @@ import { getSequences } from "redux/survey/survey-selectors";
 import Review from "./Review";
 
 const mapStateToProps = (state) => ({
-	sequences: getSequences(state),
+	// sequences: getSequences(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});

@@ -3,3 +3,9 @@ export const getPoppedArray = (arr) => {
 	newArr.pop();
 	return newArr;
 };
+
+export const getLastIndexOf = (arr, selector) => {
+	for (let i = arr.length - 1; i >= 0; i--) {
+		if (selector(arr[i])) return i;
+	}
+};

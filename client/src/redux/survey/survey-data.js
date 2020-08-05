@@ -1,5 +1,5 @@
 /*
- * queue: ['sectionName' | {location Object}, ... ]
+ * queue: ['sectionName']
  * sections (Arr)
  * -sectionName (Obj)
  * --title (Str): displayed in UI
@@ -12,12 +12,13 @@
  * -----print (Str): displayed in final report
  * -----alert (Num): displayed in final report (highest alert reached only)
  * -------0 (green) | 1 (yellow) | 2 (orange) | 3 (red),
- * -----redirect (Obj)
- * ------target (Str: sectionName):
+ * -----followUp (Obj)
+ * ------target (Str: sectionName): section to inject
  * ------priority (Num)
- * --------1 (now): unshift target to queue
- * --------2 (soon): inject target after current section
- * --------3 (eventually): push target to queue
+ * -------1 (now): unshift target to queue
+ * -------2 (soon): inject target after given section
+ * -------3 (eventually): push target to queue
+ * ------after (Str): if priority=2, specifies sectionName after which to inject target
  */
 
 export const surveyData = {
@@ -46,6 +47,9 @@ export const surveyData = {
 								priority: 3,
 								target: "ears",
 							},
+						},
+						{
+							text: "Other",
 						},
 					],
 				}),

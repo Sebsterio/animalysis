@@ -1,8 +1,8 @@
 import { surveyData } from "./survey-data";
 
 export const INITIAL_STATE = {
-	// Un-ordered list question sections (Object)
-	data: surveyData.sections,
+	// Question sections
+	data: {},
 
 	// Current location is survey
 	location: {
@@ -17,7 +17,7 @@ export const INITIAL_STATE = {
 
 	// Locations to visit next; unshifted on 'goBack';
 	// answers kept and used to restore location & history on 'goNext'
-	queue: [...surveyData.mainQueue],
+	queue: [],
 
 	// Highest level of urgency resulting from answers so far
 	alert: 0,

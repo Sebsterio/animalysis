@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, MobileStepper } from "@material-ui/core";
 
@@ -13,20 +13,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Section = ({
-	sequenceName,
-	sectionTitle,
-	sectionIndex,
-	lastSectionIndex,
-}) => {
-	// Show only main sequence sections in Stepper
-	const mainSequence = useRef({ activeStep: 0, steps: 0 });
-	if (sequenceName === "main")
-		mainSequence.current = {
-			activeStep: sectionIndex,
-			steps: lastSectionIndex + 1,
-		};
-	const { activeStep, steps } = mainSequence.current;
+export const Section = ({ sectionTitle, historyLength, queueLength }) => {
+	const activeStep = historyLength;
+	const steps = historyLength + queueLength + 1;
 
 	const clx = useStyles();
 

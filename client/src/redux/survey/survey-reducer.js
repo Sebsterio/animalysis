@@ -1,12 +1,34 @@
 import { INITIAL_STATE } from "./survey-INITIAL_STATE";
 import * as $ from "./survey-actions";
-import { getStateWithPushedItem, getStateWithPoppedItem } from "./survey-utils";
+import {
+	getQueueWithShiftedNextLocation,
+	getQueueWithUnshiftedLocations,
+	getQueueWithInjectedLocations,
+	getQueueWithPushedLocations,
+	getStateWithPushedItem,
+	getStateWithPoppedItem,
+} from "./survey-utils";
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		// --- Survey sequences ---
+		// --- Survey data ---
 
-		case $.SUBMIT_ANSWER: {
+		case $.SET_SURVEY_DATA: {
+			return {
+				...state,
+				data: { ...action.payload },
+			};
+		}
+
+		// --- Current Location ---
+
+		case $.SET_CURRENT_LOCATION: {
+			return {
+				...state,
+				location: { ...action.payload },
+			};
+		}
+		case $.ADD_ANSWER_TO_CURRENT_LOCATION: {
 			return {
 				...state,
 				location: {
@@ -18,23 +40,53 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 
 		// --- Location History ---
 
-		case $.PUSH_LOCATION: {
+		case $.PUSH_LOCATION_TO_HISTORY: {
 			return getStateWithPushedItem(state, "history", action.payload);
 		}
-
-		case $.POP_LOCATION: {
+		case $.POP_LOCATION_FROM_HISTORY: {
 			return getStateWithPoppedItem(state, "history");
 		}
 
-		// --- Location Landmarks ---
+		// --- Location Queue ---
 
-		case $.PUSH_LANDMARK: {
-			return getStateWithPushedItem(state, "landmarks", action.payload);
+		case $.SET_QUEUE: {
+			return {
+				...state,
+				queue: [...action.payload],
+			};
+		}
+		case $.SET_OPTIONAL_QUEUE: {
+			return {
+				...state,
+				optionalQueue: [...action.payload],
+			};
+		}
+		case $.SHIFT_NEXT_LOCATION_FROM_QUEUE: {
+			return {
+				...state,
+				queue: getQueueWithShiftedNextLocation(state.queue),
+			};
+		}
+		case $.UNSHIFT_LOCATIONS_TO_QUEUE: {
+			return {
+				...state,
+				queue: getQueueWithUnshiftedLocations(state.queue, action.payload),
+			};
+		}
+		case $.INJECT_LOCATIONS_TO_QUEUE: {
+			return {
+				...state,
+				queue: getQueueWithInjectedLocations(state.queue, action.payload),
+			};
+		}
+		case $.PUSH_LOCATIONS_TO_QUEUE: {
+			return {
+				...state,
+				queue: getQueueWithPushedLocations(state.queue, action.payload),
+			};
 		}
 
-		case $.POP_LANDMARK: {
-			return getStateWithPoppedItem(state, "landmarks");
-		}
+		// ---------------------------
 
 		default:
 			return state;

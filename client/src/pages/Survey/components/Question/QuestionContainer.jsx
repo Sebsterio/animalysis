@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import {
-	getCurrentQuestion,
+	getCurrentQuestionData,
 	getCurrentQuestionIndex,
 	getLastQuestionIndex,
 } from "redux/survey/survey-selectors";
@@ -10,7 +10,7 @@ import {
 import Question from "./Question";
 
 const mapStateToProps = (state) => ({
-	question: getCurrentQuestion(state),
+	question: getCurrentQuestionData(state),
 	questionIndex: getCurrentQuestionIndex(state),
 	lastQuestionIndex: getLastQuestionIndex(state),
 });

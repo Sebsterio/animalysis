@@ -14,8 +14,8 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export const Nav = ({
-	questionIsNotAnswered,
-	isFirstQuestion,
+	canGoForward,
+	canGoBack,
 	handleGoBack,
 	handleGoForward,
 }) => {
@@ -24,14 +24,14 @@ export const Nav = ({
 			<Button
 				children="Back"
 				onClick={handleGoBack}
-				disabled={isFirstQuestion}
+				disabled={!canGoBack}
 				startIcon={<KeyboardArrowLeft />}
 			/>
 
 			<Button
 				children="Next"
 				onClick={handleGoForward}
-				disabled={questionIsNotAnswered}
+				disabled={!canGoForward}
 				endIcon={<KeyboardArrowRight />}
 			/>
 		</Container>

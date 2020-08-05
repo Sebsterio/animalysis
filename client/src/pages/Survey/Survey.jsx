@@ -4,10 +4,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Section, Question, Nav } from "./components";
 import { Container } from "@material-ui/core";
 
-import { isQuestionAnswered } from "./Survey-utils";
+import { surveyData } from "redux/survey/survey-data";
 
 /*************************************************
- * Manages survey location, history, and landmarks
+ * Initializes survey store
+ * Manages survey location, history, and queue
  * Submits Question answers
  *************************************************/
 
@@ -22,85 +23,38 @@ const useStyles = makeStyles((theme) => ({
 
 export const Survey = ({
 	// state
-	sequenceName,
-	section,
-	sectionIndex,
-	question,
-	questionIndex,
-	locationHistory,
-	lastLandmark,
-	nextLocationInSequence,
-	nextLocationInSequenceIsLandmarked,
+	surveyIsLoaded,
+	historyIsEmpty,
+	isQuestionAnswered,
 	// dispatch
-	submitAnswer,
-	pushLocation,
-	popLocation,
-	pushLandmark,
-	popLandmark,
+	initSurvey,
+	addAnswer,
+	addFollowUpToQueue,
+	goForward,
+	goBack,
 	// router
 	history,
 }) => {
-	// Remove obsolete landmark after going "back"
-	useEffect(() => {
-		if (nextLocationInSequenceIsLandmarked) popLandmark();
-	});
+	useEffect(() => initSurvey(surveyData), [initSurvey]);
 
-	// ---------------------------- Aux ----------------------------------
+	const clx = useStyles();
 
-	// Go to next question OR section OR the final page
-	// Handle redirect to clarification section and return from it
-	const goToNextLocation = (redirect) => {
-		if (redirect) {
-			pushLandmark(nextLocationInSequence);
-			pushLocation({
-				sequenceName: redirect,
-				sectionIndex: 0,
-				questionIndex: 0,
-			});
-		} else if (nextLocationInSequence) {
-			pushLocation(nextLocationInSequence);
-		} else if (lastLandmark) {
-			pushLocation(lastLandmark);
-			popLandmark();
-		} else history.push("/new-report/review");
+	const handleAnswer = ({ answer, followUp }) => {
+		addAnswer(answer);
+		if (followUp) addFollowUpToQueue(followUp);
+		goForward(history);
 	};
 
-	// -------------------------- Handlers ---------------------------------
-
-	// Submit answer if different that current
-	// Show next question
-	const handleAnswer = (i, selected, redirect) => {
-		if (!selected) submitAnswer(i);
-		goToNextLocation(redirect);
-	};
-
-	// Trace back location history
-	// When entering clarification section, add landmark
-	const handleGoBack = () => {
-		if (questionIndex === 0)
-			pushLandmark({ sequenceName, sectionIndex, questionIndex });
-		popLocation();
-	};
-
-	// Go to next question following redirects
-	const handleGoForward = () => {
-		const redirect = question.answers.find((a) => a.selected).redirect;
-		goToNextLocation(redirect);
-	};
-
-	// --------------------------- View ----------------------------------
-
+	if (!surveyIsLoaded) return null;
 	return (
-		<Container maxWidth="xs" className={useStyles().container}>
-			<Section section={section} />
-
+		<Container maxWidth="xs" className={clx.container}>
+			<Section />
 			<Question handleAnswer={handleAnswer} />
-
 			<Nav
-				questionIsNotAnswered={!isQuestionAnswered(question)}
-				isFirstQuestion={locationHistory.length <= 1}
-				handleGoBack={handleGoBack}
-				handleGoForward={handleGoForward}
+				canGoBack={!historyIsEmpty}
+				canGoForward={isQuestionAnswered}
+				handleGoBack={goBack}
+				handleGoForward={() => goForward(history)}
 			/>
 		</Container>
 	);

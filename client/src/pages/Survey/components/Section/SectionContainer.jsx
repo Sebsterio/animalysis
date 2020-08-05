@@ -2,19 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 
 import {
-	getCurrentSequenceName,
 	getCurrentSectionTitle,
-	getCurrentSectionIndex,
-	getLastSectionIndex,
+	getHistoryLength,
+	getQueueLength,
 } from "redux/survey/survey-selectors";
 
 import { Section } from "./Section";
 
 const mapStateToProps = (state) => ({
-	sequenceName: getCurrentSequenceName(state),
 	sectionTitle: getCurrentSectionTitle(state),
-	sectionIndex: getCurrentSectionIndex(state),
-	lastSectionIndex: getLastSectionIndex(state),
+	historyLength: getHistoryLength(state),
+	queueLength: getQueueLength(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});
