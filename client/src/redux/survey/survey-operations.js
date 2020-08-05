@@ -41,23 +41,19 @@ export const goForward = (history) => (dispatch, getState) => {
 	dispatch($.shiftNextLocationFromQueue());
 };
 
-// Extract questions from target section
+// Extract questions from target section(s)
 // And questions to correct place in queue
-// TODO: Remove target section from optionalQueue
+// TODO: Remove target section(s) from optionalQueue
 export const addFollowUpToQueue = (followUp) => (dispatch, getState) => {
-	const { priority, target, after } = followUp;
-	arrayify(target).forEach((target) => {
-		const newLocations = getLocationsFromSection(getState(), target);
-		switch (priority) {
-			case 1:
-				return dispatch($.unshiftLocationsToQueue({ newLocations }));
-			case 2:
-				return dispatch($.injectLocationsToQueue({ newLocations, after }));
-			case 3:
-				return dispatch($.pushLocationsToQueue({ newLocations }));
-			default:
-				return;
-		}
-	});
-	// TODO: remove section from optionalQueue
+	const { target, after } = followUp;
+	arrayify(target)
+		.reverse()
+		.forEach((target) => {
+			const newLocations = getLocationsFromSection(getState(), target);
+			if (after === "all") dispatch($.pushLocationsToQueue({ newLocations }));
+			else if (!after) dispatch($.unshiftLocationsToQueue({ newLocations }));
+			else dispatch($.injectLocationsToQueue({ newLocations, after }));
+
+			// TODO: remove section from optionalQueue
+		});
 };

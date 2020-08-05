@@ -34,14 +34,16 @@ export const getQueueWithPushedLocations = (queue, { newLocations }) => {
 	return [...newQueue, ...newLocations];
 };
 
-// Inject newLocations after last question of a given section in queue
+// Inject newLocations after last question of a given section(s) in queue
 export const getQueueWithInjectedLocations = (
 	queue,
-	{ after, newLocations }
+	{ newLocations, after }
 ) => {
 	newLocations = arrayify(newLocations);
-	const selector = (item) => item.sectionName === after;
-	let indexOfLastRequiredQuestion = getLastIndexOf(queue, selector);
+	const indexOfLastRequiredQuestion = arrayify(after).reduce((acc, cur) => {
+		const i = getLastIndexOf(queue, (loc) => loc.sectionName === cur);
+		return i > acc ? i : acc;
+	}, 0);
 	let newQueue = [...queue];
 	newQueue.splice(indexOfLastRequiredQuestion + 1, 0, ...newLocations);
 	return newQueue;

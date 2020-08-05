@@ -1,24 +1,23 @@
 /*
  * queue: ['sectionName']
  * sections (Arr)
- * -sectionName (Obj)
- * --title (Str): displayed in UI
- * --questions (Arr)
- * ---question (Obj || Func(pet) => Obj)
- * ----label (Str): diplayed in UI
- * ----type (Str): text | select-one | select-multiple
- * ----answers (Arr)
- * -----text (Str): displayed in UI
- * -----print (Str): displayed in final report
- * -----alert (Num): displayed in final report (highest alert reached only)
- * -------0 (green) | 1 (yellow) | 2 (orange) | 3 (red),
- * -----followUp (Obj)
- * ------target (Str: sectionName): section to inject
- * ------priority (Num)
- * -------1 (now): unshift target to queue
- * -------2 (soon): inject target after given section
- * -------3 (eventually): push target to queue
- * ------after (Str): if priority=2, specifies sectionName after which to inject target
+ * - sectionName (Obj)
+ * -- title (Str): displayed in UI
+ * -- questions (Arr)
+ * --- question (Obj || Func(pet) => Obj)
+ * ---- label (Str): diplayed in UI
+ * ---- type (Str): text | select-one | select-multiple
+ * ---- answers (Arr)
+ * ------ text (Str): displayed in UI
+ * ------ print (Str): displayed in final report
+ * ------ alert (Num): displayed in final report (highest alert reached only)
+ * -------- 0 (green) | 1 (yellow) | 2 (orange) | 3 (red),
+ * ------ followUp (Obj)
+ * -------- target (Str | [Str]: sectionName): sections to inject
+ * -------- after (Str | [Str] | 'all'): place to inject target
+ * ----------( Str | [Str]): sectionName(s) after which to inject target
+ * ----------(' all'): push target to queue (i.e. redirect at the end of survey)
+ * ----------(  null): unshift target to queue (i.e. redirect immediately)
  */
 
 export const surveyData = {
@@ -37,15 +36,15 @@ export const surveyData = {
 						{
 							text: "Nose",
 							followUp: {
-								priority: 3,
 								target: "nose_exam",
+								after: "all",
 							},
 						},
 						{
 							text: "Ears",
 							followUp: {
-								priority: 3,
 								target: "ears_exam",
+								after: "all",
 							},
 						},
 						{
@@ -61,6 +60,39 @@ export const surveyData = {
 		bleeding: {
 			title: "Bleeding",
 			questions: [
+				{
+					label:
+						"Test question testing injecting followUp after multiple sections",
+					type: "select-one",
+					answers: [
+						{
+							text:
+								"Schedule follow-up 'behaviour' after 'bleeding' and 'activity'",
+							followUp: {
+								target: "behaviour_exam",
+								after: ["bleeding", "activity"],
+							},
+						},
+
+						{
+							text: "Answer 2",
+						},
+					],
+				},
+				{
+					label:
+						"This question shuld appear immediately after test question testing injecting followUp after multiple sections",
+					type: "select-one",
+					answers: [
+						{
+							text: "Answer 1",
+						},
+
+						{
+							text: "Answer 2",
+						},
+					],
+				},
 				(pet) => ({
 					label: `Is ${pet.name} bleeding?`,
 					type: "select-one",
@@ -68,7 +100,6 @@ export const surveyData = {
 						{
 							text: "Yes",
 							followUp: {
-								priority: 1,
 								target: "bleeding_exam",
 							},
 						},
@@ -101,7 +132,6 @@ export const surveyData = {
 							print: "Mild lethargy",
 							alert: 1,
 							followUp: {
-								priority: 1,
 								target: ["behaviour_exam", "bleeding_exam"],
 							},
 						},
@@ -131,7 +161,6 @@ export const surveyData = {
 						{
 							text: "More than normal",
 							followUp: {
-								priority: 1,
 								target: "increased_urination",
 							},
 						},
@@ -145,7 +174,6 @@ export const surveyData = {
 							text: "Yes",
 							alert: 1,
 							followUp: {
-								priority: 1,
 								target: "bleeding_exam",
 							},
 						},
@@ -279,7 +307,6 @@ export const surveyData = {
 						{
 							text: "Skin wound",
 							followUp: {
-								priority: 1,
 								target: "skin_wound",
 							},
 						},
@@ -318,7 +345,6 @@ export const surveyData = {
 						{
 							text: "yes",
 							followUp: {
-								priority: 1,
 								target: "skin_wound",
 							},
 						},
