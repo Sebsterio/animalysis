@@ -43,7 +43,6 @@ export const Survey = ({
 		if (answer !== null) setAnswer(answer);
 		if (partialAnswer !== null) toggleAnswer(partialAnswer);
 		if (followUp) addFollowUpToQueue(followUp);
-		console.log(partialAnswer);
 		if (answer !== null) goForward(history);
 	};
 

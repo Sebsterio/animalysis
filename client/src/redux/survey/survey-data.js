@@ -313,7 +313,7 @@ export const surveyData = {
 						},
 						{
 							text: "Mouth",
-							printAdd: "from mouth",
+							printNote: "from mouth",
 						},
 					],
 				},
@@ -329,12 +329,12 @@ export const surveyData = {
 					answers: [
 						{
 							text: "&lt;1mm",
-							printAdd: "&lt;1mm wound",
+							printNote: "&lt;1mm wound",
 							alert: 1,
 						},
 						{
 							text: "1-10mm",
-							printAdd: "1-10mm wound",
+							printNote: "1-10mm wound",
 							alert: 1,
 						},
 					],
