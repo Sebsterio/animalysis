@@ -1,4 +1,4 @@
-import { getPoppedArray, getLastIndexOf } from "utils/array";
+import { getPoppedArray, getLastIndexOf, arrayify } from "utils/array";
 
 export const getStateWithPushedItem = (state, arr, item) => {
 	return {
@@ -22,24 +22,27 @@ export const getQueueWithShiftedNextLocation = (queue) => {
 	return newQueue;
 };
 
-export const getQueueWithUnshiftedLocations = (queue, { newQuestions }) => {
+export const getQueueWithUnshiftedLocations = (queue, { newLocations }) => {
+	newLocations = arrayify(newLocations);
 	let newQueue = [...queue];
-	return [...newQuestions, ...newQueue];
+	return [...newLocations, ...newQueue];
 };
 
-export const getQueueWithPushedLocations = (queue, { newQuestions }) => {
+export const getQueueWithPushedLocations = (queue, { newLocations }) => {
+	newLocations = arrayify(newLocations);
 	let newQueue = [...queue];
-	return [...newQueue, ...newQuestions];
+	return [...newQueue, ...newLocations];
 };
 
-// Inject newQuestions after last question of a given section in queue
+// Inject newLocations after last question of a given section in queue
 export const getQueueWithInjectedLocations = (
 	queue,
-	{ after, newQuestions }
+	{ after, newLocations }
 ) => {
+	newLocations = arrayify(newLocations);
 	const selector = (item) => item.sectionName === after;
 	let indexOfLastRequiredQuestion = getLastIndexOf(queue, selector);
 	let newQueue = [...queue];
-	newQueue.splice(indexOfLastRequiredQuestion + 1, 0, ...newQuestions);
+	newQueue.splice(indexOfLastRequiredQuestion + 1, 0, ...newLocations);
 	return newQueue;
 };

@@ -2,6 +2,7 @@ import {
 	getCurrentLocation,
 	getUnpackedQueue,
 	getNextLocationInQueue,
+	getLastLocationInHistory,
 	getLocationsFromSection,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
@@ -18,9 +19,15 @@ export const initSurvey = (surveyData) => (dispatch, getState) => {
 	dispatch($.shiftNextLocationFromQueue());
 };
 
-// Unshift last history location into current location and current into queue
-export const goBack = () => (dispatch, getState) => {
-	console.log("GO_BACK"); /////////
+// Unshift current location into queue
+// Pop last history location and set as current location
+export const goBack = (history) => (dispatch, getState) => {
+	const currentLocation = getCurrentLocation(getState());
+	const previousLocation = getLastLocationInHistory(getState());
+	if (!previousLocation) return history.goBack();
+	dispatch($.unshiftLocationsToQueue({ newLocations: currentLocation }));
+	dispatch($.setCurrentLocation(previousLocation));
+	dispatch($.popLocationFromHistory());
 };
 
 // Push first queue location into location and location into history
@@ -38,14 +45,14 @@ export const goForward = (history) => (dispatch, getState) => {
 // TODO: Remove target section from optionalQueue
 export const addFollowUpToQueue = (followUp) => (dispatch, getState) => {
 	const { priority, target, after } = followUp;
-	const newQuestions = getLocationsFromSection(getState(), target);
+	const newLocations = getLocationsFromSection(getState(), target);
 	switch (priority) {
 		case 1:
-			return dispatch($.unshiftLocationsToQueue({ newQuestions }));
+			return dispatch($.unshiftLocationsToQueue({ newLocations }));
 		case 2:
-			return dispatch($.injectLocationsToQueue({ newQuestions, after }));
+			return dispatch($.injectLocationsToQueue({ newLocations, after }));
 		case 3:
-			return dispatch($.pushLocationsToQueue({ newQuestions }));
+			return dispatch($.pushLocationsToQueue({ newLocations }));
 		default:
 			return;
 	}

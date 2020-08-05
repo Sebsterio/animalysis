@@ -9,3 +9,8 @@ export const getLastIndexOf = (arr, selector) => {
 		if (selector(arr[i])) return i;
 	}
 };
+
+export const arrayify = (element) => {
+	if (Array.isArray(element)) return element;
+	return [element];
+};

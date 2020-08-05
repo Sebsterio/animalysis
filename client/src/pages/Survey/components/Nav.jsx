@@ -14,8 +14,8 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export const Nav = ({
-	canGoForward,
-	canGoBack,
+	canGoForward = true,
+	canGoBack = true,
 	handleGoBack,
 	handleGoForward,
 }) => {

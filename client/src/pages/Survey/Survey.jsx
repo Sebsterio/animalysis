@@ -51,9 +51,8 @@ export const Survey = ({
 			<Section />
 			<Question handleAnswer={handleAnswer} />
 			<Nav
-				canGoBack={!historyIsEmpty}
 				canGoForward={isQuestionAnswered}
-				handleGoBack={goBack}
+				handleGoBack={() => goBack(history)}
 				handleGoForward={() => goForward(history)}
 			/>
 		</Container>
