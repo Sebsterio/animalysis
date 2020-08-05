@@ -102,7 +102,7 @@ export const surveyData = {
 							alert: 1,
 							followUp: {
 								priority: 1,
-								target: ["behaviour", "bleeding"],
+								target: ["behaviour_exam", "bleeding_exam"],
 							},
 						},
 						{

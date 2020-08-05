@@ -6,6 +6,7 @@ import {
 	getLocationsFromSection,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
+import { arrayify } from "utils/array";
 
 // Initialize survey store & set first question
 // NOTE: don't save state in a var as actions are synchroneous
@@ -45,16 +46,18 @@ export const goForward = (history) => (dispatch, getState) => {
 // TODO: Remove target section from optionalQueue
 export const addFollowUpToQueue = (followUp) => (dispatch, getState) => {
 	const { priority, target, after } = followUp;
-	const newLocations = getLocationsFromSection(getState(), target);
-	switch (priority) {
-		case 1:
-			return dispatch($.unshiftLocationsToQueue({ newLocations }));
-		case 2:
-			return dispatch($.injectLocationsToQueue({ newLocations, after }));
-		case 3:
-			return dispatch($.pushLocationsToQueue({ newLocations }));
-		default:
-			return;
-	}
+	arrayify(target).forEach((target) => {
+		const newLocations = getLocationsFromSection(getState(), target);
+		switch (priority) {
+			case 1:
+				return dispatch($.unshiftLocationsToQueue({ newLocations }));
+			case 2:
+				return dispatch($.injectLocationsToQueue({ newLocations, after }));
+			case 3:
+				return dispatch($.pushLocationsToQueue({ newLocations }));
+			default:
+				return;
+		}
+	});
 	// TODO: remove section from optionalQueue
 };
