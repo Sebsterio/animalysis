@@ -55,10 +55,17 @@ const Question = ({
 						<Button
 							fullWidth
 							variant="outlined"
-							color={isAnswerSelected(i) ? "primary" : "default"}
+							color="default"
+							disabled={isAnswerSelected(i)}
 							children={text}
 							className={clx.button}
-							onClick={() => handleAnswer({ answer: i, followUp })}
+							onClick={() =>
+								handleAnswer({
+									answer: i,
+									followUp,
+									selected: isAnswerSelected(i),
+								})
+							}
 						/>
 					</Box>
 				))}
@@ -70,10 +77,17 @@ const Question = ({
 						<Button
 							fullWidth
 							variant="outlined"
-							color={isAnswerSelected(i) ? "primary" : "default"}
+							color="default"
+							disabled={isAnswerSelected(i)}
 							children={text}
 							className={clx.button}
-							onClick={() => handleAnswer({ answer: i, followUp })}
+							onClick={() =>
+								handleAnswer({
+									partialAnswer: i,
+									followUp,
+									selected: isAnswerSelected(i),
+								})
+							}
 						/>
 					</Box>
 				))}

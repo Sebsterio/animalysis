@@ -14,9 +14,16 @@ export const setCurrentLocation = (data) => ({
 	payload: data,
 });
 
-export const ADD_ANSWER_TO_CURRENT_LOCATION = "ADD_ANSWER_TO_CURRENT_LOCATION";
-export const addAnswerToCurrentLocation = (data) => ({
-	type: ADD_ANSWER_TO_CURRENT_LOCATION,
+export const SET_ANSWER_IN_CURRENT_LOCATION = "SET_ANSWER_IN_CURRENT_LOCATION";
+export const setAnswerInCurrentLocation = (data) => ({
+	type: SET_ANSWER_IN_CURRENT_LOCATION,
+	payload: data,
+});
+
+export const TOGGLE_ANSWER_IN_CURRENT_LOCATION =
+	"TOGGLE_ANSWER_IN_CURRENT_LOCATION";
+export const toggleAnswerInCurrentLocation = (data) => ({
+	type: TOGGLE_ANSWER_IN_CURRENT_LOCATION,
 	payload: data,
 });
 

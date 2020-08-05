@@ -27,7 +27,8 @@ export const Survey = ({
 	questionIsAnswered,
 	// dispatch
 	initSurvey,
-	addAnswer,
+	setAnswer,
+	toggleAnswer,
 	addFollowUpToQueue,
 	goForward,
 	goBack,
@@ -38,10 +39,12 @@ export const Survey = ({
 
 	const clx = useStyles();
 
-	const handleAnswer = ({ answer, followUp }) => {
-		addAnswer(answer);
+	const handleAnswer = ({ answer, partialAnswer, followUp }) => {
+		if (answer >= 0) setAnswer(answer);
+		if (partialAnswer >= 0) toggleAnswer(partialAnswer);
 		if (followUp) addFollowUpToQueue(followUp);
-		goForward(history);
+		console.log(partialAnswer);
+		if (answer >= 0) goForward(history);
 	};
 
 	if (!surveyIsLoaded) return null;

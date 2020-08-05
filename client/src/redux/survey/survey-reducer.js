@@ -10,6 +10,7 @@ import {
 	getQueueWithInjectedLocations,
 	getQueueWithPushedLocations,
 } from "./survey-utils";
+import { arrayify, getArrayWithToggledItem } from "utils/array";
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
@@ -30,12 +31,22 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 				location: { ...action.payload },
 			};
 		}
-		case $.ADD_ANSWER_TO_CURRENT_LOCATION: {
+		case $.SET_ANSWER_IN_CURRENT_LOCATION: {
 			return {
 				...state,
 				location: {
 					...state.location,
 					answer: action.payload,
+				},
+			};
+		}
+		case $.TOGGLE_ANSWER_IN_CURRENT_LOCATION: {
+			const arrayifiedAnswer = arrayify(state.location.answer);
+			return {
+				...state,
+				location: {
+					...state.location,
+					answer: getArrayWithToggledItem(arrayifiedAnswer, action.payload),
 				},
 			};
 		}

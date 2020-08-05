@@ -5,7 +5,10 @@ import {
 	getIsCurrentQuestionAnswered,
 	getIsSurveyLoaded,
 } from "redux/survey/survey-selectors";
-import { addAnswerToCurrentLocation } from "redux/survey/survey-actions";
+import {
+	setAnswerInCurrentLocation,
+	toggleAnswerInCurrentLocation,
+} from "redux/survey/survey-actions";
 import {
 	initSurvey,
 	addFollowUpToQueue,
@@ -22,7 +25,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	initSurvey: (data) => dispatch(initSurvey(data)),
-	addAnswer: (data) => dispatch(addAnswerToCurrentLocation(data)),
+	setAnswer: (data) => dispatch(setAnswerInCurrentLocation(data)),
+	toggleAnswer: (data) => dispatch(toggleAnswerInCurrentLocation(data)),
 	addFollowUpToQueue: (data) => dispatch(addFollowUpToQueue(data)),
 	goForward: (data) => dispatch(goForward(data)),
 	goBack: (data) => dispatch(goBack(data)),
