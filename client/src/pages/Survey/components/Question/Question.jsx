@@ -4,6 +4,8 @@ import shortid from "shortid";
 
 import { Box, Button, Typography } from "@material-ui/core";
 
+import { arrayify } from "utils/array";
+
 // ---------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +18,7 @@ const Question = ({
 	question,
 	questionIndex,
 	lastQuestionIndex,
+	currentAnswer,
 	handleAnswer,
 }) => {
 	const clx = useStyles();
@@ -24,6 +27,8 @@ const Question = ({
 	const { label, type, answers } = question;
 
 	const id = label === "text" ? "Question" : null;
+
+	const isAnswerSelected = (i) => arrayify(currentAnswer).some((a) => a === i);
 
 	return (
 		<Box>
@@ -50,7 +55,7 @@ const Question = ({
 						<Button
 							fullWidth
 							variant="outlined"
-							color="default"
+							color={isAnswerSelected(i) ? "primary" : "default"}
 							children={text}
 							className={clx.button}
 							onClick={() => handleAnswer({ answer: i, followUp })}
@@ -65,7 +70,7 @@ const Question = ({
 						<Button
 							fullWidth
 							variant="outlined"
-							color="default"
+							color={isAnswerSelected(i) ? "primary" : "default"}
 							children={text}
 							className={clx.button}
 							onClick={() => handleAnswer({ answer: i, followUp })}

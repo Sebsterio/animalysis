@@ -12,8 +12,14 @@ export const getCurrentSectionName = (state) =>
 export const getCurrentQuestionIndex = (state) =>
 	getCurrentLocation(state).questionIndex;
 
-export const getIsCurrentQuestionAnswered = (state) =>
-	!!getCurrentLocation(state).answer;
+export const getIsCurrentQuestionAnswer = (state) =>
+	getCurrentLocation(state).answer;
+
+export const getIsCurrentQuestionAnswered = (state) => {
+	const answer = getIsCurrentQuestionAnswer(state);
+	if (Array.isArray(answer)) return !!answer.length;
+	return answer !== null && answer !== undefined;
+};
 
 // Index of last question in current section
 export const getLastQuestionIndex = (state) => {
