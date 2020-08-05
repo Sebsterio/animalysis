@@ -24,8 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export const Survey = ({
 	// state
 	surveyIsLoaded,
-	historyIsEmpty,
-	isQuestionAnswered,
+	questionIsAnswered,
 	// dispatch
 	initSurvey,
 	addAnswer,
@@ -51,9 +50,9 @@ export const Survey = ({
 			<Section />
 			<Question handleAnswer={handleAnswer} />
 			<Nav
-				canGoForward={isQuestionAnswered}
-				handleGoBack={() => goBack(history)}
-				handleGoForward={() => goForward(history)}
+				canGoForward={questionIsAnswered}
+				goBack={() => goBack(history)}
+				goForward={() => goForward(history)}
 			/>
 		</Container>
 	);

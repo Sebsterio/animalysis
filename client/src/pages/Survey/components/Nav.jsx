@@ -16,21 +16,21 @@ export const useStyles = makeStyles((theme) => ({
 export const Nav = ({
 	canGoForward = true,
 	canGoBack = true,
-	handleGoBack,
-	handleGoForward,
+	goBack,
+	goForward,
 }) => {
 	return (
 		<Container className={useStyles().container}>
 			<Button
 				children="Back"
-				onClick={handleGoBack}
+				onClick={goBack}
 				disabled={!canGoBack}
 				startIcon={<KeyboardArrowLeft />}
 			/>
 
 			<Button
 				children="Next"
-				onClick={handleGoForward}
+				onClick={goForward}
 				disabled={!canGoForward}
 				endIcon={<KeyboardArrowRight />}
 			/>

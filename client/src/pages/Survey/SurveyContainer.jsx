@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 
 import {
-	getIsHistoryEmpty,
 	getIsCurrentQuestionAnswered,
 	getIsSurveyLoaded,
 } from "redux/survey/survey-selectors";
@@ -18,16 +17,15 @@ import { Survey } from "./Survey";
 
 const mapStateToProps = (state) => ({
 	surveyIsLoaded: getIsSurveyLoaded(state),
-	historyIsEmpty: getIsHistoryEmpty(state),
-	isQuestionAnswered: getIsCurrentQuestionAnswered(state),
+	questionIsAnswered: getIsCurrentQuestionAnswered(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	initSurvey: (data) => dispatch(initSurvey(data)),
 	addAnswer: (data) => dispatch(addAnswerToCurrentLocation(data)),
 	addFollowUpToQueue: (data) => dispatch(addFollowUpToQueue(data)),
-	goForward: () => dispatch(goForward()),
-	goBack: () => dispatch(goBack()),
+	goForward: (data) => dispatch(goForward(data)),
+	goBack: (data) => dispatch(goBack(data)),
 });
 
 const SurveyContainer = (props) => <Survey {...props} />;
