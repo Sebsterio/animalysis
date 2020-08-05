@@ -53,7 +53,6 @@ export const addFollowUpToQueue = (followUp) => (dispatch, getState) => {
 			if (after === "all") dispatch($.pushLocationsToQueue({ newLocations }));
 			else if (!after) dispatch($.unshiftLocationsToQueue({ newLocations }));
 			else dispatch($.injectLocationsToQueue({ newLocations, after }));
-
-			// TODO: remove section from optionalQueue
+			dispatch($.removeFromOptionalQueue(target));
 		});
 };

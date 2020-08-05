@@ -14,3 +14,6 @@ export const arrayify = (element) => {
 	if (Array.isArray(element)) return element;
 	return [element];
 };
+
+export const getArrayWithRemovedItem = (array, item) =>
+	array.filter((curItem) => curItem !== item);

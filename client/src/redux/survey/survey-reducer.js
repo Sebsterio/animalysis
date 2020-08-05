@@ -8,6 +8,7 @@ import {
 	getStateWithPushedItem,
 	getStateWithPoppedItem,
 } from "./survey-utils";
+import { getArrayWithRemovedItem } from "utils/array";
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
@@ -47,18 +48,12 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return getStateWithPoppedItem(state, "history");
 		}
 
-		// --- Location Queue ---
+		// --- Main Queue ---
 
 		case $.SET_QUEUE: {
 			return {
 				...state,
 				queue: [...action.payload],
-			};
-		}
-		case $.SET_OPTIONAL_QUEUE: {
-			return {
-				...state,
-				optionalQueue: [...action.payload],
 			};
 		}
 		case $.SHIFT_NEXT_LOCATION_FROM_QUEUE: {
@@ -83,6 +78,24 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				queue: getQueueWithPushedLocations(state.queue, action.payload),
+			};
+		}
+
+		// --- Optional Queue ---
+
+		case $.SET_OPTIONAL_QUEUE: {
+			return {
+				...state,
+				optionalQueue: [...action.payload],
+			};
+		}
+		case $.REMOVE_FROM_OPTIONAL_QUEUE: {
+			return {
+				...state,
+				optionalQueue: getArrayWithRemovedItem(
+					state.optionalQueue,
+					action.payload
+				),
 			};
 		}
 
