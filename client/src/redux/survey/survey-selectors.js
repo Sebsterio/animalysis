@@ -1,7 +1,5 @@
 import { isEmpty } from "utils/object";
 
-export const getIsSurveyLoaded = (state) => !isEmpty(state.survey.data);
-
 // --------------- Current location ---------------
 
 export const getCurrentLocation = (state) => state.survey.location;
@@ -61,6 +59,8 @@ export const getNextLocationInQueue = (state) => {
 // Survey
 
 export const getSurveyData = (state) => state.survey.data;
+
+export const getIsSurveyLoaded = (state) => !isEmpty(getSurveyData(state));
 
 // Section
 

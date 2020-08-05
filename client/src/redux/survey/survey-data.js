@@ -10,6 +10,7 @@
  * ---- answers (Arr)
  * ------ text (Str): displayed in UI
  * ------ print (Str): displayed in final report
+ * ------ printNote (Str): displayed in final report
  * ------ alert (Num): displayed in final report (highest alert reached only)
  * -------- 0 (green) | 1 (yellow) | 2 (orange) | 3 (red),
  * ------ followUp (Obj)
@@ -194,12 +195,12 @@ export const surveyData = {
 					answers: [
 						{
 							text: "1 day",
-							print: "Polyuric for 1 day",
+							printNote: "Polyuric for 1 day",
 							alert: 1,
 						},
 						{
 							text: "1-3 days",
-							print: "Polyuric for 1-3 days",
+							printNote: "Polyuric for 1-3 days",
 							alert: 2,
 						},
 					],

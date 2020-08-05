@@ -40,18 +40,18 @@ export const Survey = ({
 	const clx = useStyles();
 
 	const handleAnswer = ({ answer, partialAnswer, followUp }) => {
-		if (answer >= 0) setAnswer(answer);
-		if (partialAnswer >= 0) toggleAnswer(partialAnswer);
+		if (answer !== null) setAnswer(answer);
+		if (partialAnswer !== null) toggleAnswer(partialAnswer);
 		if (followUp) addFollowUpToQueue(followUp);
 		console.log(partialAnswer);
-		if (answer >= 0) goForward(history);
+		if (answer !== null) goForward(history);
 	};
 
 	if (!surveyIsLoaded) return null;
 	return (
 		<Container maxWidth="xs" className={clx.container}>
 			<Section />
-			<Question handleAnswer={handleAnswer} />
+			<Question submitAnswer={handleAnswer} />
 			<Nav
 				canGoForward={questionIsAnswered}
 				goBack={() => goBack(history)}

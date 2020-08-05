@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getSequences } from "redux/survey/survey-selectors";
+import { getHistory, getSurveyData } from "redux/survey/survey-selectors";
 
 import Review from "./Review";
 
 const mapStateToProps = (state) => ({
-	// sequences: getSequences(state),
+	history: getHistory(state),
+	data: getSurveyData(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});

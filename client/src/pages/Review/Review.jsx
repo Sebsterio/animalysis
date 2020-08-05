@@ -1,27 +1,30 @@
 import React from "react";
+import { arrayify } from "utils/array";
 
-const Review = () => {
-	return <div>REVIEW</div>;
-	// const isAnswered = (q) => q.answers.some((a) => a.selected);
+const Review = ({ history, data }) => {
+	const getQuestionData = ({ sectionName, questionIndex }) =>
+		data[sectionName].questions[questionIndex];
 
-	// const getAnswer = (q) => q.answers.findIndex((a) => a.selected);
+	return (
+		<div>
+			{history.map(({ sectionName, questionIndex, answer }) => {
+				let questionData = getQuestionData({ sectionName, questionIndex });
+				if (typeof questionData === "function") questionData = questionData({});
 
-	// const allSections = Object.values(sequences).flat();
-
-	// return (
-	// 	<div className="answers">
-	// 		{allSections.map((section) => (
-	// 			<div className="answers__section" key={section.id}>
-	// 				{section.questions.map((question) => (
-	// 					<div className="answers__question" key={question.id}>
-	// 						{isAnswered(question) &&
-	// 							`${section.id} ${question.id} answer: ${getAnswer(question)}`}
-	// 					</div>
-	// 				))}
-	// 			</div>
-	// 		))}
-	// 	</div>
-	// );
+				return arrayify(answer).map((answr) => {
+					console.log(questionData.answers[answr]);
+					const { print, printNote } = questionData.answers[answr];
+					console.log({ print, printNote });
+					return (
+						<>
+							{print && <div>{print}</div>}
+							{printNote && <div>NOTE: {printNote}</div>}
+						</>
+					);
+				});
+			})}
+		</div>
+	);
 };
 
 export default Review;
