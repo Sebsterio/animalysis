@@ -1,19 +1,16 @@
 import { INITIAL_STATE } from "./survey-INITIAL_STATE";
 import * as $ from "./survey-actions";
-import {
-	getStateWithReplacedItems,
-	getStateWithPushedItem,
-	getStateWithPoppedItem,
-	getStateWithRemovedItem,
-	getQueueWithShiftedNextLocation,
-	getQueueWithUnshiftedLocations,
-	getQueueWithInjectedLocations,
-	getQueueWithPushedLocations,
-} from "./survey-utils";
+import { makeState } from "utils/state";
 import {
 	arrayify,
+	makeArrayWithPushedItems,
+	makeArrayWithUnshiftedItems,
+	makeArrayWithAddedUniqueItems,
+	makeArrayWithItemsInjectedAfterTargets,
 	makeArrayWithModifiedItem,
-	makeArrayWithAddedUniqueItem,
+	makeArrayWithPoppedItem,
+	makeArrayWithShiftedItem,
+	makeArrayWithRemovedItem,
 } from "utils/array";
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
@@ -21,81 +18,94 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 		// --- Survey data ---
 
 		case $.SET_SURVEY_DATA: {
-			return {
-				...state,
-				data: { ...action.payload },
-			};
+			return makeState(state, "data", () => ({ ...action.payload }));
 		}
 
 		// --- Location History ---
 
 		case $.PUSH_LOCATION_TO_HISTORY: {
-			return getStateWithPushedItem(state, "history", action.payload);
+			return makeState(state, "history", (currentHistory) =>
+				makeArrayWithPushedItems(currentHistory, action.payload)
+			);
 		}
+
 		case $.POP_LOCATION_FROM_HISTORY: {
-			return getStateWithPoppedItem(state, "history");
+			return makeState(state, "history", (currentHistory) =>
+				makeArrayWithPoppedItem(currentHistory)
+			);
 		}
 
 		// --- Current Location ---
 
 		case $.SET_ANSWER_IN_CURRENT_LOCATION: {
-			const modifier = (location) => ({ ...location, answer: action.payload });
-			return {
-				...state,
-				history: makeArrayWithModifiedItem(state.history, -1, modifier),
-			};
+			return makeState(state, "history", (currentHistory) =>
+				makeArrayWithModifiedItem(currentHistory, -1, (location) => ({
+					...location,
+					answer: action.payload,
+				}))
+			);
 		}
+
 		case $.ADD_ANSWER_IN_CURRENT_LOCATION: {
-			const modifier = (location) => ({
-				...location,
-				answer: makeArrayWithAddedUniqueItem(
-					arrayify(location.answer),
-					action.payload
-				),
-			});
-			return {
-				...state,
-				history: makeArrayWithModifiedItem(state.history, -1, modifier),
-			};
+			return makeState(state, "history", (currentHistory) =>
+				makeArrayWithModifiedItem(currentHistory, -1, (location) => ({
+					...location,
+					answer: makeArrayWithAddedUniqueItems(
+						arrayify(location.answer),
+						action.payload
+					),
+				}))
+			);
 		}
 
 		// --- Main Queue ---
 
 		case $.SET_QUEUE: {
-			return getStateWithReplacedItems(state, "queue", action.payload);
+			return makeState(state, "queue", () => [...action.payload]);
 		}
-		case $.SHIFT_NEXT_LOCATION_FROM_QUEUE: {
-			return {
-				...state,
-				queue: getQueueWithShiftedNextLocation(state.queue),
-			};
-		}
-		case $.UNSHIFT_LOCATIONS_TO_QUEUE: {
-			return {
-				...state,
-				queue: getQueueWithUnshiftedLocations(state.queue, action.payload),
-			};
-		}
-		case $.INJECT_LOCATIONS_TO_QUEUE: {
-			return {
-				...state,
-				queue: getQueueWithInjectedLocations(state.queue, action.payload),
-			};
-		}
+
 		case $.PUSH_LOCATIONS_TO_QUEUE: {
-			return {
-				...state,
-				queue: getQueueWithPushedLocations(state.queue, action.payload),
-			};
+			const { newLocations } = action.payload;
+			return makeState(state, "queue", (currentQueue) =>
+				makeArrayWithPushedItems(currentQueue, newLocations)
+			);
+		}
+
+		case $.UNSHIFT_LOCATIONS_TO_QUEUE: {
+			const { newLocations } = action.payload;
+			return makeState(state, "queue", (currentQueue) =>
+				makeArrayWithUnshiftedItems(currentQueue, newLocations)
+			);
+		}
+
+		case $.SHIFT_NEXT_LOCATION_FROM_QUEUE: {
+			return makeState(state, "queue", (currentQueue) =>
+				makeArrayWithShiftedItem(currentQueue)
+			);
+		}
+
+		case $.INJECT_LOCATIONS_TO_QUEUE: {
+			const { newLocations, after } = action.payload;
+			return makeState(state, "queue", (currentQueue) =>
+				makeArrayWithItemsInjectedAfterTargets({
+					array: currentQueue,
+					items: newLocations,
+					targets: after,
+					targetSelector: (location, target) => location.sectionName === target,
+				})
+			);
 		}
 
 		// --- Optional Queue ---
 
 		case $.SET_OPTIONAL_QUEUE: {
-			return getStateWithReplacedItems(state, "optionalQueue", action.payload);
+			return makeState(state, "optionalQueue", () => [...action.payload]);
 		}
+
 		case $.REMOVE_FROM_OPTIONAL_QUEUE: {
-			return getStateWithRemovedItem(state, "optionalQueue", action.payload);
+			return makeState(state, "queue", (currentQueue) =>
+				makeArrayWithRemovedItem(currentQueue, action.payload)
+			);
 		}
 
 		// ---------------------------
