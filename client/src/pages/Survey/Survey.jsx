@@ -61,7 +61,14 @@ export const Survey = ({
 
 	const handleGoBack = () => goBack(history);
 
-	const handleGoForward = () => goForward(history);
+	const handleGoForward = () => {
+		if (type === "select-one") {
+			const { followUp, alert } = currentQuestion.answers[currentAnswer];
+			console.log({ currentAnswer, followUp, alert });
+			submitAnswer({ answerIndex: currentAnswer, followUp, alert });
+		}
+		goForward(history);
+	};
 
 	// -------------------------------- View --------------------------------
 
