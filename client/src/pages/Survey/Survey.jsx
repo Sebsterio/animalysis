@@ -36,9 +36,11 @@ export const Survey = ({
 	// router
 	history,
 }) => {
-	const { label, type, answers } = currentQuestion;
-
 	const clx = useStyles();
+
+	if (!surveyIsLoaded) return <Redirect to="/" />;
+
+	const { type } = currentQuestion;
 
 	// -------------------------------- Aux --------------------------------
 
@@ -52,7 +54,7 @@ export const Survey = ({
 
 		if (type === "select-one") {
 			submitAnswer(args);
-			goForward();
+			goForward(history);
 		} else if (type === "select-multiple") {
 			if (!selected) addAnswer(args);
 			else removeAnswer(args);
@@ -70,8 +72,6 @@ export const Survey = ({
 	};
 
 	// -------------------------------- View --------------------------------
-
-	if (!surveyIsLoaded) return <Redirect to="/" />;
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>

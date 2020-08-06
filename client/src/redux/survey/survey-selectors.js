@@ -23,14 +23,20 @@ export const getCurrentLocation = (state) => {
 export const getCurrentLocationHistoryIndex = (state) =>
 	getHistoryLength(state) - 1;
 
-export const getCurrentSectionName = (state) =>
-	getCurrentLocation(state).sectionName;
+export const getCurrentSectionName = (state) => {
+	const location = getCurrentLocation(state);
+	return location ? location.sectionName : null;
+};
 
-export const getCurrentQuestionIndex = (state) =>
-	getCurrentLocation(state).questionIndex;
+export const getCurrentQuestionIndex = (state) => {
+	const location = getCurrentLocation(state);
+	return location ? location.questionIndex : null;
+};
 
-export const getCurrentQuestionAnswer = (state) =>
-	getCurrentLocation(state).answer;
+export const getCurrentQuestionAnswer = (state) => {
+	const location = getCurrentLocation(state);
+	return location ? location.answer : null;
+};
 
 export const getIsCurrentQuestionAnswered = (state) => {
 	const answer = getCurrentQuestionAnswer(state);
@@ -95,6 +101,7 @@ const getCurrentPet = (state) => ({
 
 export const getCurrentQuestionData = (state) => {
 	const section = getCurrentSectionData(state);
+	if (!section) return null;
 	const questionIndex = getCurrentQuestionIndex(state);
 	const question = section.questions[questionIndex];
 	if (typeof question === "function") return question(getCurrentPet(state));
