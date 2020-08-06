@@ -37,7 +37,7 @@ const Question = ({
 	const submitAnswer = (i, followUp, alert) => {
 		if (!isAnswerSelected(i)) {
 			setAnswer(i);
-			if (followUp) addFollowUpToQueue(followUp);
+			if (followUp) addFollowUpToQueue({ followUp });
 		}
 		goForward();
 	};
@@ -46,7 +46,7 @@ const Question = ({
 	const editAnswer = (i, followUp, alert) => {
 		if (!isAnswerSelected(i)) {
 			addAnswer(i);
-			if (followUp) addFollowUpToQueue(followUp);
+			if (followUp) addFollowUpToQueue({ followUp, answerIndex: i });
 		} else {
 			// removeAnswer(i);
 			// if (followUp) removeFollowUpFromQueue(followUp);

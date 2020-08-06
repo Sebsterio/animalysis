@@ -1,5 +1,6 @@
 import {
 	getCurrentLocation,
+	getCurrentLocationHistoryIndex,
 	getUnpackedQueue,
 	getNextLocation,
 	getPreviousLocation,
@@ -38,18 +39,33 @@ export const goForward = (history) => (dispatch, getState) => {
 	dispatch($.shiftNextLocationFromQueue());
 };
 
-// Extract questions from target section(s)
-// And questions to correct place in queue
-// TODO: Remove target section(s) from optionalQueue
-export const addFollowUpToQueue = (followUp) => (dispatch, getState) => {
+// Extract locations from target section(s)
+// add info about invoking (this) location to each extracted location
+// Insert extracted locations into correct place in queue
+// Remove target section(s) from optionalQueue
+export const addFollowUpToQueue = ({ followUp, answerIndex }) => (
+	dispatch,
+	getState
+) => {
 	const { target, after } = followUp;
+	const historyIndex = getCurrentLocationHistoryIndex(getState());
+
+	const addProps = (location) => ({
+		...location,
+		addedBy: { historyIndex, answerIndex },
+	});
+
 	arrayify(target)
 		.reverse()
 		.forEach((target) => {
-			const newLocations = getLocationsFromSection(getState(), target);
+			const newLocations = getLocationsFromSection(getState(), target).map(
+				addProps
+			);
+
 			if (after === "all") dispatch($.pushLocationsToQueue({ newLocations }));
 			else if (!after) dispatch($.unshiftLocationsToQueue({ newLocations }));
 			else dispatch($.injectLocationsToQueue({ newLocations, after }));
+
 			dispatch($.removeFromOptionalQueue(target));
 		});
 };

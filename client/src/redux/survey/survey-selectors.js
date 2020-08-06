@@ -20,6 +20,9 @@ export const getCurrentLocation = (state) => {
 	return history[history.length - 1];
 };
 
+export const getCurrentLocationHistoryIndex = (state) =>
+	getHistoryLength(state) - 1;
+
 export const getCurrentSectionName = (state) =>
 	getCurrentLocation(state).sectionName;
 
@@ -82,16 +85,6 @@ export const getCurrentSectionTitle = (state) => {
 	return currentSection ? currentSection.title : null;
 };
 
-// Get an array of location objects from sectionName
-export const getLocationsFromSection = (state, sectionName) => {
-	const sectionData = getSectionData(state, sectionName);
-	console.log({ sectionName, sectionData });
-	return sectionData.questions.map((_, i) => ({
-		sectionName,
-		questionIndex: i,
-	}));
-};
-
 // Question
 
 // TEMP
@@ -108,7 +101,16 @@ export const getCurrentQuestionData = (state) => {
 	return question;
 };
 
-// Queue
+// ------------------------- Conversion ----------------------------
+
+// Get an array of location objects from sectionName
+export const getLocationsFromSection = (state, sectionName) => {
+	const sectionData = getSectionData(state, sectionName);
+	return sectionData.questions.map((_, i) => ({
+		sectionName,
+		questionIndex: i,
+	}));
+};
 
 // Map section names into location object
 export const getUnpackedQueue = (state, queue) => {

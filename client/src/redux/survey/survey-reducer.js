@@ -89,7 +89,7 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return makeState(state, "queue", (currentQueue) =>
 				makeArrayWithItemsInjectedAfterTargets({
 					array: currentQueue,
-					items: newLocations,
+					newItems: newLocations,
 					targets: after,
 					targetSelector: (location, target) => location.sectionName === target,
 				})
