@@ -5,10 +5,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Section, Question, Nav } from "./components";
 import { Container } from "@material-ui/core";
 
+import { arrayify } from "utils/array";
+
 /*************************************************
  * Redirects if survey data not loaded (URL accessed manually when no survey is active)
- * Container for other connected components
- * Handles survey traversal (back and next)
+ * Handles submitting answers and survey traversal (back and next)
  *************************************************/
 
 const useStyles = makeStyles((theme) => ({
@@ -24,24 +25,60 @@ export const Survey = ({
 	// state
 	surveyIsLoaded,
 	questionIsAnswered,
+	currentQuestion,
+	currentAnswer,
 	// dispatch
+	submitAnswer,
+	addAnswer,
+	removeAnswer,
 	goForward,
 	goBack,
 	// router
 	history,
 }) => {
+	const { label, type, answers } = currentQuestion;
+
 	const clx = useStyles();
+
+	// -------------------------------- Aux --------------------------------
+
+	const isAnswerSelected = (i) => arrayify(currentAnswer).some((a) => a === i);
+
+	// ------------------------------ Handlers -----------------------------
+
+	const handleAnswer = (i, followUp, alert) => {
+		const selected = isAnswerSelected(i);
+		const args = { answerIndex: i, followUp, alert };
+
+		if (type === "select-one") {
+			submitAnswer(args);
+			goForward();
+		} else if (type === "select-multiple") {
+			if (!selected) addAnswer(args);
+			else removeAnswer(args);
+		}
+	};
+
+	const handleGoBack = () => goBack(history);
+
+	const handleGoForward = () => goForward(history);
+
+	// -------------------------------- View --------------------------------
 
 	if (!surveyIsLoaded) return <Redirect to="/" />;
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
 			<Section />
-			<Question goForward={() => goForward(history)} />
+			<Question
+				question={currentQuestion}
+				handleAnswer={handleAnswer}
+				isAnswerSelected={isAnswerSelected}
+			/>
 			<Nav
 				canGoForward={questionIsAnswered}
-				goBack={() => goBack(history)}
-				goForward={() => goForward(history)}
+				goBack={handleGoBack}
+				goForward={handleGoForward}
 			/>
 		</Container>
 	);

@@ -4,8 +4,6 @@ import shortid from "shortid";
 
 import { Box, Button, Typography } from "@material-ui/core";
 
-import { arrayify } from "utils/array";
-
 // ---------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -16,37 +14,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Question = ({
 	// parent
-	goForward,
-	// store
 	question,
+	handleAnswer,
+	isAnswerSelected,
+	// store
 	questionIndex,
 	lastQuestionIndex,
-	currentAnswer,
-	// dispatch
-	submitAnswer,
-	addAnswer,
-	removeAnswer,
 }) => {
-	const { label, type, answers } = question;
+	const { label, answers } = question;
 
 	const clx = useStyles();
-
-	const isAnswerSelected = (i) => arrayify(currentAnswer).some((a) => a === i);
-
-	const handleAnswer = (i, followUp, alert) => {
-		const selected = isAnswerSelected(i);
-		const args = { answerIndex: i, followUp, alert };
-
-		if (type === "select-one") {
-			submitAnswer(args);
-			goForward();
-		} else if (type === "select-multiple") {
-			if (!selected) addAnswer(args);
-			else removeAnswer(args);
-		}
-	};
-
-	// -------------------------------- View ---------------------------------
 
 	if (!question) return null;
 
