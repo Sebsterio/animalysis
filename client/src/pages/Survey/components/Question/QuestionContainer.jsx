@@ -7,6 +7,11 @@ import {
 	getLastQuestionIndex,
 	getCurrentQuestionAnswer,
 } from "redux/survey/survey-selectors";
+import {
+	setAnswerInCurrentLocation,
+	addAnswerInCurrentLocation,
+} from "redux/survey/survey-actions";
+import { addFollowUpToQueue } from "redux/survey/survey-operations";
 
 import Question from "./Question";
 
@@ -17,7 +22,11 @@ const mapStateToProps = (state) => ({
 	currentAnswer: getCurrentQuestionAnswer(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+	setAnswer: (data) => dispatch(setAnswerInCurrentLocation(data)),
+	addAnswer: (data) => dispatch(addAnswerInCurrentLocation(data)),
+	addFollowUpToQueue: (data) => dispatch(addFollowUpToQueue(data)),
+});
 
 const QuestionContainer = (props) => <Question {...props} />;
 

@@ -24,30 +24,19 @@ export const Survey = ({
 	surveyIsLoaded,
 	questionIsAnswered,
 	// dispatch
-	setAnswer,
-	addAnswer,
-	addFollowUpToQueue,
 	goForward,
 	goBack,
 	// router
 	history,
 }) => {
-	// TODO: survey return a msg when no-data
-
 	const clx = useStyles();
 
-	const handleAnswer = ({ answer, partialAnswer, followUp }) => {
-		if (answer !== null) setAnswer(answer);
-		if (partialAnswer !== null) addAnswer(partialAnswer);
-		if (followUp) addFollowUpToQueue(followUp);
-		if (answer !== null) goForward(history);
-	};
+	if (!surveyIsLoaded) return <div>No survey has been loaded</div>;
 
-	if (!surveyIsLoaded) return null;
 	return (
 		<Container maxWidth="xs" className={clx.container}>
 			<Section />
-			<Question submitAnswer={handleAnswer} />
+			<Question goForward={() => goForward(history)} />
 			<Nav
 				canGoForward={questionIsAnswered}
 				goBack={() => goBack(history)}

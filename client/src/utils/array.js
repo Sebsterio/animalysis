@@ -63,7 +63,7 @@ export const makeArrayWithModifiedItem = (arr, index, modifier) => {
 	return newArr;
 };
 
-// INJECT items(s) immediately after last target in array
+// INJECT items(s) after last array item that matched any target
 export const makeArrayWithItemsInjectedAfterTargets = ({
 	array,
 	newItems, // item(s) to inject after all targets
