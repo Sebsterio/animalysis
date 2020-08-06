@@ -31,6 +31,8 @@ const Question = ({
 
 	const clx = useStyles();
 
+	console.log(currentAnswer);
+
 	const isAnswerSelected = (i) => arrayify(currentAnswer).some((a) => a === i);
 
 	const handleAnswer = (i, followUp, alert) => {

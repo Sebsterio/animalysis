@@ -10,7 +10,7 @@ import {
 	makeArrayWithModifiedItem,
 	makeArrayWithPoppedItem,
 	makeArrayWithShiftedItem,
-	makeArrayWithRemovedItem,
+	makeArrayWithRemovedItems,
 } from "utils/array";
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
@@ -51,6 +51,18 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 				makeArrayWithModifiedItem(currentHistory, -1, (location) => ({
 					...location,
 					answer: makeArrayWithAddedUniqueItems(
+						arrayify(location.answer),
+						action.payload
+					),
+				}))
+			);
+		}
+
+		case $.REMOVE_ANSWER_FROM_CURRENT_LOCATION: {
+			return makeState(state, "history", (currentHistory) =>
+				makeArrayWithModifiedItem(currentHistory, -1, (location) => ({
+					...location,
+					answer: makeArrayWithRemovedItems(
 						arrayify(location.answer),
 						action.payload
 					),
@@ -104,7 +116,7 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 
 		case $.REMOVE_FROM_OPTIONAL_QUEUE: {
 			return makeState(state, "queue", (currentQueue) =>
-				makeArrayWithRemovedItem(currentQueue, action.payload)
+				makeArrayWithRemovedItems(currentQueue, action.payload)
 			);
 		}
 

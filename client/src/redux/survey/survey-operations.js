@@ -49,18 +49,15 @@ export const addFollowUpToQueue = ({ followUp, answerIndex }) => (
 ) => {
 	const { target, after } = followUp;
 	const historyIndex = getCurrentLocationHistoryIndex(getState());
-
 	const addProps = (location) => ({
 		...location,
 		addedBy: { historyIndex, answerIndex },
 	});
-
 	arrayify(target)
 		.reverse()
 		.forEach((target) => {
-			const newLocations = getLocationsFromSection(getState(), target).map(
-				addProps
-			);
+			let newLocations = getLocationsFromSection(getState(), target);
+			newLocations = newLocations.map(addProps);
 
 			if (after === "all") dispatch($.pushLocationsToQueue({ newLocations }));
 			else if (!after) dispatch($.unshiftLocationsToQueue({ newLocations }));
@@ -71,19 +68,23 @@ export const addFollowUpToQueue = ({ followUp, answerIndex }) => (
 };
 
 // Set answer if different tha current and add followUp locations to queue
-export const submitAnswer = (answerIndex, followUp, alert) => (dispatch) => {
+export const submitAnswer = ({ answerIndex, followUp, alert }) => (
+	dispatch
+) => {
 	dispatch($.setAnswerInCurrentLocation(answerIndex));
 	if (followUp) dispatch(addFollowUpToQueue({ followUp }));
 };
 
 // Add answer and followUp locations to queue
-export const addAnswer = (answerIndex, followUp, alert) => (dispatch) => {
+export const addAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
 	dispatch($.addAnswerInCurrentLocation(answerIndex));
 	if (followUp) dispatch(addFollowUpToQueue({ followUp, answerIndex }));
 };
 
 // Remove answer and resulting followUp locations to queue
-export const removeAnswer = (answerIndex, followUp, alert) => (dispatch) => {
-	// removeAnswerFromCurrentLocation(answerIndex);
+export const removeAnswer = ({ answerIndex, followUp, alert }) => (
+	dispatch
+) => {
+	dispatch($.removeAnswerFromCurrentLocation(answerIndex));
 	// if (followUp) removeFollowUpFromQueue({followUp, answerIndex});
 };
