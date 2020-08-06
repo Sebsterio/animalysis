@@ -11,16 +11,23 @@ export const useStyles = makeStyles((theme) => ({
 		flexFlow: "row nowrap",
 		justifyContent: "space-between",
 	},
+	nextButton: {
+		// TEMPORARY FIX
+		transform: (props) => (props.nextButtonEnlarged ? "scale(2)" : "scale(1)"),
+	},
 }));
 
 export const Nav = ({
 	canGoForward = true,
 	canGoBack = true,
+	nextButtonEnlarged,
 	goBack,
 	goForward,
 }) => {
+	const clx = useStyles({ nextButtonEnlarged });
+
 	return (
-		<Container className={useStyles().container}>
+		<Container className={clx.container}>
 			<Button
 				children="Back"
 				onClick={goBack}
@@ -33,6 +40,7 @@ export const Nav = ({
 				onClick={goForward}
 				disabled={!canGoForward}
 				endIcon={<KeyboardArrowRight />}
+				className={clx.nextButton}
 			/>
 		</Container>
 	);

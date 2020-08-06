@@ -64,7 +64,6 @@ export const Survey = ({
 	const handleGoForward = () => {
 		if (type === "select-one") {
 			const { followUp, alert } = currentQuestion.answers[currentAnswer];
-			console.log({ currentAnswer, followUp, alert });
 			submitAnswer({ answerIndex: currentAnswer, followUp, alert });
 		}
 		goForward(history);
@@ -86,6 +85,7 @@ export const Survey = ({
 				canGoForward={questionIsAnswered}
 				goBack={handleGoBack}
 				goForward={handleGoForward}
+				nextButtonEnlarged={type === "select-multiple"}
 			/>
 		</Container>
 	);
