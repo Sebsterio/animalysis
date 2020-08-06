@@ -20,6 +20,13 @@ export const addAnswerInCurrentLocation = (data) => ({
 	payload: data,
 });
 
+export const REMOVE_ANSWER_FROM_CURRENT_LOCATION =
+	"REMOVE_ANSWER_FROM_CURRENT_LOCATION";
+export const removeAnswerFromCurrentLocation = (data) => ({
+	type: REMOVE_ANSWER_FROM_CURRENT_LOCATION,
+	payload: data,
+});
+
 // --- Location history ---
 
 export const PUSH_LOCATION_TO_HISTORY = "PUSH_LOCATION_TO_HISTORY";

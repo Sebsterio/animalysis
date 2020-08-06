@@ -8,10 +8,10 @@ import {
 	getCurrentQuestionAnswer,
 } from "redux/survey/survey-selectors";
 import {
-	setAnswerInCurrentLocation,
-	addAnswerInCurrentLocation,
-} from "redux/survey/survey-actions";
-import { addFollowUpToQueue } from "redux/survey/survey-operations";
+	submitAnswer,
+	addAnswer,
+	removeAnswer,
+} from "redux/survey/survey-operations";
 
 import Question from "./Question";
 
@@ -23,9 +23,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	setAnswer: (data) => dispatch(setAnswerInCurrentLocation(data)),
-	addAnswer: (data) => dispatch(addAnswerInCurrentLocation(data)),
-	addFollowUpToQueue: (data) => dispatch(addFollowUpToQueue(data)),
+	submitAnswer: (data) => dispatch(submitAnswer(data)),
+	addAnswer: (data) => dispatch(addAnswer(data)),
+	removeAnswer: (data) => dispatch(removeAnswer(data)),
 });
 
 const QuestionContainer = (props) => <Question {...props} />;

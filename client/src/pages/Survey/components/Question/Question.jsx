@@ -23,9 +23,9 @@ const Question = ({
 	lastQuestionIndex,
 	currentAnswer,
 	// dispatch
-	setAnswer,
+	submitAnswer,
 	addAnswer,
-	addFollowUpToQueue,
+	removeAnswer,
 }) => {
 	const { label, type, answers } = question;
 
@@ -33,29 +33,17 @@ const Question = ({
 
 	const isAnswerSelected = (i) => arrayify(currentAnswer).some((a) => a === i);
 
-	// Set answer if different tha current and go forward
-	const submitAnswer = (i, followUp, alert) => {
-		if (!isAnswerSelected(i)) {
-			setAnswer(i);
-			if (followUp) addFollowUpToQueue({ followUp });
-		}
-		goForward();
-	};
-
-	// Add/remove answer
-	const editAnswer = (i, followUp, alert) => {
-		if (!isAnswerSelected(i)) {
-			addAnswer(i);
-			if (followUp) addFollowUpToQueue({ followUp, answerIndex: i });
-		} else {
-			// removeAnswer(i);
-			// if (followUp) removeFollowUpFromQueue(followUp);
-		}
-	};
-
 	const handleAnswer = (i, followUp, alert) => {
-		if (type === "select-one") submitAnswer(i, followUp, alert);
-		else if (type === "select-multiple") editAnswer(i, followUp, alert);
+		const selected = isAnswerSelected(i);
+		const args = { answerIndex: i, followUp, alert };
+
+		if (type === "select-one") {
+			if (!selected) submitAnswer(args);
+			goForward();
+		} else if (type === "select-multiple") {
+			if (!selected) addAnswer(args);
+			else removeAnswer(args);
+		}
 	};
 
 	// -------------------------------- View ---------------------------------
