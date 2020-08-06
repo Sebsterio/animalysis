@@ -4,15 +4,9 @@ export const INITIAL_STATE = {
 	// Question sections
 	data: {},
 
-	// Current location is survey
-	location: {
-		sectionName: "", // Current section
-		questionIndex: 0, // Current question
-		answer: null, // index | array-of-indexes | text
-	},
-
 	// Past  location in survey, along with selected answers
 	// Used to 'goBack' and to compile final report
+	// Last item = current location
 	history: [],
 
 	// Locations to visit next; unshifted on 'goBack';
@@ -22,6 +16,13 @@ export const INITIAL_STATE = {
 	// Highest level of urgency resulting from answers so far
 	alert: 0,
 
-	// Queue to be optionally completed after the main one
+	// Queue to be optionally completed after main queue
 	optionalQueue: surveyData.optionalQueue,
+};
+
+// location is survey; used in history and queue
+const location = {
+	sectionName: "", // Current section in data
+	questionIndex: 0, // Current question in section
+	answer: null, // index | array-of-indexes | text
 };

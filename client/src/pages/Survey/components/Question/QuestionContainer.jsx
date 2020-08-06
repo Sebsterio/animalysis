@@ -5,7 +5,7 @@ import {
 	getCurrentQuestionData,
 	getCurrentQuestionIndex,
 	getLastQuestionIndex,
-	getIsCurrentQuestionAnswer,
+	getCurrentQuestionAnswer,
 } from "redux/survey/survey-selectors";
 
 import Question from "./Question";
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => ({
 	question: getCurrentQuestionData(state),
 	questionIndex: getCurrentQuestionIndex(state),
 	lastQuestionIndex: getLastQuestionIndex(state),
-	currentAnswer: getIsCurrentQuestionAnswer(state),
+	currentAnswer: getCurrentQuestionAnswer(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});

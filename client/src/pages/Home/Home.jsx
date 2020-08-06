@@ -1,11 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import { Container, Button } from "@material-ui/core";
+import { surveyData } from "redux/survey/survey-data";
 
-const Home = () => {
+const useStyles = makeStyles((theme) => ({
+	container: {
+		display: "flex",
+		flexFlow: "column nowrap",
+		justifyContent: "center",
+		padding: theme.spacing(3),
+	},
+}));
+
+const Home = ({ history, surveyIsLoaded, initSurvey }) => {
+	const clx = useStyles();
+
+	const startSurvey = () => {
+		if (!surveyIsLoaded) initSurvey(surveyData);
+		history.push("/new-report");
+	};
+
 	return (
-		<div>
-			<Link to="/new-report">Report a Problem</Link>
-		</div>
+		<Container maxWidth="xs" className={clx.container}>
+			<Button variant="contained" onClick={startSurvey}>
+				Report a Problem
+			</Button>
+		</Container>
 	);
 };
 

@@ -10,7 +10,11 @@ import {
 	getQueueWithInjectedLocations,
 	getQueueWithPushedLocations,
 } from "./survey-utils";
-import { arrayify, getArrayWithToggledItem } from "utils/array";
+import {
+	arrayify,
+	makeArrayWithModifiedItem,
+	makeArrayWithAddedUniqueItem,
+} from "utils/array";
 
 const surveyReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
@@ -23,34 +27,6 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			};
 		}
 
-		// --- Current Location ---
-
-		case $.SET_CURRENT_LOCATION: {
-			return {
-				...state,
-				location: { ...action.payload },
-			};
-		}
-		case $.SET_ANSWER_IN_CURRENT_LOCATION: {
-			return {
-				...state,
-				location: {
-					...state.location,
-					answer: action.payload,
-				},
-			};
-		}
-		case $.TOGGLE_ANSWER_IN_CURRENT_LOCATION: {
-			const arrayifiedAnswer = arrayify(state.location.answer);
-			return {
-				...state,
-				location: {
-					...state.location,
-					answer: getArrayWithToggledItem(arrayifiedAnswer, action.payload),
-				},
-			};
-		}
-
 		// --- Location History ---
 
 		case $.PUSH_LOCATION_TO_HISTORY: {
@@ -58,6 +34,29 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 		}
 		case $.POP_LOCATION_FROM_HISTORY: {
 			return getStateWithPoppedItem(state, "history");
+		}
+
+		// --- Current Location ---
+
+		case $.SET_ANSWER_IN_CURRENT_LOCATION: {
+			const modifier = (location) => ({ ...location, answer: action.payload });
+			return {
+				...state,
+				history: makeArrayWithModifiedItem(state.history, -1, modifier),
+			};
+		}
+		case $.ADD_ANSWER_IN_CURRENT_LOCATION: {
+			const modifier = (location) => ({
+				...location,
+				answer: makeArrayWithAddedUniqueItem(
+					arrayify(location.answer),
+					action.payload
+				),
+			});
+			return {
+				...state,
+				history: makeArrayWithModifiedItem(state.history, -1, modifier),
+			};
 		}
 
 		// --- Main Queue ---

@@ -8,22 +8,15 @@ export const setSurveyData = (data) => ({
 
 // --- Current location ---
 
-export const SET_CURRENT_LOCATION = "SET_CURRENT_LOCATION";
-export const setCurrentLocation = (data) => ({
-	type: SET_CURRENT_LOCATION,
-	payload: data,
-});
-
 export const SET_ANSWER_IN_CURRENT_LOCATION = "SET_ANSWER_IN_CURRENT_LOCATION";
 export const setAnswerInCurrentLocation = (data) => ({
 	type: SET_ANSWER_IN_CURRENT_LOCATION,
 	payload: data,
 });
 
-export const TOGGLE_ANSWER_IN_CURRENT_LOCATION =
-	"TOGGLE_ANSWER_IN_CURRENT_LOCATION";
-export const toggleAnswerInCurrentLocation = (data) => ({
-	type: TOGGLE_ANSWER_IN_CURRENT_LOCATION,
+export const ADD_ANSWER_IN_CURRENT_LOCATION = "ADD_ANSWER_IN_CURRENT_LOCATION";
+export const addAnswerInCurrentLocation = (data) => ({
+	type: ADD_ANSWER_IN_CURRENT_LOCATION,
 	payload: data,
 });
 

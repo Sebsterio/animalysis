@@ -7,10 +7,9 @@ import {
 } from "redux/survey/survey-selectors";
 import {
 	setAnswerInCurrentLocation,
-	toggleAnswerInCurrentLocation,
+	addAnswerInCurrentLocation,
 } from "redux/survey/survey-actions";
 import {
-	initSurvey,
 	addFollowUpToQueue,
 	goForward,
 	goBack,
@@ -24,9 +23,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	initSurvey: (data) => dispatch(initSurvey(data)),
 	setAnswer: (data) => dispatch(setAnswerInCurrentLocation(data)),
-	toggleAnswer: (data) => dispatch(toggleAnswerInCurrentLocation(data)),
+	addAnswer: (data) => dispatch(addAnswerInCurrentLocation(data)),
 	addFollowUpToQueue: (data) => dispatch(addFollowUpToQueue(data)),
 	goForward: (data) => dispatch(goForward(data)),
 	goBack: (data) => dispatch(goBack(data)),

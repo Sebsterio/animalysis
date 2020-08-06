@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Section = ({ sectionTitle, historyLength, queueLength }) => {
-	const activeStep = historyLength;
-	const steps = historyLength + queueLength + 1;
+	const activeStep = historyLength - 1;
+	const steps = historyLength + queueLength;
 
 	const clx = useStyles();
 

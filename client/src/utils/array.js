@@ -19,8 +19,16 @@ export const arrayify = (element) => {
 export const getArrayWithRemovedItem = (array, item) =>
 	array.filter((curItem) => curItem !== item);
 
-// Push item if not present, remove if is present
-export const getArrayWithToggledItem = (array, item) => {
-	if (array.includes(item)) return getArrayWithRemovedItem(array, item);
-	return [...array, item];
+// PUSH item if not present
+export const makeArrayWithAddedUniqueItem = (array, item) => {
+	if (!array.includes(item)) return [...array, item];
+	return [...array];
+};
+
+// MODIFY array item; supports negative index (counted form end)
+export const makeArrayWithModifiedItem = (arr, index, modifier) => {
+	const newArr = [...arr];
+	if (index < 0) index = newArr.length + index;
+	newArr[index] = modifier(newArr[index]);
+	return newArr;
 };

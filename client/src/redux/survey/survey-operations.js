@@ -1,8 +1,8 @@
 import {
 	getCurrentLocation,
 	getUnpackedQueue,
-	getNextLocationInQueue,
-	getLastLocationInHistory,
+	getNextLocation,
+	getPreviousLocation,
 	getLocationsFromSection,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
@@ -15,8 +15,8 @@ export const initSurvey = (surveyData) => (dispatch, getState) => {
 	dispatch($.setSurveyData(sections));
 	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue)));
 	dispatch($.setOptionalQueue(optionalQueue));
-	const nextLocation = getNextLocationInQueue(getState());
-	dispatch($.setCurrentLocation(nextLocation));
+	const nextLocation = getNextLocation(getState());
+	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());
 };
 
@@ -24,20 +24,17 @@ export const initSurvey = (surveyData) => (dispatch, getState) => {
 // Pop last history location and set as current location
 export const goBack = (history) => (dispatch, getState) => {
 	const currentLocation = getCurrentLocation(getState());
-	const previousLocation = getLastLocationInHistory(getState());
+	const previousLocation = getPreviousLocation(getState());
 	if (!previousLocation) return history.goBack();
 	dispatch($.unshiftLocationsToQueue({ newLocations: currentLocation }));
-	dispatch($.setCurrentLocation(previousLocation));
 	dispatch($.popLocationFromHistory());
 };
 
 // Push first queue location into location and location into history
 export const goForward = (history) => (dispatch, getState) => {
-	const currentLocation = getCurrentLocation(getState());
-	const nextLocation = getNextLocationInQueue(getState());
+	const nextLocation = getNextLocation(getState());
 	if (!nextLocation) return history.push("/new-report/review");
-	dispatch($.pushLocationToHistory(currentLocation));
-	dispatch($.setCurrentLocation(nextLocation));
+	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());
 };
 

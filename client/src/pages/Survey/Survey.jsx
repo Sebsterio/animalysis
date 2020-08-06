@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Section, Question, Nav } from "./components";
 import { Container } from "@material-ui/core";
-
-import { surveyData } from "redux/survey/survey-data";
 
 /*************************************************
  * Initializes survey store
@@ -26,22 +24,21 @@ export const Survey = ({
 	surveyIsLoaded,
 	questionIsAnswered,
 	// dispatch
-	initSurvey,
 	setAnswer,
-	toggleAnswer,
+	addAnswer,
 	addFollowUpToQueue,
 	goForward,
 	goBack,
 	// router
 	history,
 }) => {
-	useEffect(() => initSurvey(surveyData), [initSurvey]);
+	// TODO: survey return a msg when no-data
 
 	const clx = useStyles();
 
 	const handleAnswer = ({ answer, partialAnswer, followUp }) => {
 		if (answer !== null) setAnswer(answer);
-		if (partialAnswer !== null) toggleAnswer(partialAnswer);
+		if (partialAnswer !== null) addAnswer(partialAnswer);
 		if (followUp) addFollowUpToQueue(followUp);
 		if (answer !== null) goForward(history);
 	};

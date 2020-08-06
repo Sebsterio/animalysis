@@ -1,8 +1,24 @@
 import { isEmpty } from "utils/object";
 
+// --------------- Location history ---------------
+
+export const getHistory = (state) => state.survey.history;
+
+export const getHistoryLength = (state) => getHistory(state).length;
+
+export const getIsHistoryEmpty = (state) => getHistory(state).length <= 1;
+
+export const getPreviousLocation = (state) => {
+	const history = getHistory(state);
+	return history[history.length - 2];
+};
+
 // --------------- Current location ---------------
 
-export const getCurrentLocation = (state) => state.survey.location;
+export const getCurrentLocation = (state) => {
+	const history = getHistory(state);
+	return history[history.length - 1];
+};
 
 export const getCurrentSectionName = (state) =>
 	getCurrentLocation(state).sectionName;
@@ -10,11 +26,11 @@ export const getCurrentSectionName = (state) =>
 export const getCurrentQuestionIndex = (state) =>
 	getCurrentLocation(state).questionIndex;
 
-export const getIsCurrentQuestionAnswer = (state) =>
+export const getCurrentQuestionAnswer = (state) =>
 	getCurrentLocation(state).answer;
 
 export const getIsCurrentQuestionAnswered = (state) => {
-	const answer = getIsCurrentQuestionAnswer(state);
+	const answer = getCurrentQuestionAnswer(state);
 	if (Array.isArray(answer)) return !!answer.length;
 	return answer !== null && answer !== undefined;
 };
@@ -31,26 +47,13 @@ export const getIsLastQuestionInSection = (state) => {
 	return currentQuestionInex === lastQuestionInex;
 };
 
-// --------------- Location history ---------------
-
-export const getHistory = (state) => state.survey.history;
-
-export const getHistoryLength = (state) => getHistory(state).length;
-
-export const getIsHistoryEmpty = (state) => !getHistory(state).length;
-
-export const getLastLocationInHistory = (state) => {
-	const history = getHistory(state);
-	return history[history.length - 1];
-};
-
 // --------------- Location queue---------------
 
 export const getQueue = (state) => state.survey.queue;
 
 export const getQueueLength = (state) => getQueue(state).length;
 
-export const getNextLocationInQueue = (state) => {
+export const getNextLocation = (state) => {
 	return getQueue(state)[0];
 };
 
@@ -70,14 +73,23 @@ export const getSectionData = (state, sectionName) => {
 };
 
 export const getCurrentSectionData = (state) => {
-	const survey = getSurveyData(state);
-	const sectionName = getCurrentSectionName(state);
-	return survey ? survey[sectionName] : null;
+	const currentSectionName = getCurrentSectionName(state);
+	return getSectionData(state, currentSectionName);
 };
 
 export const getCurrentSectionTitle = (state) => {
-	const section = getCurrentSectionData(state);
-	return section ? section.title : null;
+	const currentSection = getCurrentSectionData(state);
+	return currentSection ? currentSection.title : null;
+};
+
+// Get an array of location objects from sectionName
+export const getLocationsFromSection = (state, sectionName) => {
+	const sectionData = getSectionData(state, sectionName);
+	console.log({ sectionName, sectionData });
+	return sectionData.questions.map((_, i) => ({
+		sectionName,
+		questionIndex: i,
+	}));
 };
 
 // Question
@@ -96,17 +108,7 @@ export const getCurrentQuestionData = (state) => {
 	return question;
 };
 
-// --------------- Location objects ---------------
-
-// Get an array of location objects from sectionName
-export const getLocationsFromSection = (state, sectionName) => {
-	const sectionData = getSectionData(state, sectionName);
-	console.log({ sectionName, sectionData });
-	return sectionData.questions.map((_, i) => ({
-		sectionName,
-		questionIndex: i,
-	}));
-};
+// Queue
 
 // Map section names into location object
 export const getUnpackedQueue = (state, queue) => {
