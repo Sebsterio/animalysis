@@ -112,10 +112,10 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			const { historyIndex, answerIndex } = action.payload;
 			const filter = (location) =>
 				!location.addedBy ||
-				location.addedBy.historyIndex !== historyIndex ||
-				(answerIndex >= 0
-					? location.addedBy.answerIndex !== answerIndex
-					: false);
+				(location.addedBy.historyIndex !== historyIndex &&
+					(answerIndex >= 0
+						? location.addedBy.answerIndex !== answerIndex
+						: true));
 			return makeState(state, "queue", (currentQueue) =>
 				makeArrayWithRemovedItems(currentQueue, null, filter)
 			);

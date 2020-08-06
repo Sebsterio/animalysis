@@ -31,8 +31,6 @@ const Question = ({
 
 	const clx = useStyles();
 
-	console.log(currentAnswer);
-
 	const isAnswerSelected = (i) => arrayify(currentAnswer).some((a) => a === i);
 
 	const handleAnswer = (i, followUp, alert) => {
@@ -40,7 +38,7 @@ const Question = ({
 		const args = { answerIndex: i, followUp, alert };
 
 		if (type === "select-one") {
-			if (!selected) submitAnswer(args);
+			submitAnswer(args);
 			goForward();
 		} else if (type === "select-multiple") {
 			if (!selected) addAnswer(args);

@@ -74,20 +74,13 @@ export const makeArrayWithItemsInjectedAfterTargets = ({
 	// custom matcher of array items against target
 	targetSelector = (item, target) => item === target,
 }) => {
-	console.log({ array, newItems, targets, targetSelector });
-
 	const getTargetLastIndex = (target) =>
 		getLastIndexOf(array, (item) => targetSelector(item, target));
 
 	const lastMatchedTargetIndex = arrayify(targets).reduce((acc, target) => {
 		const targetLastIndex = getTargetLastIndex(target);
-
-		console.log({ targetLastIndex });
-
 		return targetLastIndex > acc ? targetLastIndex : acc;
 	}, 0);
-
-	console.log({ lastMatchedTargetIndex });
 
 	let newArr = [...array];
 	newArr.splice(lastMatchedTargetIndex + 1, 0, ...arrayify(newItems));

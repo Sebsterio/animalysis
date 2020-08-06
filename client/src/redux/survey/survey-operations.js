@@ -23,12 +23,14 @@ export const initSurvey = (surveyData) => (dispatch, getState) => {
 
 // Unshift current location into queue
 // Pop last history location and set as current location
+// Remove all followUp locations added by current question
 export const goBack = (history) => (dispatch, getState) => {
 	const currentLocation = getCurrentLocation(getState());
 	const previousLocation = getPreviousLocation(getState());
 	if (!previousLocation) return history.goBack();
 	dispatch($.unshiftLocationsToQueue({ newLocations: currentLocation }));
 	dispatch($.popLocationFromHistory());
+	dispatch(removeFollowUpsFromQueue({ answerIndex: null /* any answer */ }));
 };
 
 // Push first queue location into location and location into history
