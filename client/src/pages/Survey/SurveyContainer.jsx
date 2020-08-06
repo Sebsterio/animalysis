@@ -1,17 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import {
-	getIsCurrentQuestionAnswered,
-	getIsSurveyLoaded,
-} from "redux/survey/survey-selectors";
+import { getIsSurveyLoaded } from "redux/survey/survey-selectors";
 import { goForward, goBack } from "redux/survey/survey-operations";
 
 import { Survey } from "./Survey";
 
 const mapStateToProps = (state) => ({
 	surveyIsLoaded: getIsSurveyLoaded(state),
-	questionIsAnswered: getIsCurrentQuestionAnswered(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

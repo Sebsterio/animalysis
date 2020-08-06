@@ -31,7 +31,7 @@ export const Survey = ({
 }) => {
 	const clx = useStyles();
 
-	if (!surveyIsLoaded) return <div>No survey has been loaded</div>;
+	if (!surveyIsLoaded) return <div>No survey has been selected</div>;
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
