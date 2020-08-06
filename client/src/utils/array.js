@@ -52,8 +52,11 @@ export const makeArrayWithShiftedItem = (arr) => {
 };
 
 // REMOVE item(s)
-export const makeArrayWithRemovedItems = (array, item) =>
-	array.filter((curItem) => curItem !== item);
+export const makeArrayWithRemovedItems = (
+	array,
+	item,
+	filter = (curItem) => curItem !== item
+) => array.filter(filter);
 
 // MODIFY array item; supports negative index (counted form end)
 export const makeArrayWithModifiedItem = (arr, index, modifier) => {

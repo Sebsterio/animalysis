@@ -108,6 +108,19 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			);
 		}
 
+		case $.REMOVE_LOCATIONS_FROM_QUEUE: {
+			const { historyIndex, answerIndex } = action.payload;
+			const filter = (location) =>
+				!location.addedBy ||
+				location.addedBy.historyIndex !== historyIndex ||
+				(answerIndex >= 0
+					? location.addedBy.answerIndex !== answerIndex
+					: false);
+			return makeState(state, "queue", (currentQueue) =>
+				makeArrayWithRemovedItems(currentQueue, null, filter)
+			);
+		}
+
 		// --- Optional Queue ---
 
 		case $.SET_OPTIONAL_QUEUE: {
@@ -115,7 +128,7 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 		}
 
 		case $.REMOVE_FROM_OPTIONAL_QUEUE: {
-			return makeState(state, "queue", (currentQueue) =>
+			return makeState(state, "optionalQueue", (currentQueue) =>
 				makeArrayWithRemovedItems(currentQueue, action.payload)
 			);
 		}

@@ -71,6 +71,12 @@ export const pushLocationsToQueue = (data) => ({
 	payload: data,
 });
 
+export const REMOVE_LOCATIONS_FROM_QUEUE = "REMOVE_LOCATIONS_FROM_QUEUE";
+export const removeLocationsFromQueue = (data) => ({
+	type: REMOVE_LOCATIONS_FROM_QUEUE,
+	payload: data,
+});
+
 // --- Optional queue ---
 
 export const SET_OPTIONAL_QUEUE = "SET_OPTIONAL_QUEUE";

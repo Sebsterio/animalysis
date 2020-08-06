@@ -67,7 +67,17 @@ export const addFollowUpToQueue = ({ followUp, answerIndex }) => (
 		});
 };
 
-// Set answer if different tha current and add followUp locations to queue
+// Remove locations addedBy questions at given historyIndex
+// If answerIndex provided, only remove questions added by that answer
+export const removeFollowUpsFromQueue = ({ answerIndex }) => (
+	dispatch,
+	getState
+) => {
+	const historyIndex = getCurrentLocationHistoryIndex(getState());
+	dispatch($.removeLocationsFromQueue({ historyIndex, answerIndex }));
+};
+
+// Set answer if different the current AND add followUp locations to queue
 export const submitAnswer = ({ answerIndex, followUp, alert }) => (
 	dispatch
 ) => {
@@ -75,16 +85,17 @@ export const submitAnswer = ({ answerIndex, followUp, alert }) => (
 	if (followUp) dispatch(addFollowUpToQueue({ followUp }));
 };
 
-// Add answer and followUp locations to queue
+// Add another answer to current location AND add followUp locations to queue
 export const addAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
 	dispatch($.addAnswerInCurrentLocation(answerIndex));
 	if (followUp) dispatch(addFollowUpToQueue({ followUp, answerIndex }));
 };
 
-// Remove answer and resulting followUp locations to queue
+// Remove answer from current location
+// Remove followUp locations resulting from the removed answer from queue
 export const removeAnswer = ({ answerIndex, followUp, alert }) => (
 	dispatch
 ) => {
 	dispatch($.removeAnswerFromCurrentLocation(answerIndex));
-	// if (followUp) removeFollowUpFromQueue({followUp, answerIndex});
+	if (followUp) dispatch(removeFollowUpsFromQueue({ answerIndex }));
 };
