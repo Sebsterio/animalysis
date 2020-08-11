@@ -72,6 +72,11 @@ export const getNextLocation = (state) => {
 	return getQueue(state)[0];
 };
 
+// --------------- Original optional queue---------------
+
+export const getOriginalOptionalQueue = (state) =>
+	state.survey.originalOptionalQueue;
+
 // --------------------- Data ---------------------
 
 // Survey
@@ -116,11 +121,14 @@ export const getCurrentQuestionData = (state) => {
 
 // Answer
 
-// ASSUMPTION: queston type === 'select-one'
 export const getCurrentAnswerData = (state) => {
 	const question = getCurrentQuestionData(state);
-	const answer = getCurrentQuestionAnswer(state);
-	return question.answers[answer];
+	const answers = arrayify(getCurrentQuestionAnswer(state)).map(
+		(answerIndex) => question.answers[answerIndex]
+	);
+	if (answers.length === 0) return null;
+	if (answers.length === 1) return answers[0];
+	return answers;
 };
 
 // ------------------------- Conversion ----------------------------

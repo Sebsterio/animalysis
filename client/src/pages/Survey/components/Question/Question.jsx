@@ -21,27 +21,11 @@ const Question = ({
 	lastQuestionIndex,
 	isAnswerSelected,
 	// dispatch
-	submitAnswer,
-	addAnswer,
-	removeAnswer,
-	goForward,
+	handleAnswer,
 }) => {
 	const clx = useStyles();
-
 	if (!question) return null;
-
-	const { type, label, answers } = question;
-
-	const handleAnswer = (data) => {
-		const selected = isAnswerSelected(data.answerIndex);
-		if (type === "select-one") {
-			submitAnswer(data);
-			goForward(history);
-		} else if (type === "select-multiple") {
-			if (!selected) addAnswer(data);
-			else removeAnswer(data);
-		}
-	};
+	const { label, answers } = question;
 
 	return (
 		<Box>
@@ -62,18 +46,23 @@ const Question = ({
 				/>
 			</Box>
 
-			{answers.map(({ text, followUp, alert }, i) => (
-				<Box mb={2} key={shortid.generate()}>
-					<Button
-						fullWidth
-						variant={isAnswerSelected(i) ? "contained" : "outlined"}
-						color="default"
-						children={text}
-						className={clx.button}
-						onClick={() => handleAnswer({ answerIndex: i, followUp, alert })}
-					/>
-				</Box>
-			))}
+			{answers.map(({ text, followUp, alert }, answerIndex) => {
+				const isSelected = isAnswerSelected(answerIndex);
+				const handleClick = () =>
+					handleAnswer({ answerIndex, followUp, alert, isSelected }, history);
+				return (
+					<Box mb={2} key={shortid.generate()}>
+						<Button
+							fullWidth
+							variant={isSelected ? "contained" : "outlined"}
+							color="default"
+							children={text}
+							className={clx.button}
+							onClick={handleClick}
+						/>
+					</Box>
+				);
+			})}
 		</Box>
 	);
 };

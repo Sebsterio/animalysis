@@ -5,6 +5,9 @@ import {
 	getNextLocation,
 	getPreviousLocation,
 	getLocationsFromSection,
+	getOriginalOptionalQueue,
+	getCurrentQuestionData,
+	getCurrentAnswerData,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { arrayify } from "utils/array";
@@ -16,9 +19,53 @@ export const initSurvey = (surveyData) => (dispatch, getState) => {
 	dispatch($.setSurveyData(sections));
 	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue)));
 	dispatch($.setOptionalQueue(optionalQueue));
+	dispatch($.setOriginalOptionalQueue(optionalQueue));
 	const nextLocation = getNextLocation(getState());
 	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());
+};
+
+// ----------------------- Compound operations ---------------------------
+
+// Go to previous location in survey
+// Remove all followUp locations added by current question
+export const handleGoBack = (history) => (dispatch, getState) => {
+	dispatch(goBack(history));
+	const currentAnswer = getCurrentAnswerData(getState());
+	arrayify(currentAnswer).forEach((answer) => {
+		const { followUp, alert } = answer;
+		if (followUp)
+			dispatch(removeFollowUpsFromQueue({ followUp, answerIndex: null }));
+		if (alert) console.log("REMOVE_ALERT (stub)"); // TEMP <<<<
+	});
+};
+
+// Go to next location in survey
+// Re-add followUp locations resulting from previously selected answer
+export const handleGoForward = (history) => (dispatch, getState) => {
+	const currentQuestion = getCurrentQuestionData(getState());
+	const currentAnswer = getCurrentAnswerData(getState());
+	const { type } = currentQuestion;
+	if (type === "select-one") {
+		const { followUp, alert } = currentAnswer;
+		if (followUp) dispatch(addFollowUpToQueue({ followUp }));
+		if (alert) console.log("ADD_ALERT (stub)"); // TEMP <<<<
+	}
+	dispatch(goForward(history));
+	// TODO: handle 'select-multiple' type (arrayify)
+};
+
+export const handleAnswer = (data, history) => (dispatch, getState) => {
+	const currentQuestion = getCurrentQuestionData(getState());
+	const { type } = currentQuestion;
+	const { isSelected } = data;
+	if (type === "select-one") {
+		dispatch(submitAnswer(data));
+		dispatch(goForward(history));
+	} else if (type === "select-multiple") {
+		if (!isSelected) dispatch(addAnswer(data));
+		else dispatch(removeAnswer(data));
+	}
 };
 
 // --------------------------- Navigation -------------------------------
@@ -62,7 +109,7 @@ export const addAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
 /* prettier-ignore */
 export const removeAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
 	dispatch($.removeAnswerFromCurrentLocation(answerIndex));
-	if (followUp) dispatch(removeFollowUpsFromQueue({ answerIndex }));
+	if (followUp) dispatch(removeFollowUpsFromQueue({ followUp, answerIndex }));
 };
 
 // ------------------------- Follow Up ---------------------------------
@@ -94,8 +141,14 @@ export const addFollowUpToQueue = ({ followUp, answerIndex }) => (dispatch, getS
 
 // Remove locations addedBy questions at given historyIndex
 // If answerIndex provided, only remove questions added by that answer
+// Re-add sectionNames to optionalQueue if present in originalOptionalQueue
 /* prettier-ignore */
-export const removeFollowUpsFromQueue = ({ answerIndex }) => (dispatch,	getState) => {
+export const removeFollowUpsFromQueue = ({ followUp, answerIndex }) => (dispatch,	getState) => {
 	const historyIndex = getCurrentLocationHistoryIndex(getState());
 	dispatch($.removeLocationsFromQueue({ historyIndex, answerIndex }));
+	if (followUp) {
+		const { target } = followUp;
+		const originalOptionalQueue = getOriginalOptionalQueue(getState())
+		if (originalOptionalQueue.includes(target)) dispatch($.addToOptionalQueue(target));
+	}
 };

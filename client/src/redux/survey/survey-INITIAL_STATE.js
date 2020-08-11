@@ -14,6 +14,10 @@ export const INITIAL_STATE = {
 	// Queue to be optionally completed after main queue
 	optionalQueue: [],
 
+	// Read-only copy of optionalQueue
+	// Used to match sections removed from queue to be re-added to optionalQueue
+	originalOptionalQueue: [],
+
 	// Highest level of urgency resulting from answers so far
 	alert: 0,
 };

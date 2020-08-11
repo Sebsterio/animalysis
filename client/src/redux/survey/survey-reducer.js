@@ -127,6 +127,18 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return makeState(state, "optionalQueue", () => [...action.payload]);
 		}
 
+		case $.SET_ORIGINAL_OPTIONAL_QUEUE: {
+			return makeState(state, "originalOptionalQueue", () => [
+				...action.payload,
+			]);
+		}
+
+		case $.ADD_TO_OPTIONAL_QUEUE: {
+			return makeState(state, "optionalQueue", (currentQueue) =>
+				makeArrayWithAddedUniqueItems(currentQueue, action.payload)
+			);
+		}
+
 		case $.REMOVE_FROM_OPTIONAL_QUEUE: {
 			return makeState(state, "optionalQueue", (currentQueue) =>
 				makeArrayWithRemovedItems(currentQueue, action.payload)

@@ -85,6 +85,18 @@ export const setOptionalQueue = (data) => ({
 	payload: data,
 });
 
+export const SET_ORIGINAL_OPTIONAL_QUEUE = "SET_ORIGINAL_OPTIONAL_QUEUE";
+export const setOriginalOptionalQueue = (data) => ({
+	type: SET_ORIGINAL_OPTIONAL_QUEUE,
+	payload: data,
+});
+
+export const ADD_TO_OPTIONAL_QUEUE = "ADD_TO_OPTIONAL_QUEUE";
+export const addToOptionalQueue = (data) => ({
+	type: ADD_TO_OPTIONAL_QUEUE,
+	payload: data,
+});
+
 export const REMOVE_FROM_OPTIONAL_QUEUE = "REMOVE_FROM_OPTIONAL_QUEUE";
 export const removeFromOptionalQueue = (data) => ({
 	type: REMOVE_FROM_OPTIONAL_QUEUE,

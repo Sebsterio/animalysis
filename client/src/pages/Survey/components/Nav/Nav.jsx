@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { arrayify } from "utils/array";
 import { Container, Button } from "@material-ui/core";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 
@@ -24,52 +25,25 @@ export const Nav = ({
 	// state
 	currentQuestion,
 	questionIsAnswered,
-	currentAnswer,
 	// dispatch
-	goBack,
-	goForward,
-	addFollowUp,
-	removeFollowUps,
+	handleGoBack,
+	handleGoForward,
 }) => {
 	const { type } = currentQuestion;
-
-	// -------------------------- Handlers ----------------------------
-
-	// Go to previous location in survey
-	// Remove all followUp locations added by current question
-	const handleGoBack = () => {
-		removeFollowUps({ answerIndex: null });
-		goBack(history);
-	};
-
-	// Go to next location in survey
-	// Re-add followUp locations resulting from previously selected answer
-	const handleGoForward = () => {
-		if (type === "select-one") {
-			const { followUp, alert } = currentAnswer;
-			if (followUp) addFollowUp({ followUp });
-			if (alert) console.log(alert); // TEMP <<<<
-		}
-		goForward(history);
-	};
-
-	// ---------------------------- View ------------------------------
-
 	const nextButtonIsEnlarged = type === "select-multiple";
-
 	const clx = useStyles({ nextButtonIsEnlarged });
 
 	return (
 		<Container className={clx.container}>
 			<Button
 				children="Back"
-				onClick={handleGoBack}
+				onClick={() => handleGoBack(history)}
 				startIcon={<KeyboardArrowLeft />}
 			/>
 
 			<Button
 				children="Next"
-				onClick={handleGoForward}
+				onClick={() => handleGoForward(history)}
 				disabled={!questionIsAnswered}
 				endIcon={<KeyboardArrowRight />}
 				className={clx.nextButton}
