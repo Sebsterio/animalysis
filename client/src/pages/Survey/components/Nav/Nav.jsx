@@ -24,25 +24,52 @@ export const Nav = ({
 	// state
 	currentQuestion,
 	questionIsAnswered,
+	currentAnswer,
 	// dispatch
 	goBack,
-	handleGoForward,
+	goForward,
+	addFollowUp,
+	removeFollowUps,
 }) => {
 	const { type } = currentQuestion;
+
+	// -------------------------- Handlers ----------------------------
+
+	// Go to previous location in survey
+	// Remove all followUp locations added by current question
+	const handleGoBack = () => {
+		removeFollowUps({ answerIndex: null });
+		goBack(history);
+	};
+
+	// Go to next location in survey
+	// Re-add followUp locations resulting from previously selected answer
+	const handleGoForward = () => {
+		if (type === "select-one") {
+			const { followUp, alert } = currentAnswer;
+			if (followUp) addFollowUp({ followUp });
+			if (alert) console.log(alert); // TEMP <<<<
+		}
+		goForward(history);
+	};
+
+	// ---------------------------- View ------------------------------
+
 	const nextButtonIsEnlarged = type === "select-multiple";
+
 	const clx = useStyles({ nextButtonIsEnlarged });
 
 	return (
 		<Container className={clx.container}>
 			<Button
 				children="Back"
-				onClick={() => goBack(history)}
+				onClick={handleGoBack}
 				startIcon={<KeyboardArrowLeft />}
 			/>
 
 			<Button
 				children="Next"
-				onClick={() => handleGoForward(history)}
+				onClick={handleGoForward}
 				disabled={!questionIsAnswered}
 				endIcon={<KeyboardArrowRight />}
 				className={clx.nextButton}

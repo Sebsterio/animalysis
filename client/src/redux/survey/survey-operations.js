@@ -1,13 +1,10 @@
 import {
-	getCurrentQuestionData,
-	getCurrentQuestionAnswer,
 	getCurrentLocation,
 	getCurrentLocationHistoryIndex,
 	getUnpackedQueue,
 	getNextLocation,
 	getPreviousLocation,
 	getLocationsFromSection,
-	getIsAnswerSelected,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { arrayify } from "utils/array";
@@ -26,19 +23,18 @@ export const initSurvey = (surveyData) => (dispatch, getState) => {
 
 // --------------------------- Navigation -------------------------------
 
-// Unshift current location into queue
-// Pop last history location and set as current location
-// Remove all followUp locations added by current question
+// Pop last history location and unshift it into queue
+// Quit survey if history empty
 export const goBack = (history) => (dispatch, getState) => {
 	const currentLocation = getCurrentLocation(getState());
 	const previousLocation = getPreviousLocation(getState());
 	if (!previousLocation) return history.goBack();
 	dispatch($.unshiftLocationsToQueue({ newLocations: currentLocation }));
 	dispatch($.popLocationFromHistory());
-	dispatch(removeFollowUpsFromQueue({ answerIndex: null /* any answer */ }));
 };
 
-// Push first queue location into location and location into history
+// Push first queue location to history and shift it from queue
+// End survey if queue empty
 export const goForward = (history) => (dispatch, getState) => {
 	const nextLocation = getNextLocation(getState());
 	if (!nextLocation) return history.push("/new-report/review");
@@ -46,41 +42,11 @@ export const goForward = (history) => (dispatch, getState) => {
 	dispatch($.shiftNextLocationFromQueue());
 };
 
-export const handleGoForward = (history) => (dispatch, getState) => {
-	const state = getState();
-	const currentQuestion = getCurrentQuestionData(state);
-	const answerIndex = getCurrentQuestionAnswer(state);
-	const { type } = currentQuestion;
-
-	if (type === "select-one") {
-		const { followUp, alert } = currentQuestion.answers[answerIndex];
-		dispatch(submitAnswer({ answerIndex, followUp, alert }));
-	}
-	dispatch(goForward(history));
-};
-
 // -------------------------- Answer --------------------------------
 
-// Add/submit/remove answer, depending on current question type
-export const handleAnswer = ({ data, history }) => (dispatch, getState) => {
-	const { answerIndex } = data;
-	const state = getState();
-	const selected = getIsAnswerSelected(state, answerIndex);
-	const { type } = getCurrentQuestionData(state);
-
-	if (type === "select-one") {
-		dispatch(submitAnswer(data));
-		dispatch(goForward(history));
-	} else if (type === "select-multiple") {
-		if (!selected) dispatch(addAnswer(data));
-		else dispatch(removeAnswer(data));
-	}
-};
-
-// Set answer if different the current AND add followUp locations to queue
-export const submitAnswer = ({ answerIndex, followUp, alert }) => (
-	dispatch
-) => {
+// Set answer if different to current AND add followUp locations to queue
+/* prettier-ignore */
+export const submitAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
 	dispatch($.setAnswerInCurrentLocation(answerIndex));
 	if (followUp) dispatch(addFollowUpToQueue({ followUp }));
 };
@@ -93,9 +59,8 @@ export const addAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
 
 // Remove answer from current location
 // Remove followUp locations resulting from the removed answer from queue
-export const removeAnswer = ({ answerIndex, followUp, alert }) => (
-	dispatch
-) => {
+/* prettier-ignore */
+export const removeAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
 	dispatch($.removeAnswerFromCurrentLocation(answerIndex));
 	if (followUp) dispatch(removeFollowUpsFromQueue({ answerIndex }));
 };
@@ -106,16 +71,13 @@ export const removeAnswer = ({ answerIndex, followUp, alert }) => (
 // add info about invoking (this) location to each extracted location
 // Insert extracted locations into correct place in queue
 // Remove target section(s) from optionalQueue
-export const addFollowUpToQueue = ({ followUp, answerIndex }) => (
-	dispatch,
-	getState
-) => {
+/* prettier-ignore */
+export const addFollowUpToQueue = ({ followUp, answerIndex }) => (dispatch, getState) => {
 	const { target, after } = followUp;
 	const historyIndex = getCurrentLocationHistoryIndex(getState());
-	const addProps = (location) => ({
-		...location,
-		addedBy: { historyIndex, answerIndex },
-	});
+	const addedBy = { historyIndex, answerIndex }
+	const addProps = (location) => ({	...location, addedBy });
+
 	arrayify(target)
 		.reverse()
 		.forEach((target) => {
@@ -132,10 +94,8 @@ export const addFollowUpToQueue = ({ followUp, answerIndex }) => (
 
 // Remove locations addedBy questions at given historyIndex
 // If answerIndex provided, only remove questions added by that answer
-export const removeFollowUpsFromQueue = ({ answerIndex }) => (
-	dispatch,
-	getState
-) => {
+/* prettier-ignore */
+export const removeFollowUpsFromQueue = ({ answerIndex }) => (dispatch,	getState) => {
 	const historyIndex = getCurrentLocationHistoryIndex(getState());
 	dispatch($.removeLocationsFromQueue({ historyIndex, answerIndex }));
 };

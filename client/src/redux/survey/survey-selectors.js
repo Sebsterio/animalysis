@@ -45,7 +45,7 @@ export const getIsCurrentQuestionAnswered = (state) => {
 	return answer !== null && answer !== undefined;
 };
 
-export const getIsAnswerSelected = (state, answer) => {
+export const isAnswerSelected = (state, answer) => {
 	const currentAnswers = arrayify(getCurrentQuestionAnswer(state));
 	return currentAnswers.some((currentAnswer) => currentAnswer === answer);
 };
@@ -112,6 +112,15 @@ export const getCurrentQuestionData = (state) => {
 	const question = section.questions[questionIndex];
 	if (typeof question === "function") return question(getCurrentPet(state));
 	return question;
+};
+
+// Answer
+
+// ASSUMPTION: queston type === 'select-one'
+export const getCurrentAnswerData = (state) => {
+	const question = getCurrentQuestionData(state);
+	const answer = getCurrentQuestionAnswer(state);
+	return question.answers[answer];
 };
 
 // ------------------------- Conversion ----------------------------

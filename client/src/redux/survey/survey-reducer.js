@@ -110,14 +110,14 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 
 		case $.REMOVE_LOCATIONS_FROM_QUEUE: {
 			const { historyIndex, answerIndex } = action.payload;
-			const filter = (location) =>
-				!location.addedBy ||
-				(location.addedBy.historyIndex !== historyIndex &&
-					(answerIndex >= 0
-						? location.addedBy.answerIndex !== answerIndex
-						: true));
+			const selector = (location) =>
+				!!location.addedBy &&
+				location.addedBy.historyIndex === historyIndex &&
+				(answerIndex >= 0
+					? location.addedBy.answerIndex === answerIndex
+					: true);
 			return makeState(state, "queue", (currentQueue) =>
-				makeArrayWithRemovedItems(currentQueue, null, filter)
+				makeArrayWithRemovedItems(currentQueue, null, selector)
 			);
 		}
 

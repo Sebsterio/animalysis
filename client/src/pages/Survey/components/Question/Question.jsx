@@ -21,15 +21,27 @@ const Question = ({
 	lastQuestionIndex,
 	isAnswerSelected,
 	// dispatch
-	handleAnswer,
+	submitAnswer,
+	addAnswer,
+	removeAnswer,
+	goForward,
 }) => {
-	const { label, answers } = question;
-
 	const clx = useStyles();
 
 	if (!question) return null;
 
-	const id = label === "text" ? "Question" : null;
+	const { type, label, answers } = question;
+
+	const handleAnswer = (data) => {
+		const selected = isAnswerSelected(data.answerIndex);
+		if (type === "select-one") {
+			submitAnswer(data);
+			goForward(history);
+		} else if (type === "select-multiple") {
+			if (!selected) addAnswer(data);
+			else removeAnswer(data);
+		}
+	};
 
 	return (
 		<Box>
@@ -45,7 +57,7 @@ const Question = ({
 					component="label"
 					variant="h5"
 					className={clx.question}
-					htmlFor={id}
+					htmlFor="Question"
 					children={label}
 				/>
 			</Box>
@@ -58,12 +70,7 @@ const Question = ({
 						color="default"
 						children={text}
 						className={clx.button}
-						onClick={() =>
-							handleAnswer({
-								data: { answerIndex: i, followUp, alert },
-								history,
-							})
-						}
+						onClick={() => handleAnswer({ answerIndex: i, followUp, alert })}
 					/>
 				</Box>
 			))}
