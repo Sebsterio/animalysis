@@ -41,30 +41,22 @@ export const handleAnswer = (data, history) => (dispatch, getState) => {
 	}
 };
 
-// Add followUp locations and go to next location in survey
-export const handleGoForward = (history) => (dispatch) => {
-	dispatch(processCurrentAnswer());
-	dispatch(goForward(history));
-};
-
-// Remove all followUp locations and go to previous location in survey
-export const handleGoBack = (history) => (dispatch) => {
-	dispatch(goBack(history));
-	dispatch(unprocessCurrentAnswer());
-};
-
 // Add followUp locations resulting from selected answers in current question
-const processCurrentAnswer = () => (dispatch, getState) => {
+// Go to next location in survey
+export const handleGoForward = (history) => (dispatch, getState) => {
 	const currentAnswer = getCurrentAnswerData(getState());
 	arrayify(currentAnswer).forEach((answer) => {
 		const { followUp, alert } = answer;
 		if (followUp) dispatch(addFollowUpToQueue({ followUp }));
 		if (alert) console.log("ADD_ALERT (stub)"); // TEMP <<<<
 	});
+	dispatch(goForward(history));
 };
 
-// Remove followUp locations resulting from selected answers in current question
-const unprocessCurrentAnswer = () => (dispatch, getState) => {
+// Remove followUp locations resulting from selected answers in previous question
+// Go to previous location in survey
+export const handleGoBack = (history) => (dispatch, getState) => {
+	dispatch(goBack(history)); // must run first
 	const currentAnswer = getCurrentAnswerData(getState());
 	arrayify(currentAnswer).forEach((answer) => {
 		const { followUp, alert } = answer;
@@ -122,15 +114,15 @@ const addFollowUpToQueue = ({ followUp, answerIndex }) => (dispatch, getState) =
 };
 
 // Remove locations addedBy questions at given historyIndex
-// If answerIndex provided, only remove questions added by that answer
 // Re-add sectionNames to optionalQueue if present in originalOptionalQueue
 const removeFollowUpsFromQueue = ({ followUp }) => (dispatch, getState) => {
 	const historyIndex = getCurrentLocationHistoryIndex(getState());
+	const originalOptionalQueue = getOriginalOptionalQueue(getState());
+	const { target } = followUp;
+
 	dispatch($.removeLocationsFromQueue({ historyIndex }));
-	if (followUp) {
-		const { target } = followUp;
-		const originalOptionalQueue = getOriginalOptionalQueue(getState());
+	arrayify(target).forEach((target) => {
 		if (originalOptionalQueue.includes(target))
 			dispatch($.addToOptionalQueue(target));
-	}
+	});
 };
