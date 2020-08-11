@@ -1,4 +1,5 @@
 import { isEmpty } from "utils/object";
+import { arrayify } from "utils/array";
 
 // --------------- Location history ---------------
 
@@ -42,6 +43,11 @@ export const getIsCurrentQuestionAnswered = (state) => {
 	const answer = getCurrentQuestionAnswer(state);
 	if (Array.isArray(answer)) return !!answer.length;
 	return answer !== null && answer !== undefined;
+};
+
+export const getIsAnswerSelected = (state, answer) => {
+	const currentAnswers = arrayify(getCurrentQuestionAnswer(state));
+	return currentAnswers.some((currentAnswer) => currentAnswer === answer);
 };
 
 // Index of last question in current section

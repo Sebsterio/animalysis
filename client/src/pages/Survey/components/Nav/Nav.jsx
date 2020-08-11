@@ -13,32 +13,37 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	nextButton: {
 		// TEMPORARY FIX
-		transform: (props) => (props.nextButtonEnlarged ? "scale(2)" : "scale(1)"),
+		transform: (props) =>
+			props.nextButtonIsEnlarged ? "scale(2)" : "scale(1)",
 	},
 }));
 
 export const Nav = ({
-	canGoForward = true,
-	canGoBack = true,
-	nextButtonEnlarged,
+	// parent
+	history,
+	// state
+	currentQuestion,
+	questionIsAnswered,
+	// dispatch
 	goBack,
-	goForward,
+	handleGoForward,
 }) => {
-	const clx = useStyles({ nextButtonEnlarged });
+	const { type } = currentQuestion;
+	const nextButtonIsEnlarged = type === "select-multiple";
+	const clx = useStyles({ nextButtonIsEnlarged });
 
 	return (
 		<Container className={clx.container}>
 			<Button
 				children="Back"
-				onClick={goBack}
-				disabled={!canGoBack}
+				onClick={() => goBack(history)}
 				startIcon={<KeyboardArrowLeft />}
 			/>
 
 			<Button
 				children="Next"
-				onClick={goForward}
-				disabled={!canGoForward}
+				onClick={() => handleGoForward(history)}
+				disabled={!questionIsAnswered}
 				endIcon={<KeyboardArrowRight />}
 				className={clx.nextButton}
 			/>

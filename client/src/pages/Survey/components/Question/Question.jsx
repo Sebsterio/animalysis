@@ -14,12 +14,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Question = ({
 	// parent
-	question,
-	handleAnswer,
-	isAnswerSelected,
+	history, // browser history
 	// store
+	question,
 	questionIndex,
 	lastQuestionIndex,
+	isAnswerSelected,
+	// dispatch
+	handleAnswer,
 }) => {
 	const { label, answers } = question;
 
@@ -56,7 +58,12 @@ const Question = ({
 						color="default"
 						children={text}
 						className={clx.button}
-						onClick={() => handleAnswer(i, followUp, alert)}
+						onClick={() =>
+							handleAnswer({
+								data: { answerIndex: i, followUp, alert },
+								history,
+							})
+						}
 					/>
 				</Box>
 			))}

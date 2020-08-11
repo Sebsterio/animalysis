@@ -5,11 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Section, Question, Nav } from "./components";
 import { Container } from "@material-ui/core";
 
-import { arrayify } from "utils/array";
-
 /*************************************************
  * Redirects if survey data not loaded (URL accessed manually when no survey is active)
- * Handles submitting answers and survey traversal (back and next)
+ * Passes browser history object down to children
  *************************************************/
 
 const useStyles = makeStyles((theme) => ({
@@ -21,72 +19,16 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Survey = ({
-	// state
-	surveyIsLoaded,
-	questionIsAnswered,
-	currentQuestion,
-	currentAnswer,
-	// dispatch
-	submitAnswer,
-	addAnswer,
-	removeAnswer,
-	goForward,
-	goBack,
-	// router
-	history,
-}) => {
+export const Survey = ({ surveyIsLoaded, history }) => {
 	const clx = useStyles();
 
 	if (!surveyIsLoaded) return <Redirect to="/" />;
 
-	const { type } = currentQuestion;
-
-	// -------------------------------- Aux --------------------------------
-
-	const isAnswerSelected = (i) => arrayify(currentAnswer).some((a) => a === i);
-
-	// ------------------------------ Handlers -----------------------------
-
-	const handleAnswer = (i, followUp, alert) => {
-		const selected = isAnswerSelected(i);
-		const args = { answerIndex: i, followUp, alert };
-
-		if (type === "select-one") {
-			submitAnswer(args);
-			goForward(history);
-		} else if (type === "select-multiple") {
-			if (!selected) addAnswer(args);
-			else removeAnswer(args);
-		}
-	};
-
-	const handleGoBack = () => goBack(history);
-
-	const handleGoForward = () => {
-		if (type === "select-one") {
-			const { followUp, alert } = currentQuestion.answers[currentAnswer];
-			submitAnswer({ answerIndex: currentAnswer, followUp, alert });
-		}
-		goForward(history);
-	};
-
-	// -------------------------------- View --------------------------------
-
 	return (
 		<Container maxWidth="xs" className={clx.container}>
 			<Section />
-			<Question
-				question={currentQuestion}
-				handleAnswer={handleAnswer}
-				isAnswerSelected={isAnswerSelected}
-			/>
-			<Nav
-				canGoForward={questionIsAnswered}
-				goBack={handleGoBack}
-				goForward={handleGoForward}
-				nextButtonEnlarged={type === "select-multiple"}
-			/>
+			<Question history={history} />
+			<Nav history={history} />
 		</Container>
 	);
 };

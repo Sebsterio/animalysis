@@ -1,10 +1,13 @@
 import {
+	getCurrentQuestionData,
+	getCurrentQuestionAnswer,
 	getCurrentLocation,
 	getCurrentLocationHistoryIndex,
 	getUnpackedQueue,
 	getNextLocation,
 	getPreviousLocation,
 	getLocationsFromSection,
+	getIsAnswerSelected,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { arrayify } from "utils/array";
@@ -20,6 +23,8 @@ export const initSurvey = (surveyData) => (dispatch, getState) => {
 	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());
 };
+
+// --------------------------- Navigation -------------------------------
 
 // Unshift current location into queue
 // Pop last history location and set as current location
@@ -40,6 +45,62 @@ export const goForward = (history) => (dispatch, getState) => {
 	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());
 };
+
+export const handleGoForward = (history) => (dispatch, getState) => {
+	const state = getState();
+	const currentQuestion = getCurrentQuestionData(state);
+	const answerIndex = getCurrentQuestionAnswer(state);
+	const { type } = currentQuestion;
+
+	if (type === "select-one") {
+		const { followUp, alert } = currentQuestion.answers[answerIndex];
+		dispatch(submitAnswer({ answerIndex, followUp, alert }));
+	}
+	dispatch(goForward(history));
+};
+
+// -------------------------- Answer --------------------------------
+
+// Add/submit/remove answer, depending on current question type
+export const handleAnswer = ({ data, history }) => (dispatch, getState) => {
+	const { answerIndex } = data;
+	const state = getState();
+	const selected = getIsAnswerSelected(state, answerIndex);
+	const { type } = getCurrentQuestionData(state);
+
+	if (type === "select-one") {
+		dispatch(submitAnswer(data));
+		dispatch(goForward(history));
+	} else if (type === "select-multiple") {
+		if (!selected) dispatch(addAnswer(data));
+		else dispatch(removeAnswer(data));
+	}
+};
+
+// Set answer if different the current AND add followUp locations to queue
+export const submitAnswer = ({ answerIndex, followUp, alert }) => (
+	dispatch
+) => {
+	dispatch($.setAnswerInCurrentLocation(answerIndex));
+	if (followUp) dispatch(addFollowUpToQueue({ followUp }));
+};
+
+// Add another answer to current location AND add followUp locations to queue
+export const addAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
+	dispatch($.addAnswerInCurrentLocation(answerIndex));
+	if (followUp) dispatch(addFollowUpToQueue({ followUp, answerIndex }));
+};
+
+// Remove answer from current location
+// Remove followUp locations resulting from the removed answer from queue
+export const removeAnswer = ({ answerIndex, followUp, alert }) => (
+	dispatch
+) => {
+	dispatch($.removeAnswerFromCurrentLocation(answerIndex));
+	if (followUp) dispatch(removeFollowUpsFromQueue({ answerIndex }));
+};
+
+// ------------------------- Follow Up ---------------------------------
 
 // Extract locations from target section(s)
 // add info about invoking (this) location to each extracted location
@@ -77,27 +138,4 @@ export const removeFollowUpsFromQueue = ({ answerIndex }) => (
 ) => {
 	const historyIndex = getCurrentLocationHistoryIndex(getState());
 	dispatch($.removeLocationsFromQueue({ historyIndex, answerIndex }));
-};
-
-// Set answer if different the current AND add followUp locations to queue
-export const submitAnswer = ({ answerIndex, followUp, alert }) => (
-	dispatch
-) => {
-	dispatch($.setAnswerInCurrentLocation(answerIndex));
-	if (followUp) dispatch(addFollowUpToQueue({ followUp }));
-};
-
-// Add another answer to current location AND add followUp locations to queue
-export const addAnswer = ({ answerIndex, followUp, alert }) => (dispatch) => {
-	dispatch($.addAnswerInCurrentLocation(answerIndex));
-	if (followUp) dispatch(addFollowUpToQueue({ followUp, answerIndex }));
-};
-
-// Remove answer from current location
-// Remove followUp locations resulting from the removed answer from queue
-export const removeAnswer = ({ answerIndex, followUp, alert }) => (
-	dispatch
-) => {
-	dispatch($.removeAnswerFromCurrentLocation(answerIndex));
-	if (followUp) dispatch(removeFollowUpsFromQueue({ answerIndex }));
 };
