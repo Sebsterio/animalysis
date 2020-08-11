@@ -109,13 +109,9 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 		}
 
 		case $.REMOVE_LOCATIONS_FROM_QUEUE: {
-			const { historyIndex, answerIndex } = action.payload;
+			const { historyIndex } = action.payload;
 			const selector = (location) =>
-				!!location.addedBy &&
-				location.addedBy.historyIndex === historyIndex &&
-				(answerIndex >= 0
-					? location.addedBy.answerIndex === answerIndex
-					: true);
+				!!location.addedBy && location.addedBy.historyIndex === historyIndex;
 			return makeState(state, "queue", (currentQueue) =>
 				makeArrayWithRemovedItems(currentQueue, null, selector)
 			);
