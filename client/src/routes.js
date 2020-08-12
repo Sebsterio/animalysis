@@ -2,6 +2,7 @@ import { Home } from "pages/Home";
 import { Survey } from "pages/Survey";
 import { Review } from "pages/Review";
 import { Account } from "pages/Account";
+import { Appointment } from "pages/Appointment";
 
 export const routes = [
 	{
@@ -38,5 +39,12 @@ export const routes = [
 		component: Account,
 		exact: true,
 		inNav: false,
+	},
+	{
+		path: "/appointment",
+		title: "New Appointment",
+		component: Appointment,
+		exact: true,
+		inNav: true,
 	},
 ];
