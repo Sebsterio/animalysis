@@ -15,14 +15,21 @@ const useStyles = makeStyles((theme) => ({
 const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 	const clx = useStyles();
 
-	const startSurvey = () => {
-		if (!surveyIsLoaded) initSurvey(surveyData);
+	const startSurvey = ({ alert }) => {
+		if (!surveyIsLoaded) initSurvey({ surveyData, alert });
 		history.push("/new-report");
 	};
 
+	const startRoutineCheck = () => startSurvey({ alert: 0 });
+
+	const startProblemReport = () => startSurvey({ alert: 1 });
+
 	return (
 		<Container maxWidth="xs" className={clx.container}>
-			<Button variant="contained" onClick={startSurvey}>
+			<Button variant="contained" onClick={startRoutineCheck}>
+				Routine Health Check
+			</Button>
+			<Button variant="contained" onClick={startProblemReport}>
 				Report a Problem
 			</Button>
 		</Container>
