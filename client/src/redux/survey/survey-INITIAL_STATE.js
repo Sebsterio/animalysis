@@ -20,6 +20,9 @@ export const INITIAL_STATE = {
 
 	// Highest level of urgency resulting from answers so far
 	currentAlert: 0,
+
+	// Read-only; set on startSurvey; used to calculate final alert level in Review
+	initialAlert: 0,
 };
 
 // location in survey sequence; used as element of history and queues

@@ -147,8 +147,8 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return makeState(state, "currentAlert", () => action.payload);
 		}
 
-		case $.RESET_CURRENT_ALERT: {
-			return makeState(state, "currentAlert", () => 0);
+		case $.SET_INITIAL_ALERT: {
+			return makeState(state, "initialAlert", () => action.payload);
 		}
 
 		// ---------------------------

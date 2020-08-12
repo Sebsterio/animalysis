@@ -1,12 +1,14 @@
 import React from "react";
 import { arrayify } from "utils/array";
 
-const Review = ({ history, data }) => {
+const Review = ({ history, data, alert }) => {
 	const getQuestionData = ({ sectionName, questionIndex }) =>
 		data[sectionName].questions[questionIndex];
 
 	return (
 		<div>
+			<div>Alert: {alert}</div>
+			<div>--------</div>
 			{history.map(({ sectionName, questionIndex, answer }) => {
 				let questionData = getQuestionData({ sectionName, questionIndex });
 				if (typeof questionData === "function") questionData = questionData({});

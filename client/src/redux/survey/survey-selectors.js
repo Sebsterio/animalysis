@@ -116,13 +116,17 @@ const getCurrentPet = (state) => ({
 	species: "canine",
 });
 
+export const getQuestionData = (state, section, questionIndex) => {
+	const question = section.questions[questionIndex];
+	if (typeof question === "function") return question(getCurrentPet(state));
+	return question;
+};
+
 export const getCurrentQuestionData = (state) => {
 	const section = getCurrentSectionData(state);
 	if (!section) return null;
 	const questionIndex = getCurrentQuestionIndex(state);
-	const question = section.questions[questionIndex];
-	if (typeof question === "function") return question(getCurrentPet(state));
-	return question;
+	return getQuestionData(state, section, questionIndex);
 };
 
 // Index of last question in current section
@@ -139,9 +143,8 @@ export const getIsLastQuestionInSection = (state) => {
 
 // Answer
 
-export const getCurrentAnswerData = (state) => {
-	const question = getCurrentQuestionData(state);
-	const answers = arrayify(getCurrentQuestionAnswer(state)).map(
+export const getAnswerData = (question, answer) => {
+	const answers = arrayify(answer).map(
 		(answerIndex) => question.answers[answerIndex]
 	);
 	if (answers.length === 0) return null;
@@ -149,6 +152,31 @@ export const getCurrentAnswerData = (state) => {
 	return answers;
 };
 
+export const getCurrentAnswerData = (state) => {
+	const question = getCurrentQuestionData(state);
+	const answer = getCurrentQuestionAnswer(state);
+	return getAnswerData(question, answer);
+};
+
 // ------------------- Alert -------------------------
 
 export const getCurrentAlert = (state) => state.survey.currentAlert;
+
+export const getInitialAlert = (state) => state.survey.initialAlert;
+
+const getAlertFromAnswer = (question, answer) =>
+	arrayify(answer).reduce((accumulator, answer) => {
+		const { alert } = getAnswerData(question, answer);
+		return alert > accumulator ? alert : accumulator;
+	}, 0);
+
+// Calculate highest alert level raised by answers given so far
+// Not using currentAlert prop as it deosn't get reverted on 'goBack' (intentionally)
+export const getMaxAlertFromHistory = (state) =>
+	getHistory(state).reduce((accumulator, location) => {
+		const { sectionName, questionIndex, answer } = location;
+		const section = getSectionData(state, sectionName);
+		const question = getQuestionData(state, section, questionIndex);
+		const alert = getAlertFromAnswer(question, answer);
+		return alert > accumulator ? alert : accumulator;
+	}, getInitialAlert(state));

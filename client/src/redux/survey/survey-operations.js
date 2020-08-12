@@ -21,7 +21,8 @@ export const initSurvey = (data) => (dispatch, getState) => {
 	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue)));
 	dispatch($.setOptionalQueue(optionalQueue));
 	dispatch($.setInitialOptionalQueue(optionalQueue));
-	if (alert) dispatch($.setCurrentAlert(alert));
+	dispatch($.setCurrentAlert(alert));
+	dispatch($.setInitialAlert(alert));
 	const nextLocation = getNextLocation(getState());
 	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());

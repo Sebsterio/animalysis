@@ -111,9 +111,10 @@ export const setCurrentAlert = (data) => ({
 	payload: data,
 });
 
-export const RESET_CURRENT_ALERT = "RESET_CURRENT_ALERT";
-export const resetCurrentAlert = () => ({
-	type: RESET_CURRENT_ALERT,
+export const SET_INITIAL_ALERT = "SET_INITIAL_ALERT";
+export const setInitialAlert = (data) => ({
+	type: SET_INITIAL_ALERT,
+	payload: data,
 });
 
 // --- General ---
