@@ -22,7 +22,8 @@
  */
 
 export const surveyData = {
-	mainQueue: ["primer", "bleeding", "activity", "urinating"],
+	primerSection: "primer", // prepended to mainQueue if reporting a problem
+	mainQueue: ["bleeding", "activity", "urinating"],
 	optionalQueue: ["nose_exam", "ears_exam", "behaviour_exam", "bleeding_exam"],
 	sections: {
 		// ------------------- section: primer -------------------

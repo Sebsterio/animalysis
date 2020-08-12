@@ -10,26 +10,46 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 		padding: theme.spacing(3),
 	},
+	surveyBtn: {
+		margin: theme.spacing(1, 0),
+	},
 }));
 
 const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 	const clx = useStyles();
 
-	const startSurvey = ({ alert }) => {
-		if (!surveyIsLoaded) initSurvey({ surveyData, alert });
+	const startSurvey = (data) => {
+		if (!surveyIsLoaded) initSurvey(data);
 		history.push("/new-report");
 	};
 
-	const startRoutineCheck = () => startSurvey({ alert: 0 });
+	const startRoutineCheck = () => startSurvey({ ...surveyData, alert: 0 });
 
-	const startProblemReport = () => startSurvey({ alert: 1 });
+	// Add primer section to mainQueue and set alarm to green
+	const startProblemReport = () => {
+		const { primerSection, mainQueue } = surveyData;
+		startSurvey({
+			...surveyData,
+			alert: 1,
+			mainQueue: [primerSection, ...mainQueue],
+		});
+	};
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
-			<Button variant="contained" onClick={startRoutineCheck}>
+			<Button
+				variant="contained"
+				className={clx.surveyBtn}
+				onClick={startRoutineCheck}
+			>
 				Routine Health Check
 			</Button>
-			<Button variant="contained" onClick={startProblemReport}>
+			<Button
+				variant="contained"
+				color="primary"
+				className={clx.surveyBtn}
+				onClick={startProblemReport}
+			>
 				Report a Problem
 			</Button>
 		</Container>

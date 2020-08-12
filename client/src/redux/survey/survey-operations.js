@@ -14,8 +14,8 @@ import * as $ from "redux/survey/survey-actions";
 import { arrayify } from "utils/array";
 
 // Initialize survey store & set first question
-export const initSurvey = ({ surveyData, alert }) => (dispatch, getState) => {
-	const { sections, mainQueue, optionalQueue } = surveyData;
+export const initSurvey = (data) => (dispatch, getState) => {
+	const { sections, mainQueue, optionalQueue, alert } = data;
 	dispatch($.clearSurvey());
 	dispatch($.setSurveyData(sections));
 	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue)));
