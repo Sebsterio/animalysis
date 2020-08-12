@@ -50,18 +50,6 @@ export const isAnswerSelected = (state, answer) => {
 	return currentAnswers.some((currentAnswer) => currentAnswer === answer);
 };
 
-// Index of last question in current section
-export const getLastQuestionIndex = (state) => {
-	const section = getCurrentSectionData(state);
-	return section ? section.questions.length - 1 : null;
-};
-
-export const getIsLastQuestionInSection = (state) => {
-	const currentQuestionInex = getCurrentQuestionIndex(state);
-	const lastQuestionInex = getLastQuestionIndex(state);
-	return currentQuestionInex === lastQuestionInex;
-};
-
 // --------------- Location queue---------------
 
 export const getQueue = (state) => state.survey.queue;
@@ -72,12 +60,12 @@ export const getNextLocation = (state) => {
 	return getQueue(state)[0];
 };
 
-// --------------- Original optional queue---------------
+// ----------- Initial optional queue-----------
 
-export const getOriginalOptionalQueue = (state) =>
-	state.survey.originalOptionalQueue;
+export const getInitialOptionalQueue = (state) =>
+	state.survey.initialOptionalQueue;
 
-// --------------------- Data ---------------------
+// -------------------- Data ---------------------
 
 // Survey
 
@@ -102,6 +90,24 @@ export const getCurrentSectionTitle = (state) => {
 	return currentSection ? currentSection.title : null;
 };
 
+// Get an array of location objects from sectionName
+export const getLocationsFromSection = (state, sectionName) => {
+	const sectionData = getSectionData(state, sectionName);
+	return sectionData.questions.map((_, i) => ({
+		sectionName,
+		questionIndex: i,
+	}));
+};
+
+// Map section names into location objects
+export const getUnpackedQueue = (state, queue) => {
+	const newQueue = [];
+	queue.forEach((sectionName) =>
+		newQueue.push(...getLocationsFromSection(state, sectionName))
+	);
+	return newQueue;
+};
+
 // Question
 
 // TEMP
@@ -119,6 +125,18 @@ export const getCurrentQuestionData = (state) => {
 	return question;
 };
 
+// Index of last question in current section
+export const getLastQuestionIndex = (state) => {
+	const section = getCurrentSectionData(state);
+	return section ? section.questions.length - 1 : null;
+};
+
+export const getIsLastQuestionInSection = (state) => {
+	const currentQuestionInex = getCurrentQuestionIndex(state);
+	const lastQuestionInex = getLastQuestionIndex(state);
+	return currentQuestionInex === lastQuestionInex;
+};
+
 // Answer
 
 export const getCurrentAnswerData = (state) => {
@@ -131,22 +149,6 @@ export const getCurrentAnswerData = (state) => {
 	return answers;
 };
 
-// ------------------------- Conversion ----------------------------
+// ------------------- Alert -------------------------
 
-// Get an array of location objects from sectionName
-export const getLocationsFromSection = (state, sectionName) => {
-	const sectionData = getSectionData(state, sectionName);
-	return sectionData.questions.map((_, i) => ({
-		sectionName,
-		questionIndex: i,
-	}));
-};
-
-// Map section names into location object
-export const getUnpackedQueue = (state, queue) => {
-	const newQueue = [];
-	queue.forEach((sectionName) =>
-		newQueue.push(...getLocationsFromSection(state, sectionName))
-	);
-	return newQueue;
-};
+export const getCurrentAlert = (state) => state.survey.currentAlert;

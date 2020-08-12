@@ -123,8 +123,8 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return makeState(state, "optionalQueue", () => [...action.payload]);
 		}
 
-		case $.SET_ORIGINAL_OPTIONAL_QUEUE: {
-			return makeState(state, "originalOptionalQueue", () => [
+		case $.SET_INITIAL_OPTIONAL_QUEUE: {
+			return makeState(state, "initialOptionalQueue", () => [
 				...action.payload,
 			]);
 		}
@@ -141,7 +141,23 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			);
 		}
 
+		// --- Alert ---
+
+		case $.SET_CURRENT_ALERT: {
+			return makeState(state, "currentAlert", () => action.payload);
+		}
+
+		case $.RESET_CURRENT_ALERT: {
+			return makeState(state, "currentAlert", () => 0);
+		}
+
 		// ---------------------------
+
+		case $.CLEAR_SURVEY: {
+			return {
+				...INITIAL_STATE,
+			};
+		}
 
 		default:
 			return state;

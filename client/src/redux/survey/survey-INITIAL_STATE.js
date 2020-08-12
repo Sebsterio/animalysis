@@ -16,10 +16,10 @@ export const INITIAL_STATE = {
 
 	// Read-only copy of optionalQueue
 	// Used to match sections removed from queue to be re-added to optionalQueue
-	originalOptionalQueue: [],
+	initialOptionalQueue: [],
 
 	// Highest level of urgency resulting from answers so far
-	alert: 0,
+	currentAlert: 0,
 };
 
 // location in survey sequence; used as element of history and queues

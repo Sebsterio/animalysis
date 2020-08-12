@@ -85,9 +85,9 @@ export const setOptionalQueue = (data) => ({
 	payload: data,
 });
 
-export const SET_ORIGINAL_OPTIONAL_QUEUE = "SET_ORIGINAL_OPTIONAL_QUEUE";
-export const setOriginalOptionalQueue = (data) => ({
-	type: SET_ORIGINAL_OPTIONAL_QUEUE,
+export const SET_INITIAL_OPTIONAL_QUEUE = "SET_INITIAL_OPTIONAL_QUEUE";
+export const setInitialOptionalQueue = (data) => ({
+	type: SET_INITIAL_OPTIONAL_QUEUE,
 	payload: data,
 });
 
@@ -101,4 +101,24 @@ export const REMOVE_FROM_OPTIONAL_QUEUE = "REMOVE_FROM_OPTIONAL_QUEUE";
 export const removeFromOptionalQueue = (data) => ({
 	type: REMOVE_FROM_OPTIONAL_QUEUE,
 	payload: data,
+});
+
+// --- Alert ---
+
+export const SET_CURRENT_ALERT = "SET_CURRENT_ALERT";
+export const setCurrentAlert = (data) => ({
+	type: SET_CURRENT_ALERT,
+	payload: data,
+});
+
+export const RESET_CURRENT_ALERT = "RESET_CURRENT_ALERT";
+export const resetCurrentAlert = () => ({
+	type: RESET_CURRENT_ALERT,
+});
+
+// --- General ---
+
+export const CLEAR_SURVEY = "CLEAR_SURVEY";
+export const clearSurvey = () => ({
+	type: CLEAR_SURVEY,
 });

@@ -5,21 +5,23 @@ import {
 	getNextLocation,
 	getPreviousLocation,
 	getLocationsFromSection,
-	getOriginalOptionalQueue,
+	getInitialOptionalQueue,
 	getCurrentQuestionData,
 	getCurrentAnswerData,
+	getCurrentAlert,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { arrayify } from "utils/array";
 
 // Initialize survey store & set first question
-// NOTE: don't save state in a var as actions are synchroneous
-export const initSurvey = (surveyData) => (dispatch, getState) => {
+export const initSurvey = ({ surveyData, alert }) => (dispatch, getState) => {
 	const { sections, mainQueue, optionalQueue } = surveyData;
+	dispatch($.clearSurvey());
 	dispatch($.setSurveyData(sections));
 	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue)));
 	dispatch($.setOptionalQueue(optionalQueue));
-	dispatch($.setOriginalOptionalQueue(optionalQueue));
+	dispatch($.setInitialOptionalQueue(optionalQueue));
+	if (alert) dispatch($.setCurrentAlert(alert));
 	const nextLocation = getNextLocation(getState());
 	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());
@@ -48,7 +50,7 @@ export const handleGoForward = (history) => (dispatch, getState) => {
 	arrayify(currentAnswer).forEach((answer) => {
 		const { followUp, alert } = answer;
 		if (followUp) dispatch(addFollowUpToQueue({ followUp }));
-		if (alert) console.log("ADD_ALERT (stub)"); // TEMP <<<<
+		if (alert) dispatch(updateAlert(alert));
 	});
 	dispatch(goForward(history));
 };
@@ -58,10 +60,10 @@ export const handleGoForward = (history) => (dispatch, getState) => {
 export const handleGoBack = (history) => (dispatch, getState) => {
 	dispatch(goBack(history)); // must run first
 	const currentAnswer = getCurrentAnswerData(getState());
+	console.log(currentAnswer);
 	arrayify(currentAnswer).forEach((answer) => {
-		const { followUp, alert } = answer;
+		const { followUp } = answer;
 		if (followUp) dispatch(removeFollowUpsFromQueue({ followUp }));
-		if (alert) console.log("REMOVE_ALERT (stub)"); // TEMP <<<<
 	});
 };
 
@@ -114,15 +116,26 @@ const addFollowUpToQueue = ({ followUp, answerIndex }) => (dispatch, getState) =
 };
 
 // Remove locations addedBy questions at given historyIndex
-// Re-add sectionNames to optionalQueue if present in originalOptionalQueue
+// Re-add sectionNames to optionalQueue if present in initialOptionalQueue
 const removeFollowUpsFromQueue = ({ followUp }) => (dispatch, getState) => {
 	const historyIndex = getCurrentLocationHistoryIndex(getState());
-	const originalOptionalQueue = getOriginalOptionalQueue(getState());
+	const initialOptionalQueue = getInitialOptionalQueue(getState());
 	const { target } = followUp;
 
 	dispatch($.removeLocationsFromQueue({ historyIndex }));
 	arrayify(target).forEach((target) => {
-		if (originalOptionalQueue.includes(target))
+		if (initialOptionalQueue.includes(target))
 			dispatch($.addToOptionalQueue(target));
 	});
+};
+
+// --------------------------- ALert --------------------------
+
+const updateAlert = (alert) => (dispatch, getState) => {
+	const currentAlert = getCurrentAlert(getState());
+	if (alert > currentAlert) {
+		dispatch($.setCurrentAlert(alert));
+		window.alert(`currentAlert increased from ${currentAlert} to ${alert}`);
+	}
+	// TODO: and run handler
 };
