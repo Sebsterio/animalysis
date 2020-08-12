@@ -23,6 +23,9 @@ export const INITIAL_STATE = {
 
 	// Read-only; set on startSurvey; used to calculate final alert level in Review
 	initialAlert: 0,
+
+	// Alert level to be presented in AlertModal
+	alertModalLevel: 0,
 };
 
 // location in survey sequence; used as element of history and queues

@@ -136,7 +136,6 @@ const updateAlert = (alert) => (dispatch, getState) => {
 	const currentAlert = getCurrentAlert(getState());
 	if (alert > currentAlert) {
 		dispatch($.setCurrentAlert(alert));
-		window.alert(`currentAlert increased from ${currentAlert} to ${alert}`);
+		if (alert >= 2) dispatch($.openAlertModal(alert));
 	}
-	// TODO: and run handler
 };

@@ -117,6 +117,19 @@ export const setInitialAlert = (data) => ({
 	payload: data,
 });
 
+// --- Alert Modal ---
+
+export const OPEN_ALERT_MODAL = "OPEN_ALERT_MODAL";
+export const openAlertModal = (data) => ({
+	type: OPEN_ALERT_MODAL,
+	payload: data,
+});
+
+export const CLOSE_ALERT_MODAL = "CLOSE_ALERT_MODAL";
+export const closeAlertModal = () => ({
+	type: CLOSE_ALERT_MODAL,
+});
+
 // --- General ---
 
 export const CLEAR_SURVEY = "CLEAR_SURVEY";

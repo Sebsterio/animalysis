@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Section, Question, Nav } from "./components";
+import { Section, Question, Nav, AlertModal } from "./components";
 import { Container } from "@material-ui/core";
 
 /*************************************************
@@ -29,6 +29,7 @@ export const Survey = ({ surveyIsLoaded, history }) => {
 			<Section />
 			<Question history={history} />
 			<Nav history={history} />
+			<AlertModal history={history} />
 		</Container>
 	);
 };

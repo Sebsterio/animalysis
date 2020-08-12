@@ -158,7 +158,7 @@ export const getCurrentAnswerData = (state) => {
 	return getAnswerData(question, answer);
 };
 
-// ------------------- Alert -------------------------
+// -------------------- Alert -------------------------
 
 export const getCurrentAlert = (state) => state.survey.currentAlert;
 
@@ -180,3 +180,7 @@ export const getMaxAlertFromHistory = (state) =>
 		const alert = getAlertFromAnswer(question, answer);
 		return alert > accumulator ? alert : accumulator;
 	}, getInitialAlert(state));
+
+// ---------------- Alert Modal ---------------------
+
+export const getAlertModalLevel = (state) => state.survey.alertModalLevel;
