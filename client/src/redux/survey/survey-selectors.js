@@ -175,14 +175,17 @@ const getAlertFromAnswer = (question, answer) =>
 export const getMaxAlertFromHistory = (state) =>
 	getHistory(state).reduce((accumulator, location) => {
 		const { sectionName, questionIndex, answer } = location;
+		console.log({ location });
 		const section = getSectionData(state, sectionName);
+		console.log({ section });
 		const question = getQuestionData(state, section, questionIndex);
+		console.log({ question });
 		const alert = getAlertFromAnswer(question, answer);
 		return alert > accumulator ? alert : accumulator;
 	}, getInitialAlert(state));
 
 export const getIsRedAlertFromHistory = (state) =>
-	getMaxAlertFromHistory(state) === 3;
+	getMaxAlertFromHistory(state) === 4;
 
 // ---------------- Alert Modal ---------------------
 

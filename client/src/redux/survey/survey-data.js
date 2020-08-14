@@ -12,7 +12,7 @@
  * ------ print (Str): displayed in final report
  * ------ printNote (Str): displayed in final report
  * ------ alert (Num): displayed in final report (highest alert reached only)
- * -------- 0 (green) | 1 (yellow) | 2 (orange) | 3 (red),
+ * -------- 0 (none) | 1 (green) | 2 (yellow) | 3 (orange) | 4 (red),
  * ------ followUp (Obj)
  * -------- target (Str | [Str]: sectionName): sections to inject
  * -------- after: place(s) to inject target
@@ -78,7 +78,7 @@ export const surveyData = {
 
 						{
 							text: "Answer 2 (orange alert)",
-							alert: 2,
+							alert: 3,
 						},
 					],
 				},
@@ -133,7 +133,7 @@ export const surveyData = {
 									: ""
 							} but not as much as usual`,
 							print: "Mild lethargy",
-							alert: 1,
+							alert: 2,
 							followUp: {
 								target: ["behaviour_exam", "bleeding_exam"],
 							},
@@ -141,7 +141,7 @@ export const surveyData = {
 						{
 							text: "Doesn't respond at all and can't move",
 							print: "Comatose",
-							alert: 3,
+							alert: 4,
 						},
 					],
 				}),
@@ -175,7 +175,7 @@ export const surveyData = {
 					answers: [
 						{
 							text: "Yes",
-							alert: 1,
+							alert: 2,
 							followUp: {
 								target: "bleeding_exam",
 							},
@@ -198,12 +198,12 @@ export const surveyData = {
 						{
 							text: "1 day",
 							printNote: "Polyuric for 1 day",
-							alert: 1,
+							alert: 2,
 						},
 						{
 							text: "1-3 days",
 							printNote: "Polyuric for 1-3 days",
-							alert: 2,
+							alert: 3,
 						},
 					],
 				},
@@ -222,7 +222,7 @@ export const surveyData = {
 						{
 							text: "Trembling or tremoring",
 							print: "Tremoring",
-							alert: 2,
+							alert: 3,
 						},
 						{
 							text: "No",
@@ -299,7 +299,7 @@ export const surveyData = {
 						{
 							text: "Dripping onto the floor",
 							print: "Severe Heammorhage",
-							alert: 3,
+							alert: 4,
 						},
 					],
 				},
@@ -337,7 +337,7 @@ export const surveyData = {
 						{
 							text: "1-10mm",
 							printNote: "1-10mm wound",
-							alert: 1,
+							alert: 2,
 						},
 					],
 				},

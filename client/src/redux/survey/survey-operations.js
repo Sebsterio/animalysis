@@ -29,6 +29,20 @@ export const initSurvey = (data) => (dispatch, getState) => {
 	dispatch($.shiftNextLocationFromQueue());
 };
 
+export const initOptionalSurvey = (history) => (dispatch, getState) => {
+	// TODO: move optionalQueue to queue
+	history.push("/analysis");
+};
+
+export const endSurvey = (history) => (dispatch, getState) => {
+	// TODO: create report
+	dispatch($.clearSurvey());
+	history.replace("/analysis/report");
+};
+
+// TEMP
+export const callClinic = () => alert("CALL_CLINIC--STUB");
+
 // ----------------------- Compound operations ---------------------------
 
 // Set/add/remove answer in current location depending on question type
@@ -76,7 +90,7 @@ const handleAlert = (alert) => (dispatch, getState) => {
 	const currentAlert = getCurrentAlert(getState());
 	if (alert <= currentAlert) return;
 	dispatch($.setCurrentAlert(alert));
-	if (alert === 2) dispatch($.activateAlertModal());
+	if (alert === 3) dispatch($.activateAlertModal());
 };
 
 // --------------------------- Navigation -----------------------------

@@ -26,19 +26,17 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const AlertModal = ({ active, closeModal, history }) => {
+const AlertModal = ({ isActive, closeModal, endSurvey, callClinic }) => {
 	const clx = useStyles();
 
-	const endSurvey = () => {
+	const handleClose = () => {
 		closeModal();
-		history.replace("/analysis/report");
+		endSurvey();
 	};
-
-	const callClinic = () => alert("CALL_CLINIC--STUB");
 
 	return (
 		<Modal
-			open={active}
+			open={isActive}
 			onClose={closeModal}
 			aria-labelledby="alert-modal-title"
 			aria-describedby="alert-modal-description"
@@ -65,7 +63,7 @@ const AlertModal = ({ active, closeModal, history }) => {
 					className={clx.callButton}
 					onClick={callClinic}
 				/>
-				<Typography children="You may complete the survey at any time or send it to your vet now." />
+				<Typography children="You may complete the analysis at any time or send it to your vet now." />
 				<div className={clx.nav}>
 					<Button
 						color="default"
@@ -77,7 +75,7 @@ const AlertModal = ({ active, closeModal, history }) => {
 						color="default"
 						children="Submit report"
 						className={clx.navButton}
-						onClick={endSurvey}
+						onClick={handleClose}
 					/>
 				</div>
 			</Container>

@@ -11,9 +11,16 @@ const persistConfig = {
 	whitelist: [],
 };
 
+// const surveyPersistConfig = {
+// 	key: "survey",
+// 	storage,
+// 	blacklist: ["data"],
+// };
+
 const rootReducer = combineReducers({
 	user: userReducer,
 	survey: surveyReducer,
+	// survey: persistReducer(surveyPersistConfig, surveyReducer),
 });
 
 export default persistReducer(persistConfig, rootReducer);
