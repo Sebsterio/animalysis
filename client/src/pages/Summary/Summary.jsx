@@ -1,6 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button } from "@material-ui/core";
+import { Alert, AlertTitle } from "@material-ui/lab";
+
 import { summaryData } from "./Summary-data";
 
 const useStyles = makeStyles((theme) => ({
@@ -10,7 +12,20 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "space-between",
 		padding: theme.spacing(3),
 	},
-	content: {
+	head: {
+		display: "flex",
+		justifyContent: "space-evenly",
+		alignItems: "center",
+	},
+	alert: ({ color, backgroundColor }) => ({
+		border: `2px solid ${color}`,
+		background: backgroundColor,
+	}),
+	alertText: {
+		margin: 0,
+		textTransform: "uppercase",
+	},
+	main: {
 		display: "grid",
 		gridGap: theme.spacing(3),
 	},
@@ -20,19 +35,36 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Summary = ({ alertLevel, continueSurvey, endSurvey, callClinic }) => {
-	const clx = useStyles();
+// TEMP
+const pet = { name: "Bobo" };
 
-	const pet = { name: "Bobo" };
+const Summary = ({
+	alertLevel,
+	optionalQueueExists,
+	callClinic,
+	continueSurvey,
+	endSurvey,
+}) => {
+	const data = summaryData[alertLevel];
+	const clx = useStyles(data);
 
-	const text = summaryData[alertLevel];
+	const canContinue = optionalQueueExists && alertLevel < 4;
 
 	return (
 		<Container className={clx.page}>
-			<Container className={clx.content}>
-				<Typography children={text.paragraph1(pet)} />
-				{!!text.paragraph2 && <Typography children={text.paragraph2(pet)} />}
-				{!!text.paragraph3 && <Typography children={text.paragraph3(pet)} />}
+			<div className={clx.head}>
+				<Typography children="Urgency Level: " variant="h5" />
+				<Alert className={clx.alert} icon={false}>
+					<AlertTitle className={clx.alertText}>{data.urgency}</AlertTitle>
+				</Alert>
+			</div>
+
+			<Container className={clx.main}>
+				<Typography children={data.textMain(pet)} />
+				{canContinue && !!data.textContinue && (
+					<Typography children={data.textContinue(pet)} />
+				)}
+				{!!data.textEnd && <Typography children={data.textEnd(pet)} />}
 
 				<Button
 					fullWidth
@@ -45,7 +77,7 @@ const Summary = ({ alertLevel, continueSurvey, endSurvey, callClinic }) => {
 			</Container>
 
 			<div className={clx.nav}>
-				{alertLevel < 4 && (
+				{canContinue && (
 					<Button
 						color="default"
 						children="Continue Analysis"
@@ -54,7 +86,7 @@ const Summary = ({ alertLevel, continueSurvey, endSurvey, callClinic }) => {
 					/>
 				)}
 				<Button
-					fullWidth={alertLevel === 4}
+					fullWidth={!canContinue}
 					color="default"
 					children="Submit report"
 					className={clx.navButton}

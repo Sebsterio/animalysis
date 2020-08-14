@@ -60,7 +60,14 @@ export const getNextLocation = (state) => {
 	return getQueue(state)[0];
 };
 
-// ----------- Initial optional queue-----------
+// Optional queue
+
+export const getOptionalQueue = (state) => state.survey.optionalQueue;
+
+export const getIsOptionalQueuePopulated = (state) =>
+	!!getOptionalQueue(state).length;
+
+// Initial optional queue
 
 export const getInitialOptionalQueue = (state) =>
 	state.survey.initialOptionalQueue;

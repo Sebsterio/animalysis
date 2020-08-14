@@ -1,7 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getMaxAlertFromHistory } from "redux/survey/survey-selectors";
+import {
+	getMaxAlertFromHistory,
+	getIsOptionalQueuePopulated,
+} from "redux/survey/survey-selectors";
 import {
 	initOptionalSurvey,
 	endSurvey,
@@ -12,6 +15,7 @@ import Summary from "./Summary";
 
 const mapStateToProps = (state) => ({
 	alertLevel: getMaxAlertFromHistory(state),
+	optionalQueueExists: getIsOptionalQueuePopulated(state),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
