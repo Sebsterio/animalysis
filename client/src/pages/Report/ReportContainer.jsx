@@ -7,7 +7,7 @@ import {
 	getMaxAlertFromHistory,
 } from "redux/survey/survey-selectors";
 
-import Review from "./Review";
+import Report from "./Report";
 
 const mapStateToProps = (state) => ({
 	history: getHistory(state),
@@ -17,6 +17,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({});
 
-const SurveyContainer = (props) => <Review {...props} />;
+const ReportContainer = (props) => <Report {...props} />;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ReportContainer);

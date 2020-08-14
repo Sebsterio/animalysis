@@ -153,12 +153,12 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 
 		// --- Alert Modal ---
 
-		case $.OPEN_ALERT_MODAL: {
-			return makeState(state, "alertModalLevel", () => action.payload);
+		case $.ACTIVATE_ALERT_MODAL: {
+			return makeState(state, "alertModalActive", () => true);
 		}
 
-		case $.CLOSE_ALERT_MODAL: {
-			return makeState(state, "alertModalLevel", () => 0);
+		case $.DEACTIVATE_ALERT_MODAL: {
+			return makeState(state, "alertModalActive", () => false);
 		}
 
 		// ---------------------------

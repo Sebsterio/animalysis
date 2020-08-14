@@ -15,10 +15,10 @@
  * -------- 0 (green) | 1 (yellow) | 2 (orange) | 3 (red),
  * ------ followUp (Obj)
  * -------- target (Str | [Str]: sectionName): sections to inject
- * -------- after (Str | [Str] | 'all'): place to inject target
+ * -------- after: place(s) to inject target
  * ----------( Str | [Str]): sectionName(s) after which to inject target
- * ----------(' all'): push target to queue (i.e. redirect at the end of survey)
- * ----------(  null): unshift target to queue (i.e. redirect immediately)
+ * ----------('all'): push target to queue (i.e. redirect at the end of survey)
+ * ----------( null): unshift target to queue (i.e. redirect immediately)
  */
 
 export const surveyData = {
@@ -77,7 +77,8 @@ export const surveyData = {
 						},
 
 						{
-							text: "Answer 2",
+							text: "Answer 2 (orange alert)",
+							alert: 2,
 						},
 					],
 				},

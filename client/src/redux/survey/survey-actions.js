@@ -119,15 +119,14 @@ export const setInitialAlert = (data) => ({
 
 // --- Alert Modal ---
 
-export const OPEN_ALERT_MODAL = "OPEN_ALERT_MODAL";
-export const openAlertModal = (data) => ({
-	type: OPEN_ALERT_MODAL,
-	payload: data,
+export const ACTIVATE_ALERT_MODAL = "ACTIVATE_ALERT_MODAL";
+export const activateAlertModal = () => ({
+	type: ACTIVATE_ALERT_MODAL,
 });
 
-export const CLOSE_ALERT_MODAL = "CLOSE_ALERT_MODAL";
-export const closeAlertModal = () => ({
-	type: CLOSE_ALERT_MODAL,
+export const DEACTIVATE_ALERT_MODAL = "DEACTIVATE_ALERT_MODAL";
+export const deactivateAlertModal = () => ({
+	type: DEACTIVATE_ALERT_MODAL,
 });
 
 // --- General ---

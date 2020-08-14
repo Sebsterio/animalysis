@@ -20,10 +20,14 @@ const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 
 	const startSurvey = (data) => {
 		if (!surveyIsLoaded) initSurvey(data);
-		history.push("/new-report");
+		history.push("/analysis");
 	};
 
-	const startRoutineCheck = () => startSurvey({ ...surveyData, alert: 0 });
+	const startRoutineCheck = () =>
+		startSurvey({
+			...surveyData,
+			alert: 0,
+		});
 
 	// Add primer section to mainQueue and set alarm to green
 	const startProblemReport = () => {

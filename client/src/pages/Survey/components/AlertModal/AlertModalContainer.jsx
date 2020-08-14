@@ -1,17 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getAlertModalLevel } from "redux/survey/survey-selectors";
-import { closeAlertModal } from "redux/survey/survey-actions";
+import { getIsAlertModalActive } from "redux/survey/survey-selectors";
+import { deactivateAlertModal } from "redux/survey/survey-actions";
 
 import AlertModal from "./AlertModal";
 
 const mapStateToProps = (state) => ({
-	level: getAlertModalLevel(state),
+	active: getIsAlertModalActive(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	closeModal: (data) => dispatch(closeAlertModal(data)),
+	closeModal: () => dispatch(deactivateAlertModal()),
 });
 
 const AlertModalContainer = (props) => <AlertModal {...props} />;

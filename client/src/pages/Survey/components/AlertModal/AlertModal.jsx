@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Modal, Button } from "@material-ui/core";
+import { Modal, Container, Typography, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -9,69 +9,78 @@ const useStyles = makeStyles((theme) => ({
 		left: "50%",
 		transform: `translate(-50%, -50%)`,
 		width: 400,
-		maxWidth: "95vw",
+		maxWidth: "96vw",
 		backgroundColor: theme.palette.background.paper,
 		border: "2px solid #000",
 		boxShadow: theme.shadows[5],
-		padding: theme.spacing(2, 4, 3),
+		padding: theme.spacing(2, 3),
+		display: "grid",
+		gridGap: theme.spacing(3),
 	},
-	closeBtn: {
-		margin: theme.spacing(1, 0),
+	subHeading: {
+		fontWeight: "bold",
 	},
-	bookingBtn: {
-		margin: theme.spacing(1, 0),
+	nav: {
+		display: "flex",
+		justifyContent: "space-between",
 	},
 }));
 
-const AlertModal = ({ level, closeModal, history }) => {
+const AlertModal = ({ active, closeModal, history }) => {
 	const clx = useStyles();
 
-	const organgeAlert = level === 2;
-	const redAlert = level === 3;
-
-	const goToBookingPage = () => {
+	const endSurvey = () => {
 		closeModal();
-		history.push("/appointment");
+		history.replace("/analysis/report");
 	};
 
-	const handleBgClick = () => {
-		console.log("bg click");
-		if (redAlert) goToBookingPage();
-		else closeModal();
-	};
+	const callClinic = () => alert("CALL_CLINIC--STUB");
 
 	return (
 		<Modal
-			open={!!level}
-			onClose={handleBgClick}
-			aria-labelledby="simple-modal-title"
-			aria-describedby="simple-modal-description"
+			open={active}
+			onClose={closeModal}
+			aria-labelledby="alert-modal-title"
+			aria-describedby="alert-modal-description"
 		>
-			<div className={clx.paper}>
-				<h2 id="simple-modal-title">Attention!</h2>
-				<p id="simple-modal-description">
-					Your pet's issue is urgent. You should book an appointment
-					immediately.{" "}
-					{organgeAlert && "You may complete the survey afterwards."}
-				</p>
+			<Container className={clx.paper}>
+				<Typography
+					children="Attention!"
+					component="h2"
+					variant="h2"
+					align="center"
+					id="alert-modal-title"
+				/>
+				<Typography
+					children="Your pet's issue is urgent. Please book an appointment immediately."
+					className={clx.subHeading}
+					color="error"
+					id="alert-modal-description"
+				/>
 				<Button
 					fullWidth
 					variant="contained"
 					color="default"
-					children="Continue Survey"
-					disabled={redAlert}
-					className={clx.closeBtn}
-					onClick={closeModal}
+					children="Call Clinic"
+					className={clx.callButton}
+					onClick={callClinic}
 				/>
-				<Button
-					fullWidth
-					variant="contained"
-					color="primary"
-					children="Book an Appointment"
-					className={clx.bookingBtn}
-					onClick={goToBookingPage}
-				/>
-			</div>
+				<Typography children="You may complete the survey at any time or send it to your vet now." />
+				<div className={clx.nav}>
+					<Button
+						color="default"
+						children="Continue Analysis"
+						className={clx.navButton}
+						onClick={closeModal}
+					/>
+					<Button
+						color="default"
+						children="Submit report"
+						className={clx.navButton}
+						onClick={endSurvey}
+					/>
+				</div>
+			</Container>
 		</Modal>
 	);
 };

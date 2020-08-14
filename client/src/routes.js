@@ -1,31 +1,55 @@
 import { Home } from "pages/Home";
 import { Survey } from "pages/Survey";
-import { Review } from "pages/Review";
+import { Report } from "pages/Report";
 import { Account } from "pages/Account";
-import { Appointment } from "pages/Appointment";
+import { Summary } from "pages/Summary";
 
 export const routes = [
 	{
 		path: "/", // URL
 		title: "Home", // Appers in header
 		component: Home, // To render
-		exact: true, // Switch match
-		inNav: true, // Is listed in nav menu
+		exact: true, // Router Switch match
+		inNav: true, // Is listed in Nav Menu
 	},
+	// --- Analysis ---
 	{
-		path: "/new-report",
-		title: "New Report",
+		path: "/analysis",
+		title: "New Analysis",
 		component: Survey,
 		exact: true,
 		inNav: true,
 	},
 	{
-		path: "/new-report/review",
-		title: "Review Report",
-		component: Review,
+		path: "/analysis/summary",
+		title: "Analysis Summary",
+		component: Summary,
 		exact: true,
 		inNav: false,
 	},
+	{
+		path: "/analysis/alert",
+		title: "Alert",
+		component: Summary,
+		exact: true,
+		inNav: false,
+	},
+	// --- Report ---
+	{
+		path: "/report",
+		title: "Report",
+		component: Report,
+		exact: true,
+		inNav: false,
+	},
+	{
+		path: "/report/:index",
+		title: "Report",
+		component: Report,
+		exact: true,
+		inNav: false,
+	},
+	// --- Account ---
 	{
 		path: "/account",
 		title: "My Account",
@@ -39,12 +63,5 @@ export const routes = [
 		component: Account,
 		exact: true,
 		inNav: false,
-	},
-	{
-		path: "/appointment",
-		title: "New Appointment",
-		component: Appointment,
-		exact: true,
-		inNav: true,
 	},
 ];

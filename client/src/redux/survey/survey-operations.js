@@ -9,6 +9,7 @@ import {
 	getCurrentQuestionData,
 	getCurrentAnswerData,
 	getCurrentAlert,
+	getIsRedAlertFromHistory,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { arrayify } from "utils/array";
@@ -51,7 +52,7 @@ export const handleGoForward = (history) => (dispatch, getState) => {
 	arrayify(currentAnswer).forEach((answer) => {
 		const { followUp, alert } = answer;
 		if (followUp) dispatch(addFollowUpToQueue({ followUp }));
-		if (alert) dispatch(updateAlert(alert));
+		if (alert) dispatch(handleAlert(alert, history));
 	});
 	dispatch(goForward(history));
 };
@@ -68,7 +69,28 @@ export const handleGoBack = (history) => (dispatch, getState) => {
 	});
 };
 
-// --------------------------- Navigation -------------------------------
+// -------------------------- ALert Popup -----------------------------
+
+// Open warning popup if alert reached level 2 (only once through entire survey)
+const handleAlert = (alert) => (dispatch, getState) => {
+	const currentAlert = getCurrentAlert(getState());
+	if (alert <= currentAlert) return;
+	dispatch($.setCurrentAlert(alert));
+	if (alert === 2) dispatch($.activateAlertModal());
+};
+
+// --------------------------- Navigation -----------------------------
+
+// Push first queue location to history and shift it from queue
+// End survey if queue empty or alert reached level 3
+const goForward = (history) => (dispatch, getState) => {
+	const nextLocation = getNextLocation(getState());
+	if (!nextLocation) return history.push("/analysis/summary");
+	dispatch($.pushLocationToHistory(nextLocation));
+	dispatch($.shiftNextLocationFromQueue());
+	const isRedAlert = getIsRedAlertFromHistory(getState());
+	if (isRedAlert) return history.push("/analysis/summary");
+};
 
 // Pop last history location and unshift it into queue
 // Quit survey if history empty
@@ -78,15 +100,6 @@ const goBack = (history) => (dispatch, getState) => {
 	if (!previousLocation) return history.goBack();
 	dispatch($.unshiftLocationsToQueue({ newLocations: currentLocation }));
 	dispatch($.popLocationFromHistory());
-};
-
-// Push first queue location to history and shift it from queue
-// End survey if queue empty
-const goForward = (history) => (dispatch, getState) => {
-	const nextLocation = getNextLocation(getState());
-	if (!nextLocation) return history.push("/new-report/review");
-	dispatch($.pushLocationToHistory(nextLocation));
-	dispatch($.shiftNextLocationFromQueue());
 };
 
 // ------------------------- Follow Ups ---------------------------------
@@ -128,14 +141,4 @@ const removeFollowUpsFromQueue = ({ followUp }) => (dispatch, getState) => {
 		if (initialOptionalQueue.includes(target))
 			dispatch($.addToOptionalQueue(target));
 	});
-};
-
-// --------------------------- ALert --------------------------
-
-const updateAlert = (alert) => (dispatch, getState) => {
-	const currentAlert = getCurrentAlert(getState());
-	if (alert > currentAlert) {
-		dispatch($.setCurrentAlert(alert));
-		if (alert >= 2) dispatch($.openAlertModal(alert));
-	}
 };

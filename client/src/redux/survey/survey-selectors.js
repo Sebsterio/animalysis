@@ -181,6 +181,9 @@ export const getMaxAlertFromHistory = (state) =>
 		return alert > accumulator ? alert : accumulator;
 	}, getInitialAlert(state));
 
+export const getIsRedAlertFromHistory = (state) =>
+	getMaxAlertFromHistory(state) === 3;
+
 // ---------------- Alert Modal ---------------------
 
-export const getAlertModalLevel = (state) => state.survey.alertModalLevel;
+export const getIsAlertModalActive = (state) => state.survey.alertModalActive;

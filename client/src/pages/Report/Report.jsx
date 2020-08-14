@@ -1,7 +1,7 @@
 import React from "react";
 import { arrayify } from "utils/array";
 
-const Review = ({ history, data, alert }) => {
+const Report = ({ history, data, alert }) => {
 	const getQuestionData = ({ sectionName, questionIndex }) =>
 		data[sectionName].questions[questionIndex];
 
@@ -29,4 +29,4 @@ const Review = ({ history, data, alert }) => {
 	);
 };
 
-export default Review;
+export default Report;
