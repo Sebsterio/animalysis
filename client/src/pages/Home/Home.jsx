@@ -15,8 +15,16 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+// TEMP
+const pet = {
+	name: "Benny",
+	species: "canine",
+};
+
 const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 	const clx = useStyles();
+
+	const data = surveyData(pet);
 
 	const startSurvey = (data) => {
 		if (!surveyIsLoaded) initSurvey(data);
@@ -25,15 +33,15 @@ const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 
 	const startRoutineCheck = () =>
 		startSurvey({
-			...surveyData,
+			...data,
 			alert: 0,
 		});
 
 	// Add primer section to mainQueue and set alarm to green
 	const startProblemReport = () => {
-		const { primerSection, mainQueue } = surveyData;
+		const { primerSection, mainQueue } = data;
 		startSurvey({
-			...surveyData,
+			...data,
 			alert: 1,
 			mainQueue: [primerSection, ...mainQueue],
 		});

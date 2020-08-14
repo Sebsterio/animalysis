@@ -110,23 +110,15 @@ export const getUnpackedQueue = (state, queue) => {
 
 // Question
 
-// TEMP
-const getCurrentPet = (state) => ({
-	name: "Benny",
-	species: "canine",
-});
-
-export const getQuestionData = (state, section, questionIndex) => {
-	const question = section.questions[questionIndex];
-	if (typeof question === "function") return question(getCurrentPet(state));
-	return question;
+export const getQuestionData = (section, questionIndex) => {
+	return section.questions[questionIndex];
 };
 
 export const getCurrentQuestionData = (state) => {
 	const section = getCurrentSectionData(state);
 	if (!section) return null;
 	const questionIndex = getCurrentQuestionIndex(state);
-	return getQuestionData(state, section, questionIndex);
+	return getQuestionData(section, questionIndex);
 };
 
 // Index of last question in current section
@@ -175,11 +167,8 @@ const getAlertFromAnswer = (question, answer) =>
 export const getMaxAlertFromHistory = (state) =>
 	getHistory(state).reduce((accumulator, location) => {
 		const { sectionName, questionIndex, answer } = location;
-		console.log({ location });
 		const section = getSectionData(state, sectionName);
-		console.log({ section });
-		const question = getQuestionData(state, section, questionIndex);
-		console.log({ question });
+		const question = getQuestionData(section, questionIndex);
 		const alert = getAlertFromAnswer(question, answer);
 		return alert > accumulator ? alert : accumulator;
 	}, getInitialAlert(state));

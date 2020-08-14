@@ -1,4 +1,5 @@
 /*
+ * primerSection (Str): prepended to mainQueue if reporting a problem (not in routine health check)
  * queue: ['sectionName']
  * sections (Arr)
  * - sectionName (Obj)
@@ -21,7 +22,7 @@
  * ----------( null): unshift target to queue (i.e. redirect immediately)
  */
 
-export const surveyData = {
+export const surveyData = (pet) => ({
 	primerSection: "primer", // prepended to mainQueue if reporting a problem
 	mainQueue: ["bleeding", "activity", "urinating"],
 	optionalQueue: ["nose_exam", "ears_exam", "behaviour_exam", "bleeding_exam"],
@@ -31,7 +32,7 @@ export const surveyData = {
 		primer: {
 			title: "Primer Questions",
 			questions: [
-				(pet) => ({
+				{
 					label: `Where on ${pet.name}’s body is the problem/problems?`,
 					type: "select-multiple",
 					answers: [
@@ -53,7 +54,7 @@ export const surveyData = {
 							text: "Other",
 						},
 					],
-				}),
+				},
 			],
 		},
 
@@ -96,7 +97,7 @@ export const surveyData = {
 						},
 					],
 				},
-				(pet) => ({
+				{
 					label: `Is ${pet.name} bleeding?`,
 					type: "select-one",
 					answers: [
@@ -108,7 +109,7 @@ export const surveyData = {
 						},
 						{ text: "No" },
 					],
-				}),
+				},
 			],
 		},
 
@@ -117,7 +118,7 @@ export const surveyData = {
 		activity: {
 			title: "Activity Level",
 			questions: [
-				(pet) => ({
+				{
 					label: `Is ${pet.name} lethargic (i.e. not as active as usual)?`,
 					type: "select-one",
 					answers: [
@@ -144,7 +145,7 @@ export const surveyData = {
 							alert: 4,
 						},
 					],
-				}),
+				},
 			],
 		},
 
@@ -153,7 +154,7 @@ export const surveyData = {
 		urinating: {
 			title: "Urinating",
 			questions: [
-				(pet) => ({
+				{
 					label: `How much urine is ${pet.name} producing?`,
 					type: "select-one",
 					answers: [
@@ -168,7 +169,7 @@ export const surveyData = {
 							},
 						},
 					],
-				}),
+				},
 				{
 					label: `Is there blood in the urine?`,
 					type: "select-one",
@@ -215,7 +216,7 @@ export const surveyData = {
 		behaviour_exam: {
 			title: "Behaviour",
 			questions: [
-				(pet) => ({
+				{
 					label: `Does ${pet.name} have any of the following movement issues?`,
 					type: "select-one",
 					answers: [
@@ -228,7 +229,7 @@ export const surveyData = {
 							text: "No",
 						},
 					],
-				}),
+				},
 			],
 		},
 
@@ -359,4 +360,4 @@ export const surveyData = {
 			],
 		},
 	},
-};
+});
