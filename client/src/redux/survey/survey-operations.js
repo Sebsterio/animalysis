@@ -10,6 +10,8 @@ import {
 	getCurrentAnswerData,
 	getCurrentAlert,
 	getIsRedAlertFromHistory,
+	getOptionalQueue,
+	getIsOptionalQueuePopulated,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { arrayify } from "utils/array";
@@ -30,10 +32,15 @@ export const initSurvey = (data) => (dispatch, getState) => {
 };
 
 export const initOptionalSurvey = (history) => (dispatch, getState) => {
-	// TODO: move optionalQueue to queue
+	const optionalQueue = getOptionalQueue(getState());
+	dispatch($.setQueue(getUnpackedQueue(getState(), optionalQueue)));
+	dispatch($.clearOptionalQueue());
+	dispatch($.clearInitialOptionalQueue());
 	history.push("/analysis");
+	dispatch(goForward(history));
 };
 
+// WORK IN PROGRESS
 export const endSurvey = (history) => (dispatch, getState) => {
 	// TODO: create report
 	dispatch($.clearSurvey());
@@ -99,7 +106,11 @@ const handleAlert = (alert) => (dispatch, getState) => {
 // End survey if queue empty or alert reached level 3
 const goForward = (history) => (dispatch, getState) => {
 	const nextLocation = getNextLocation(getState());
-	if (!nextLocation) return history.push("/analysis/summary");
+	if (!nextLocation) {
+		const canContinue = getIsOptionalQueuePopulated(getState());
+		if (canContinue) return history.push("/analysis/summary");
+		else return dispatch(endSurvey(history));
+	}
 	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());
 	const isRedAlert = getIsRedAlertFromHistory(getState());

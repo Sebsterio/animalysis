@@ -90,6 +90,12 @@ export const summaryData = [
 				at any time or send it to your vet now.
 			</>
 		),
+		textEnd: () => (
+			<>
+				If you wish to end the survey now, a report based on this analysis will
+				be sent to your vet and they may instruct you further.
+			</>
+		),
 	},
 	// red
 	{

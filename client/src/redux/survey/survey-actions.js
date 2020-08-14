@@ -40,6 +40,11 @@ export const popLocationFromHistory = () => ({
 	type: POP_LOCATION_FROM_HISTORY,
 });
 
+export const CLEAR_HISTORY = "CLEAR_HISTORY";
+export const clearHistory = () => ({
+	type: CLEAR_HISTORY,
+});
+
 // --- Main queue ---
 
 export const SET_QUEUE = "SET_QUEUE";
@@ -85,9 +90,9 @@ export const setOptionalQueue = (data) => ({
 	payload: data,
 });
 
-export const SET_INITIAL_OPTIONAL_QUEUE = "SET_INITIAL_OPTIONAL_QUEUE";
-export const setInitialOptionalQueue = (data) => ({
-	type: SET_INITIAL_OPTIONAL_QUEUE,
+export const CLEAR_OPTIONAL_QUEUE = "CLEAR_OPTIONAL_QUEUE";
+export const clearOptionalQueue = (data) => ({
+	type: CLEAR_OPTIONAL_QUEUE,
 	payload: data,
 });
 
@@ -101,6 +106,19 @@ export const REMOVE_FROM_OPTIONAL_QUEUE = "REMOVE_FROM_OPTIONAL_QUEUE";
 export const removeFromOptionalQueue = (data) => ({
 	type: REMOVE_FROM_OPTIONAL_QUEUE,
 	payload: data,
+});
+
+// --- Initial optional queue ---
+
+export const SET_INITIAL_OPTIONAL_QUEUE = "SET_INITIAL_OPTIONAL_QUEUE";
+export const setInitialOptionalQueue = (data) => ({
+	type: SET_INITIAL_OPTIONAL_QUEUE,
+	payload: data,
+});
+
+export const CLEAR_INITIAL_OPTIONAL_QUEUE = "CLEAR_INITIAL_OPTIONAL_QUEUE";
+export const clearInitialOptionalQueue = () => ({
+	type: CLEAR_INITIAL_OPTIONAL_QUEUE,
 });
 
 // --- Alert ---

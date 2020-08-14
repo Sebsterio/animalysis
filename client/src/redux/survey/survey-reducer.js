@@ -35,6 +35,10 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			);
 		}
 
+		case $.CLEAR_HISTORY: {
+			return makeState(state, "history", () => []);
+		}
+
 		// --- Current Location ---
 
 		case $.SET_ANSWER_IN_CURRENT_LOCATION: {
@@ -123,10 +127,8 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return makeState(state, "optionalQueue", () => [...action.payload]);
 		}
 
-		case $.SET_INITIAL_OPTIONAL_QUEUE: {
-			return makeState(state, "initialOptionalQueue", () => [
-				...action.payload,
-			]);
+		case $.CLEAR_OPTIONAL_QUEUE: {
+			return makeState(state, "optionalQueue", () => []);
 		}
 
 		case $.ADD_TO_OPTIONAL_QUEUE: {
@@ -141,11 +143,25 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			);
 		}
 
+		// --- Initial Optional Queue ---
+
+		case $.SET_INITIAL_OPTIONAL_QUEUE: {
+			return makeState(state, "initialOptionalQueue", () => [
+				...action.payload,
+			]);
+		}
+
+		case $.CLEAR_INITIAL_OPTIONAL_QUEUE: {
+			return makeState(state, "initialOptionalQueue", () => []);
+		}
+
 		// --- Alert ---
 
 		case $.SET_CURRENT_ALERT: {
 			return makeState(state, "currentAlert", () => action.payload);
 		}
+
+		// --- Initial Alert ---
 
 		case $.SET_INITIAL_ALERT: {
 			return makeState(state, "initialAlert", () => action.payload);
