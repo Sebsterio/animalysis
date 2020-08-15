@@ -26,9 +26,11 @@ const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 
 	const data = surveyData(pet);
 
+	const goToSurvey = () => history.push("/analysis");
+
 	const startSurvey = (data) => {
-		if (!surveyIsLoaded) initSurvey(data);
-		history.push("/analysis");
+		initSurvey(data);
+		goToSurvey();
 	};
 
 	const startRoutineCheck = () =>
@@ -49,21 +51,27 @@ const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
+			{surveyIsLoaded && (
+				<Button
+					variant="contained"
+					className={clx.surveyBtn}
+					onClick={goToSurvey}
+					children="Continue Analysis"
+				/>
+			)}
 			<Button
 				variant="contained"
 				className={clx.surveyBtn}
 				onClick={startRoutineCheck}
-			>
-				Routine Health Check
-			</Button>
+				children="Routine Health Check"
+			/>
 			<Button
 				variant="contained"
 				color="primary"
 				className={clx.surveyBtn}
 				onClick={startProblemReport}
-			>
-				Report a Problem
-			</Button>
+				children="Report a Problem"
+			/>
 		</Container>
 	);
 };
