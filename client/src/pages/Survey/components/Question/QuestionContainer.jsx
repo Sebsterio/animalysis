@@ -5,6 +5,7 @@ import {
 	getCurrentQuestionData,
 	getCurrentQuestionIndex,
 	getLastQuestionIndex,
+	getCurrentAnswerData,
 	isAnswerSelected,
 } from "redux/survey/survey-selectors";
 import { handleAnswer } from "redux/survey/survey-operations";
@@ -15,6 +16,7 @@ const mapStateToProps = (state) => ({
 	question: getCurrentQuestionData(state),
 	questionIndex: getCurrentQuestionIndex(state),
 	lastQuestionIndex: getLastQuestionIndex(state),
+	answer: getCurrentAnswerData(state),
 	isAnswerSelected: (answer) => isAnswerSelected(state, answer),
 });
 

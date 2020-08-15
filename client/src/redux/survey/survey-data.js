@@ -33,6 +33,11 @@ export const surveyData = (pet) => ({
 			title: "Primer Questions",
 			questions: [
 				{
+					label: `What's wrong with ${pet.name} today?`,
+					type: "text",
+					setsTitle: true,
+				},
+				{
 					label: `Where on ${pet.name}’s body is the problem/problems?`,
 					type: "select-multiple",
 					answers: [

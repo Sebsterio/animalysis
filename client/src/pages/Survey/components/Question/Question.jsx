@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import shortid from "shortid";
-
-import { Box, Button, Typography } from "@material-ui/core";
+import { Box, Button, Typography, TextField } from "@material-ui/core";
 
 // ---------------------------------------------------------------
 
@@ -19,13 +18,14 @@ const Question = ({
 	question,
 	questionIndex,
 	lastQuestionIndex,
+	answer,
 	isAnswerSelected,
 	// dispatch
 	handleAnswer,
 }) => {
 	const clx = useStyles();
 	if (!question) return null;
-	const { label, answers } = question;
+	const { label, answers, type, setsTitle } = question;
 
 	return (
 		<Box>
@@ -41,28 +41,50 @@ const Question = ({
 					component="label"
 					variant="h5"
 					className={clx.question}
-					htmlFor="Question"
+					htmlFor="Survey__Question"
 					children={label}
 				/>
 			</Box>
 
-			{answers.map(({ text, followUp, alert }, answerIndex) => {
-				const isSelected = isAnswerSelected(answerIndex);
-				const handleClick = () =>
-					handleAnswer({ answerIndex, followUp, alert, isSelected }, history);
-				return (
-					<Box mb={2} key={shortid.generate()}>
-						<Button
-							fullWidth
-							variant={isSelected ? "contained" : "outlined"}
-							color="default"
-							children={text}
-							className={clx.button}
-							onClick={handleClick}
-						/>
-					</Box>
-				);
-			})}
+			{type === "text"
+				? (() => {
+						const handleChange = (e) =>
+							handleAnswer({ answer: e.target.value, setsTitle }, history);
+						return (
+							<Box mb={2}>
+								<TextField
+									label="Problem description"
+									variant="outlined"
+									fullWidth
+									multiline
+									autoFocus
+									value={answer || ""}
+									onChange={handleChange}
+									id="Survey__Question"
+								/>
+							</Box>
+						);
+				  })()
+				: // type: select-one | select-multiple
+				  answers.map(({ text, followUp, alert }, answerIndex) => {
+						const isSelected = isAnswerSelected(answerIndex);
+						const handleClick = () =>
+							handleAnswer(
+								{ answerIndex, followUp, alert, isSelected },
+								history
+							);
+						return (
+							<Box mb={2} key={shortid.generate()}>
+								<Button
+									fullWidth
+									variant={isSelected ? "contained" : "outlined"}
+									color="default"
+									children={text}
+									onClick={handleClick}
+								/>
+							</Box>
+						);
+				  })}
 		</Box>
 	);
 };

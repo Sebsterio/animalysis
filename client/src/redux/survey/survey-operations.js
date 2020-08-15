@@ -66,8 +66,11 @@ export const callClinic = () => alert("CALL_CLINIC--STUB");
 export const handleAnswer = (data, history) => (dispatch, getState) => {
 	const currentQuestion = getCurrentQuestionData(getState());
 	const { type } = currentQuestion;
-	const { answerIndex, isSelected } = data;
-	if (type === "select-one") {
+	const { answerIndex, isSelected, answer, setsTitle } = data;
+	if (type === "text") {
+		dispatch($.setAnswerInCurrentLocation(answer));
+		if (setsTitle) dispatch($.setTitle(answer));
+	} else if (type === "select-one") {
 		dispatch($.setAnswerInCurrentLocation(answerIndex));
 		dispatch(handleGoForward(history));
 	} else if (type === "select-multiple") {

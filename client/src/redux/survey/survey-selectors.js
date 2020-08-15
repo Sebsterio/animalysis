@@ -143,6 +143,7 @@ export const getIsLastQuestionInSection = (state) => {
 // Answer
 
 export const getAnswerData = (question, answer) => {
+	if (typeof answer === "string") return answer;
 	const answers = arrayify(answer).map(
 		(answerIndex) => question.answers[answerIndex]
 	);
@@ -163,10 +164,11 @@ export const getCurrentAnswerData = (state) => {
 export const getProblemListFromHistory = (state) =>
 	getHistory(state)
 		.map(({ sectionName, questionIndex, answer }) => {
+			if (typeof answer === "string") return null;
 			const section = getSectionData(state, sectionName);
 			const question = getQuestionData(section, questionIndex);
-			return arrayify(answer).map((answr) => {
-				const { print, printNote } = question.answers[answr];
+			const answerData = getAnswerData(question, answer);
+			return arrayify(answerData).map(({ print, printNote }) => {
 				return { print, printNote };
 			});
 		})

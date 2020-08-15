@@ -177,6 +177,12 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return makeState(state, "alertModalActive", () => false);
 		}
 
+		// --- Title ---
+
+		case $.SET_TITLE: {
+			return makeState(state, "title", () => action.payload);
+		}
+
 		// ---------------------------
 
 		case $.CLEAR_SURVEY: {

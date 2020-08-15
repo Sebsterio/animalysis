@@ -26,6 +26,9 @@ export const INITIAL_STATE = {
 
 	// Popup triggered by orange alert (level 2)
 	alertModalActive: false,
+
+	// Report title; set in survey
+	title: "",
 };
 
 // location in survey sequence; used as element of history and queues
