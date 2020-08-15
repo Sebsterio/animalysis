@@ -23,7 +23,7 @@ import { arrayify } from "utils/array";
 
 // Initialize survey store & set first question
 export const initSurvey = (data) => (dispatch, getState) => {
-	const { sections, mainQueue, optionalQueue, alert } = data;
+	const { sections, mainQueue, optionalQueue, alert, title } = data;
 	dispatch($.clearSurvey());
 	dispatch($.setSurveyData(sections));
 	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue)));
@@ -31,6 +31,7 @@ export const initSurvey = (data) => (dispatch, getState) => {
 	dispatch($.setInitialOptionalQueue(optionalQueue));
 	dispatch($.setCurrentAlert(alert));
 	dispatch($.setInitialAlert(alert));
+	if (title) dispatch($.setTitle(title));
 	const nextLocation = getNextLocation(getState());
 	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());

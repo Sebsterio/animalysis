@@ -37,6 +37,7 @@ const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 		startSurvey({
 			...data,
 			alert: 0,
+			title: "Routine Health Check",
 		});
 
 	// Add primer section to mainQueue and set alarm to green
@@ -45,6 +46,7 @@ const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 		startSurvey({
 			...data,
 			alert: 1,
+			title: "New Problem",
 			mainQueue: [problemIntro, ...mainQueue],
 		});
 	};
