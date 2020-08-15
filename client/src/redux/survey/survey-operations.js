@@ -12,9 +12,13 @@ import {
 	getIsRedAlertFromHistory,
 	getOptionalQueue,
 	getIsOptionalQueuePopulated,
+	getProblemListFromHistory,
+	getMaxAlertFromHistory,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { arrayify } from "utils/array";
+
+// ----------------------- Compound operations ---------------------------
 
 // Initialize survey store & set first question
 export const initSurvey = (data) => (dispatch, getState) => {
@@ -42,15 +46,21 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 
 // WORK IN PROGRESS
 export const endSurvey = (history) => (dispatch, getState) => {
-	// TODO: create report
+	dispatch(generateReport());
 	dispatch($.clearSurvey());
 	history.replace("/analysis/report");
 };
 
+export const generateReport = () => (dispatch, getState) => {
+	const state = getState();
+	const problemList = getProblemListFromHistory(state);
+	const alert = getMaxAlertFromHistory(state);
+	console.log({ problemList, alert });
+	// TODO: save report in store (new reducer); with sync status props
+};
+
 // TEMP
 export const callClinic = () => alert("CALL_CLINIC--STUB");
-
-// ----------------------- Compound operations ---------------------------
 
 // Set/add/remove answer in current location depending on question type
 export const handleAnswer = (data, history) => (dispatch, getState) => {
@@ -106,15 +116,14 @@ const handleAlert = (alert) => (dispatch, getState) => {
 // End survey if queue empty or alert reached level 3
 const goForward = (history) => (dispatch, getState) => {
 	const nextLocation = getNextLocation(getState());
-	if (!nextLocation) {
-		const canContinue = getIsOptionalQueuePopulated(getState());
-		if (canContinue) return history.push("/analysis/summary");
-		else return dispatch(endSurvey(history));
-	}
+	if (!nextLocation)
+		return getIsOptionalQueuePopulated(getState())
+			? history.push("/analysis/summary")
+			: dispatch(endSurvey(history));
 	dispatch($.pushLocationToHistory(nextLocation));
 	dispatch($.shiftNextLocationFromQueue());
 	const isRedAlert = getIsRedAlertFromHistory(getState());
-	if (isRedAlert) return history.push("/analysis/summary");
+	if (isRedAlert) history.push("/analysis/summary");
 };
 
 // Pop last history location and unshift it into queue

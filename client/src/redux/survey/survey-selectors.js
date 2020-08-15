@@ -157,6 +157,22 @@ export const getCurrentAnswerData = (state) => {
 	return getAnswerData(question, answer);
 };
 
+// Problem List
+
+// Get an array with print and printNote values from answers given
+export const getProblemListFromHistory = (state) =>
+	getHistory(state)
+		.map(({ sectionName, questionIndex, answer }) => {
+			const section = getSectionData(state, sectionName);
+			const question = getQuestionData(section, questionIndex);
+			return arrayify(answer).map((answr) => {
+				const { print, printNote } = question.answers[answr];
+				return { print, printNote };
+			});
+		})
+		.flat()
+		.filter((problem) => problem.print || problem.printNote);
+
 // -------------------- Alert -------------------------
 
 export const getCurrentAlert = (state) => state.survey.currentAlert;
