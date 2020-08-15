@@ -1,5 +1,5 @@
 /*
- * primerSection (Str): prepended to mainQueue if reporting a problem (not in routine health check)
+ * problemIntro (Str): prepended to mainQueue if reporting a problem (not in routine health check)
  * queue: ['sectionName']
  * sections (Arr)
  * - sectionName (Obj)
@@ -23,7 +23,7 @@
  */
 
 export const surveyData = (pet) => ({
-	primerSection: "primer", // prepended to mainQueue if reporting a problem
+	problemIntro: "primer", // prepended to mainQueue if reporting a problem
 	mainQueue: ["bleeding", "activity", "urinating"],
 	optionalQueue: ["nose_exam", "ears_exam", "behaviour_exam", "bleeding_exam"],
 	sections: {

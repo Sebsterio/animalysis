@@ -41,11 +41,11 @@ const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 
 	// Add primer section to mainQueue and set alarm to green
 	const startProblemReport = () => {
-		const { primerSection, mainQueue } = data;
+		const { problemIntro, mainQueue } = data;
 		startSurvey({
 			...data,
 			alert: 1,
-			mainQueue: [primerSection, ...mainQueue],
+			mainQueue: [problemIntro, ...mainQueue],
 		});
 	};
 

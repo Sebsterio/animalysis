@@ -39,7 +39,7 @@ const Summary = ({
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
-			<Alert level={alertLevel} orientation="horizontal" />
+			<Alert level={alertLevel} />
 
 			<Container className={clx.main}>
 				<Typography children={data.textMain(pet)} />

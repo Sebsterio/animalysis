@@ -38,12 +38,12 @@ const Report = ({ history, match, getReport, recentReport }) => {
 			/>
 
 			<Container className={clx.main}>
-				<Alert level={alert} orientation="horizontal" />
+				<Alert level={alert} alignLeft />
 				<Typography
 					children="Problems List"
 					component="h3"
 					variant="h5"
-					align="center"
+					// align="center"
 				/>
 				<ProblemsList data={problemList} />
 			</Container>

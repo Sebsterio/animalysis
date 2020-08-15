@@ -5,14 +5,17 @@ import { Alert as AlertFrame, AlertTitle } from "@material-ui/lab";
 import { alertData } from "./Alert-data";
 
 const useStyles = makeStyles((theme) => ({
-	container: ({ orientation }) => ({
+	container: {
 		display: "flex",
-		justifyContent: "space-evenly",
+		justifyContent: ({ alignLeft }) => (alignLeft ? "stretch" : "space-evenly"),
 		alignItems: "center",
-	}),
-	alert: ({ color, backgroundColor }) => ({
+	},
+	alertFrame: ({ color, backgroundColor }) => ({
 		border: `2px solid ${color}`,
 		background: backgroundColor,
+		minWidth: "8em",
+		justifyContent: "center",
+		margin: "auto",
 	}),
 	alertText: {
 		margin: 0,
@@ -20,16 +23,16 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Alert = ({ level, orientation }) => {
+export const Alert = ({ level, alignLeft }) => {
 	const data = alertData[level];
-	const clx = useStyles({ ...data, orientation });
+	const clx = useStyles({ ...data, alignLeft });
 
 	const { urgency } = data;
 
 	return (
 		<div className={clx.container}>
 			<Typography children="Urgency Level: " variant="h5" />
-			<AlertFrame className={clx.alert} icon={false}>
+			<AlertFrame className={clx.alertFrame} icon={false}>
 				<AlertTitle className={clx.alertText}>{urgency}</AlertTitle>
 			</AlertFrame>
 		</div>

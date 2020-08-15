@@ -14,7 +14,7 @@ export const ProblemsList = ({ data }) => {
 	return (
 		<div className={classes.root}>
 			<List>
-				{data.map(({ print, printNote }, i) => (
+				{data.map(({ print, printNote }) => (
 					<ListItem key={print || printNote}>
 						{printNote && (
 							<ListItemIcon>
