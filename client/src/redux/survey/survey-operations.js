@@ -16,6 +16,7 @@ import {
 	getMaxAlertFromHistory,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
+import { addReportToList } from "redux/reports/reports-actions";
 import { arrayify } from "utils/array";
 
 // ----------------------- Compound operations ---------------------------
@@ -55,8 +56,7 @@ export const generateReport = () => (dispatch, getState) => {
 	const state = getState();
 	const problemList = getProblemListFromHistory(state);
 	const alert = getMaxAlertFromHistory(state);
-	console.log({ problemList, alert });
-	// TODO: save report in store (new reducer); with sync status props
+	dispatch(addReportToList({ problemList, alert }));
 };
 
 // TEMP

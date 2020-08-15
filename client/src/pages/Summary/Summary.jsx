@@ -51,7 +51,7 @@ const Summary = ({
 	const canContinue = optionalQueueExists && alertLevel < 4;
 
 	return (
-		<Container className={clx.page}>
+		<Container maxWidth="xs" className={clx.page}>
 			<div className={clx.head}>
 				<Typography children="Urgency Level: " variant="h5" />
 				<Alert className={clx.alert} icon={false}>
