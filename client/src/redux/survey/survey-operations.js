@@ -14,6 +14,7 @@ import {
 	getIsOptionalQueuePopulated,
 	getProblemListFromHistory,
 	getMaxAlertFromHistory,
+	getTitle,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { addReportToList } from "redux/reports/reports-actions";
@@ -55,9 +56,11 @@ export const endSurvey = (history) => (dispatch, getState) => {
 
 export const generateReport = () => (dispatch, getState) => {
 	const state = getState();
-	const problemList = getProblemListFromHistory(state);
+	const date = new Date();
+	const title = getTitle(state);
 	const alert = getMaxAlertFromHistory(state);
-	dispatch(addReportToList({ problemList, alert }));
+	const problemList = getProblemListFromHistory(state);
+	dispatch(addReportToList({ problemList, alert, title, date }));
 };
 
 // TEMP

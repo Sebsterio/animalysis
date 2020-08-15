@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button } from "@material-ui/core";
 import { Alert } from "components/Alert";
 import { ProblemsList } from "./components";
+import { getDateString } from "utils/date";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -27,14 +28,14 @@ const Report = ({ history, match, getReport, recentReport }) => {
 
 	const handleClose = () => history.push("/");
 
-	const { alert, problemList, syncing } = report;
+	const { date, title, alert, problemList, syncing } = report;
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<Typography
 				variant="h5"
 				align="center"
-				children="(Dog's photo and name here)"
+				children={`${getDateString(date)} - ${title}`}
 			/>
 
 			<Container className={clx.main}>

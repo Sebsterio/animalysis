@@ -164,7 +164,7 @@ export const getCurrentAnswerData = (state) => {
 export const getProblemListFromHistory = (state) =>
 	getHistory(state)
 		.map(({ sectionName, questionIndex, answer }) => {
-			if (typeof answer === "string") return null;
+			if (typeof answer === "string") return {};
 			const section = getSectionData(state, sectionName);
 			const question = getQuestionData(section, questionIndex);
 			const answerData = getAnswerData(question, answer);
@@ -192,6 +192,7 @@ const getAlertFromAnswer = (question, answer) =>
 export const getMaxAlertFromHistory = (state) =>
 	getHistory(state).reduce((accumulator, location) => {
 		const { sectionName, questionIndex, answer } = location;
+		if (typeof answer === "string") return accumulator;
 		const section = getSectionData(state, sectionName);
 		const question = getQuestionData(section, questionIndex);
 		const alert = getAlertFromAnswer(question, answer);
@@ -204,3 +205,7 @@ export const getIsRedAlertFromHistory = (state) =>
 // ---------------- Alert Modal ---------------------
 
 export const getIsAlertModalActive = (state) => state.survey.alertModalActive;
+
+// ---------------- Title ---------------------
+
+export const getTitle = (state) => state.survey.title;
