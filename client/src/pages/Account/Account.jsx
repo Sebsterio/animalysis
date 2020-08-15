@@ -22,23 +22,18 @@ const AccountPage = ({
 
 	const { mode } = match.params;
 
-	const mainModesValues = Object.values(mainModes);
-	const authModesValues = Object.values(authModes);
-
-	const mainModesIsMatched = mainModesValues.includes(mode);
-	const authModesIsMatched = authModesValues.includes(mode);
+	const mainModesIsMatched = Object.values(mainModes).includes(mode);
+	const authModesIsMatched = Object.values(authModes).includes(mode);
 
 	if (isAuthenticated) {
 		if (authModesIsMatched) return <Redirect to="/" />; // After auth success
 		if (mode && !mainModesIsMatched) return <Redirect to="/account" />;
-
 		return <Main />;
 	}
 	// Not authenticated
 	else {
 		if (!mode || !authModesIsMatched)
 			return <Redirect to={`/account/${authModes.signIn}`} />;
-
 		return <Auth mode={mode} signIn={handleSignIn} />;
 	}
 };

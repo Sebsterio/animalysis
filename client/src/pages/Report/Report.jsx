@@ -1,9 +1,12 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 
-const Report = ({ reports, match }) => {
-	// select report by route param; no param -> select last report
+const Report = ({ match, getReport, recentReport }) => {
+	const { id } = match.params;
+	const report = id ? getReport(id) : recentReport;
+	if (!report) return <Redirect to="/not-found" />;
 
-	const alert = 0;
+	const { alert, problemList, syncing } = report;
 
 	return (
 		<div>

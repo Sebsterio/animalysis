@@ -49,7 +49,7 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 export const endSurvey = (history) => (dispatch, getState) => {
 	dispatch(generateReport());
 	dispatch($.clearSurvey());
-	history.replace("/analysis/report");
+	history.replace("/report");
 };
 
 export const generateReport = () => (dispatch, getState) => {

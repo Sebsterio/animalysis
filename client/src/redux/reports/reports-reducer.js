@@ -1,9 +1,9 @@
 import * as $ from "./reports-actions";
 import { makeState } from "utils/state";
 import { makeArrayWithPushedItems } from "utils/array";
+import shortid from "shortid";
 
 const INITIAL_STATE = {
-	activeIndex: 0, // index of currently active report
 	list: [], // report objects
 };
 
@@ -23,6 +23,8 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 			return makeState(state, "list", (list) =>
 				makeArrayWithPushedItems(list, {
 					...action.payload,
+					id: shortid.generate(),
+					syncing: false,
 					dateSynced: null,
 				})
 			);

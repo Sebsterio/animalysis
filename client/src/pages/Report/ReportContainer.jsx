@@ -1,12 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import {} from "redux/survey/survey-selectors";
+import {
+	getReportById,
+	getRecentReport,
+} from "redux/reports/reports-selectors";
 
 import Report from "./Report";
 
 const mapStateToProps = (state) => ({
-	// report: getReportsData(state),
+	getReport: (id) => getReportById(state, id),
+	recentReport: getRecentReport(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});

@@ -43,7 +43,7 @@ export const routes = [
 		inNav: false,
 	},
 	{
-		path: "/report/:index",
+		path: "/report/:id",
 		title: "Report",
 		component: Report,
 		exact: true,

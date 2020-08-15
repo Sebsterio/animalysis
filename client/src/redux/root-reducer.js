@@ -9,7 +9,7 @@ import reportsReducer from "redux/reports/reports-reducer";
 const persistConfig = {
 	key: "root",
 	storage,
-	whitelist: [],
+	// whitelist: [],
 };
 
 // const surveyPersistConfig = {
