@@ -3,9 +3,6 @@ import React from "react";
 export const summaryData = [
 	// none
 	{
-		urgency: "none",
-		color: "#9e9e9e",
-		backgroundColor: "#e0e0e0",
 		textMain: (pet) => (
 			<>
 				Based on the information you've given, {pet.name} seems fine and an
@@ -27,9 +24,6 @@ export const summaryData = [
 	},
 	// green
 	{
-		urgency: "low",
-		color: "#237e0a",
-		backgroundColor: "#8ed77b",
 		textMain: (pet) => (
 			<>
 				You should book an appointment for {pet.name} with the vet in{" "}
@@ -51,9 +45,6 @@ export const summaryData = [
 	},
 	// yellow
 	{
-		urgency: "medium",
-		color: "#c7c212",
-		backgroundColor: "#e3e66a",
 		textMain: (pet) => (
 			<>
 				You should book an appointment for {pet.name} with the vet in{" "}
@@ -75,9 +66,6 @@ export const summaryData = [
 	},
 	// orange
 	{
-		urgency: "high",
-		color: "#b3750d",
-		backgroundColor: "#e4b151",
 		textMain: (pet) => (
 			<>
 				You should book an appointment for {pet.name} with the vet{" "}
@@ -99,9 +87,6 @@ export const summaryData = [
 	},
 	// red
 	{
-		urgency: "critical",
-		color: "#b30d0d",
-		backgroundColor: "#f46c61",
 		textMain: (pet) => (
 			<>
 				{pet.name}'s issue is <b>extremely urgent</b>.

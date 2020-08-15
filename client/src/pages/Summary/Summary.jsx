@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button } from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import { Alert } from "components/Alert";
 
 import { summaryData } from "./Summary-data";
 
@@ -11,19 +11,6 @@ const useStyles = makeStyles((theme) => ({
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
 		padding: theme.spacing(3),
-	},
-	head: {
-		display: "flex",
-		justifyContent: "space-evenly",
-		alignItems: "center",
-	},
-	alert: ({ color, backgroundColor }) => ({
-		border: `2px solid ${color}`,
-		background: backgroundColor,
-	}),
-	alertText: {
-		margin: 0,
-		textTransform: "uppercase",
 	},
 	main: {
 		display: "grid",
@@ -52,12 +39,7 @@ const Summary = ({
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
-			<div className={clx.head}>
-				<Typography children="Urgency Level: " variant="h5" />
-				<Alert className={clx.alert} icon={false}>
-					<AlertTitle className={clx.alertText}>{data.urgency}</AlertTitle>
-				</Alert>
-			</div>
+			<Alert level={alertLevel} orientation="horizontal" />
 
 			<Container className={clx.main}>
 				<Typography children={data.textMain(pet)} />
