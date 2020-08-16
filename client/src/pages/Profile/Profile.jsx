@@ -30,8 +30,8 @@ const getPetByName = (name) =>
 export const Profile = ({
 	// router
 	match,
+	history,
 	// store
-	surveyIsLoaded,
 	isPetIdActive,
 	// dispatch
 	startRoutineCheck,
@@ -43,10 +43,22 @@ export const Profile = ({
 	const pet = getPetByName(name);
 	if (!pet) return <Redirect to="/not-found" />;
 
-	const data = { ...surveyData(pet), petId: pet.id };
+	const petId = pet.id;
+	const data = { ...surveyData(pet), petId };
+
+	const goToSurvey = () => history.push("/analysis");
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
+			{isPetIdActive(petId) && (
+				<Button
+					variant="contained"
+					color="primary"
+					className={clx.surveyBtn}
+					onClick={goToSurvey}
+					children="Continue Analysis"
+				/>
+			)}
 			<Button
 				variant="contained"
 				className={clx.surveyBtn}
@@ -55,7 +67,6 @@ export const Profile = ({
 			/>
 			<Button
 				variant="contained"
-				color="primary"
 				className={clx.surveyBtn}
 				onClick={() => startProblemReport(data)}
 				children="Report a Problem"

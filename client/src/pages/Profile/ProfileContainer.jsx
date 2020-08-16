@@ -1,10 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import {
-	getIsSurveyLoaded,
-	isPetIdActive,
-} from "redux/survey/survey-selectors";
+import { isPetIdActive } from "redux/survey/survey-selectors";
 import {
 	startRoutineCheck,
 	startProblemReport,
@@ -13,7 +10,6 @@ import {
 import { Profile } from "./Profile";
 
 const mapStateToProps = (state) => ({
-	surveyIsLoaded: getIsSurveyLoaded(state),
 	isPetIdActive: (id) => isPetIdActive(state, id),
 });
 
