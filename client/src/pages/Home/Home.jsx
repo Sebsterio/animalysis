@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Button } from "@material-ui/core";
 import { Head } from "./components";
+import dogImage from "assets/dog.jpg";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -18,11 +19,12 @@ const useStyles = makeStyles((theme) => ({
 	surveyBtn: {
 		margin: theme.spacing(1, 0),
 	},
-	temp: {
+	profile: {
 		width: 130,
 		height: 130,
 		margin: theme.spacing(1),
-		background: "grey",
+		background: `url(${dogImage})`,
+		backgroundSize: "cover",
 	},
 }));
 
@@ -38,7 +40,11 @@ export const Home = ({ history }) => {
 			{/* Main */}
 			<div className={clx.main}>
 				{Array.from({ length: pets }, (_, i) => (
-					<div key={i} className={clx.temp}></div>
+					<div
+						key={i}
+						className={clx.profile}
+						onClick={() => history.push("/profile/benny")}
+					></div>
 				))}
 			</div>
 
