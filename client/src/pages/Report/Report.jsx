@@ -28,7 +28,7 @@ const Report = ({ history, match, getReport, recentReport }) => {
 
 	const handleClose = () => history.push("/");
 
-	const { date, title, alert, problemList, syncing } = report;
+	const { date, title, alert, problemList } = report;
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>

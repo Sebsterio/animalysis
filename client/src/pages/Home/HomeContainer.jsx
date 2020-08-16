@@ -1,13 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getIsSurveyLoaded } from "redux/survey/survey-selectors";
-
 import { Home } from "./Home";
 
-const mapStateToProps = (state) => ({
-	surveyIsLoaded: getIsSurveyLoaded(state),
-});
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({});
 

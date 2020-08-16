@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Button } from "@material-ui/core";
+import { Head } from "./components";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -8,11 +9,6 @@ const useStyles = makeStyles((theme) => ({
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
 		padding: theme.spacing(3),
-	},
-	head: {
-		display: "flex",
-		flexFlow: "column nowrap",
-		justifyContent: "center",
 	},
 	main: {
 		display: "flex",
@@ -30,34 +26,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Home = ({ history, surveyIsLoaded }) => {
+export const Home = ({ history }) => {
 	const clx = useStyles();
-
-	const goToSurvey = () => history.push("/analysis");
 
 	const [pets, setPets] = useState(1);
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
-			{/* Header */}
-			<div className={clx.head}>
-				{true && (
-					<Button
-						variant="contained"
-						className={clx.surveyBtn}
-						onClick={() => {}}
-						children="Choose a Clinic"
-					/>
-				)}
-				{surveyIsLoaded && (
-					<Button
-						variant="contained"
-						className={clx.surveyBtn}
-						onClick={goToSurvey}
-						children="Continue Analysis"
-					/>
-				)}
-			</div>
+			<Head history={history} />
 
 			{/* Main */}
 			<div className={clx.main}>
@@ -68,7 +44,7 @@ export const Home = ({ history, surveyIsLoaded }) => {
 
 			{/* Footer */}
 			<Button
-				variant="contained"
+				variant="outlined"
 				className={clx.surveyBtn}
 				onClick={() => setPets(pets + 1)}
 				children="New Pet"
