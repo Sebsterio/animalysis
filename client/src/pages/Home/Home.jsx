@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Button } from "@material-ui/core";
-import { surveyData } from "redux/survey/survey-data";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -15,41 +14,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-// TEMP
-const pet = {
-	name: "Benny",
-	species: "canine",
-};
-
-const Home = ({ history, surveyIsLoaded, initSurvey }) => {
+export const Home = ({ history, surveyIsLoaded }) => {
 	const clx = useStyles();
 
-	const data = surveyData(pet);
-
 	const goToSurvey = () => history.push("/analysis");
-
-	const startSurvey = (data) => {
-		initSurvey(data);
-		goToSurvey();
-	};
-
-	const startRoutineCheck = () =>
-		startSurvey({
-			...data,
-			alert: 0,
-			title: "Routine Health Check",
-		});
-
-	// Add primer section to mainQueue and set alarm to green
-	const startProblemReport = () => {
-		const { problemIntro, mainQueue } = data;
-		startSurvey({
-			...data,
-			alert: 1,
-			title: "New Problem",
-			mainQueue: [problemIntro, ...mainQueue],
-		});
-	};
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
@@ -61,21 +29,6 @@ const Home = ({ history, surveyIsLoaded, initSurvey }) => {
 					children="Continue Analysis"
 				/>
 			)}
-			<Button
-				variant="contained"
-				className={clx.surveyBtn}
-				onClick={startRoutineCheck}
-				children="Routine Health Check"
-			/>
-			<Button
-				variant="contained"
-				color="primary"
-				className={clx.surveyBtn}
-				onClick={startProblemReport}
-				children="Report a Problem"
-			/>
 		</Container>
 	);
 };
-
-export default Home;

@@ -1,4 +1,5 @@
 import { Home } from "pages/Home";
+import { Profile } from "pages/Profile";
 import { Survey } from "pages/Survey";
 import { Report } from "pages/Report";
 import { Account } from "pages/Account";
@@ -11,6 +12,14 @@ export const routes = [
 		component: Home, // To render
 		exact: true, // Router Switch match
 		inNav: true, // Is listed in Nav Menu
+	},
+	// --- Pet profile ---
+	{
+		path: "/profile/:name",
+		title: "Pet Profile",
+		component: Profile,
+		exact: true,
+		inNav: false,
 	},
 	// --- Analysis ---
 	{

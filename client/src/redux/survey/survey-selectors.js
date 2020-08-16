@@ -209,3 +209,9 @@ export const getIsAlertModalActive = (state) => state.survey.alertModalActive;
 // ---------------- Title ---------------------
 
 export const getTitle = (state) => state.survey.title;
+
+// ---------------- Title ---------------------
+
+export const getPetId = (state) => state.survey.petId;
+
+export const isPetIdActive = (state, id) => getPetId(state) === id;

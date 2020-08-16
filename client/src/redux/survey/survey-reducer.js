@@ -183,6 +183,12 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 			return makeState(state, "title", () => action.payload);
 		}
 
+		// --- Pet ID ---
+
+		case $.SET_PET_ID: {
+			return makeState(state, "title", () => action.payload);
+		}
+
 		// ---------------------------
 
 		case $.CLEAR_SURVEY: {

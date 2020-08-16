@@ -155,6 +155,14 @@ export const setTitle = (data) => ({
 	payload: data,
 });
 
+// --- PetId ---
+
+export const SET_PET_ID = "SET_PET_ID";
+export const setPetId = (data) => ({
+	type: SET_PET_ID,
+	payload: data,
+});
+
 // --- General ---
 
 export const CLEAR_SURVEY = "CLEAR_SURVEY";

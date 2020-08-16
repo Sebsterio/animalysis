@@ -5,11 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Section, Question, Nav, AlertModal } from "./components";
 import { Container } from "@material-ui/core";
 
-/*************************************************
- * Redirects if survey data not loaded (URL accessed manually when no survey is active)
- * Passes browser history object down to children
- *************************************************/
-
 const useStyles = makeStyles((theme) => ({
 	container: {
 		display: "flex",

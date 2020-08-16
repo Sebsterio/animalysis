@@ -29,6 +29,9 @@ export const INITIAL_STATE = {
 
 	// Report title; set in survey
 	title: "",
+
+	// ID of the pet the survye applies to
+	petId: null,
 };
 
 // location in survey sequence; used as element of history and queues
