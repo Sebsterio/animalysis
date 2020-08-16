@@ -62,7 +62,7 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 	dispatch($.setQueue(getUnpackedQueue(getState(), optionalQueue)));
 	dispatch($.clearOptionalQueue());
 	dispatch($.clearInitialOptionalQueue());
-	history.push("/analysis");
+	history.replace("/analysis");
 	dispatch(goForward(history));
 };
 

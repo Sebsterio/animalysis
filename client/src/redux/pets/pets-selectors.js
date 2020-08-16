@@ -19,6 +19,5 @@ export const getAllPetReports = (state) =>
 
 export const getReportById = (state, id) => {
 	const list = getAllPetReports(state);
-	console.log({ list });
 	return list.find((report) => report.id === id);
 };

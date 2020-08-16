@@ -17,20 +17,25 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const ReportsList = ({ data }) => {
+export const ReportsList = ({ history, reports }) => {
 	const clx = useStyles();
 
-	if (!data.length) return <Typography variant="h6">No reports</Typography>;
+	const openReport = (id) => history.push(`/report/${id}`);
+
+	if (!reports.length)
+		return (
+			<Typography variant="h6" align="center">
+				No reports...
+			</Typography>
+		);
 
 	return (
 		<div>
 			<ButtonGroup
 				fullWidth
 				orientation="vertical"
-				// variant="text"
-				// variant="contained"
-				children={data.map(({ date, title }) => (
-					<Button className={clx.report}>
+				children={reports.map(({ id, date, title }) => (
+					<Button className={clx.report} onClick={() => openReport(id)}>
 						<span className={clx.date}>{getDateString(date)}</span>
 						<span className={clx.title}>{title}</span>
 					</Button>

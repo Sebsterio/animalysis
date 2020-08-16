@@ -13,15 +13,20 @@ const INITIAL_STATE = {
 			sex: "male",
 			species: "canine",
 			breed: "Dalmatian",
+			imageURL: "",
 			reports: [],
 		},
 	],
 };
 
 // const reportSchema = {
+//  id: '',
+//  date: null,
+//  title: '',
 // 	problemList: [],
 // 	alert: 0,
 // 	dateSynced: null, // syncs on ReportPage mount
+//  syncing: false
 // };
 
 const reportsReducer = (state = INITIAL_STATE, action) => {

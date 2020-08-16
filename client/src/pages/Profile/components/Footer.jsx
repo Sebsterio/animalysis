@@ -37,15 +37,15 @@ export const Footer = ({
 				fullWidth
 				variant="contained"
 				className={clx.button}
-				onClick={() => startProblemReport(data)}
-				children="Report a Problem"
+				onClick={() => startRoutineCheck(data)}
+				children="Routine Health Check"
 			/>
 			<Button
 				fullWidth
 				variant="contained"
 				className={clx.button}
-				onClick={() => startRoutineCheck(data)}
-				children="Routine Health Check"
+				onClick={() => startProblemReport(data)}
+				children="Report a Problem"
 			/>
 			<Button
 				fullWidth

@@ -40,7 +40,7 @@ export const Profile = ({
 			<div>
 				{pet.name}, {pet.species}, {pet.sex}
 			</div>
-			<ReportsList data={reports} />
+			<ReportsList {...{ history, reports }} />
 			<Footer {...{ history, petId, data }} />
 		</Container>
 	);

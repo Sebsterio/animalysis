@@ -48,7 +48,7 @@ const Report = ({ history, match, getReport }) => {
 				color="default"
 				children="Close"
 				className={clx.navButton}
-				onClick={() => history.push("/")}
+				onClick={() => history.goBack()}
 			/>
 		</Container>
 	);
