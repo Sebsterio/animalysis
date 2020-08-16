@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Button } from "@material-ui/core";
-import { Head } from "./components";
+import { Head, PetCard } from "./components";
 import dogImage from "assets/dog.jpg";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,44 +14,36 @@ const useStyles = makeStyles((theme) => ({
 	main: {
 		display: "flex",
 		flexFlow: "row wrap",
-		justifyContent: "center",
+		justifyContent: "space-around",
 	},
 	surveyBtn: {
 		margin: theme.spacing(4, 0, 0),
 	},
-	profile: {
-		width: 130,
-		height: 130,
-		margin: theme.spacing(1),
-		background: `url(${dogImage})`,
-		backgroundSize: "cover",
-	},
 }));
 
-export const Home = ({ history, username }) => {
+export const Home = ({ history, pets }) => {
 	const clx = useStyles();
 
-	const [pets, setPets] = useState(1);
+	const [petsNum, setPetsNum] = useState(1);
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<Head history={history} />
 
-			{/* Main */}
 			<div className={clx.main}>
-				{Array.from({ length: pets }, (_, i) => (
-					<div
+				{Array.from({ length: petsNum }, (_, i) => (
+					<PetCard
 						key={i}
-						className={clx.profile}
-						onClick={() => history.push("/profile/benny")}
-					></div>
+						pet={pets[0]} //////
+						handleClick={() => history.push("/profile/benny")} ////
+					/>
 				))}
 			</div>
 
 			<Button
 				variant="outlined"
 				className={clx.surveyBtn}
-				onClick={() => setPets(pets + 1)}
+				onClick={() => setPetsNum(petsNum + 1)}
 				children="New Pet"
 			/>
 		</Container>

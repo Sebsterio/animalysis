@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	button: {
-		margin: theme.spacing(1, 0),
+		margin: theme.spacing(0.3, 0),
 	},
 }));
 
@@ -23,16 +23,6 @@ export const Footer = ({
 
 	return (
 		<div>
-			{isPetIdActive(petId) && (
-				<Button
-					fullWidth
-					variant="contained"
-					color="primary"
-					className={clx.button}
-					onClick={() => history.push("/analysis")}
-					children="Continue Analysis"
-				/>
-			)}
 			<Button
 				fullWidth
 				variant="contained"
@@ -47,6 +37,16 @@ export const Footer = ({
 				onClick={() => startProblemReport(data)}
 				children="Report a Problem"
 			/>
+			{isPetIdActive(petId) && (
+				<Button
+					fullWidth
+					variant="contained"
+					color="primary"
+					className={clx.button}
+					onClick={() => history.push("/analysis")}
+					children="Continue Analysis"
+				/>
+			)}
 			<Button
 				fullWidth
 				variant="outlined"

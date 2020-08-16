@@ -16,7 +16,7 @@ const INITIAL_STATE = {
 			sex: "male",
 			species: "canine",
 			breed: "Dalmatian",
-			imageURL: `url(${dogImage})`,
+			imageUrl: dogImage,
 			reports: [],
 		},
 	],
