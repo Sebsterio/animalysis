@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Collapse, IconButton } from "@material-ui/core";
+import { Collapse, IconButton, Typography } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -18,9 +18,12 @@ const useStyles = makeStyles((theme) => ({
 	alert: {
 		alignItems: "center",
 	},
+	greeting: {
+		margin: theme.spacing(4, 0),
+	},
 }));
 
-export const Head = ({ surveyIsLoaded, clearSurvey }) => {
+export const Head = ({ username, surveyIsLoaded, clearSurvey }) => {
 	const clx = useStyles();
 
 	return (
@@ -51,6 +54,13 @@ export const Head = ({ surveyIsLoaded, clearSurvey }) => {
 					/>
 				</Link>
 			</Collapse>
+
+			<Typography
+				variant="h4"
+				align="center"
+				children={`Welcome, ${username}`}
+				className={clx.greeting}
+			/>
 		</div>
 	);
 };

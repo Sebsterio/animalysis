@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Button, Typography } from "@material-ui/core";
+import { Container, Button } from "@material-ui/core";
 import { Head } from "./components";
 import dogImage from "assets/dog.jpg";
 
@@ -10,9 +10,6 @@ const useStyles = makeStyles((theme) => ({
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
 		padding: theme.spacing(3),
-	},
-	greeting: {
-		margin: theme.spacing(4, 0),
 	},
 	main: {
 		display: "flex",
@@ -39,13 +36,6 @@ export const Home = ({ history, username }) => {
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<Head history={history} />
-
-			<Typography
-				variant="h4"
-				align="center"
-				children={`Welcome, ${username}`}
-				className={clx.greeting}
-			/>
 
 			{/* Main */}
 			<div className={clx.main}>
