@@ -19,15 +19,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Report = ({ history, match, getReport, recentReport }) => {
+const Report = ({ history, match, getReport }) => {
 	const clx = useStyles();
 
 	const { id } = match.params;
-	const report = id ? getReport(id) : recentReport;
-	if (!report) return <Redirect to="/not-found" />;
+	if (!id) return <Redirect to="/not-found" />;
 
-	const handleClose = () => history.push("/");
-
+	const report = getReport(id);
 	const { date, title, alert, problemList } = report;
 
 	return (
@@ -40,12 +38,7 @@ const Report = ({ history, match, getReport, recentReport }) => {
 
 			<Container className={clx.main}>
 				<Alert level={alert} alignLeft />
-				<Typography
-					children="Problems List"
-					component="h3"
-					variant="h5"
-					// align="center"
-				/>
+				<Typography children="Problems List" component="h3" variant="h5" />
 				<ProblemsList data={problemList} />
 			</Container>
 
@@ -55,17 +48,10 @@ const Report = ({ history, match, getReport, recentReport }) => {
 				color="default"
 				children="Close"
 				className={clx.navButton}
-				onClick={handleClose}
+				onClick={() => history.push("/")}
 			/>
 		</Container>
 	);
 };
 
 export default Report;
-
-// return (
-//  <>
-// 	 {print && <div>{print}</div>}
-// 	 {printNote && <div>NOTE: {printNote}</div>}
-//  </>
-// );

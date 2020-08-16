@@ -15,10 +15,12 @@ import {
 	getProblemListFromHistory,
 	getMaxAlertFromHistory,
 	getTitle,
+	getPetId,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
-import { addReportToList } from "redux/reports/reports-actions";
+import { addReportToPet } from "redux/pets/pets-actions";
 import { arrayify } from "utils/array";
+import shortid from "shortid";
 
 // TEMP
 export const callClinic = () => alert("CALL_CLINIC--STUB");
@@ -67,18 +69,26 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 // --------------------- Termination -------------------------
 
 export const endSurvey = (history) => (dispatch) => {
-	dispatch(generateReport());
+	const reportId = shortid.generate();
+	dispatch(generateReport({ reportId }));
 	dispatch($.clearSurvey());
-	history.replace("/report");
+	history.replace(`/report/${reportId}`);
 };
 
-const generateReport = () => (dispatch, getState) => {
+const generateReport = ({ reportId }) => (dispatch, getState) => {
 	const state = getState();
-	const date = new Date();
-	const title = getTitle(state);
-	const alert = getMaxAlertFromHistory(state);
-	const problemList = getProblemListFromHistory(state);
-	dispatch(addReportToList({ problemList, alert, title, date }));
+	dispatch(
+		addReportToPet({
+			id: getPetId(state),
+			data: {
+				id: reportId,
+				date: new Date(),
+				title: getTitle(state),
+				alert: getMaxAlertFromHistory(state),
+				problemList: getProblemListFromHistory(state),
+			},
+		})
+	);
 };
 
 // ----------------------- Answer ---------------------------

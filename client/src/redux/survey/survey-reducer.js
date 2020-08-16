@@ -7,7 +7,7 @@ import {
 	makeArrayWithUnshiftedItems,
 	makeArrayWithAddedUniqueItems,
 	makeArrayWithItemsInjectedAfterTargets,
-	makeArrayWithModifiedItem,
+	makeArrayWithModifiedItems,
 	makeArrayWithPoppedItem,
 	makeArrayWithShiftedItem,
 	makeArrayWithRemovedItems,
@@ -43,7 +43,7 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 
 		case $.SET_ANSWER_IN_CURRENT_LOCATION: {
 			return makeState(state, "history", (currentHistory) =>
-				makeArrayWithModifiedItem(currentHistory, -1, (location) => ({
+				makeArrayWithModifiedItems(currentHistory, -1, (location) => ({
 					...location,
 					answer: action.payload,
 				}))
@@ -52,7 +52,7 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 
 		case $.ADD_ANSWER_IN_CURRENT_LOCATION: {
 			return makeState(state, "history", (currentHistory) =>
-				makeArrayWithModifiedItem(currentHistory, -1, (location) => ({
+				makeArrayWithModifiedItems(currentHistory, -1, (location) => ({
 					...location,
 					answer: makeArrayWithAddedUniqueItems(
 						arrayify(location.answer),
@@ -64,7 +64,7 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 
 		case $.REMOVE_ANSWER_FROM_CURRENT_LOCATION: {
 			return makeState(state, "history", (currentHistory) =>
-				makeArrayWithModifiedItem(currentHistory, -1, (location) => ({
+				makeArrayWithModifiedItems(currentHistory, -1, (location) => ({
 					...location,
 					answer: makeArrayWithRemovedItems(
 						arrayify(location.answer),

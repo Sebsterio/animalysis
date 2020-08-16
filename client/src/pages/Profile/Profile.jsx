@@ -16,22 +16,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-// TEMP
-const pets = [
-	{
-		id: "123412341234",
-		name: "Benny",
-		species: "canine",
-	},
-];
-const getPetByName = (name) =>
-	pets.find((pet) => pet.name.toLowerCase() === name.toLowerCase());
-
 export const Profile = ({
 	// router
 	match,
 	history,
 	// store
+	getPetByName,
 	isPetIdActive,
 	// dispatch
 	startRoutineCheck,

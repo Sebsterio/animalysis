@@ -58,12 +58,23 @@ export const makeArrayWithRemovedItems = (
 	selector = (curItem) => curItem === item
 ) => array.filter((curItem) => !selector(curItem));
 
-// MODIFY array item; supports negative index (counted form end)
-export const makeArrayWithModifiedItem = (arr, index, modifier) => {
-	const newArr = [...arr];
-	if (index < 0) index = newArr.length + index;
-	newArr[index] = modifier(newArr[index]);
-	return newArr;
+// REPLACE item
+export const makeArrayWithReplacedItem = (
+	arr,
+	oldItem,
+	newItem,
+	selector = (item) => item === oldItem
+) => arr.map((item) => (selector(item) ? newItem : item));
+
+// MODIFY array item - supports negative index (counted form end)
+export const makeArrayWithModifiedItems = (
+	arr,
+	index,
+	modifier,
+	selector = (_item, i) => i === index
+) => {
+	if (index < 0) index = arr.length + index;
+	return arr.map((item, i) => (selector(item, i) ? modifier(item) : item));
 };
 
 // INJECT items(s) after last array item that matched any target
