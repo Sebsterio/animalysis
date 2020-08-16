@@ -46,8 +46,6 @@ export const Profile = ({
 	const petId = pet.id;
 	const data = { ...surveyData(pet), petId };
 
-	const goToSurvey = () => history.push("/analysis");
-
 	return (
 		<Container maxWidth="xs" className={clx.container}>
 			{isPetIdActive(petId) && (
@@ -55,10 +53,16 @@ export const Profile = ({
 					variant="contained"
 					color="primary"
 					className={clx.surveyBtn}
-					onClick={goToSurvey}
+					onClick={() => history.push("/analysis")}
 					children="Continue Analysis"
 				/>
 			)}
+			<Button
+				variant="contained"
+				className={clx.surveyBtn}
+				onClick={() => startProblemReport(data)}
+				children="Report a Problem"
+			/>
 			<Button
 				variant="contained"
 				className={clx.surveyBtn}
@@ -66,10 +70,10 @@ export const Profile = ({
 				children="Routine Health Check"
 			/>
 			<Button
-				variant="contained"
+				variant="outlined"
 				className={clx.surveyBtn}
-				onClick={() => startProblemReport(data)}
-				children="Report a Problem"
+				onClick={() => history.push("/")}
+				children="Back"
 			/>
 		</Container>
 	);
