@@ -3,6 +3,9 @@ import { makeState } from "utils/state";
 import { makeArrayWithPushedItems } from "utils/array";
 import { makeModifiedPet } from "./pets-utils";
 
+// temp
+import dogImage from "assets/dog.jpg";
+
 const INITIAL_STATE = {
 	dateSynced: null,
 	list: [
@@ -13,7 +16,7 @@ const INITIAL_STATE = {
 			sex: "male",
 			species: "canine",
 			breed: "Dalmatian",
-			imageURL: "",
+			imageURL: `url(${dogImage})`,
 			reports: [],
 		},
 	],

@@ -210,7 +210,7 @@ export const getIsAlertModalActive = (state) => state.survey.alertModalActive;
 
 export const getTitle = (state) => state.survey.title;
 
-// ---------------- Title ---------------------
+// ---------------- Pet ID ---------------------
 
 export const getPetId = (state) => state.survey.petId;
 
