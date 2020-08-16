@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Button } from "@material-ui/core";
 import { surveyData } from "redux/survey/survey-data";
@@ -16,15 +17,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // TEMP
-const pet = {
-	id: "123412341234",
-	name: "Benny",
-	species: "canine",
-};
+const pets = [
+	{
+		id: "123412341234",
+		name: "Benny",
+		species: "canine",
+	},
+];
+const getPetByName = (name) =>
+	pets.find((pet) => pet.name.toLowerCase() === name.toLowerCase());
 
 export const Profile = ({
 	// router
-	history,
+	match,
 	// store
 	surveyIsLoaded,
 	isPetIdActive,
@@ -33,6 +38,10 @@ export const Profile = ({
 	startProblemReport,
 }) => {
 	const clx = useStyles();
+
+	const { name } = match.params;
+	const pet = getPetByName(name);
+	if (!pet) return <Redirect to="/not-found" />;
 
 	const data = { ...surveyData(pet), petId: pet.id };
 

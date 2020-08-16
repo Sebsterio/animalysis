@@ -17,9 +17,10 @@ const mapStateToProps = (state) => ({
 	isPetIdActive: (id) => isPetIdActive(state, id),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-	startRoutineCheck: (data) => dispatch(startRoutineCheck(data)),
-	startProblemReport: (data) => dispatch(startProblemReport(data)),
+const mapDispatchToProps = (dispatch, props) => ({
+	startRoutineCheck: (data) => dispatch(startRoutineCheck(data, props.history)),
+	startProblemReport: (data) =>
+		dispatch(startProblemReport(data, props.history)),
 });
 
 const ProfileContainer = (props) => <Profile {...props} />;
