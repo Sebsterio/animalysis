@@ -1,26 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { isPetIdActive } from "redux/survey/survey-selectors";
-import { getPetByName } from "redux/pets/pets-selectors";
-import {
-	startRoutineCheck,
-	startProblemReport,
-} from "redux/survey/survey-operations";
+import { getPetByName, getPetReports } from "redux/pets/pets-selectors";
 
 import { Profile } from "./Profile";
 
 const mapStateToProps = (state) => ({
 	getPetByName: (name) => getPetByName(state, name),
-	isPetIdActive: (id) => isPetIdActive(state, id),
-});
-
-const mapDispatchToProps = (dispatch, props) => ({
-	startRoutineCheck: (data) => dispatch(startRoutineCheck(data, props.history)),
-	startProblemReport: (data) =>
-		dispatch(startProblemReport(data, props.history)),
+	getReports: (pet) => getPetReports(pet),
 });
 
 const ProfileContainer = (props) => <Profile {...props} />;
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileContainer);
+export default connect(mapStateToProps, null)(ProfileContainer);

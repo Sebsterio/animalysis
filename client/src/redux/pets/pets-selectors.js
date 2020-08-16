@@ -10,7 +10,7 @@ export const getPetByName = (state, name) =>
 		(pet) => pet.name.toLowerCase() === name.toLowerCase()
 	);
 
-export const getPetReports = (state, id) => getPetById(state, id).reports.list;
+export const getPetReports = (pet) => pet.reports;
 
 // -------------- reports ----------------
 

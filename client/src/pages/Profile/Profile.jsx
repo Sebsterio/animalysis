@@ -1,14 +1,15 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Button } from "@material-ui/core";
+import { Container } from "@material-ui/core";
+import { ReportsList, Footer } from "./components";
 import { surveyData } from "redux/survey/survey-data";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
 		display: "flex",
 		flexFlow: "column nowrap",
-		justifyContent: "center",
+		justifyContent: "space-between",
 		padding: theme.spacing(3),
 	},
 	surveyBtn: {
@@ -22,10 +23,7 @@ export const Profile = ({
 	history,
 	// store
 	getPetByName,
-	isPetIdActive,
-	// dispatch
-	startRoutineCheck,
-	startProblemReport,
+	getReports,
 }) => {
 	const clx = useStyles();
 
@@ -35,36 +33,15 @@ export const Profile = ({
 
 	const petId = pet.id;
 	const data = { ...surveyData(pet), petId };
+	const reports = getReports(pet).reverse();
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
-			{isPetIdActive(petId) && (
-				<Button
-					variant="contained"
-					color="primary"
-					className={clx.surveyBtn}
-					onClick={() => history.push("/analysis")}
-					children="Continue Analysis"
-				/>
-			)}
-			<Button
-				variant="contained"
-				className={clx.surveyBtn}
-				onClick={() => startProblemReport(data)}
-				children="Report a Problem"
-			/>
-			<Button
-				variant="contained"
-				className={clx.surveyBtn}
-				onClick={() => startRoutineCheck(data)}
-				children="Routine Health Check"
-			/>
-			<Button
-				variant="outlined"
-				className={clx.surveyBtn}
-				onClick={() => history.push("/")}
-				children="Back"
-			/>
+			<div>
+				{pet.name}, {pet.species}, {pet.sex}
+			</div>
+			<ReportsList data={reports} />
+			<Footer {...{ history, petId, data }} />
 		</Container>
 	);
 };
