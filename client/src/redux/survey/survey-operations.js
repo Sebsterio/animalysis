@@ -20,22 +20,39 @@ import * as $ from "redux/survey/survey-actions";
 import { addReportToList } from "redux/reports/reports-actions";
 import { arrayify } from "utils/array";
 
-// ----------------------- Compound operations ---------------------------
+// TEMP
+export const callClinic = () => alert("CALL_CLINIC--STUB");
+
+// --------------------- Initialization -------------------------
+
+export const startRoutineCheck = (data, history) => (dispatch) =>
+	dispatch(
+		initSurvey({ ...data, alert: 0, title: "Routine Health Check" }, history)
+	);
+
+// Add primer section to mainQueue and set alert to green
+export const startProblemReport = (data, history) => (dispatch) => {
+	let { problemIntro, mainQueue } = data;
+	mainQueue = [problemIntro, ...mainQueue];
+	dispatch(
+		initSurvey({ ...data, mainQueue, alert: 1, title: "New Problem" }, history)
+	);
+};
 
 // Initialize survey store & set first question
-export const initSurvey = (data) => (dispatch, getState) => {
-	const { sections, mainQueue, optionalQueue, alert, title } = data;
+const initSurvey = (data, history) => (dispatch, getState) => {
+	const { petId, sections, mainQueue, optionalQueue, alert, title } = data;
 	dispatch($.clearSurvey());
+	dispatch($.setPetId(petId));
 	dispatch($.setSurveyData(sections));
-	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue)));
+	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue))); // after data
 	dispatch($.setOptionalQueue(optionalQueue));
 	dispatch($.setInitialOptionalQueue(optionalQueue));
 	dispatch($.setCurrentAlert(alert));
 	dispatch($.setInitialAlert(alert));
 	if (title) dispatch($.setTitle(title));
-	const nextLocation = getNextLocation(getState());
-	dispatch($.pushLocationToHistory(nextLocation));
-	dispatch($.shiftNextLocationFromQueue());
+	history.push("/analysis");
+	dispatch(goForward(history));
 };
 
 export const initOptionalSurvey = (history) => (dispatch, getState) => {
@@ -47,14 +64,15 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 	dispatch(goForward(history));
 };
 
-// WORK IN PROGRESS
-export const endSurvey = (history) => (dispatch, getState) => {
+// --------------------- Termination -------------------------
+
+export const endSurvey = (history) => (dispatch) => {
 	dispatch(generateReport());
 	dispatch($.clearSurvey());
 	history.replace("/report");
 };
 
-export const generateReport = () => (dispatch, getState) => {
+const generateReport = () => (dispatch, getState) => {
 	const state = getState();
 	const date = new Date();
 	const title = getTitle(state);
@@ -63,8 +81,7 @@ export const generateReport = () => (dispatch, getState) => {
 	dispatch(addReportToList({ problemList, alert, title, date }));
 };
 
-// TEMP
-export const callClinic = () => alert("CALL_CLINIC--STUB");
+// ----------------------- Answer ---------------------------
 
 // Set/add/remove answer in current location depending on question type
 export const handleAnswer = (data, history) => (dispatch, getState) => {
@@ -82,6 +99,8 @@ export const handleAnswer = (data, history) => (dispatch, getState) => {
 		else dispatch($.removeAnswerFromCurrentLocation(answerIndex));
 	}
 };
+
+// --------------------------- Navigation -----------------------------
 
 // Add followUp locations resulting from selected answers in current question
 // Go to next location in survey
@@ -107,18 +126,6 @@ export const handleGoBack = (history) => (dispatch, getState) => {
 	});
 };
 
-// -------------------------- ALert Popup -----------------------------
-
-// Open warning popup if alert reached level 2 (only once through entire survey)
-const handleAlert = (alert) => (dispatch, getState) => {
-	const currentAlert = getCurrentAlert(getState());
-	if (alert <= currentAlert) return;
-	dispatch($.setCurrentAlert(alert));
-	if (alert === 3) dispatch($.activateAlertModal());
-};
-
-// --------------------------- Navigation -----------------------------
-
 // Push first queue location to history and shift it from queue
 // End survey if queue empty or alert reached level 3
 const goForward = (history) => (dispatch, getState) => {
@@ -141,6 +148,16 @@ const goBack = (history) => (dispatch, getState) => {
 	if (!previousLocation) return history.goBack();
 	dispatch($.unshiftLocationsToQueue({ newLocations: currentLocation }));
 	dispatch($.popLocationFromHistory());
+};
+
+// -------------------------- ALert Popup -----------------------------
+
+// Open warning popup if alert reached level 2 (only once through entire survey)
+const handleAlert = (alert) => (dispatch, getState) => {
+	const currentAlert = getCurrentAlert(getState());
+	if (alert <= currentAlert) return;
+	dispatch($.setCurrentAlert(alert));
+	if (alert === 3) dispatch($.activateAlertModal());
 };
 
 // ------------------------- Follow Ups ---------------------------------
