@@ -5,6 +5,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import dogImage from "assets/dog.jpg";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -21,12 +22,15 @@ const useStyles = makeStyles((theme) => ({
 export const PetCard = ({ pet, handleClick }) => {
 	const clx = useStyles();
 
+	const { imageUrl } = pet;
+	const imageSrc = imageUrl ? imageUrl : dogImage;
+
 	return (
 		<Card className={clx.root} onClick={handleClick}>
 			<CardActionArea>
 				<CardMedia
 					className={clx.media}
-					image={pet.imageUrl}
+					image={imageSrc}
 					title={`${pet.name}'s profile picture`}
 				/>
 				<CardContent>

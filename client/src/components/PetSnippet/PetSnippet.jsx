@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Avatar, Typography, IconButton } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { getAge } from "utils/date";
+import dogImage from "assets/dog.jpg";
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -44,9 +45,13 @@ export const PetSnippet = ({
 
 	const editPet = () => history.push("/edit-profile/" + name.toLowerCase());
 
+	const imageSrc = imageUrl ? imageUrl : dogImage;
+
+	console.log({ imageSrc });
+
 	return (
 		<div className={clx.container}>
-			<Avatar alt={name} src={imageUrl} className={clx.avatar} />
+			<Avatar alt={name} src={imageSrc} className={clx.avatar} />
 			<div className={clx.info}>
 				<div className={clx.infoHeader}>
 					<Typography variant={small ? "h6" : "h4"} children={name} />

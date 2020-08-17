@@ -23,18 +23,16 @@ const useStyles = makeStyles((theme) => ({
 export const Home = ({ history, pets }) => {
 	const clx = useStyles();
 
-	const [petsNum, setPetsNum] = useState(1);
-
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<Head history={history} />
 
 			<div className={clx.main}>
-				{Array.from({ length: petsNum }, (_, i) => (
+				{pets.map((pet) => (
 					<PetCard
-						key={i}
-						pet={pets[0]} //////
-						handleClick={() => history.push("/profile/benny")} ////
+						key={pet.id}
+						pet={pet}
+						handleClick={() => history.push("/profile/" + pet.name)}
 					/>
 				))}
 			</div>
@@ -42,7 +40,7 @@ export const Home = ({ history, pets }) => {
 			<Button
 				variant="outlined"
 				className={clx.surveyBtn}
-				onClick={() => setPetsNum(petsNum + 1)}
+				onClick={() => history.push("/add-profile")}
 				children="New Pet"
 			/>
 		</Container>
