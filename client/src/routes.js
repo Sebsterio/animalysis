@@ -1,5 +1,6 @@
 import { Home } from "pages/Home";
 import { Profile } from "pages/Profile";
+import { AddOrEditProfile } from "pages/AddOrEditProfile";
 import { Survey } from "pages/Survey";
 import { Report } from "pages/Report";
 import { Account } from "pages/Account";
@@ -18,6 +19,21 @@ export const routes = [
 		path: "/profile/:name",
 		title: "Pet Profile",
 		component: Profile,
+		exact: true,
+		inNav: false,
+	},
+	// --- Add/edit pet profile ---
+	{
+		path: "/add-profile",
+		title: "Edit Profile",
+		component: AddOrEditProfile,
+		exact: true,
+		inNav: false,
+	},
+	{
+		path: "/edit-profile/:name",
+		title: "Edit Profile",
+		component: AddOrEditProfile,
 		exact: true,
 		inNav: false,
 	},
