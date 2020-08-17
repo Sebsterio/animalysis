@@ -24,23 +24,27 @@ export const Nav = ({
 	disabledLeft = false,
 	disabledRight = false,
 	enlargedRight = false,
+	onlyRight = false,
 	noArrows = false,
 }) => {
 	const clx = useStyles({ enlargedRight });
 
 	return (
 		<div className={clx.container}>
-			<Button
-				children={textLeft}
-				onClick={onClickLeft}
-				disabled={disabledLeft}
-				startIcon={noArrows ? null : <KeyboardArrowLeft />}
-			/>
+			{!onlyRight && (
+				<Button
+					children={textLeft}
+					onClick={onClickLeft}
+					disabled={disabledLeft}
+					startIcon={noArrows ? null : <KeyboardArrowLeft />}
+				/>
+			)}
 
 			<Button
 				children={textRight}
 				onClick={onClickRight}
 				disabled={disabledRight}
+				fullWidth={onlyRight}
 				endIcon={noArrows ? null : <KeyboardArrowRight />}
 				className={clx.nextButton}
 			/>

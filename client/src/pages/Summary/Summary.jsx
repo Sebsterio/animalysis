@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button } from "@material-ui/core";
 import { Alert } from "components/Alert";
+import { Nav } from "components/Nav";
 
 import { summaryData } from "./Summary-data";
 
@@ -15,10 +16,6 @@ const useStyles = makeStyles((theme) => ({
 	main: {
 		display: "grid",
 		gridGap: theme.spacing(3),
-	},
-	nav: {
-		display: "flex",
-		justifyContent: "space-between",
 	},
 }));
 
@@ -56,23 +53,14 @@ const Summary = ({
 				/>
 			</Container>
 
-			<div className={clx.nav}>
-				{canContinue && (
-					<Button
-						color="default"
-						children="Continue Analysis"
-						className={clx.navButton}
-						onClick={continueSurvey}
-					/>
-				)}
-				<Button
-					fullWidth={!canContinue}
-					color="default"
-					children="Submit report"
-					className={clx.navButton}
-					onClick={endSurvey}
-				/>
-			</div>
+			<Nav
+				textLeft="Continue Analysis"
+				onClickLeft={continueSurvey}
+				textRight="Submit report"
+				onClickRight={endSurvey}
+				onlyRight={!canContinue}
+				noArrows
+			/>
 		</Container>
 	);
 };
