@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { Container, TextField } from "@material-ui/core";
+import { Container } from "@material-ui/core";
+import { Form } from "components/Form";
 import { isEmpty } from "utils/object";
 
 /*******************************************************
@@ -13,8 +14,6 @@ import { isEmpty } from "utils/object";
 export const AddOrEditProfile = ({ match, getPet }) => {
 	const [pet, setPet] = useState({});
 
-	console.log(pet == {});
-
 	const { name } = match.params;
 	const currentPet = name ? getPet(name) : null;
 	if (name && !currentPet) return <Redirect to="/add-profile" />;
@@ -25,12 +24,16 @@ export const AddOrEditProfile = ({ match, getPet }) => {
 
 	return (
 		<Container>
-			<TextField
-				label="Name"
-				name={"name"}
-				variant="outlined"
-				value={pet.name || ""}
-				onChange={handleChange}
+			<Form
+				state={pet}
+				handleChange={handleChange}
+				fields={[
+					{
+						type: "text",
+						name: "name",
+						label: "Name",
+					},
+				]}
 			/>
 		</Container>
 	);
