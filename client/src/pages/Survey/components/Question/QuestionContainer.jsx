@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
 	handleAnswer: (data, history) => dispatch(handleAnswer(data, history)),
 });
 
-const QuestionContainer = (props) => <Question {...props} />;
+const QuestionContainer = (props) =>
+	!!props.question ? <Question {...props} /> : null;
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionContainer);

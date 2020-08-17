@@ -36,6 +36,7 @@ export const surveyData = (pet) => ({
 					label: `What's wrong with ${pet.name} today?`,
 					type: "text",
 					setsTitle: true,
+					lengthLimit: 40,
 				},
 				{
 					label: `Where on ${pet.name}’s body is the problem/problems?`,

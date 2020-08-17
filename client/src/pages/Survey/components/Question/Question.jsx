@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import shortid from "shortid";
 import { Box, Button, Typography, TextField } from "@material-ui/core";
@@ -23,9 +23,13 @@ const Question = ({
 	// dispatch
 	handleAnswer,
 }) => {
+	const { label, answers, type, setsTitle, lengthLimit } = question;
+
+	const isAnswerTooLong = (text) => !!text && text.length > lengthLimit;
+
+	const [answerTooLong, setAnswerTooLong] = useState(isAnswerTooLong(answer));
+
 	const clx = useStyles();
-	if (!question) return null;
-	const { label, answers, type, setsTitle } = question;
 
 	return (
 		<Box>
@@ -48,16 +52,23 @@ const Question = ({
 
 			{type === "text"
 				? (() => {
-						const handleChange = (e) =>
-							handleAnswer({ answer: e.target.value, setsTitle }, history);
+						const handleChange = (e) => {
+							const answer = e.target.value;
+							const newTooLong = isAnswerTooLong(answer);
+							if (answerTooLong !== newTooLong) setAnswerTooLong(newTooLong);
+							if (!newTooLong) handleAnswer({ answer, setsTitle }, history);
+						};
 						return (
 							<Box mb={2}>
 								<TextField
-									label="Problem description"
+									label={
+										answerTooLong ? "Length limit reached" : "Short description"
+									}
 									variant="outlined"
 									fullWidth
 									multiline
 									autoFocus
+									error={answerTooLong}
 									value={answer || ""}
 									onChange={handleChange}
 									id="Survey__Question"
