@@ -22,14 +22,16 @@ const useStyles = makeStyles((theme) => ({
 export const ReportsList = ({ history, reports }) => {
 	const clx = useStyles();
 
-	const openReport = (id) => history.push(`/report/${id}`);
-
 	if (!reports.length)
 		return (
 			<Typography variant="h6" align="center">
 				No reports...
 			</Typography>
 		);
+
+	const openReport = (id) => history.push(`/report/${id}`);
+
+	const getStyle = (alert) => ({ color: alertData[alert].color });
 
 	return (
 		<div>
@@ -40,7 +42,7 @@ export const ReportsList = ({ history, reports }) => {
 					<Button className={clx.report} onClick={() => openReport(id)}>
 						<span className={clx.date}>{getDateString(date)}</span>
 						<span className={clx.title}>{title}</span>
-						<FiberManualRecordIcon style={{ color: alertData[alert].color }} />
+						<FiberManualRecordIcon style={getStyle(alert)} />
 					</Button>
 				))}
 			></ButtonGroup>

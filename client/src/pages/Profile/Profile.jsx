@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
-import { ReportsList, Footer } from "./components";
+import { Head, ReportsList, Footer } from "./components";
 import { surveyData } from "redux/survey/survey-data";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,9 +37,7 @@ export const Profile = ({
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
-			<div>
-				{pet.name}, {pet.species}, {pet.sex}
-			</div>
+			<Head {...{ history, pet }} />
 			<ReportsList {...{ history, reports }} />
 			<Footer {...{ history, petId, data }} />
 		</Container>

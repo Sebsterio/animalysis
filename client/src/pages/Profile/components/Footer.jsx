@@ -21,6 +21,8 @@ export const Footer = ({
 }) => {
 	const clx = useStyles();
 
+	const unfinishedAnalysis = isPetIdActive(petId);
+
 	return (
 		<div>
 			<Button
@@ -33,11 +35,12 @@ export const Footer = ({
 			<Button
 				fullWidth
 				variant="contained"
+				color={unfinishedAnalysis ? "default" : "primary"}
 				className={clx.button}
 				onClick={() => startProblemReport(data)}
 				children="Report a Problem"
 			/>
-			{isPetIdActive(petId) && (
+			{unfinishedAnalysis && (
 				<Button
 					fullWidth
 					variant="contained"
