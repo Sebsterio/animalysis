@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button } from "@material-ui/core";
 import { Alert } from "components/Alert";
 import { ProblemsList } from "./components";
+import { PetSnippet } from "components/PetSnippet";
 import { getDateString } from "utils/date";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,17 +20,20 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Report = ({ history, match, getReport }) => {
+const Report = ({ history, match, getReport, getPet }) => {
 	const clx = useStyles();
 
 	const { id } = match.params;
 	if (!id) return <Redirect to="/not-found" />;
 
 	const report = getReport(id);
-	const { date, title, alert, problemList } = report;
+	const { petId, date, title, alert, problemList } = report;
+	const pet = getPet(petId);
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
+			<PetSnippet pet={pet} small />
+
 			<Typography
 				variant="h5"
 				align="center"

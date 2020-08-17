@@ -79,14 +79,12 @@ const generateReport = ({ reportId }) => (dispatch, getState) => {
 	const state = getState();
 	dispatch(
 		addReportToPet({
-			id: getPetId(state),
-			data: {
-				id: reportId,
-				date: new Date(),
-				title: getTitle(state),
-				alert: getMaxAlertFromHistory(state),
-				problemList: getProblemListFromHistory(state),
-			},
+			id: reportId,
+			petId: getPetId(state),
+			date: new Date(),
+			title: getTitle(state),
+			alert: getMaxAlertFromHistory(state),
+			problemList: getProblemListFromHistory(state),
 		})
 	);
 };

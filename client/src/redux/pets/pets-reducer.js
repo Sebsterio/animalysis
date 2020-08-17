@@ -24,6 +24,7 @@ const INITIAL_STATE = {
 
 // const reportSchema = {
 //  id: '',
+//  petId: ''
 //  date: null,
 //  title: '',
 // 	problemList: [],
@@ -44,11 +45,11 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		}
 
 		case $.ADD_REPORT_TO_PET: {
-			const { id, data } = action.payload; // petId
-			return makeModifiedPet(state, id, (pet) =>
+			const { petId } = action.payload;
+			return makeModifiedPet(state, petId, (pet) =>
 				makeState(pet, "reports", (reports) =>
 					makeArrayWithPushedItems(reports, {
-						...data,
+						...action.payload,
 						syncing: false,
 						dateSynced: null,
 					})

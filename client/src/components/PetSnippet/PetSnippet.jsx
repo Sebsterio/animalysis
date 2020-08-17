@@ -8,17 +8,19 @@ const useStyles = makeStyles((theme) => ({
 	container: {
 		display: "flex",
 		flexFlow: "row nowrap",
+		alignItems: "center",
 	},
-	avatar: {
-		width: theme.spacing(12),
-		height: theme.spacing(12),
+	avatar: ({ small }) => ({
+		width: theme.spacing(small ? 6 : 10),
+		height: theme.spacing(small ? 6 : 10),
 		borderRadius: 4,
-	},
+	}),
 	info: {
 		flex: "1 1 100%",
 		marginLeft: theme.spacing(2),
 		display: "flex",
 		flexFlow: "column nowrap",
+		alignSelf: "flex-start",
 	},
 	infoHeader: {
 		display: "flex",
@@ -33,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Head = ({ pet, history }) => {
-	const clx = useStyles();
+export const PetSnippet = ({ pet, history, small }) => {
+	const clx = useStyles({ small });
 
 	const editPet = () => history.push("/edit-profile/" + pet.name.toLowerCase());
 
@@ -43,10 +45,12 @@ export const Head = ({ pet, history }) => {
 			<Avatar alt={pet.name} src={pet.imageUrl} className={clx.avatar} />
 			<div className={clx.info}>
 				<div className={clx.infoHeader}>
-					<Typography variant="h4" children={pet.name} />
-					<IconButton aria-label="edit pet details" onClick={editPet}>
-						<EditIcon />
-					</IconButton>
+					<Typography variant={small ? "h6" : "h4"} children={pet.name} />
+					{!!history && (
+						<IconButton aria-label="edit pet details" onClick={editPet}>
+							<EditIcon />
+						</IconButton>
+					)}
 				</div>
 				<div className={clx.infoDesc}>
 					<Typography>
