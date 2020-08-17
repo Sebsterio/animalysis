@@ -2,9 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 
 import {
+	getPetId,
 	getMaxAlertFromHistory,
 	getIsOptionalQueuePopulated,
 } from "redux/survey/survey-selectors";
+import { getPetById } from "redux/pets/pets-selectors";
 import {
 	initOptionalSurvey,
 	endSurvey,
@@ -14,6 +16,7 @@ import {
 import Summary from "./Summary";
 
 const mapStateToProps = (state) => ({
+	pet: getPetById(state, getPetId(state)),
 	alertLevel: getMaxAlertFromHistory(state),
 	optionalQueueExists: getIsOptionalQueuePopulated(state),
 });

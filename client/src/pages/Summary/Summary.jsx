@@ -22,10 +22,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-// TEMP
-const pet = { name: "Bobo" };
-
 const Summary = ({
+	pet,
 	alertLevel,
 	optionalQueueExists,
 	callClinic,
