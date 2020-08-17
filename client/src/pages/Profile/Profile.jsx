@@ -7,7 +7,7 @@ import { PetSnippet } from "components/PetSnippet";
 import { surveyData } from "redux/survey/survey-data";
 
 const useStyles = makeStyles((theme) => ({
-	container: {
+	page: {
 		display: "flex",
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
@@ -37,7 +37,7 @@ export const Profile = ({
 	const reports = getReports(pet).reverse();
 
 	return (
-		<Container maxWidth="xs" className={clx.container}>
+		<Container maxWidth="xs" className={clx.page}>
 			<PetSnippet {...{ history, pet }} />
 			<ReportsList {...{ history, reports }} />
 			<Footer {...{ history, petId, data }} />
