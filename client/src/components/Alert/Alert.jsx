@@ -31,7 +31,7 @@ export const Alert = ({ level, alignLeft }) => {
 
 	return (
 		<div className={clx.container}>
-			<Typography children="Urgency Level: " variant="h5" />
+			<Typography children="Urgency Level" variant="h5" />
 			<AlertFrame className={clx.alertFrame} icon={false}>
 				<AlertTitle className={clx.alertText}>{urgency}</AlertTitle>
 			</AlertFrame>

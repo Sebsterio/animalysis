@@ -12,11 +12,12 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
-		padding: theme.spacing(3),
+		padding: theme.spacing(2),
 	},
 	main: {
+		margin: theme.spacing(4, 0, 0),
 		display: "grid",
-		gridGap: theme.spacing(3),
+		gridGap: theme.spacing(4),
 	},
 }));
 
@@ -32,19 +33,32 @@ const Report = ({ history, match, getReport, getPet }) => {
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
-			<PetSnippet pet={pet} small />
+			<div className={clx.header}>
+				<PetSnippet pet={pet} small />
+			</div>
 
-			<Typography
-				variant="h5"
-				align="center"
-				children={`${getDateString(date)} - ${title}`}
-			/>
+			<div className={clx.main}>
+				<div className={clx.titleBlock}>
+					<Typography
+						component="h2"
+						variant="h4"
+						align="center"
+						children={title}
+					/>
+					<Typography
+						component="h3"
+						variant="body1"
+						color="textSecondary"
+						align="center"
+						children={getDateString(date)}
+					/>
+				</div>
 
-			<Container className={clx.main}>
 				<Alert level={alert} alignLeft />
+
 				<Typography children="Problems List" component="h3" variant="h5" />
 				<ProblemsList data={problemList} />
-			</Container>
+			</div>
 
 			<Button
 				fullWidth
