@@ -15,10 +15,11 @@ const INITIAL_STATE = {
 			species: "canine",
 			sex: "male",
 			breed: "Dalmatian",
-			dateOfBirth: [7, 2010],
+			birthYear: 2010,
+			birthMonth: 7,
 			weight: 0,
 			microchip: 0,
-			imageUrl: dogImage,
+			imageUrl: dogImage, // TODO
 			reports: [],
 		},
 	],

@@ -35,17 +35,21 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const PetSnippet = ({ pet, history, small }) => {
+export const PetSnippet = ({
+	pet: { name, breed, imageUrl, sex, birthMonth: month, birthYear: year },
+	history,
+	small,
+}) => {
 	const clx = useStyles({ small });
 
-	const editPet = () => history.push("/edit-profile/" + pet.name.toLowerCase());
+	const editPet = () => history.push("/edit-profile/" + name.toLowerCase());
 
 	return (
 		<div className={clx.container}>
-			<Avatar alt={pet.name} src={pet.imageUrl} className={clx.avatar} />
+			<Avatar alt={name} src={imageUrl} className={clx.avatar} />
 			<div className={clx.info}>
 				<div className={clx.infoHeader}>
-					<Typography variant={small ? "h6" : "h4"} children={pet.name} />
+					<Typography variant={small ? "h6" : "h4"} children={name} />
 					{!!history && (
 						<IconButton aria-label="edit pet details" onClick={editPet}>
 							<EditIcon />
@@ -54,7 +58,7 @@ export const PetSnippet = ({ pet, history, small }) => {
 				</div>
 				<div className={clx.infoDesc}>
 					<Typography>
-						{getAge(pet.dateOfBirth)} year old {pet.sex} {pet.breed}
+						{getAge(month, year)} year old {sex} {breed}
 					</Typography>
 				</div>
 			</div>

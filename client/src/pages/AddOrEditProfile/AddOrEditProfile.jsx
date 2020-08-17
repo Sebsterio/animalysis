@@ -45,12 +45,12 @@ export const AddOrEditProfile = ({ match, getPet }) => {
 					["text", "breed"],
 					[
 						"group",
-						"group-1",
+						"birthDate",
 						{
 							layout: "row",
 							fields: [
-								["text", "test"],
-								["text", "test1"],
+								["number", "birthYear", { label: "Birth Year" }],
+								["number", "birthMonth", { label: "Birth Month" }],
 							],
 						},
 					],

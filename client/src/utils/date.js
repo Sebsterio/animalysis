@@ -8,7 +8,7 @@ export const getDateString = (date) => {
 	return `${day}-${month}-${year}`;
 };
 
-export const getAge = ([month, year]) => {
+export const getAge = (month, year) => {
 	const dateNow = new Date();
 	const monthDiff = dateNow.getMonth() + 1 - month;
 	return dateNow.getFullYear() - year - (monthDiff < 0 ? 1 : 0);
