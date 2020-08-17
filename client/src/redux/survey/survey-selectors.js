@@ -42,7 +42,8 @@ export const getCurrentQuestionAnswer = (state) => {
 export const getIsCurrentQuestionAnswered = (state) => {
 	const answer = getCurrentQuestionAnswer(state);
 	if (Array.isArray(answer)) return !!answer.length;
-	return answer !== null && answer !== undefined;
+	if (answer === 0) return true;
+	return !!answer;
 };
 
 export const isAnswerSelected = (state, answer) => {
