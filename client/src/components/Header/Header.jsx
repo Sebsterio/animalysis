@@ -7,15 +7,18 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import PetsIcon from "@material-ui/icons/Pets";
 
 import { routes } from "routes";
 
 // ----------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
+	// TEMP
 	appLogo: {
 		textDecoration: "none",
 		color: "white",
+		lineHeight: 0,
 	},
 	title: { flexGrow: 1 },
 }));
@@ -31,21 +34,25 @@ export const Header = () => {
 	return (
 		<AppBar position="static">
 			<Toolbar>
-				<Link to="/" className={clx.appLogo}>
-					<Typography variant="h5" children="VC" />
-				</Link>
+				<IconButton
+					color="inherit"
+					aria-label="logo"
+					children={
+						<Link to="/" className={clx.appLogo}>
+							<PetsIcon />
+						</Link>
+					}
+				/>
 
 				<Typography variant="h6" align="center" className={clx.title}>
 					<Switch>{titles}</Switch>
 				</Typography>
 
 				<IconButton
-					className={clx.menuButton}
 					color="inherit"
 					aria-label="menu"
-				>
-					<MenuIcon />
-				</IconButton>
+					children={<MenuIcon fontSize="large" />}
+				/>
 			</Toolbar>
 		</AppBar>
 	);
