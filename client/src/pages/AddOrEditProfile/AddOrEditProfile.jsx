@@ -30,6 +30,9 @@ export const AddOrEditProfile = ({ match, getPet }) => {
 	if (name && !currentPet) return <Redirect to="/add-profile" />;
 	if (currentPet && isEmpty(pet)) setPet({ ...currentPet });
 
+	const defaultWeigth =
+		pet.species === "canine" ? 20 : pet.species === "feline" ? 10 : 0;
+
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<Form
@@ -38,7 +41,21 @@ export const AddOrEditProfile = ({ match, getPet }) => {
 				fields={[
 					["text", "name"],
 					["select", "species", { options: ["canine", "feline"] }],
+					["select", "sex", { options: ["male", "female"] }],
 					["text", "breed"],
+					[
+						"group",
+						"group-1",
+						{
+							layout: "row",
+							fields: [
+								["text", "test"],
+								["text", "test1"],
+							],
+						},
+					],
+					["number", "weight", { defaultVal: defaultWeigth }],
+					["text", "microchip", { label: "Microchip number" }],
 				]}
 			/>
 		</Container>
