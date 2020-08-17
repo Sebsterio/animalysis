@@ -1,5 +1,5 @@
 import { isEmpty } from "utils/object";
-import { arrayify } from "utils/array";
+import { arrayify, makeArrayWithAddedUniqueItems } from "utils/array";
 
 // --------------- Location history ---------------
 
@@ -114,6 +114,21 @@ export const getUnpackedQueue = (state, queue) => {
 	);
 	return newQueue;
 };
+
+// Reduce array of location objects to array of unique section names
+const packQueue = (queue) =>
+	queue.reduce(
+		(acc, location) => makeArrayWithAddedUniqueItems(acc, location.sectionName),
+		[]
+	);
+
+export const getPackedHistory = (state) => packQueue(getHistory(state));
+
+export const getPackedQueue = (state) => packQueue(getQueue(state));
+
+// Consider duplicates across queues
+export const getPackedHistoryAndQueue = (state) =>
+	packQueue([...getHistory(state), ...getQueue(state)]);
 
 // Question
 

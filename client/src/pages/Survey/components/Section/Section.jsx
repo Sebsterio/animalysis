@@ -13,10 +13,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Section = ({ sectionTitle, historyLength, queueLength }) => {
-	const activeStep = historyLength - 1;
-	const steps = historyLength + queueLength;
-
+export const Section = ({
+	sectionTitle,
+	historySections,
+	historyAndQueueSections,
+}) => {
 	const clx = useStyles();
 
 	return (
@@ -26,8 +27,8 @@ export const Section = ({ sectionTitle, historyLength, queueLength }) => {
 					variant="dots"
 					className={clx.stepper}
 					position="static"
-					activeStep={activeStep}
-					steps={steps}
+					activeStep={historySections.length - 1}
+					steps={historyAndQueueSections.length}
 				/>
 			</Box>
 			<Typography

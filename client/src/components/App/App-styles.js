@@ -5,6 +5,7 @@ export const useStyles = makeStyles((theme) => ({
 		position: "absolute",
 		width: "100vw",
 		height: "100vh",
+		overflowX: "hidden",
 		display: "flex",
 		flexFlow: "column nowrap",
 		justifyContent: "stretch",
