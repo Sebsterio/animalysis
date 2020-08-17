@@ -24,6 +24,7 @@ export const Nav = ({
 	disabledLeft = false,
 	disabledRight = false,
 	enlargedRight = false,
+	noArrows = false,
 }) => {
 	const clx = useStyles({ enlargedRight });
 
@@ -33,14 +34,14 @@ export const Nav = ({
 				children={textLeft}
 				onClick={onClickLeft}
 				disabled={disabledLeft}
-				startIcon={<KeyboardArrowLeft />}
+				startIcon={noArrows ? null : <KeyboardArrowLeft />}
 			/>
 
 			<Button
 				children={textRight}
 				onClick={onClickRight}
 				disabled={disabledRight}
-				endIcon={<KeyboardArrowRight />}
+				endIcon={noArrows ? null : <KeyboardArrowRight />}
 				className={clx.nextButton}
 			/>
 		</div>

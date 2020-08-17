@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Modal, Container, Typography, Button } from "@material-ui/core";
+import { Nav } from "components/Nav";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -19,10 +20,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 	subHeading: {
 		fontWeight: "bold",
-	},
-	nav: {
-		display: "flex",
-		justifyContent: "space-between",
 	},
 }));
 
@@ -64,20 +61,14 @@ const AlertModal = ({ isActive, closeModal, endSurvey, callClinic }) => {
 					onClick={callClinic}
 				/>
 				<Typography children="You may complete the analysis at any time or send it to your vet now." />
-				<div className={clx.nav}>
-					<Button
-						color="default"
-						children="Continue Analysis"
-						className={clx.navButton}
-						onClick={closeModal}
-					/>
-					<Button
-						color="default"
-						children="Submit report"
-						className={clx.navButton}
-						onClick={handleClose}
-					/>
-				</div>
+
+				<Nav
+					textLeft="Continue Analysis"
+					onClickLeft={closeModal}
+					textRight="Submit report"
+					onClickRight={handleClose}
+					noArrows
+				/>
 			</Container>
 		</Modal>
 	);
