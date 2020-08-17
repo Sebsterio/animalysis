@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import { Form } from "components/Form";
+import { Nav } from "components/Nav";
 import { isEmpty } from "utils/object";
 
 /*******************************************************
@@ -19,9 +20,12 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "space-between",
 		padding: theme.spacing(3),
 	},
+	footer: {
+		marginTop: theme.spacing(4),
+	},
 }));
 
-export const AddOrEditProfile = ({ match, getPet }) => {
+export const AddOrEditProfile = ({ match, history, getPet }) => {
 	const [pet, setPet] = useState({});
 	const clx = useStyles();
 
@@ -32,6 +36,8 @@ export const AddOrEditProfile = ({ match, getPet }) => {
 
 	const defaultWeigth =
 		pet.species === "canine" ? 20 : pet.species === "feline" ? 10 : 0;
+
+	const submitForm = () => {};
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
@@ -58,6 +64,15 @@ export const AddOrEditProfile = ({ match, getPet }) => {
 					["text", "microchip", { label: "Microchip number" }],
 				]}
 			/>
+			<div className={clx.footer}>
+				<Nav
+					textLeft="Cancel"
+					onClickLeft={() => history.goBack()}
+					textRight="Done"
+					onClickRight={submitForm}
+					noArrows
+				/>
+			</div>
 		</Container>
 	);
 };
