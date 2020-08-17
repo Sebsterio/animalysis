@@ -17,7 +17,10 @@ const useStyles = makeStyles((theme) => ({
 export const Survey = ({ surveyIsLoaded, history }) => {
 	const clx = useStyles();
 
-	if (!surveyIsLoaded) return <Redirect to="/" />;
+	if (!surveyIsLoaded) {
+		history.goBack();
+		return null;
+	}
 
 	return (
 		<Container maxWidth="xs" className={clx.container}>
