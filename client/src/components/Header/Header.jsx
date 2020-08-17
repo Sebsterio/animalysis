@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AppBar from "@material-ui/core/AppBar";
@@ -13,12 +13,15 @@ import { routes } from "routes";
 // ----------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
-	root: { flexGrow: 1 },
+	appLogo: {
+		textDecoration: "none",
+		color: "white",
+	},
 	title: { flexGrow: 1 },
 }));
 
 export const Header = () => {
-	const classes = useStyles();
+	const clx = useStyles();
 
 	const titles = routes.map((route) => {
 		const { path, title, exact } = route;
@@ -28,11 +31,16 @@ export const Header = () => {
 	return (
 		<AppBar position="static">
 			<Toolbar>
-				<Typography variant="h6" className={classes.title}>
+				<Link to="/" className={clx.appLogo}>
+					<Typography variant="h5" children="VC" />
+				</Link>
+
+				<Typography variant="h6" align="center" className={clx.title}>
 					<Switch>{titles}</Switch>
 				</Typography>
+
 				<IconButton
-					className={classes.menuButton}
+					className={clx.menuButton}
 					color="inherit"
 					aria-label="menu"
 				>
