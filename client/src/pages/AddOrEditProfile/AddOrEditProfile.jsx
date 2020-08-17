@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import { Container } from "@material-ui/core";
@@ -25,19 +25,32 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const AddOrEditProfile = ({ match, history, getPet }) => {
+export const AddOrEditProfile = ({
+	match,
+	history,
+	getPet,
+	addPet,
+	modifyPet,
+}) => {
 	const [pet, setPet] = useState({});
 	const clx = useStyles();
 
 	const { name } = match.params;
 	const currentPet = name ? getPet(name) : null;
+
+	useEffect(() => {
+		if (currentPet && isEmpty(pet)) return setPet({ ...currentPet });
+	}, [pet, setPet]);
+
 	if (name && !currentPet) return <Redirect to="/add-profile" />;
-	if (currentPet && isEmpty(pet)) setPet({ ...currentPet });
 
-	const defaultWeigth =
-		pet.species === "canine" ? 20 : pet.species === "feline" ? 10 : 0;
+	const closeForm = () => history.goBack();
 
-	const submitForm = () => {};
+	const submitForm = () => {
+		if (pet.id) modifyPet(pet);
+		else addPet(pet);
+		closeForm();
+	};
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
@@ -60,15 +73,15 @@ export const AddOrEditProfile = ({ match, history, getPet }) => {
 							],
 						},
 					],
-					["number", "weight", { defaultVal: defaultWeigth }],
+					["number", "weight"],
 					["text", "microchip", { label: "Microchip number" }],
 				]}
 			/>
 			<div className={clx.footer}>
 				<Nav
 					textLeft="Cancel"
-					onClickLeft={() => history.goBack()}
-					textRight="Done"
+					onClickLeft={closeForm}
+					textRight="Save"
 					onClickRight={submitForm}
 					noArrows
 				/>

@@ -2,6 +2,7 @@ import * as $ from "./pets-actions";
 import { makeState } from "utils/state";
 import { makeArrayWithPushedItems } from "utils/array";
 import { makeModifiedPet } from "./pets-utils";
+import shortid from "shortid";
 
 // temp
 import dogImage from "assets/dog.jpg";
@@ -38,7 +39,24 @@ const INITIAL_STATE = {
 
 const reportsReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		// ---------------------- Pet Reports -----------------------
+		// ------------------------ Pet -------------------------
+
+		case $.ADD_PET: {
+			const newPet = { ...action.payload, id: shortid.generate() };
+			return makeState(state, "list", (list) =>
+				makeArrayWithPushedItems(list, newPet)
+			);
+		}
+
+		case $.MODIFY_PET: {
+			const { id } = action.payload;
+			return makeModifiedPet(state, id, (pet) => ({
+				...pet,
+				...action.payload,
+			}));
+		}
+
+		// ---------------------- Reports -----------------------
 
 		case $.SET_REPORTS: {
 			const { id, data } = action.payload;

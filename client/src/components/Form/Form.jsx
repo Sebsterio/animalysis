@@ -39,9 +39,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 	return (
 		<div className={clx.stack}>
 			{fields.map(([type, name, config]) => {
-				const { label, options, defaultVal, fields, layout } = config
-					? config
-					: {};
+				const { label, options, fields, layout } = config ? config : {};
 
 				const key = name;
 
@@ -56,12 +54,12 @@ export const Form = ({ fields, state, setState, layout }) => {
 
 				const textInputProps = {
 					...inputProps,
-					value: state[name] ? state[name] : defaultVal ? defaultVal : "",
+					value: state[name] || "",
 				};
 
 				const numberInputProps = {
 					...inputProps,
-					value: state[name] ? state[name] : defaultVal ? defaultVal : 0,
+					value: state[name] || 0,
 					inputProps: { type: "number", min: 0 },
 				};
 

@@ -1,3 +1,19 @@
+// ------------------ Pet --------------------
+
+export const ADD_PET = "ADD_PET";
+export const addPet = (data) => ({
+	type: ADD_PET,
+	payload: data,
+});
+
+export const MODIFY_PET = "MODIFY_PET";
+export const modifyPet = (data) => ({
+	type: MODIFY_PET,
+	payload: data,
+});
+
+// ---------------- Reports ------------------
+
 export const SET_REPORTS = "SET_REPORTS";
 export const setReports = (data) => ({
 	type: SET_REPORTS,
