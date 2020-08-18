@@ -35,11 +35,14 @@ export const getAgeFromDate = (month, year) => {
 		months: monthsDiff % 12,
 	};
 };
-// export const getAgeFromDate = (month, year) => {
-// 	const { month: curMonth, year: curYear } = getCurrentDate();
-// 	const monthDiff = curMonth + 1 - month;
-// 	return {
-// 		years: curYear - year - (monthDiff < 0 ? 1 : 0),
-// 		months: curMonth - month + (month > curMonth ? 12 : 0),
-// 	};
-// };
+
+export const limitDateToToday = (month, year) => {
+	const currentDate = getCurrentDate();
+	const totalMonths = 12 * year + month - 1;
+	const monthsDiff = currentDate.totalMonths - totalMonths;
+	console.log({ monthsDiff });
+	return {
+		month: monthsDiff > 0 ? month : currentDate.month + 1,
+		year: monthsDiff > 0 ? year : currentDate.year,
+	};
+};

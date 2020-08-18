@@ -8,7 +8,7 @@ import { Form, isFormFilled, addErrors } from "components/Form";
 
 import { formFields } from "./AddOrEditPet-formData";
 import { defaultPet } from "./AddOrEditPet-defaultPet";
-import { getDateFromAge, getAgeFromDate } from "utils/date";
+import { getDateFromAge, getAgeFromDate, limitDateToToday } from "utils/date";
 
 /*******************************************************
  * Routing:
@@ -62,7 +62,7 @@ export const AddOrEditProfile = ({
 		history.push("/profile/" + pet.name);
 	};
 
-	// Map aux props into usable state props
+	// Map aux props into permanent state props
 	const useSetPet = (newPet) => {
 		let { birthYear, birthMonth } = newPet;
 		const { ageYears, ageMonths, ...prunedNewPet } = newPet;
@@ -70,7 +70,8 @@ export const AddOrEditProfile = ({
 			const date = getDateFromAge(ageMonths || 0, ageYears || 0);
 			({ year: birthYear, month: birthMonth } = date);
 		}
-		setPet({ ...prunedNewPet, birthYear, birthMonth });
+		const { year, month } = limitDateToToday(birthMonth, birthYear);
+		setPet({ ...prunedNewPet, birthYear: year, birthMonth: month });
 	};
 
 	// ---------------------- Selectors -----------------------
