@@ -39,7 +39,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 	return (
 		<div className={clx.stack}>
 			{fields.map(([type, name, config]) => {
-				const { label, options, fields, layout, min, max } = config
+				const { label, options, req, fields, layout, min, max } = config
 					? config
 					: {};
 
@@ -48,6 +48,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 				const inputProps = {
 					key,
 					name,
+					required: !!req || null,
 					label: label || name,
 					onChange: handleChange,
 					variant: "outlined",

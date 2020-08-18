@@ -13,3 +13,5 @@ export const getAge = (month, year) => {
 	const monthDiff = dateNow.getMonth() + 1 - month;
 	return dateNow.getFullYear() - year - (monthDiff < 0 ? 1 : 0);
 };
+
+export const getCurrentYear = () => new Date().getFullYear();

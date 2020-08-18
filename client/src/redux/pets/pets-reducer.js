@@ -53,7 +53,6 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.MODIFY_PET: {
 			const { id, data } = action.payload;
-			console.log({ id, data });
 			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...data }));
 		}
 

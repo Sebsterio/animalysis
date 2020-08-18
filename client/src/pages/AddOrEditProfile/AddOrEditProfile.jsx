@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+
 import { Container } from "@material-ui/core";
-import { Form } from "components/Form";
+import { Form, isFormFilled } from "components/Form";
 import { Nav } from "components/Nav";
 
+import { getCurrentYear } from "utils/date";
+import { formFields } from "./AddOrEditPet-form-data";
+
 /*******************************************************
- * URL match:
+ * Routing:
  * /edit-profile/real-pet -- init form with pet data
- * /edit-profile/typo     -- redirect to /add-profile
+ * /edit-profile/typo     -- redirect to /not-found
  * /add-profile           -- init empty form
  ********************************************************/
 
@@ -23,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: theme.spacing(4),
 	},
 }));
-
-const getCurrentYear = () => 2020;
 
 const defaultPet = {
 	birthYear: getCurrentYear(),
@@ -64,39 +66,16 @@ export const AddOrEditProfile = ({
 
 	if (name && !matchedPet) return <Redirect to="/not-found" />;
 
-	const birthDateSectionConfig = {
-		layout: "row",
-		fields: [
-			[
-				"number",
-				"birthYear",
-				{ label: "Birth Year", min: 1995, max: getCurrentYear() },
-			],
-			["number", "birthMonth", { label: "Birth Month", min: 1, max: 12 }],
-		],
-	};
-
 	return (
 		<Container maxWidth="xs" className={clx.page}>
-			<Form
-				state={pet}
-				setState={setPet}
-				fields={[
-					["text", "name"],
-					["select", "species", { options: ["canine", "feline"] }],
-					["select", "sex", { options: ["male", "female"] }],
-					["text", "breed"],
-					["group", "birthDate", birthDateSectionConfig],
-					["number", "weight", { max: 100 }],
-					["text", "microchip", { label: "Microchip number" }],
-				]}
-			/>
+			<Form state={pet} setState={setPet} fields={formFields} />
 			<div className={clx.footer}>
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={closeForm}
 					textRight="Save"
 					onClickRight={submitForm}
+					disabledRight={!isFormFilled(formFields, pet)}
 					noArrows
 				/>
 			</div>
