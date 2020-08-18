@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Container } from "@material-ui/core";
-import { Form, isFormFilled } from "components/Form";
+import { Form, isFormFilled, addErrors } from "components/Form";
 import { Nav } from "components/Nav";
 
 import { getCurrentYear } from "utils/date";
@@ -53,11 +53,6 @@ export const AddOrEditProfile = ({
 		matchedPet ? { ...matchedPet } : { ...defaultPet }
 	);
 
-	// Validate form completion; ensure unique name if adding new pet
-	const canSubmit =
-		isFormFilled(formFields, pet) &&
-		(isNameUnique(pet.name) || (matchedPet && pet.name === matchedPet.name));
-
 	// ---------------------- Handlers -----------------------
 
 	const closeForm = () => {
@@ -71,13 +66,32 @@ export const AddOrEditProfile = ({
 		history.push("/profile/" + pet.name);
 	};
 
+	// ---------------------- Selectors -----------------------
+
+	// Is name unique name when adding new pet
+	const isNameValid = (pet, matchedPet) =>
+		isNameUnique(pet.name) || (matchedPet && pet.name === matchedPet.name);
+
+	const canSubmit =
+		isFormFilled(formFields, pet) && isNameValid(pet, matchedPet);
+
 	// ------------------- Routing & View --------------------
 
 	if (name && !matchedPet) return <Redirect to="/not-found" />;
 
+	// Include dynamically generated error status in fields data
+	const controlledFormFields = addErrors(formFields, {
+		name: {
+			isError: !isNameValid(pet, matchedPet),
+			message: "Pet already added",
+		},
+	});
+
+	console.log({ controlledFormFields });
+
 	return (
 		<Container maxWidth="xs" className={clx.page}>
-			<Form state={pet} setState={setPet} fields={formFields} />
+			<Form state={pet} setState={setPet} fields={controlledFormFields} />
 			<div className={clx.footer}>
 				<Nav
 					textLeft="Cancel"

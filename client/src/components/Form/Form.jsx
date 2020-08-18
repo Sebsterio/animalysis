@@ -7,7 +7,7 @@ import { capitalize } from "utils/string";
  * @param fields: [
  * 	type (Str, required): 'text' | 'number' | 'select' | 'group'
  * 	name (Str, required): corresponding state prop AND react key
- *  config: ...
+ *  config: ...TO ADD...
  * ]
  ********************************************************/
 
@@ -39,17 +39,19 @@ export const Form = ({ fields, state, setState, layout }) => {
 	return (
 		<div className={clx.stack}>
 			{fields.map(([type, name, config]) => {
-				const { label, options, req, fields, layout, min, max } = config
-					? config
-					: {};
+				if (!config) config = {};
+
+				const { label, options, req, err, fields, layout } = config;
+				const { min = 0, max = null } = config;
 
 				const key = name;
 
 				const inputProps = {
 					key,
 					name,
-					required: !!req || null,
-					label: label || name,
+					label: err || label || name,
+					error: !!err,
+					required: !!req,
 					onChange: handleChange,
 					variant: "outlined",
 					className: clx.formControl,
@@ -63,7 +65,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 				const numberInputProps = {
 					...inputProps,
 					value: state[name] || 0,
-					inputProps: { type: "number", min: min || 0, max: max || null },
+					inputProps: { type: "number", min, max },
 				};
 
 				const renderOption = (option) => {

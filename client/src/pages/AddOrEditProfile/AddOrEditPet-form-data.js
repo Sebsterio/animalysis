@@ -1,4 +1,5 @@
 import { getCurrentYear } from "utils/date";
+import { addErrorConditions } from "components/Form";
 
 // Aux
 const req = true;
@@ -15,10 +16,15 @@ const birthDateConfig = {
 	],
 };
 
+const sexConfig = {
+	options: ["male entire", "male neutred", "female entire", "female neutred"],
+	req,
+};
+
 export const formFields = [
 	["text", "name", { req }],
 	["select", "species", { options: ["canine", "feline"], req }],
-	["select", "sex", { options: ["male", "female"], req }],
+	["select", "sex", sexConfig],
 	["text", "breed", { req }],
 	["group", "birthDate", birthDateConfig],
 	["number", "weight", { max: 100 }],
