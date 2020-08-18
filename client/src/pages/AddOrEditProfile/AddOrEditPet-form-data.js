@@ -1,5 +1,4 @@
 import { getCurrentYear } from "utils/date";
-import { addErrorConditions } from "components/Form";
 
 // Aux
 const req = true;
@@ -16,6 +15,7 @@ const birthDateConfig = {
 	],
 };
 
+// Sex form section
 const sexConfig = {
 	options: ["male entire", "male neutred", "female entire", "female neutred"],
 	req,

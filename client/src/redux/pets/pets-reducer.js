@@ -45,6 +45,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 			const newPet = {
 				...action.payload,
 				id: shortid.generate(),
+				reports: [],
 			};
 			return makeState(state, "list", (list) =>
 				makeArrayWithPushedItems(list, newPet)
