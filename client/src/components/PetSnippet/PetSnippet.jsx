@@ -47,8 +47,6 @@ export const PetSnippet = ({
 
 	const imageSrc = imageUrl ? imageUrl : dogImage;
 
-	console.log({ imageSrc });
-
 	return (
 		<div className={clx.container}>
 			<Avatar alt={name} src={imageSrc} className={clx.avatar} />

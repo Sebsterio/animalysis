@@ -42,18 +42,19 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		// ------------------------ Pet -------------------------
 
 		case $.ADD_PET: {
-			const newPet = { ...action.payload, id: shortid.generate() };
+			const newPet = {
+				...action.payload,
+				id: shortid.generate(),
+			};
 			return makeState(state, "list", (list) =>
 				makeArrayWithPushedItems(list, newPet)
 			);
 		}
 
 		case $.MODIFY_PET: {
-			const { id } = action.payload;
-			return makeModifiedPet(state, id, (pet) => ({
-				...pet,
-				...action.payload,
-			}));
+			const { id, data } = action.payload;
+			console.log({ id, data });
+			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...data }));
 		}
 
 		// ---------------------- Reports -----------------------

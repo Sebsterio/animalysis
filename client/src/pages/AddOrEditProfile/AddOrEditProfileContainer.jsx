@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	addPet: (data) => dispatch(addPet(data)),
-	modifyPet: (data) => dispatch(modifyPet(data)),
+	modifyPet: (id, data) => dispatch(modifyPet(id, data)),
 });
 
 const AddOrEditProfileContainer = (props) => <AddOrEditProfile {...props} />;

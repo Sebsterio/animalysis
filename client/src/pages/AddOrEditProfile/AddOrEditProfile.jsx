@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import { Form } from "components/Form";
 import { Nav } from "components/Nav";
-import { isEmpty } from "utils/object";
 
 /*******************************************************
  * URL match:
@@ -25,6 +24,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const getCurrentYear = () => 2020;
+
+const defaultPet = {
+	birthYear: getCurrentYear(),
+	weight: 0,
+};
+
 export const AddOrEditProfile = ({
 	match,
 	history,
@@ -32,25 +38,31 @@ export const AddOrEditProfile = ({
 	addPet,
 	modifyPet,
 }) => {
-	const [pet, setPet] = useState({});
 	const clx = useStyles();
 
+	// Load edited-pet data OR assign default values
 	const { name } = match.params;
-	const editedPet = name ? getPet(name) : null;
+	const matchedPet = name ? getPet(name) : null;
+	const [pet, setPet] = useState(
+		matchedPet ? { ...matchedPet } : { ...defaultPet }
+	);
 
-	useEffect(() => {
-		if (editedPet && isEmpty(pet)) return setPet({ ...editedPet });
-	}, [editedPet, pet, setPet]);
+	// ---------------------- Handlers -----------------------
 
-	if (name && !editedPet) return <Redirect to="/add-profile" />;
-
-	const closeForm = () => history.goBack();
+	const closeForm = () => {
+		if (!matchedPet) history.push("/");
+		else history.push("/profile/" + matchedPet.name);
+	};
 
 	const submitForm = () => {
-		if (pet.id) modifyPet(pet);
-		else addPet(pet);
-		closeForm();
+		if (!matchedPet) addPet(pet);
+		else modifyPet({ id: matchedPet.id, data: pet });
+		history.push("/profile/" + pet.name);
 	};
+
+	// ------------------- Routing & View --------------------
+
+	if (name && !matchedPet) return <Redirect to="/not-found" />;
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
