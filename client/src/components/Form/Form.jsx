@@ -63,8 +63,6 @@ export const Form = ({ fields, state, setState, layout }) => {
 					inputProps: { type: "number", min: 0 },
 				};
 
-				const id = `input-${type}-${name}`;
-
 				const renderOption = (option) => {
 					const [value, label] = Array.isArray(option)
 						? option

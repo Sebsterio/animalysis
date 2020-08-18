@@ -36,13 +36,13 @@ export const AddOrEditProfile = ({
 	const clx = useStyles();
 
 	const { name } = match.params;
-	const currentPet = name ? getPet(name) : null;
+	const editedPet = name ? getPet(name) : null;
 
 	useEffect(() => {
-		if (currentPet && isEmpty(pet)) return setPet({ ...currentPet });
-	}, [pet, setPet]);
+		if (editedPet && isEmpty(pet)) return setPet({ ...editedPet });
+	}, [editedPet, pet, setPet]);
 
-	if (name && !currentPet) return <Redirect to="/add-profile" />;
+	if (name && !editedPet) return <Redirect to="/add-profile" />;
 
 	const closeForm = () => history.goBack();
 
