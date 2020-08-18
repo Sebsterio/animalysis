@@ -8,10 +8,38 @@ export const getDateString = (date) => {
 	return `${day}-${month}-${year}`;
 };
 
-export const getAge = (month, year) => {
+export const getCurrentYear = () => new Date().getFullYear();
+
+const getCurrentDate = () => {
 	const dateNow = new Date();
-	const monthDiff = dateNow.getMonth() + 1 - month;
-	return dateNow.getFullYear() - year - (monthDiff < 0 ? 1 : 0);
+	const year = dateNow.getFullYear();
+	const month = dateNow.getMonth();
+	const totalMonths = 12 * year + month;
+	return { year, month, totalMonths };
 };
 
-export const getCurrentYear = () => new Date().getFullYear();
+export const getDateFromAge = (months, years) => {
+	const totalMonths = 12 * years + months;
+	const monthsDiff = getCurrentDate().totalMonths - totalMonths;
+	return {
+		year: Math.floor(monthsDiff / 12),
+		month: (monthsDiff % 12) + 1,
+	};
+};
+
+export const getAgeFromDate = (month, year) => {
+	const totalMonths = 12 * year + month - 1;
+	const monthsDiff = getCurrentDate().totalMonths - totalMonths;
+	return {
+		years: Math.floor(monthsDiff / 12),
+		months: monthsDiff % 12,
+	};
+};
+// export const getAgeFromDate = (month, year) => {
+// 	const { month: curMonth, year: curYear } = getCurrentDate();
+// 	const monthDiff = curMonth + 1 - month;
+// 	return {
+// 		years: curYear - year - (monthDiff < 0 ? 1 : 0),
+// 		months: curMonth - month + (month > curMonth ? 12 : 0),
+// 	};
+// };

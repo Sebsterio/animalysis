@@ -33,8 +33,11 @@ const useStyles = makeStyles((theme) => ({
 export const Form = ({ fields, state, setState, layout }) => {
 	const clx = useStyles({ layout, numItems: fields.length });
 
-	const handleChange = (e) =>
-		setState({ ...state, [e.target.name]: e.target.value });
+	const handleChange = (e) => {
+		const { name, value, type } = e.target;
+		const validatedValue = type === "number" ? Number(value) : value;
+		setState({ ...state, [name]: validatedValue });
+	};
 
 	return (
 		<div className={clx.stack}>

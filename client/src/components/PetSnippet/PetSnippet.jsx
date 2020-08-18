@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Avatar, Typography, IconButton } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import { getAge } from "utils/date";
+import { getAgeFromDate } from "utils/date";
 import dogImage from "assets/dog.jpg";
 
 const useStyles = makeStyles((theme) => ({
@@ -61,7 +61,7 @@ export const PetSnippet = ({
 				</div>
 				<div className={clx.infoDesc}>
 					<Typography>
-						{getAge(month, year)} year old {sex} {breed}
+						{getAgeFromDate(month, year).years} year old {sex} {breed}
 					</Typography>
 				</div>
 			</div>

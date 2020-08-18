@@ -3,11 +3,12 @@ import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Container } from "@material-ui/core";
-import { Form, isFormFilled, addErrors } from "components/Form";
 import { Nav } from "components/Nav";
+import { Form, isFormFilled, addErrors } from "components/Form";
 
-import { getCurrentYear } from "utils/date";
-import { formFields } from "./AddOrEditPet-form-data";
+import { formFields } from "./AddOrEditPet-formData";
+import { defaultPet } from "./AddOrEditPet-defaultPet";
+import { getDateFromAge, getAgeFromDate } from "utils/date";
 
 /*******************************************************
  * Routing:
@@ -27,11 +28,6 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: theme.spacing(4),
 	},
 }));
-
-const defaultPet = {
-	birthYear: getCurrentYear(),
-	weight: 0,
-};
 
 export const AddOrEditProfile = ({
 	// router
@@ -66,6 +62,17 @@ export const AddOrEditProfile = ({
 		history.push("/profile/" + pet.name);
 	};
 
+	// Map aux props into usable state props
+	const useSetPet = (newPet) => {
+		let { birthYear, birthMonth } = newPet;
+		const { ageYears, ageMonths, ...prunedNewPet } = newPet;
+		if (birthYear === pet.birthYear && birthMonth === pet.birthMonth) {
+			const date = getDateFromAge(ageMonths || 0, ageYears || 0);
+			({ year: birthYear, month: birthMonth } = date);
+		}
+		setPet({ ...prunedNewPet, birthYear, birthMonth });
+	};
+
 	// ---------------------- Selectors -----------------------
 
 	// Is name unique name when adding new pet
@@ -75,11 +82,19 @@ export const AddOrEditProfile = ({
 	const canSubmit =
 		isFormFilled(formFields, pet) && isNameValid(pet, matchedPet);
 
+	// Get state with added derrived props
+	const getAugmentedPet = () => {
+		const { birthYear, birthMonth } = pet;
+		const age = getAgeFromDate(birthMonth, birthYear);
+		const { years: ageYears, months: ageMonths } = age;
+		return { ...pet, ageYears, ageMonths };
+	};
+
 	// ------------------- Routing & View --------------------
 
 	if (name && !matchedPet) return <Redirect to="/not-found" />;
 
-	// Include dynamically generated error status in fields data
+	// Include error status in fields data
 	const controlledFormFields = addErrors(formFields, {
 		name: {
 			isError: !isNameValid(pet, matchedPet),
@@ -87,11 +102,13 @@ export const AddOrEditProfile = ({
 		},
 	});
 
-	console.log({ controlledFormFields });
-
 	return (
 		<Container maxWidth="xs" className={clx.page}>
-			<Form state={pet} setState={setPet} fields={controlledFormFields} />
+			<Form
+				state={getAugmentedPet()}
+				setState={useSetPet}
+				fields={controlledFormFields}
+			/>
 			<div className={clx.footer}>
 				<Nav
 					textLeft="Cancel"
