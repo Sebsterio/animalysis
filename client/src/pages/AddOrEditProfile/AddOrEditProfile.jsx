@@ -34,9 +34,13 @@ const defaultPet = {
 };
 
 export const AddOrEditProfile = ({
+	// router
 	match,
 	history,
+	// store
 	getPet,
+	isNameUnique,
+	// dispatch
 	addPet,
 	modifyPet,
 }) => {
@@ -48,6 +52,11 @@ export const AddOrEditProfile = ({
 	const [pet, setPet] = useState(
 		matchedPet ? { ...matchedPet } : { ...defaultPet }
 	);
+
+	// Validate form completion; ensure unique name if adding new pet
+	const canSubmit =
+		isFormFilled(formFields, pet) &&
+		(isNameUnique(pet.name) || (matchedPet && pet.name === matchedPet.name));
 
 	// ---------------------- Handlers -----------------------
 
@@ -75,7 +84,7 @@ export const AddOrEditProfile = ({
 					onClickLeft={closeForm}
 					textRight="Save"
 					onClickRight={submitForm}
-					disabledRight={!isFormFilled(formFields, pet)}
+					disabledRight={!canSubmit}
 					noArrows
 				/>
 			</div>

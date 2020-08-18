@@ -12,6 +12,9 @@ export const getPetByName = (state, name) =>
 
 export const getPetReports = (pet) => pet.reports || [];
 
+export const isNameUnique = (state, name) =>
+	!getAllPets(state).some((pet) => pet.name === name);
+
 // -------------- reports ----------------
 
 export const getAllPetReports = (state) =>
