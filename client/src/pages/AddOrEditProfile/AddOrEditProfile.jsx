@@ -64,6 +64,18 @@ export const AddOrEditProfile = ({
 
 	if (name && !matchedPet) return <Redirect to="/not-found" />;
 
+	const birthDateSectionConfig = {
+		layout: "row",
+		fields: [
+			[
+				"number",
+				"birthYear",
+				{ label: "Birth Year", min: 1995, max: getCurrentYear() },
+			],
+			["number", "birthMonth", { label: "Birth Month", min: 1, max: 12 }],
+		],
+	};
+
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<Form
@@ -74,18 +86,8 @@ export const AddOrEditProfile = ({
 					["select", "species", { options: ["canine", "feline"] }],
 					["select", "sex", { options: ["male", "female"] }],
 					["text", "breed"],
-					[
-						"group",
-						"birthDate",
-						{
-							layout: "row",
-							fields: [
-								["number", "birthYear", { label: "Birth Year" }],
-								["number", "birthMonth", { label: "Birth Month" }],
-							],
-						},
-					],
-					["number", "weight"],
+					["group", "birthDate", birthDateSectionConfig],
+					["number", "weight", { max: 100 }],
 					["text", "microchip", { label: "Microchip number" }],
 				]}
 			/>
