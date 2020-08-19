@@ -4,10 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Container } from "@material-ui/core";
 import { Nav } from "components/Nav";
-import { Form, isFormFilled, addErrors } from "components/Form";
+import { Form, isFormFilled } from "components/Form";
 
-import { formFields } from "./AddOrEditPet-formData";
 import { defaultPet } from "./AddOrEditPet-defaultPet";
+import getFormFields from "./AddOrEditPet-formData";
 import { getDateFromAge, getAgeFromDate, limitDateToToday } from "utils/date";
 
 /*******************************************************
@@ -80,7 +80,7 @@ export const AddOrEditProfile = ({
 	const isNameValid = (pet, matchedPet) =>
 		isNameUnique(pet.name) || (matchedPet && pet.name === matchedPet.name);
 
-	const canSubmit =
+	const canSubmit = () =>
 		isFormFilled(formFields, pet) && isNameValid(pet, matchedPet);
 
 	// Get state with added derrived props
@@ -95,12 +95,9 @@ export const AddOrEditProfile = ({
 
 	if (name && !matchedPet) return <Redirect to="/not-found" />;
 
-	// Include error status in fields data
-	const controlledFormFields = addErrors(formFields, {
-		name: {
-			isError: !isNameValid(pet, matchedPet),
-			message: "Pet already added",
-		},
+	// Control form fields data with state
+	const formFields = getFormFields({
+		nameError: !isNameValid(pet, matchedPet) ? "Pet already added" : null,
 	});
 
 	return (
@@ -108,7 +105,7 @@ export const AddOrEditProfile = ({
 			<Form
 				state={getAugmentedPet()}
 				setState={useSetPet}
-				fields={controlledFormFields}
+				fields={formFields}
 			/>
 			<div className={clx.footer}>
 				<Nav
@@ -116,7 +113,7 @@ export const AddOrEditProfile = ({
 					onClickLeft={closeForm}
 					textRight="Save"
 					onClickRight={submitForm}
-					disabledRight={!canSubmit}
+					disabledRight={!canSubmit()}
 					noArrows
 				/>
 			</div>
