@@ -47,7 +47,7 @@ export const Head = ({
 				<Link to="/analysis" className={clx.item}>
 					<Alert
 						severity="info"
-						children="Click to continue Unfinished Analysis"
+						children="Click to continue unfinished analysis"
 						className={clx.alert}
 						action={
 							<IconButton
