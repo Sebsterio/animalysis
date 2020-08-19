@@ -7,8 +7,9 @@
 export const isFormFilled = (fields, state) =>
 	!fields.some((field) => {
 		const [type, name, config] = field;
-		if (type === "group") return !isFormFilled(config.fields, state);
-		const { req, derrived } = config;
-		if (config && req && !derrived) return state[name] === undefined;
+		if (!config) return false;
+		const { req, derrived, fields } = config;
+		if (type === "group") return !isFormFilled(fields, state);
+		if (req && !derrived) return state[name] === undefined;
 		return false;
 	});

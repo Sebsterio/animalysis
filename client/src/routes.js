@@ -5,6 +5,7 @@ import { Survey } from "pages/Survey";
 import { Report } from "pages/Report";
 import { Account } from "pages/Account";
 import { Summary } from "pages/Summary";
+import { ClinicForm } from "pages/ClinicForm";
 
 export const routes = [
 	{
@@ -37,13 +38,21 @@ export const routes = [
 		exact: true,
 		inNav: false,
 	},
+	// --- Clinic form ---
+	{
+		path: "/my-clinic/",
+		title: "My Clinic",
+		component: ClinicForm,
+		exact: true,
+		inNav: true,
+	},
 	// --- Analysis ---
 	{
 		path: "/analysis",
 		title: "New Analysis",
 		component: Survey,
 		exact: true,
-		inNav: true,
+		inNav: false,
 	},
 	{
 		path: "/analysis/summary",

@@ -3,6 +3,13 @@ import * as $ from "./user-actions";
 const INITIAL_STATE = {
 	isAuthenticated: true,
 	name: "Will",
+	clinic: {
+		id: null,
+		name: "",
+		address: "",
+		email: "",
+		phone: "",
+	},
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -11,6 +18,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isAuthenticated: true,
+			};
+		}
+
+		case $.MODIFY_USER_CLINIC: {
+			return {
+				...state,
+				clinic: {
+					...state.clinic,
+					...action.payload,
+				},
 			};
 		}
 

@@ -23,13 +23,18 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Head = ({ username, surveyIsLoaded, clearSurvey }) => {
+export const Head = ({
+	username,
+	surveyIsLoaded,
+	clinicIsSet,
+	clearSurvey,
+}) => {
 	const clx = useStyles();
 
 	return (
 		<div className={clx.container}>
-			{true && (
-				<Link to="/clinic-form" className={clx.item}>
+			{!clinicIsSet && (
+				<Link to="/my-clinic" className={clx.item}>
 					<Alert
 						severity="warning"
 						children="Choose a clinic to send your pet's health reports to."
@@ -37,6 +42,7 @@ export const Head = ({ username, surveyIsLoaded, clearSurvey }) => {
 					/>
 				</Link>
 			)}
+			<Collapse in={surveyIsLoaded}></Collapse>
 			<Collapse in={surveyIsLoaded}>
 				<Link to="/analysis" className={clx.item}>
 					<Alert
