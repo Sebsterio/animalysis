@@ -6,8 +6,8 @@ import { Container } from "@material-ui/core";
 import { Nav } from "components/Nav";
 import { Form, isFormFilled } from "components/Form";
 
-import { defaultPet } from "./AddOrEditPet-defaultPet";
-import getFormFields from "./AddOrEditPet-formData";
+import { defaultPet } from "./ProfileForm-defaultPet";
+import getFormFields from "./ProfileForm-formData";
 import { getDateFromAge, getAgeFromDate, limitDateToToday } from "utils/date";
 
 /*******************************************************
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const AddOrEditProfile = ({
+export const ProfileForm = ({
 	// router
 	match,
 	history,

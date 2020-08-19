@@ -1,6 +1,6 @@
 import { Home } from "pages/Home";
 import { Profile } from "pages/Profile";
-import { AddOrEditProfile } from "pages/AddOrEditProfile";
+import { ProfileForm } from "pages/ProfileForm";
 import { Survey } from "pages/Survey";
 import { Report } from "pages/Report";
 import { Account } from "pages/Account";
@@ -26,14 +26,14 @@ export const routes = [
 	{
 		path: "/add-profile",
 		title: "Edit Profile",
-		component: AddOrEditProfile,
+		component: ProfileForm,
 		exact: true,
 		inNav: false,
 	},
 	{
 		path: "/edit-profile/:name",
 		title: "Edit Profile",
-		component: AddOrEditProfile,
+		component: ProfileForm,
 		exact: true,
 		inNav: false,
 	},

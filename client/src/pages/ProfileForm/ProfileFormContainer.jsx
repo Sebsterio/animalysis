@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { getPetByName, isNameUnique } from "redux/pets/pets-selectors";
 import { addPet, modifyPet } from "redux/pets/pets-actions";
-import { AddOrEditProfile } from "./AddOrEditProfile";
+import { ProfileForm } from "./ProfileForm";
 
 const mapStateToProps = (state) => ({
 	getPet: (name) => getPetByName(state, name),
@@ -14,9 +14,9 @@ const mapDispatchToProps = (dispatch) => ({
 	modifyPet: (id, data) => dispatch(modifyPet(id, data)),
 });
 
-const AddOrEditProfileContainer = (props) => <AddOrEditProfile {...props} />;
+const ProfileFormContainer = (props) => <ProfileForm {...props} />;
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(AddOrEditProfileContainer);
+)(ProfileFormContainer);
