@@ -46,6 +46,7 @@ export const PetForm = ({
 	// dispatch
 	addPet,
 	modifyPet,
+	deletePet,
 }) => {
 	const clx = useStyles();
 
@@ -71,6 +72,11 @@ export const PetForm = ({
 		if (!matchedPet) addPet(pet);
 		else modifyPet({ id: matchedPet.id, data: pet });
 		history.push("/pet/" + pet.name);
+	};
+
+	const handleDelete = () => {
+		deletePet({ id: pet.id });
+		history.push("/");
 	};
 
 	// Add side-effects to form onChange handler
@@ -108,6 +114,7 @@ export const PetForm = ({
 		toggleShowAge: () => toggleState("age"),
 		showKg: toggle.kg,
 		toggleShowKg: () => toggleState("kg"),
+		deletePet: handleDelete,
 	});
 
 	return (

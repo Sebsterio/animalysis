@@ -1,6 +1,9 @@
 import * as $ from "./pets-actions";
 import { makeState } from "utils/state";
-import { makeArrayWithPushedItems } from "utils/array";
+import {
+	makeArrayWithPushedItems,
+	makeArrayWithRemovedItems,
+} from "utils/array";
 import { makeModifiedPet } from "./pets-utils";
 import shortid from "shortid";
 
@@ -54,6 +57,13 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		case $.MODIFY_PET: {
 			const { id, data } = action.payload;
 			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...data }));
+		}
+
+		case $.DELETE_PET: {
+			const { id } = action.payload;
+			return makeState(state, "list", (list) =>
+				makeArrayWithRemovedItems(list, null, (pet) => pet.id === id)
+			);
 		}
 
 		// ---------------------- Reports -----------------------

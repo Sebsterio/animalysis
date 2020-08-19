@@ -8,6 +8,7 @@ export default ({
 	toggleShowAge,
 	showKg,
 	toggleShowKg,
+	deletePet,
 }) => {
 	// Aux
 	const req = true;
@@ -64,6 +65,14 @@ export default ({
 		],
 	};
 
+	// Remove-pet button
+	const deletePetButtonConfig = {
+		handler: deletePet,
+		label: "Delete Profile",
+		color: "secondary",
+		variant: "contained",
+	};
+
 	return [
 		["file", "imageUrl", { label: <PhotoCamera color="primary" /> }],
 		["text", "name", { req, err: nameError }],
@@ -73,5 +82,6 @@ export default ({
 		["group", "ageSwitch", ageSwitchConfig],
 		["group", "weightSwitch", weightSwitchConfig],
 		["text", "microchip", { label: "Microchip number" }],
+		["button", "remove", deletePetButtonConfig],
 	];
 };

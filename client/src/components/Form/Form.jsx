@@ -53,7 +53,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 				if (!config) config = {};
 
 				const { label, options, req, err, fields, layout } = config;
-				const { min = 0, max = null, handler } = config;
+				const { min = 0, max = null, handler, color, variant } = config;
 
 				const baseProps = {
 					key: name,
@@ -85,7 +85,8 @@ export const Form = ({ fields, state, setState, layout }) => {
 					...baseProps,
 					children: label || name,
 					onClick: handler,
-					variant: "outlined",
+					variant: variant || "outlined",
+					color: color || "default",
 				};
 
 				const childFormProps = {

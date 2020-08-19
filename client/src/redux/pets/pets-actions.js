@@ -12,6 +12,12 @@ export const modifyPet = (data) => ({
 	payload: data,
 });
 
+export const DELETE_PET = "DELETE_PET";
+export const deletePet = (data) => ({
+	type: DELETE_PET,
+	payload: data,
+});
+
 // ---------------- Reports ------------------
 
 export const SET_REPORTS = "SET_REPORTS";
