@@ -4,8 +4,7 @@ import { makeArrayWithPushedItems } from "utils/array";
 import { makeModifiedPet } from "./pets-utils";
 import shortid from "shortid";
 
-// temp
-import dogImage from "assets/dog.jpg";
+// import Benny from "assets/benny.jpg";
 
 const INITIAL_STATE = {
 	dateSynced: null,
@@ -20,7 +19,7 @@ const INITIAL_STATE = {
 			birthMonth: 7,
 			weight: 0,
 			microchip: 0,
-			imageUrl: dogImage, // TODO
+			// imageUrl: Benny,
 			reports: [],
 		},
 	],

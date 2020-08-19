@@ -36,7 +36,6 @@ export const mapLbsToKg = (pet, newPet) => {
 	if (weightPropChanged) return newPet;
 	const { weightLbs, ...poundlessNewPet } = newPet;
 	const weight = Math.round((10 * weightLbs) / 2.20462) / 10;
-	console.log({ weight });
 	return { ...poundlessNewPet, weight };
 };
 
