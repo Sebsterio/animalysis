@@ -13,6 +13,8 @@ import {
 	limitBirthDateToToday,
 	mapBirthDateToAge,
 	convertFileToBlob,
+	mapKgToLbs,
+	mapLbsToKg,
 } from "./ProfileForm-utils";
 
 /*******************************************************
@@ -55,8 +57,8 @@ export const ProfileForm = ({
 	);
 
 	// Set up toggle-able section controls
-	const [showAge, setShowAge] = useState(true);
-	const toggleShowAge = () => setShowAge(!showAge);
+	const [toggle, setToggle] = useState({ age: true, kg: true });
+	const toggleState = (prop) => setToggle({ ...toggle, [prop]: !toggle[prop] });
 
 	// ---------------------- Handlers -----------------------
 
@@ -74,6 +76,7 @@ export const ProfileForm = ({
 	// Add side-effects to form onChange handler
 	const useSetPet = (newPet) => {
 		newPet = convertFileToBlob(newPet);
+		newPet = mapLbsToKg(pet, newPet);
 		newPet = mapAgeToBirthDate(pet, newPet);
 		newPet = limitBirthDateToToday(newPet);
 		setPet(newPet);
@@ -89,7 +92,11 @@ export const ProfileForm = ({
 		isFormFilled(formFields, pet) && isNameValid(pet, matchedPet);
 
 	// Get state with added derrived props
-	const getAugmentedPet = () => mapBirthDateToAge(pet);
+	const getAugmentedPet = (pet) => {
+		pet = mapKgToLbs(pet);
+		pet = mapBirthDateToAge(pet);
+		return pet;
+	};
 
 	// ------------------- Routing & View --------------------
 
@@ -97,14 +104,16 @@ export const ProfileForm = ({
 
 	const formFields = getFormFields({
 		nameError: !isNameValid(pet, matchedPet) ? "Pet already added" : null,
-		showAge,
-		toggleShowAge,
+		showAge: toggle.age,
+		toggleShowAge: () => toggleState("age"),
+		showKg: toggle.kg,
+		toggleShowKg: () => toggleState("kg"),
 	});
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<Form
-				state={getAugmentedPet()}
+				state={getAugmentedPet(pet)}
 				setState={useSetPet}
 				fields={formFields}
 			/>

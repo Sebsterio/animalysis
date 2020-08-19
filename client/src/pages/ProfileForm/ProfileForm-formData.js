@@ -2,7 +2,13 @@ import React from "react";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { getCurrentYear } from "utils/date";
 
-export default ({ nameError, showAge, toggleShowAge }) => {
+export default ({
+	nameError,
+	showAge,
+	toggleShowAge,
+	showKg,
+	toggleShowKg,
+}) => {
 	// Aux
 	const req = true;
 	const derrived = true;
@@ -25,21 +31,36 @@ export default ({ nameError, showAge, toggleShowAge }) => {
 	const ageConfig = {
 		layout: "row",
 		fields: [
-			["number", "ageYears", { label: "Age (years)", max: 25, req, derrived }],
-			["number", "ageMonths", { label: "Age (months)", max: 11, derrived }],
+			["number", "ageYears", { label: "Years", max: 25, req, derrived }],
+			["number", "ageMonths", { label: "Months", max: 11, derrived }],
 		],
 	};
 	const ageSwitchButtonConfig = {
 		handler: toggleShowAge,
-		label: showAge ? "Date" : "Age",
+		label: showAge ? "Age" : "Date",
 	};
 	const ageSwitchConfig = {
-		layout: "flex-row",
+		layout: "row--right-item-auto",
 		fields: [
 			showAge
 				? ["group", "age", ageConfig]
 				: ["group", "birthDate", birthDateConfig],
 			["button", "ageSwitchToggle", ageSwitchButtonConfig],
+		],
+	};
+
+	// Weight form section
+	const weightSwitchButtonConfig = {
+		handler: toggleShowKg,
+		label: showKg ? "Kg" : "Lbs",
+	};
+	const weightSwitchConfig = {
+		layout: "row--right-item-auto",
+		fields: [
+			showKg
+				? ["number", "weight", { max: 100 }]
+				: ["number", "weightLbs", { max: 220, label: "Weight" }],
+			["button", "weightSwitchToggle", weightSwitchButtonConfig],
 		],
 	};
 
@@ -50,7 +71,7 @@ export default ({ nameError, showAge, toggleShowAge }) => {
 		["select", "sex", sexConfig],
 		["text", "breed", { req }],
 		["group", "ageSwitch", ageSwitchConfig],
-		["number", "weight", { max: 100 }],
+		["group", "weightSwitch", weightSwitchConfig],
 		["text", "microchip", { label: "Microchip number" }],
 	];
 };

@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
 		if (layout === "row") {
 			baseStyles.gridTemplateColumns = `repeat(${numItems}, 1fr)`;
 		}
-		if (layout === "flex-row") {
-			baseStyles.gridTemplateColumns = `repeat(${numItems}, auto)`;
+		if (layout === "row--right-item-auto") {
+			baseStyles.gridTemplateColumns = `repeat(${numItems - 1}, 1fr) auto`;
 		}
 		return baseStyles;
 	},
