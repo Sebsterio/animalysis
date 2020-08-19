@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const ProblemsList = ({ data }) => {
+export const ProblemList = ({ data }) => {
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>

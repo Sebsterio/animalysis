@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button } from "@material-ui/core";
 import { Alert } from "components/Alert";
-import { ProblemsList } from "./components";
+import { ProblemList } from "./components";
 import { PetSnippet } from "components/PetSnippet";
 import { getDateString } from "utils/date";
 
@@ -58,8 +58,8 @@ const Report = ({ history, match, getReport, getPet }) => {
 
 				<Alert level={alert} alignLeft />
 
-				<Typography children="Problems List" component="h3" variant="h5" />
-				<ProblemsList data={problemList} />
+				<Typography children="Problem List" component="h3" variant="h5" />
+				<ProblemList data={problemList} />
 			</div>
 
 			<Button
