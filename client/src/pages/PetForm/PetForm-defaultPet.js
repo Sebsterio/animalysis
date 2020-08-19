@@ -1,7 +1,7 @@
-import { getCurrentYear } from "utils/date";
+import { getCurrentYear, getCurrentMonth } from "utils/date";
 
 export const defaultPet = {
 	birthYear: getCurrentYear(),
-	birthMonth: 1,
+	birthMonth: getCurrentMonth(),
 	weight: 0,
 };

@@ -10,6 +10,8 @@ export const getDateString = (date) => {
 
 export const getCurrentYear = () => new Date().getFullYear();
 
+export const getCurrentMonth = () => new Date().getMonth() + 1;
+
 const getCurrentDate = () => {
 	const dateNow = new Date();
 	const year = dateNow.getFullYear();
