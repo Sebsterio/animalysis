@@ -114,6 +114,7 @@ export const PetForm = ({
 		toggleShowAge: () => toggleState("age"),
 		showKg: toggle.kg,
 		toggleShowKg: () => toggleState("kg"),
+		isSaved: !!pet.id,
 		deletePet: handleDelete,
 	});
 

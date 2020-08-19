@@ -8,6 +8,7 @@ export default ({
 	toggleShowAge,
 	showKg,
 	toggleShowKg,
+	isSaved,
 	deletePet,
 }) => {
 	// Aux
@@ -78,7 +79,7 @@ export default ({
 		variant: "contained",
 	};
 
-	return [
+	const formFields = [
 		["file", "imageUrl", { label: <PhotoCamera color="primary" /> }],
 		["text", "name", { req, err: nameError }],
 		["select", "species", { options: ["canine", "feline"], req }],
@@ -87,6 +88,9 @@ export default ({
 		["group", "ageSwitch", ageSwitchConfig],
 		["group", "weightSwitch", weightSwitchConfig],
 		["text", "microchip", { label: "Microchip number" }],
-		["button", "remove", deletePetButtonConfig],
 	];
+
+	if (isSaved) formFields.push(["button", "remove", deletePetButtonConfig]);
+
+	return formFields;
 };
