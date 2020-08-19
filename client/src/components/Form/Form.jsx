@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, MenuItem, Button } from "@material-ui/core";
 import { capitalize } from "utils/string";
+import { FileInput } from "components/FileInput";
 
 /********************************************************
  * @param fields: [
@@ -25,20 +26,25 @@ const useStyles = makeStyles((theme) => ({
 		}
 		return baseStyles;
 	},
-	formControl: {
+	inputContainer: {
 		"& > label": {
 			textTransform: "capitalize",
 		},
+		"& .fileUploadButton": {
+			padding: theme.spacing(2),
+		},
 	},
+	hidden: { display: "none" },
 }));
 
 export const Form = ({ fields, state, setState, layout }) => {
 	const clx = useStyles({ layout, numItems: fields.length });
 
 	const handleChange = (e) => {
-		const { name, value, type } = e.target;
-		const validatedValue = type === "number" ? Number(value) : value;
-		setState({ ...state, [name]: validatedValue });
+		let { name, value, type, files } = e.target;
+		if (type === "number") value = Number(value);
+		if (type === "file") value = files[0];
+		setState({ ...state, [name]: value });
 	};
 
 	return (
@@ -61,7 +67,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 					required: !!req,
 					onChange: handleChange,
 					variant: "outlined",
-					className: clx.formControl,
+					className: clx.inputContainer,
 				};
 
 				const textInputProps = {
@@ -111,6 +117,8 @@ export const Form = ({ fields, state, setState, layout }) => {
 					</TextField>
 				) : type === "button" ? (
 					<Button {...buttonInputProps} />
+				) : type === "file" ? (
+					<FileInput {...inputProps} />
 				) : type === "group" ? (
 					<Form {...childFormProps} />
 				) : null;

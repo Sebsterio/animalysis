@@ -12,6 +12,7 @@ import {
 	mapAgeToBirthDate,
 	limitBirthDateToToday,
 	mapBirthDateToAge,
+	convertFileToBlob,
 } from "./ProfileForm-utils";
 
 /*******************************************************
@@ -72,6 +73,7 @@ export const ProfileForm = ({
 
 	// Add side-effects to form onChange handler
 	const useSetPet = (newPet) => {
+		newPet = convertFileToBlob(newPet);
 		newPet = mapAgeToBirthDate(pet, newPet);
 		newPet = limitBirthDateToToday(newPet);
 		setPet(newPet);

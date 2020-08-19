@@ -27,3 +27,10 @@ export const limitBirthDateToToday = (pet) => {
 	const [birthMonth, birthYear] = limitedDate;
 	return { ...pet, birthMonth, birthYear };
 };
+
+export const convertFileToBlob = (pet) => {
+	const { imageUrl: file } = pet;
+	if (!file || typeof file === "string") return pet;
+	const blob = URL.createObjectURL(file);
+	return { ...pet, imageUrl: blob };
+};

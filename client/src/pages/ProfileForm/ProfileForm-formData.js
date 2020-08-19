@@ -1,3 +1,5 @@
+import React from "react";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { getCurrentYear } from "utils/date";
 
 export default ({ nameError, showAge, toggleShowAge }) => {
@@ -5,7 +7,7 @@ export default ({ nameError, showAge, toggleShowAge }) => {
 	const req = true;
 	const derrived = true;
 
-	// Sex form section
+	// Sex form field
 	const sexConfig = {
 		options: ["male entire", "male neutred", "female entire", "female neutred"],
 		req,
@@ -42,6 +44,7 @@ export default ({ nameError, showAge, toggleShowAge }) => {
 	};
 
 	return [
+		["file", "imageUrl", { label: <PhotoCamera color="primary" /> }],
 		["text", "name", { req, err: nameError }],
 		["select", "species", { options: ["canine", "feline"], req }],
 		["select", "sex", sexConfig],
