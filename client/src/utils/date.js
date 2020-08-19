@@ -21,28 +21,24 @@ const getCurrentDate = () => {
 export const getDateFromAge = (months, years) => {
 	const totalMonths = 12 * years + months;
 	const monthsDiff = getCurrentDate().totalMonths - totalMonths;
-	return {
-		year: Math.floor(monthsDiff / 12),
-		month: (monthsDiff % 12) + 1,
-	};
+	const year = Math.floor(monthsDiff / 12);
+	const month = (monthsDiff % 12) + 1;
+	return [month, year];
 };
 
 export const getAgeFromDate = (month, year) => {
 	const totalMonths = 12 * year + month - 1;
 	const monthsDiff = getCurrentDate().totalMonths - totalMonths;
-	return {
-		years: Math.floor(monthsDiff / 12),
-		months: monthsDiff % 12,
-	};
+	const years = Math.floor(monthsDiff / 12);
+	const months = monthsDiff % 12;
+	return [months, years];
 };
 
 export const limitDateToToday = (month, year) => {
 	const currentDate = getCurrentDate();
 	const totalMonths = 12 * year + month - 1;
 	const monthsDiff = currentDate.totalMonths - totalMonths;
-	console.log({ monthsDiff });
-	return {
-		month: monthsDiff > 0 ? month : currentDate.month + 1,
-		year: monthsDiff > 0 ? year : currentDate.year,
-	};
+	const limitedMonth = monthsDiff > 0 ? month : currentDate.month + 1;
+	const limitedYear = monthsDiff > 0 ? year : currentDate.year;
+	return [limitedMonth, limitedYear];
 };

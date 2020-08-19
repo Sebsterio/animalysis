@@ -8,7 +8,11 @@ import { Form, isFormFilled } from "components/Form";
 
 import { defaultPet } from "./ProfileForm-defaultPet";
 import getFormFields from "./ProfileForm-formData";
-import { getDateFromAge, getAgeFromDate, limitDateToToday } from "utils/date";
+import {
+	mapAgeToBirthDate,
+	limitBirthDateToToday,
+	mapBirthDateToAge,
+} from "./ProfileForm-utils";
 
 /*******************************************************
  * Routing:
@@ -62,16 +66,11 @@ export const ProfileForm = ({
 		history.push("/profile/" + pet.name);
 	};
 
-	// Map aux props into permanent state props
+	// Add side-effects to form onChange handler
 	const useSetPet = (newPet) => {
-		let { birthYear, birthMonth } = newPet;
-		const { ageYears, ageMonths, ...prunedNewPet } = newPet;
-		if (birthYear === pet.birthYear && birthMonth === pet.birthMonth) {
-			const date = getDateFromAge(ageMonths || 0, ageYears || 0);
-			({ year: birthYear, month: birthMonth } = date);
-		}
-		const { year, month } = limitDateToToday(birthMonth, birthYear);
-		setPet({ ...prunedNewPet, birthYear: year, birthMonth: month });
+		newPet = mapAgeToBirthDate(pet, newPet);
+		newPet = limitBirthDateToToday(newPet);
+		setPet(newPet);
 	};
 
 	// ---------------------- Selectors -----------------------
@@ -84,18 +83,12 @@ export const ProfileForm = ({
 		isFormFilled(formFields, pet) && isNameValid(pet, matchedPet);
 
 	// Get state with added derrived props
-	const getAugmentedPet = () => {
-		const { birthYear, birthMonth } = pet;
-		const age = getAgeFromDate(birthMonth, birthYear);
-		const { years: ageYears, months: ageMonths } = age;
-		return { ...pet, ageYears, ageMonths };
-	};
+	const getAugmentedPet = () => mapBirthDateToAge(pet);
 
 	// ------------------- Routing & View --------------------
 
 	if (name && !matchedPet) return <Redirect to="/not-found" />;
 
-	// Control form fields data with state
 	const formFields = getFormFields({
 		nameError: !isNameValid(pet, matchedPet) ? "Pet already added" : null,
 	});
