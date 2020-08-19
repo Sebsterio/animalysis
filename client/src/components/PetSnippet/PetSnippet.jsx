@@ -58,7 +58,7 @@ export const PetSnippet = ({
 				</div>
 				<div className={clx.infoDesc}>
 					<Typography>
-						{getAgeFromDate(month, year).years} year old {sex} {breed}
+						{getAgeFromDate(month, year)[1]} year old {sex} {breed}
 					</Typography>
 				</div>
 			</div>

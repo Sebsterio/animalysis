@@ -31,8 +31,6 @@ const Report = ({ history, match, getReport, getPet }) => {
 	const { petId, date, title, alert, problemList } = report;
 	const pet = getPet(petId);
 
-	console.log(history);
-
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<div className={clx.header}>
