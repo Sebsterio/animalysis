@@ -6,8 +6,8 @@ import { Container } from "@material-ui/core";
 import { Nav } from "components/Nav";
 import { Form, isFormFilled } from "components/Form";
 
-import { defaultPet } from "./ProfileForm-defaultPet";
-import getFormFields from "./ProfileForm-formData";
+import { defaultPet } from "./PetForm-defaultPet";
+import getFormFields from "./PetForm-formData";
 import {
 	mapAgeToBirthDate,
 	limitBirthDateToToday,
@@ -15,13 +15,13 @@ import {
 	convertFileToBlob,
 	mapKgToLbs,
 	mapLbsToKg,
-} from "./ProfileForm-utils";
+} from "./PetForm-utils";
 
 /*******************************************************
  * Routing:
- * /edit-profile/real-pet -- init form with pet data
- * /edit-profile/typo     -- redirect to /not-found
- * /add-profile           -- init empty form
+ * /edit-pet/real-pet -- init form with pet data
+ * /edit-pet/typo     -- redirect to /not-found
+ * /add-pet           -- init empty form
  ********************************************************/
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const ProfileForm = ({
+export const PetForm = ({
 	// router
 	match,
 	history,
@@ -64,13 +64,13 @@ export const ProfileForm = ({
 
 	const closeForm = () => {
 		if (!matchedPet) history.push("/");
-		else history.push("/profile/" + matchedPet.name);
+		else history.push("/pet/" + matchedPet.name);
 	};
 
 	const submitForm = () => {
 		if (!matchedPet) addPet(pet);
 		else modifyPet({ id: matchedPet.id, data: pet });
-		history.push("/profile/" + pet.name);
+		history.push("/pet/" + pet.name);
 	};
 
 	// Add side-effects to form onChange handler

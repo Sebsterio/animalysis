@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 
 import { getPetByName, getPetReports } from "redux/pets/pets-selectors";
 
-import { Profile } from "./Profile";
+import { Pet } from "./Pet";
 
 const mapStateToProps = (state) => ({
 	getPetByName: (name) => getPetByName(state, name),
 	getReports: (pet) => getPetReports(pet),
 });
 
-const ProfileContainer = (props) => <Profile {...props} />;
+const PetContainer = (props) => <Pet {...props} />;
 
-export default connect(mapStateToProps, null)(ProfileContainer);
+export default connect(mapStateToProps, null)(PetContainer);

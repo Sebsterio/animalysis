@@ -1,6 +1,6 @@
 import { Home } from "pages/Home";
-import { Profile } from "pages/Profile";
-import { ProfileForm } from "pages/ProfileForm";
+import { Pet } from "pages/Pet";
+import { PetForm } from "pages/PetForm";
 import { Survey } from "pages/Survey";
 import { Report } from "pages/Report";
 import { Account } from "pages/Account";
@@ -16,24 +16,24 @@ export const routes = [
 	},
 	// --- Pet profile ---
 	{
-		path: "/profile/:name",
+		path: "/pet/:name",
 		title: "Pet Profile",
-		component: Profile,
+		component: Pet,
 		exact: true,
 		inNav: false,
 	},
-	// --- Add/edit pet profile ---
+	// --- Pet form ---
 	{
-		path: "/add-profile",
-		title: "Edit Profile",
-		component: ProfileForm,
+		path: "/add-pet",
+		title: "New Pet",
+		component: PetForm,
 		exact: true,
 		inNav: false,
 	},
 	{
-		path: "/edit-profile/:name",
-		title: "Edit Profile",
-		component: ProfileForm,
+		path: "/edit-pet/:name",
+		title: "Edit Pet Profile",
+		component: PetForm,
 		exact: true,
 		inNav: false,
 	},

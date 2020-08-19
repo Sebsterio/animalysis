@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Profile = ({
+export const Pet = ({
 	// router
 	match,
 	history,

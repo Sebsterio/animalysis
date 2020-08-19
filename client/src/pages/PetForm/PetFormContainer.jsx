@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { getPetByName, isNameUnique } from "redux/pets/pets-selectors";
 import { addPet, modifyPet } from "redux/pets/pets-actions";
-import { ProfileForm } from "./ProfileForm";
+import { PetForm } from "./PetForm";
 
 const mapStateToProps = (state) => ({
 	getPet: (name) => getPetByName(state, name),
@@ -14,9 +14,6 @@ const mapDispatchToProps = (dispatch) => ({
 	modifyPet: (id, data) => dispatch(modifyPet(id, data)),
 });
 
-const ProfileFormContainer = (props) => <ProfileForm {...props} />;
+const PetFormContainer = (props) => <PetForm {...props} />;
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ProfileFormContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(PetFormContainer);

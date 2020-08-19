@@ -32,7 +32,7 @@ export const Home = ({ history, pets }) => {
 					<PetCard
 						key={pet.id}
 						pet={pet}
-						handleClick={() => history.push("/profile/" + pet.name)}
+						handleClick={() => history.push("/pet/" + pet.name)}
 					/>
 				))}
 			</div>
@@ -40,7 +40,7 @@ export const Home = ({ history, pets }) => {
 			<Button
 				variant="outlined"
 				className={clx.surveyBtn}
-				onClick={() => history.push("/add-profile")}
+				onClick={() => history.push("/add-pet")}
 				children="New Pet"
 			/>
 		</Container>

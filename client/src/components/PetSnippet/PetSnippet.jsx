@@ -43,7 +43,7 @@ export const PetSnippet = ({
 }) => {
 	const clx = useStyles({ small });
 
-	const editPet = () => history.push("/edit-profile/" + name.toLowerCase());
+	const editPet = () => history.push("/edit-pet/" + name.toLowerCase());
 
 	const imageSrc = imageUrl ? imageUrl : dogImage;
 
