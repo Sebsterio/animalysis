@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	stack: ({ layout, numItems }) => {
 		const baseStyles = {
 			display: "grid",
-			gridGap: theme.spacing(4),
+			gridGap: theme.spacing(3),
 		};
 		if (layout === "row") {
 			baseStyles.gridTemplateColumns = `repeat(${numItems}, 1fr)`;
