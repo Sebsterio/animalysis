@@ -53,6 +53,10 @@ export const ProfileForm = ({
 		matchedPet ? { ...matchedPet } : { ...defaultPet }
 	);
 
+	// Set up toggle-able section controls
+	const [showAge, setShowAge] = useState(true);
+	const toggleShowAge = () => setShowAge(!showAge);
+
 	// ---------------------- Handlers -----------------------
 
 	const closeForm = () => {
@@ -91,6 +95,8 @@ export const ProfileForm = ({
 
 	const formFields = getFormFields({
 		nameError: !isNameValid(pet, matchedPet) ? "Pet already added" : null,
+		showAge,
+		toggleShowAge,
 	});
 
 	return (

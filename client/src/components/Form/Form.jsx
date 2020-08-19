@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, MenuItem } from "@material-ui/core";
+import { TextField, MenuItem, Button } from "@material-ui/core";
 import { capitalize } from "utils/string";
 
 /********************************************************
@@ -17,11 +17,13 @@ const useStyles = makeStyles((theme) => ({
 			display: "grid",
 			gridGap: theme.spacing(4),
 		};
-		const rowStyles = {
-			...baseStyles,
-			gridTemplateColumns: `repeat(${numItems}, 1fr)`,
-		};
-		return layout === "row" ? rowStyles : baseStyles;
+		if (layout === "row") {
+			baseStyles.gridTemplateColumns = `repeat(${numItems}, 1fr)`;
+		}
+		if (layout === "flex-row") {
+			baseStyles.gridTemplateColumns = `repeat(${numItems}, auto)`;
+		}
+		return baseStyles;
 	},
 	formControl: {
 		"& > label": {
@@ -45,12 +47,14 @@ export const Form = ({ fields, state, setState, layout }) => {
 				if (!config) config = {};
 
 				const { label, options, req, err, fields, layout } = config;
-				const { min = 0, max = null } = config;
+				const { min = 0, max = null, handler } = config;
 
-				const key = name;
+				const baseProps = {
+					key: name,
+				};
 
 				const inputProps = {
-					key,
+					...baseProps,
 					name,
 					label: err || label || name,
 					error: !!err,
@@ -69,6 +73,21 @@ export const Form = ({ fields, state, setState, layout }) => {
 					...inputProps,
 					value: state[name] || 0,
 					inputProps: { type: "number", min, max },
+				};
+
+				const buttonInputProps = {
+					...baseProps,
+					children: label || name,
+					onClick: handler,
+					variant: "outlined",
+				};
+
+				const childFormProps = {
+					...baseProps,
+					fields,
+					layout,
+					state,
+					setState,
 				};
 
 				const renderOption = (option) => {
@@ -90,8 +109,10 @@ export const Form = ({ fields, state, setState, layout }) => {
 					<TextField {...textInputProps} select>
 						{options.map(renderOption)}
 					</TextField>
+				) : type === "button" ? (
+					<Button {...buttonInputProps} />
 				) : type === "group" ? (
-					<Form {...{ key, fields, layout, state, setState }} />
+					<Form {...childFormProps} />
 				) : null;
 			})}
 		</div>
