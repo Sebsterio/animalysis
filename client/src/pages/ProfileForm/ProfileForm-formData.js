@@ -15,7 +15,7 @@ export default ({
 
 	// Sex form field
 	const sexConfig = {
-		options: ["male entire", "male neutred", "female entire", "female neutred"],
+		options: ["male entire", "male neuterd", "female entire", "female neuterd"],
 		req,
 	};
 
