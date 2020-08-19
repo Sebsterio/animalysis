@@ -13,7 +13,7 @@ import { useStyles } from "./App-styles";
  * Trigger authentication (TODO)
  *******************************/
 
-export const App = ({ isAuthenticated }) => {
+export const App = ({ authenticated, noPets }) => {
 	const clx = useStyles();
 
 	// Create Routes from routes array
@@ -22,7 +22,7 @@ export const App = ({ isAuthenticated }) => {
 		return <Route exact={exact} path={path} component={component} key={path} />;
 	});
 
-	// Redirect to '/account/sing-in' if user not authenticated
+	// Enforce authentication
 	const authRoutes = (
 		<>
 			<Route path="/account/:mode" component={Account} />
@@ -32,13 +32,13 @@ export const App = ({ isAuthenticated }) => {
 
 	return (
 		<div className={clx.app}>
-			{isAuthenticated && (
+			{authenticated && (
 				<header className={clx.header}>
 					<Header />
 				</header>
 			)}
 			<main className={clx.main}>
-				<Switch>{isAuthenticated ? mainRoutes : authRoutes}</Switch>
+				<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
 			</main>
 		</div>
 	);

@@ -6,7 +6,7 @@ import { getIsAuthenticated } from "redux/user/user-selectors";
 import { App } from "./App";
 
 const mapStateToProps = (state) => ({
-	isAuthenticated: getIsAuthenticated(state),
+	authenticated: getIsAuthenticated(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});

@@ -23,26 +23,36 @@ const useStyles = makeStyles((theme) => ({
 export const Home = ({ history, pets }) => {
 	const clx = useStyles();
 
+	const noPets = !pets.length;
+
 	return (
 		<Container maxWidth="xs" className={clx.page}>
 			<Head history={history} />
 
 			<div className={clx.main}>
-				{pets.map((pet) => (
-					<PetCard
-						key={pet.id}
-						pet={pet}
-						handleClick={() => history.push("/pet/" + pet.name)}
-					/>
-				))}
+				{noPets ? (
+					<PetCard handleClick={() => history.push("/add-pet")} />
+				) : (
+					pets.map((pet) => (
+						<PetCard
+							key={pet.id}
+							pet={pet}
+							handleClick={() => history.push("/pet/" + pet.name)}
+						/>
+					))
+				)}
 			</div>
 
-			<Button
-				variant="outlined"
-				className={clx.surveyBtn}
-				onClick={() => history.push("/add-pet")}
-				children="New Pet"
-			/>
+			{!noPets ? (
+				<Button
+					variant="outlined"
+					className={clx.surveyBtn}
+					onClick={() => history.push("/add-pet")}
+					children="New Pet"
+				/>
+			) : (
+				<div style={{ height: "10vh" }} />
+			)}
 		</Container>
 	);
 };

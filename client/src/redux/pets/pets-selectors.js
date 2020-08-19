@@ -1,5 +1,7 @@
 export const getAllPets = (state) => state.pets.list;
 
+export const getIsPetsListEmpty = (state) => !getAllPets(state).length;
+
 // ------------ single pet --------------
 
 export const getPetById = (state, id) =>

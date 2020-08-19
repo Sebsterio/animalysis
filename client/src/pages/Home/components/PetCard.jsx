@@ -6,6 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import dogImage from "assets/dog.jpg";
+import PlusImage from "assets/plus.png";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -21,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const PetCard = ({ pet, handleClick }) => {
 	const clx = useStyles();
+
+	if (!pet) pet = { name: "Add a pet", imageUrl: PlusImage };
 
 	const { imageUrl } = pet;
 	const imageSrc = imageUrl ? imageUrl : dogImage;
