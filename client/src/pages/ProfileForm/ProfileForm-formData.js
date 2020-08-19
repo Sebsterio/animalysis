@@ -3,6 +3,7 @@ import { getCurrentYear } from "utils/date";
 export default ({ nameError }) => {
 	// Aux
 	const req = true;
+	const derrived = true;
 
 	// Birth date form section
 	const max = getCurrentYear();
@@ -17,8 +18,8 @@ export default ({ nameError }) => {
 	};
 
 	// Age form section
-	const ageYearsConfig = { label: "Age (years)", max: 25, req };
-	const ageMonthsConfig = { label: "Age (months)", max: 11 };
+	const ageYearsConfig = { label: "Age (years)", max: 25, req, derrived };
+	const ageMonthsConfig = { label: "Age (months)", max: 11, derrived };
 	const ageConfig = {
 		layout: "row",
 		fields: [
