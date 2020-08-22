@@ -52,7 +52,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 			{fields.map(([type, name, config]) => {
 				if (!config) config = {};
 
-				const { label, options, req, err, fields, layout } = config;
+				const { label, options, req, err, fields, layout, multiline } = config;
 				const { min = 0, max = null, handler, color, variant } = config;
 
 				const key = name;
@@ -72,6 +72,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 				const textInputProps = {
 					...inputProps,
 					value: state[name] || "",
+					multiline,
 				};
 
 				const numberInputProps = {
