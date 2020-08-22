@@ -6,6 +6,7 @@ import { Account } from "pages/Account";
 
 import { routes } from "routes";
 import { useStyles } from "./App-styles";
+import { useEffect } from "react";
 
 /*******************************
  * App layout
@@ -13,8 +14,17 @@ import { useStyles } from "./App-styles";
  * Trigger authentication (TODO)
  *******************************/
 
-export const App = ({ authenticated, noPets }) => {
+export const App = ({ authenticated }) => {
 	const clx = useStyles();
+
+	// TEMP
+	useEffect(() => {
+		const ESCAPE_KEY = 27;
+		const clearStorage = (e) =>
+			e.keyCode === ESCAPE_KEY ? localStorage.clear() : null;
+		window.addEventListener("keydown", clearStorage);
+		return () => window.removeEventListener("keydown", clearStorage);
+	}, []);
 
 	// Create Routes from routes array
 	const mainRoutes = routes.map((route) => {
