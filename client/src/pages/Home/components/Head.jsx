@@ -84,7 +84,7 @@ export const Head = ({
 			<Typography
 				variant="h4"
 				align="center"
-				children={`Welcome, ${username}`}
+				children={`Welcome, ${username || "Guest"}`}
 				className={clx.greeting}
 			/>
 		</div>

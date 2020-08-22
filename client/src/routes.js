@@ -6,6 +6,7 @@ import { Report } from "pages/Report";
 import { Account } from "pages/Account";
 import { Summary } from "pages/Summary";
 import { ClinicForm } from "pages/ClinicForm";
+import { UserForm } from "pages/UserForm";
 
 export const routes = [
 	{
@@ -38,9 +39,17 @@ export const routes = [
 		exact: true,
 		inNav: false,
 	},
+	// --- User form ---
+	{
+		path: "/profile",
+		title: "My Profile",
+		component: UserForm,
+		exact: true,
+		inNav: true,
+	},
 	// --- Clinic form ---
 	{
-		path: "/my-clinic/",
+		path: "/my-clinic",
 		title: "My Clinic",
 		component: ClinicForm,
 		exact: true,

@@ -15,3 +15,9 @@ export const dismissClinicReminder = (data) => ({
 	type: DISMISS_CLINIC_REMINDER,
 	payload: data,
 });
+
+export const MODIFY_USER_INFO = "MODIFY_USER_INFO";
+export const modifyUserInfo = (data) => ({
+	type: MODIFY_USER_INFO,
+	payload: data,
+});

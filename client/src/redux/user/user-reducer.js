@@ -2,15 +2,20 @@ import * as $ from "./user-actions";
 
 const INITIAL_STATE = {
 	isAuthenticated: true,
-	name: "Will",
 	clinic: {
 		id: null,
 		name: "",
 		address: "",
 		email: "",
 		phone: "",
+		reminderDismissed: false,
 	},
-	clinicReminderDismissed: false,
+	info: {
+		name: "",
+		surname: "",
+		email: "",
+		phone: "",
+	},
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -19,6 +24,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isAuthenticated: true,
+			};
+		}
+
+		case $.MODIFY_USER_INFO: {
+			return {
+				...state,
+				info: {
+					...state.info,
+					...action.payload,
+				},
 			};
 		}
 
