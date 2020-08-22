@@ -15,6 +15,7 @@ const INITIAL_STATE = {
 		surname: "",
 		email: "",
 		phone: "",
+		reminderDismissed: false,
 	},
 };
 
@@ -37,6 +38,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			};
 		}
 
+		case $.DISMISS_USER_REMINDER: {
+			return {
+				...state,
+				info: {
+					...state.info,
+					reminderDismissed: true,
+				},
+			};
+		}
+
 		case $.MODIFY_USER_CLINIC: {
 			return {
 				...state,
@@ -50,7 +61,10 @@ const userReducer = (state = INITIAL_STATE, action) => {
 		case $.DISMISS_CLINIC_REMINDER: {
 			return {
 				...state,
-				clinicReminderDismissed: true,
+				clinic: {
+					...state.clinic,
+					reminderDismissed: true,
+				},
 			};
 		}
 

@@ -28,15 +28,22 @@ export const Head = ({
 	username,
 	surveyIsLoaded,
 	clinicReminderOn,
+	userReminderOn,
 	// dispatch
 	clearSurvey,
 	dismissClinicReminder,
+	dismissUserReminder,
 }) => {
 	const clx = useStyles();
 
 	const handleClinicAlertActionClick = (e) => {
 		e.preventDefault();
 		dismissClinicReminder();
+	};
+
+	const handleUserAlertActionClick = (e) => {
+		e.preventDefault();
+		dismissUserReminder();
 	};
 
 	const handleSurveyAlertActionClick = (e) => {
@@ -63,6 +70,25 @@ export const Head = ({
 					/>
 				</Link>
 			</Collapse>
+
+			<Collapse in={userReminderOn}>
+				<Link to="/profile" className={clx.item}>
+					<Alert
+						severity="warning"
+						children="Add a phone number so that you clinic can contact you."
+						className={clx.alert}
+						action={
+							<IconButton
+								children={<CloseIcon fontSize="inherit" />}
+								onClick={handleUserAlertActionClick}
+								aria-label="dismiss reminder to add contact info"
+								color="inherit"
+							/>
+						}
+					/>
+				</Link>
+			</Collapse>
+
 			<Collapse in={surveyIsLoaded}>
 				<Link to="/analysis" className={clx.item}>
 					<Alert

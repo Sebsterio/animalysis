@@ -22,6 +22,8 @@ export const isNameUnique = (state, name) =>
 export const getAllPetReports = (state) =>
 	getAllPets(state).reduce((acc, pet) => [...acc, ...pet.reports], []);
 
+export const getHasReports = (state) => !!getAllPetReports(state).length;
+
 export const getReportById = (state, id) => {
 	const list = getAllPetReports(state);
 	return list.find((report) => report.id === id);
