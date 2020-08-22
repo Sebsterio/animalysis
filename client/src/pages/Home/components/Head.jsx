@@ -24,25 +24,45 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Head = ({
+	// store
 	username,
 	surveyIsLoaded,
-	clinicIsSet,
+	clinicReminderOn,
+	// dispatch
 	clearSurvey,
+	dismissClinicReminder,
 }) => {
 	const clx = useStyles();
 
+	const handleClinicAlertActionClick = (e) => {
+		e.preventDefault();
+		dismissClinicReminder();
+	};
+
+	const handleSurveyAlertActionClick = (e) => {
+		e.preventDefault();
+		clearSurvey();
+	};
+
 	return (
 		<div className={clx.container}>
-			{!clinicIsSet && (
+			<Collapse in={clinicReminderOn}>
 				<Link to="/my-clinic" className={clx.item}>
 					<Alert
 						severity="warning"
 						children="Choose a clinic to send your pet's health reports to."
 						className={clx.alert}
+						action={
+							<IconButton
+								children={<CloseIcon fontSize="inherit" />}
+								onClick={handleClinicAlertActionClick}
+								aria-label="dismiss reminder to add a clinic"
+								color="inherit"
+							/>
+						}
 					/>
 				</Link>
-			)}
-			<Collapse in={surveyIsLoaded}></Collapse>
+			</Collapse>
 			<Collapse in={surveyIsLoaded}>
 				<Link to="/analysis" className={clx.item}>
 					<Alert
@@ -52,9 +72,9 @@ export const Head = ({
 						action={
 							<IconButton
 								children={<CloseIcon fontSize="inherit" />}
-								onClick={clearSurvey}
-								color="inherit"
+								onClick={handleSurveyAlertActionClick}
 								aria-label="discard unfinished survey"
+								color="inherit"
 							/>
 						}
 					/>

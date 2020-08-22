@@ -1,19 +1,24 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getName, getIsClinicSet } from "redux/user/user-selectors";
+import {
+	getName,
+	getShouldShowClinicReminder,
+} from "redux/user/user-selectors";
 import { getIsSurveyLoaded } from "redux/survey/survey-selectors";
 import { clearSurvey } from "redux/survey/survey-actions";
+import { dismissClinicReminder } from "redux/user/user-actions";
 
 import { Head } from "./Head";
 
 const mapStateToProps = (state) => ({
-	surveyIsLoaded: getIsSurveyLoaded(state),
 	username: getName(state),
-	clinicIsSet: getIsClinicSet(state),
+	surveyIsLoaded: getIsSurveyLoaded(state),
+	clinicReminderOn: getShouldShowClinicReminder(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	clearSurvey: () => dispatch(clearSurvey()),
+	dismissClinicReminder: () => dispatch(dismissClinicReminder()),
 });
 
 const HeadContainer = (props) => <Head {...props} />;

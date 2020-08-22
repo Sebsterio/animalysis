@@ -10,6 +10,7 @@ const INITIAL_STATE = {
 		email: "",
 		phone: "",
 	},
+	clinicReminderDismissed: false,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -28,6 +29,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
 					...state.clinic,
 					...action.payload,
 				},
+			};
+		}
+
+		case $.DISMISS_CLINIC_REMINDER: {
+			return {
+				...state,
+				clinicReminderDismissed: true,
 			};
 		}
 
