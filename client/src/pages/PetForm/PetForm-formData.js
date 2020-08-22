@@ -3,6 +3,7 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { getCurrentYear } from "utils/date";
 
 export default ({
+	hasPhoto,
 	nameError,
 	showAge,
 	toggleShowAge,

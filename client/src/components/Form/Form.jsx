@@ -55,17 +55,19 @@ export const Form = ({ fields, state, setState, layout }) => {
 				const { label, options, req, err, fields, layout, multiline } = config;
 				const { min = 0, max = null, handler, color, variant } = config;
 
-				const key = name;
+				const baseProps = {
+					key: name,
+					variant: variant || "outlined",
+				};
 
 				const inputProps = {
-					key,
+					...baseProps,
 					name,
 					type,
 					label: err || label || name,
 					error: !!err,
 					required: !!req,
 					onChange: handleChange,
-					variant: "outlined",
 					className: clx.inputContainer,
 				};
 
@@ -82,10 +84,9 @@ export const Form = ({ fields, state, setState, layout }) => {
 				};
 
 				const buttonInputProps = {
-					key,
+					...baseProps,
 					children: label || name,
 					onClick: handler,
-					variant: variant || "outlined",
 					color: color || "default",
 				};
 
@@ -113,7 +114,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 				) : type === "file" ? (
 					<FileInput {...inputProps} />
 				) : type === "group" ? (
-					<Form {...{ key, fields, layout, state, setState }} />
+					<Form {...{ ...baseProps, fields, layout, state, setState }} />
 				) : null;
 			})}
 		</div>

@@ -109,6 +109,7 @@ export const PetForm = ({
 	if (name && !matchedPet) return <Redirect to="/not-found" />;
 
 	const formFields = getFormFields({
+		hasPhoto: !!pet.imageUrl,
 		nameError: !isNameValid(pet, matchedPet) ? "Pet already added" : null,
 		showAge: toggle.age,
 		toggleShowAge: () => toggleState("age"),
