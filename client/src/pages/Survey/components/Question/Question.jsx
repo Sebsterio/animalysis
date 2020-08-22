@@ -31,8 +31,6 @@ const Question = ({
 
 	const clx = useStyles();
 
-	console.log(history);
-
 	return (
 		<Box>
 			<Box mb={2}>
