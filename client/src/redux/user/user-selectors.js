@@ -1,5 +1,3 @@
-import { Eco } from "@material-ui/icons";
-
 export const getIsAuthenticated = (state) => state.user.isAuthenticated;
 
 export const getName = (state) => state.user.name;

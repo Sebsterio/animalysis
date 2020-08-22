@@ -55,13 +55,12 @@ export const Form = ({ fields, state, setState, layout }) => {
 				const { label, options, req, err, fields, layout } = config;
 				const { min = 0, max = null, handler, color, variant } = config;
 
-				const baseProps = {
-					key: name,
-				};
+				const key = name;
 
 				const inputProps = {
-					...baseProps,
+					key,
 					name,
+					type,
 					label: err || label || name,
 					error: !!err,
 					required: !!req,
@@ -78,23 +77,15 @@ export const Form = ({ fields, state, setState, layout }) => {
 				const numberInputProps = {
 					...inputProps,
 					value: state[name] || 0,
-					inputProps: { type: "number", min, max },
+					inputProps: { min, max },
 				};
 
 				const buttonInputProps = {
-					...baseProps,
+					key,
 					children: label || name,
 					onClick: handler,
 					variant: variant || "outlined",
 					color: color || "default",
-				};
-
-				const childFormProps = {
-					...baseProps,
-					fields,
-					layout,
-					state,
-					setState,
 				};
 
 				const renderOption = (option) => {
@@ -108,7 +99,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 					);
 				};
 
-				return type === "text" ? (
+				return ["text", "tel", "email"].includes(type) ? (
 					<TextField {...textInputProps} />
 				) : type === "number" ? (
 					<TextField {...numberInputProps} />
@@ -121,7 +112,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 				) : type === "file" ? (
 					<FileInput {...inputProps} />
 				) : type === "group" ? (
-					<Form {...childFormProps} />
+					<Form {...{ key, fields, layout, state, setState }} />
 				) : null;
 			})}
 		</div>
