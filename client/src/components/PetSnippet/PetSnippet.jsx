@@ -44,6 +44,9 @@ export const PetSnippet = ({
 
 	const editPet = () => history.push("/edit-pet/" + name.toLowerCase());
 
+	const age = getAgeFromDate(month, year);
+	const ageString = age[1] > 0 ? `${age[1]} years old` : `${age[0]} months old`;
+
 	return (
 		<div className={clx.container}>
 			<Avatar alt={name} src={imageUrl} className={clx.avatar} />
@@ -58,7 +61,7 @@ export const PetSnippet = ({
 				</div>
 				<div className={clx.infoDesc}>
 					<Typography>
-						{getAgeFromDate(month, year)[1]} year old {sex} {breed}
+						{ageString} {sex} {breed}
 					</Typography>
 				</div>
 			</div>
