@@ -44,7 +44,7 @@ export default ({
 	};
 	const ageSwitchButtonConfig = {
 		handler: toggleShowAge,
-		label: showAge ? "Age" : "Date",
+		label: showAge ? "Date" : "Age",
 	};
 	const ageSwitchConfig = {
 		layout: "row--right-item-auto",
@@ -59,14 +59,14 @@ export default ({
 	// Weight form section
 	const weightSwitchButtonConfig = {
 		handler: toggleShowKg,
-		label: showKg ? "Kg" : "Lbs",
+		label: showKg ? "Lbs" : "Kg",
 	};
 	const weightSwitchConfig = {
 		layout: "row--right-item-auto",
 		fields: [
 			showKg
-				? ["number", "weight", { max: 100 }]
-				: ["number", "weightLbs", { max: 220, label: "Weight" }],
+				? ["number", "weight", { label: "Weight (kg)", max: 100 }]
+				: ["number", "weightLbs", { label: "Weight (lbs)", max: 220 }],
 			["button", "weightSwitchToggle", weightSwitchButtonConfig],
 		],
 	};
