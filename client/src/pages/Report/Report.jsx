@@ -77,7 +77,7 @@ const Report = ({ history, match, getReport, getPet }) => {
 				color="default"
 				children="Close"
 				className={clx.navButton}
-				onClick={() => history.goBack()}
+				onClick={() => history.push("/pet/" + pet.name)}
 			/>
 		</Container>
 	);
