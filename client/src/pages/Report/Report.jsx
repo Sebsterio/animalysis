@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Typography, Button } from "@material-ui/core";
+import { Container, Typography, Button, Dialog } from "@material-ui/core";
 import { Alert, PetSnippet } from "components";
 import { ProblemList } from "./components";
 import { getDateString } from "utils/date";
+import { summaryData } from "pages/Summary/Summary-data";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -18,10 +19,17 @@ const useStyles = makeStyles((theme) => ({
 		display: "grid",
 		gridGap: theme.spacing(4),
 	},
+	dialogContent: {
+		padding: theme.spacing(3),
+	},
 }));
 
 const Report = ({ history, match, getReport, getPet }) => {
 	const clx = useStyles();
+
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const openDialog = () => setDialogOpen(true);
+	const closeDialog = () => setDialogOpen(false);
 
 	const { id } = match.params;
 	if (!id) return <Redirect to="/not-found" />;
@@ -29,6 +37,7 @@ const Report = ({ history, match, getReport, getPet }) => {
 	const report = getReport(id);
 	const { petId, date, title, alert, problemList } = report;
 	const pet = getPet(petId);
+	const dialogText = summaryData[alert].textMain(pet);
 
 	return (
 		<Container maxWidth="xs" className={clx.page}>
@@ -53,9 +62,12 @@ const Report = ({ history, match, getReport, getPet }) => {
 					/>
 				</div>
 
-				<Alert level={alert} alignLeft />
+				<Alert level={alert} alignLeft clickHandler={openDialog} />
 
-				<Typography children="Problem List" component="h3" variant="h5" />
+				<Dialog open={dialogOpen} onClose={closeDialog} maxWidth="xs">
+					<Typography className={clx.dialogContent} children={dialogText} />
+				</Dialog>
+
 				<ProblemList data={problemList} />
 			</div>
 
