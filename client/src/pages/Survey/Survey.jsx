@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
-import { Section, Question, Nav, AlertModal } from "./components";
 import { Container } from "@material-ui/core";
+import { Section, Question, Nav, AlertModal } from "./components";
 
 const useStyles = makeStyles((theme) => ({
 	container: {

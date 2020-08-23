@@ -3,8 +3,7 @@ import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Container } from "@material-ui/core";
-import { Nav } from "components/Nav";
-import { Form, isFormFilled } from "components/Form";
+import { Nav, Form, isFormFilled } from "components";
 
 import { defaultPet } from "./PetForm-defaultPet";
 import getFormFields from "./PetForm-formData";

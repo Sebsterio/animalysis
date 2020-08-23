@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // Components
 import { OptIn, UserInfo } from "./index";
-import { Copyright } from "components/Copyright";
+import { Copyright } from "components";
 import {
 	Container,
 	Box,

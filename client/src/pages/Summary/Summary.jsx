@@ -1,9 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button } from "@material-ui/core";
-import { Alert } from "components/Alert";
-import { Nav } from "components/Nav";
-
+import { Nav, Alert } from "components";
 import { summaryData } from "./Summary-data";
 
 const useStyles = makeStyles((theme) => ({

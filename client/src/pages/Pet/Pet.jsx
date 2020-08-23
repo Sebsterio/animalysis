@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
 import { ReportsList, Footer } from "./components";
-import { PetSnippet } from "components/PetSnippet";
+import { PetSnippet } from "components";
 import { surveyData } from "redux/survey/survey-data";
 
 const useStyles = makeStyles((theme) => ({

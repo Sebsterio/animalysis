@@ -2,9 +2,8 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button } from "@material-ui/core";
-import { Alert } from "components/Alert";
+import { Alert, PetSnippet } from "components";
 import { ProblemList } from "./components";
-import { PetSnippet } from "components/PetSnippet";
 import { getDateString } from "utils/date";
 
 const useStyles = makeStyles((theme) => ({

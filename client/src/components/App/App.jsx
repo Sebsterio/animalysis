@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { Header } from "components/Header";
-import { Account } from "pages/Account";
+import { Header } from "components";
+import { Account } from "pages";
 
 import { routes } from "routes";
 import { useStyles } from "./App-styles";
-import { useEffect } from "react";
 
 /*******************************
  * App layout

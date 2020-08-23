@@ -1,5 +1,5 @@
 import React from "react";
-import { Nav as NavComponent } from "components/Nav";
+import { Nav as NavComponent } from "components";
 
 export const Nav = ({
 	// parent

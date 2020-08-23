@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Container } from "@material-ui/core";
-import { Nav } from "components/Nav";
-import { Form, isFormFilled } from "components/Form";
+import { Nav, Form, isFormFilled } from "components";
 
 import { formFields } from "./ClinicForm-formData";
 

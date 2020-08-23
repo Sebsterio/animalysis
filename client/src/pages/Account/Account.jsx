@@ -1,7 +1,7 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import { Auth, Main } from "./components";
 import { mainModes, authModes } from "./Account-modes";
-import { Redirect } from "react-router-dom";
 
 const AccountPage = ({
 	// router
