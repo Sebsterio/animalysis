@@ -12,18 +12,11 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "center",
 	},
 	item: {
-		textDecoration: "initial",
 		marginBottom: theme.spacing(0.5),
 	},
-	alert: {
-		alignItems: "center",
-	},
-	link: {
-		textDecoration: "none",
-	},
-	greeting: {
-		margin: theme.spacing(4, 0),
-	},
+	link: { textDecoration: "none" },
+	alert: { alignItems: "center" },
+	greeting: { margin: theme.spacing(4, 0) },
 }));
 
 export const Head = ({
@@ -78,7 +71,7 @@ export const Head = ({
 				<Link to="/profile" className={clx.link}>
 					<Alert
 						severity="warning"
-						children="Add a phone number so that you clinic can contact you."
+						children="Add a phone number so that your clinic can contact you."
 						className={clx.alert}
 						action={
 							<IconButton

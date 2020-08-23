@@ -5,5 +5,5 @@ export const formFields = [
 	["text", "name"],
 	["text", "surname"],
 	["email", "email"],
-	["tel", "telephone", { req }],
+	["tel", "phone", { req, label: "Telephone" }],
 ];

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Button, Dialog } from "@material-ui/core";
-import { Alert, PetSnippet } from "components";
-import { ProblemList } from "./components";
+import { Alert } from "components";
+import { Head, ProblemList } from "./components";
 import { getDateString } from "utils/date";
 import { summaryData } from "pages/Summary/Summary-data";
 
@@ -19,9 +19,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "grid",
 		gridGap: theme.spacing(4),
 	},
-	dialogContent: {
-		padding: theme.spacing(3),
-	},
+	dialogContent: { padding: theme.spacing(3) },
 }));
 
 const Report = ({ history, match, getReport, getPet }) => {
@@ -39,11 +37,11 @@ const Report = ({ history, match, getReport, getPet }) => {
 	const pet = getPet(petId);
 	const dialogText = summaryData[alert].textMain(pet);
 
+	const closePage = () => history.push("/pet/" + pet.name);
+
 	return (
 		<Container maxWidth="xs" className={clx.page}>
-			<div className={clx.header}>
-				<PetSnippet pet={pet} small />
-			</div>
+			<Head pet={pet} />
 
 			<div className={clx.main}>
 				<div className={clx.titleBlock}>
@@ -76,8 +74,7 @@ const Report = ({ history, match, getReport, getPet }) => {
 				variant="outlined"
 				color="default"
 				children="Close"
-				className={clx.navButton}
-				onClick={() => history.push("/pet/" + pet.name)}
+				onClick={closePage}
 			/>
 		</Container>
 	);
