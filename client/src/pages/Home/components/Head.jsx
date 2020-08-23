@@ -13,10 +13,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	item: {
 		textDecoration: "initial",
-		marginBottom: theme.spacing(1),
+		marginBottom: theme.spacing(0.5),
 	},
 	alert: {
 		alignItems: "center",
+	},
+	link: {
+		textDecoration: "none",
 	},
 	greeting: {
 		margin: theme.spacing(4, 0),
@@ -53,8 +56,8 @@ export const Head = ({
 
 	return (
 		<div className={clx.container}>
-			<Collapse in={clinicReminderOn}>
-				<Link to="/my-clinic" className={clx.item}>
+			<Collapse in={clinicReminderOn} className={clx.item}>
+				<Link to="/my-clinic" className={clx.link}>
 					<Alert
 						severity="warning"
 						children="Choose a clinic to send your pet's health reports to."
@@ -71,8 +74,8 @@ export const Head = ({
 				</Link>
 			</Collapse>
 
-			<Collapse in={userReminderOn}>
-				<Link to="/profile" className={clx.item}>
+			<Collapse in={userReminderOn} className={clx.item}>
+				<Link to="/profile" className={clx.link}>
 					<Alert
 						severity="warning"
 						children="Add a phone number so that you clinic can contact you."
@@ -89,8 +92,8 @@ export const Head = ({
 				</Link>
 			</Collapse>
 
-			<Collapse in={surveyIsLoaded}>
-				<Link to="/analysis" className={clx.item}>
+			<Collapse in={surveyIsLoaded} className={clx.item}>
+				<Link to="/analysis" className={clx.link}>
 					<Alert
 						severity="info"
 						children="Click to continue unfinished analysis"
