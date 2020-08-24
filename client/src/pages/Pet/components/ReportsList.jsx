@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ButtonGroup, Button, Typography } from "@material-ui/core";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { getDateString } from "utils/date";
-import { alertData } from "components/Alert/Alert-data";
+import { alertData } from "components/Alert-data";
 
 const useStyles = makeStyles((theme) => ({
 	report: {

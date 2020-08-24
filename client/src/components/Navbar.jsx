@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 	title: { flexGrow: 1 },
 }));
 
-export const Header = () => {
+export const Navbar = () => {
 	const clx = useStyles();
 
 	const titles = routes.map((route) => {

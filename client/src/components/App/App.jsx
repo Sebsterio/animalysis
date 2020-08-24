@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { Header } from "components";
+import { Navbar } from "components";
 import { Account } from "pages";
 
 import { routes } from "routes";
@@ -43,7 +43,7 @@ export const App = ({ authenticated }) => {
 		<div className={clx.app}>
 			{authenticated && (
 				<header className={clx.header}>
-					<Header />
+					<Navbar />
 				</header>
 			)}
 			<main className={clx.main}>
