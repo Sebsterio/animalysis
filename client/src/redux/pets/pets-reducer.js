@@ -23,21 +23,21 @@ const INITIAL_STATE = {
 			weight: 0,
 			microchip: 0,
 			// imageUrl: Benny,
-			reports: [],
+			reports: [
+				// {
+				//  id: '',
+				//  petId: ''
+				//  date: null,
+				//  title: '',
+				// 	problemList: [],
+				// 	alert: 0,
+				// 	dateSynced: null, // syncs on ReportPage mount
+				//  syncing: false
+				// };
+			],
 		},
 	],
 };
-
-// const reportSchema = {
-//  id: '',
-//  petId: ''
-//  date: null,
-//  title: '',
-// 	problemList: [],
-// 	alert: 0,
-// 	dateSynced: null, // syncs on ReportPage mount
-//  syncing: false
-// };
 
 const reportsReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
@@ -61,7 +61,6 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.DELETE_PET: {
 			const { id } = action.payload;
-			console.log({ id });
 			return makeState(state, "list", (list) =>
 				makeArrayWithRemovedItems(list, null, (pet) => pet.id === id)
 			);
