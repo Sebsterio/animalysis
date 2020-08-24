@@ -7,3 +7,4 @@ export * from "./Nav";
 export * from "./Page";
 export * from "./PetSnippet";
 export * from "./FileInput";
+export * from "./ConfirmDialog";

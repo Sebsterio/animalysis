@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Container } from "@material-ui/core";
-import { Nav, Form, isFormFilled } from "components";
+import { Nav, Form, isFormFilled, ConfirmDialog } from "components";
 
 import { defaultPet } from "./PetForm-defaultPet";
 import getFormFields from "./PetForm-formData";
@@ -60,6 +60,11 @@ export const PetForm = ({
 	const [toggle, setToggle] = useState({ age: true, kg: true });
 	const toggleState = (prop) => setToggle({ ...toggle, [prop]: !toggle[prop] });
 
+	// Confirmation dialog
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const openDialog = () => setDialogOpen(true);
+	const closeDialog = () => setDialogOpen(false);
+
 	// ---------------------- Handlers -----------------------
 
 	const closeForm = () => {
@@ -89,12 +94,12 @@ export const PetForm = ({
 
 	// ---------------------- Selectors -----------------------
 
-	// Is name unique name when adding new pet
-	const isNameValid = (pet, matchedPet) =>
+	// Is name unique when adding new pet
+	const isNewNameUnique = (pet, matchedPet) =>
 		isNameUnique(pet.name) || (matchedPet && pet.name === matchedPet.name);
 
 	const canSubmit = () =>
-		isFormFilled(formFields, pet) && isNameValid(pet, matchedPet);
+		isFormFilled(formFields, pet) && isNewNameUnique(pet, matchedPet);
 
 	// Get state with added derrived props
 	const getAugmentedPet = (pet) => {
@@ -109,13 +114,13 @@ export const PetForm = ({
 
 	const formFields = getFormFields({
 		hasPhoto: !!pet.imageUrl,
-		nameError: !isNameValid(pet, matchedPet) ? "Pet already added" : null,
+		nameError: !isNewNameUnique(pet, matchedPet) ? "Pet already added" : null,
 		showAge: toggle.age,
 		toggleShowAge: () => toggleState("age"),
 		showKg: toggle.kg,
 		toggleShowKg: () => toggleState("kg"),
 		isSaved: !!pet.id,
-		deletePet: handleDelete,
+		deletePet: openDialog,
 	});
 
 	return (
@@ -125,6 +130,16 @@ export const PetForm = ({
 				setState={useSetPet}
 				fields={formFields}
 			/>
+
+			<ConfirmDialog
+				title="Caution!"
+				text="This will permanently delete your pet's profile and all associated data. Do you want to proceed?"
+				buttonColor={["primary", "secondary"]}
+				isOpen={dialogOpen}
+				close={closeDialog}
+				confirm={handleDelete}
+			/>
+
 			<div className={clx.footer}>
 				<Nav
 					textLeft="Cancel"

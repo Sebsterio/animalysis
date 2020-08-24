@@ -77,7 +77,7 @@ export default ({
 		handler: deletePet,
 		label: "Delete Profile",
 		color: "secondary",
-		variant: "contained",
+		// variant: "contained",
 	};
 
 	const formFields = [

@@ -61,6 +61,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.DELETE_PET: {
 			const { id } = action.payload;
+			console.log({ id });
 			return makeState(state, "list", (list) =>
 				makeArrayWithRemovedItems(list, null, (pet) => pet.id === id)
 			);

@@ -4,7 +4,7 @@ import { clearSurvey } from "redux/survey/survey-actions";
 
 export const cleanDeletePet = (data) => (dispatch, getState) => {
 	const { id } = data;
-	dispatch($.deletePet(id));
+	dispatch($.deletePet({ id }));
 	const surveyPetId = getPetId(getState());
 	if (surveyPetId === id) dispatch(clearSurvey());
 };
