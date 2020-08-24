@@ -11,10 +11,11 @@ import { UserForm } from "pages/UserForm";
 export const routes = [
 	{
 		path: "/", // URL
-		title: "Home", // Appers in header
+		title: "Home", // Appers in header and as NavLink
 		component: Home, // To render
 		exact: true, // Router Switch match
 		inNav: true, // Is listed in Nav Menu
+		//linkText: "", // overrides "title" in NavLink
 	},
 	// --- Pet profile ---
 	{
