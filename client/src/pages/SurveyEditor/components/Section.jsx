@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
@@ -30,6 +31,8 @@ export const Section = ({
 
 	const [newTitle, setNewTitle] = useState(null);
 
+	const isEditingTitle = newTitle !== null;
+
 	const editTitle = (e) => setNewTitle(e.target.value);
 
 	const startEditTitle = (e) => {
@@ -44,11 +47,11 @@ export const Section = ({
 	};
 
 	useEffect(() => {
-		if (!newTitle) return;
+		if (!isEditingTitle) return;
 		const handleEnter = (e) => (e.key === "Enter" ? endEditTitle(e) : null);
 		window.addEventListener("keydown", handleEnter);
 		return () => window.removeEventListener("keydown", handleEnter);
-	}, [endEditTitle, newTitle]);
+	}, [endEditTitle, isEditingTitle]);
 
 	// --------------------- Adding question --------------------------
 
@@ -65,7 +68,18 @@ export const Section = ({
 
 	const titleInput = (
 		<>
-			<TextField autoFocus value={newTitle} onChange={editTitle} />
+			<ClickAwayListener
+				mouseEvent="onMouseDown"
+				touchEvent="onTouchStart"
+				onClickAway={endEditTitle}
+			>
+				<TextField
+					autoFocus
+					value={newTitle}
+					onChange={editTitle}
+					onClick={(e) => e.stopPropagation()}
+				/>
+			</ClickAwayListener>
 			<IconButton children={<DoneIcon />} onClick={endEditTitle} />
 		</>
 	);
@@ -78,7 +92,7 @@ export const Section = ({
 			<AccordionSummary
 				classes={{ content: clx.accordionSummaryContent }}
 				expandIcon={<ExpandMoreIcon />}
-				children={newTitle ? titleInput : titleDisplay}
+				children={isEditingTitle ? titleInput : titleDisplay}
 			/>
 
 			<AccordionDetails>

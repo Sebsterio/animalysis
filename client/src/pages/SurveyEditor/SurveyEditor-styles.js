@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme) => ({
 	accordionSummaryContent: {
 		display: "flex",
 		alignItems: "center",
-		margin: theme.spacing(1, 0),
+		margin: theme.spacing(1, 0) + " !important",
 	},
 	accordionDetails: {
 		flexFlow: "column nowrap",

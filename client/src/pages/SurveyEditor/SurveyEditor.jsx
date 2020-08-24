@@ -92,21 +92,22 @@ export const SurveyEditor = () => {
 						</AccordionSummary>
 
 						{/* Sections */}
-						{list.map((sectionId) => {
-							let sectionData = sections[sectionId];
-							if (!sectionData) return "Error";
-							return (
-								<AccordionDetails key={sectionId}>
+						<AccordionDetails className={clx.accordionDetails}>
+							{list.map((sectionId) => {
+								let sectionData = sections[sectionId];
+								if (!sectionData) return "Error";
+								return (
 									<Section
 										{...sectionData}
+										key={sectionId}
 										id={sectionId}
 										updateTitle={updateSectionTitle}
 										addQuestion={() => {}}
 										deleteSection={() => {}}
 									/>
-								</AccordionDetails>
-							);
-						})}
+								);
+							})}
+						</AccordionDetails>
 
 						{/* New Section button */}
 						<AccordionDetails>

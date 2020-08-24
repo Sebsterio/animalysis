@@ -15,7 +15,7 @@ export const defaultQueues = {
 		list: [],
 		label: "Optional Queue",
 		info:
-			"User may choose to run this queue after Main Queue. Optional Queue sections that are presented in Main Queue as follow-up sections get removed from Secondary Queue to avoid duplicate questions.",
+			"User may choose to run this queue after Main Queue. Optional Queue sections that are presented in Main Queue as follow-up sections get removed from Optional Queue to avoid duplicate questions.",
 	},
 };
 
