@@ -38,6 +38,7 @@ export const Section = ({
 	addQuestion,
 	updateQuestion,
 	deleteQuestion,
+	moveQuestion,
 }) => {
 	const clx = useStyles();
 
@@ -96,6 +97,9 @@ export const Section = ({
 
 	const handleDeleteQuestion = (questionId) =>
 		deleteQuestion(sectionId, questionId);
+
+	const handleMoveQuestion = (questionId, direction) =>
+		moveQuestion(sectionId, questionId, direction);
 
 	// --------------------------- View ---------------------------
 
@@ -164,6 +168,7 @@ export const Section = ({
 							{...{ questionProps, isFirst, isLast }}
 							updateQuestion={handleUpdateQuestion}
 							deleteQuestion={handleDeleteQuestion}
+							moveQuestion={handleMoveQuestion}
 						/>
 					);
 				})}

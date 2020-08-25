@@ -77,6 +77,20 @@ export const makeArrayWithModifiedItems = (
 	return arr.map((item, i) => (selector(item, i) ? modifier(item) : item));
 };
 
+// MOVE array item (change index within array)
+export const makeArrayWithMovedItem = (
+	array,
+	item,
+	steps,
+	selector = (curItem) => curItem === item
+) => {
+	const index = array.findIndex(selector);
+	const newIndex = index + steps;
+	const newArr = [...array];
+	newArr.splice(newIndex, 0, newArr.splice(index, 1)[0]); // don't return
+	return newArr;
+};
+
 // INJECT items(s) after last array item that matched any target
 export const makeArrayWithItemsInjectedAfterTargets = ({
 	array,

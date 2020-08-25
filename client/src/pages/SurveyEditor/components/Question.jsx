@@ -41,6 +41,7 @@ export const Question = ({
 	isLast,
 	updateQuestion,
 	deleteQuestion,
+	moveQuestion,
 }) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
 
@@ -80,6 +81,10 @@ export const Question = ({
 		const confirmed = window.confirm("Permanently delete question?");
 		if (confirmed) deleteQuestion(id);
 	};
+
+	const handleMoveUp = () => moveQuestion(id, "up");
+
+	const handleMoveDown = () => moveQuestion(id, "down");
 
 	// ----------------------------- View ------------------------------
 
@@ -169,12 +174,12 @@ export const Question = ({
 				<IconButton children={<EditIcon />} onClick={startEditing} />
 				<IconButton
 					children={<ArrowUpwardIcon />}
-					onClick={() => {}}
+					onClick={handleMoveUp}
 					disabled={isFirst}
 				/>
 				<IconButton
 					children={<ArrowDownwardIcon />}
-					onClick={() => {}}
+					onClick={handleMoveDown}
 					disabled={isLast}
 				/>
 			</div>

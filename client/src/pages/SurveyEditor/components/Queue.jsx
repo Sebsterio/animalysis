@@ -32,6 +32,7 @@ export const Queue = ({
 	addQuestion,
 	updateQuestion,
 	deleteQuestion,
+	moveQuestion,
 }) => {
 	const clx = useStyles();
 
@@ -78,7 +79,7 @@ export const Queue = ({
 							deleteSection={handleDeleteSection}
 							moveSection={handleMoveSection}
 							// drilled props
-							{...{ addQuestion, updateQuestion, deleteQuestion }}
+							{...{ addQuestion, updateQuestion, deleteQuestion, moveQuestion }}
 						/>
 					) : (
 						"Error: Section data not found; sectionId=" + sectionId

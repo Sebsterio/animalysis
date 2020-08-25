@@ -7,8 +7,8 @@ import Backdrop from "@material-ui/core/Backdrop";
 
 import { Queue } from "./components";
 
+import { makeArrayWithMovedItem } from "utils/array";
 import { useStyles } from "./SurveyEditor-styles";
-import { moveArrayItem } from "./SurveyEditor-utils";
 import {
 	defaultQueues,
 	defaultSection,
@@ -77,7 +77,7 @@ export const SurveyEditor = () => {
 	const moveSection = (queueName, id, direction) => {
 		const steps = direction === "down" ? 1 : direction === "up" ? -1 : 0;
 		let list = [...queues[queueName].list];
-		list = moveArrayItem(list, id, steps);
+		list = makeArrayWithMovedItem(list, id, steps);
 		const queueProps = { ...queues[queueName], list };
 		setQueues({ ...queues, [queueName]: queueProps });
 	};
@@ -111,6 +111,17 @@ export const SurveyEditor = () => {
 		});
 	};
 
+	const moveQuestion = (sectionId, questionId, direction) => {
+		const steps = direction === "down" ? 1 : direction === "up" ? -1 : 0;
+		let questions = [...sections[sectionId].questions];
+		const selector = (question) => question.id === questionId;
+		questions = makeArrayWithMovedItem(questions, null, steps, selector);
+		setSections({
+			...sections,
+			[sectionId]: { ...sections[sectionId], questions },
+		});
+	};
+
 	// ----------------------------- View ------------------------------
 
 	return (
@@ -131,6 +142,7 @@ export const SurveyEditor = () => {
 						addQuestion,
 						updateQuestion,
 						deleteQuestion,
+						moveQuestion,
 					}}
 				/>
 			))}
