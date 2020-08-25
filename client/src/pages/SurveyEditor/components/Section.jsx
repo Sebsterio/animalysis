@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -14,13 +14,16 @@ import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
 
 import { useStyles } from "../SurveyEditor-styles";
+import { stopPropagation } from "../SurveyEditor-utils";
 
 // ----------------------------------------------------------
 
 export const Section = ({
 	id,
+	// sectionData
 	title,
 	questions,
+	// handlers
 	updateTitle,
 	addQuestion,
 	deleteSection,
@@ -40,18 +43,21 @@ export const Section = ({
 		setNewTitle(title);
 	};
 
-	const endEditTitle = (e) => {
-		e.stopPropagation();
-		updateTitle(id, newTitle);
-		setNewTitle(null);
-	};
+	const endEditTitle = useCallback(
+		(e) => {
+			e.stopPropagation();
+			updateTitle(id, newTitle);
+			setNewTitle(null);
+		},
+		[id, newTitle, updateTitle]
+	);
 
 	useEffect(() => {
 		if (!isEditingTitle) return;
-		const handleEnter = (e) => (e.key === "Enter" ? endEditTitle(e) : null);
+		const handleEnter = (e) => e.key === "Enter" && endEditTitle(e);
 		window.addEventListener("keydown", handleEnter);
 		return () => window.removeEventListener("keydown", handleEnter);
-	}, [endEditTitle, isEditingTitle]);
+	}, [isEditingTitle, endEditTitle]);
 
 	// --------------------- Adding question --------------------------
 
@@ -59,29 +65,29 @@ export const Section = ({
 
 	// --------------------------- View ---------------------------
 
-	const titleDisplay = (
-		<>
-			<Typography variant="h6">{title}</Typography>
-			<IconButton children={<EditIcon />} onClick={startEditTitle} />
-		</>
-	);
+	const titleDisplay = <Typography variant="h6">{title}</Typography>;
 
 	const titleInput = (
-		<>
-			<ClickAwayListener
-				mouseEvent="onMouseDown"
-				touchEvent="onTouchStart"
-				onClickAway={endEditTitle}
-			>
-				<TextField
-					autoFocus
-					value={newTitle}
-					onChange={editTitle}
-					onClick={(e) => e.stopPropagation()}
-				/>
-			</ClickAwayListener>
-			<IconButton children={<DoneIcon />} onClick={endEditTitle} />
-		</>
+		<ClickAwayListener
+			mouseEvent="onMouseDown"
+			touchEvent="onTouchStart"
+			onClickAway={endEditTitle}
+		>
+			<TextField
+				autoFocus
+				value={newTitle}
+				onChange={editTitle}
+				onClick={stopPropagation}
+			/>
+		</ClickAwayListener>
+	);
+
+	const editIcon = (
+		<IconButton children={<EditIcon />} onClick={startEditTitle} />
+	);
+
+	const doneIcon = (
+		<IconButton children={<DoneIcon />} onClick={endEditTitle} />
 	);
 
 	return (
@@ -92,8 +98,10 @@ export const Section = ({
 			<AccordionSummary
 				classes={{ content: clx.accordionSummaryContent }}
 				expandIcon={<ExpandMoreIcon />}
-				children={isEditingTitle ? titleInput : titleDisplay}
-			/>
+			>
+				{isEditingTitle ? titleInput : titleDisplay}
+				{isEditingTitle ? doneIcon : editIcon}
+			</AccordionSummary>
 
 			<AccordionDetails>
 				{/* Questions */}

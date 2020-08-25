@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
-import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
 
-import { Section } from "./components";
+import { Queue } from "./components";
 
 import shortid from "shortid";
 import { useStyles } from "./SurveyEditor-styles";
@@ -21,7 +14,9 @@ shortid.characters(
 	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_"
 );
 
-// -----------------------------------------------------------------------
+/**************************************************************************
+ * This component will be used very sparcely; performance is not a priority
+ **************************************************************************/
 
 export const SurveyEditor = () => {
 	const clx = useStyles();
@@ -29,111 +24,76 @@ export const SurveyEditor = () => {
 	const [queues, setQueues] = useState(defaultQueues);
 	const [sections, setSections] = useState({});
 
-	// Queue info buttons
+	// ---------------------- Queue info buttons ----------------------
+
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [infoText, setInfoText] = useState("");
-	const handleInfoClick = (e, infoText) => {
+
+	const showPopover = (e, infoText) => {
 		e.stopPropagation();
 		setInfoText(infoText);
 		setAnchorEl(e.currentTarget);
 	};
-	const handleInfoClose = (e) => {
+
+	const hidePopover = (e) => {
 		e.stopPropagation();
 		setAnchorEl(null);
 	};
 
+	// ------------------------ Queue handlers -------------------------
+
 	const addSection = (queueName) => {
 		const id = "_" + shortid.generate();
 		const newSection = { ...defaultSection };
-		const newList = [...queues[queueName].list, id];
-		setQueues({
-			...queues,
-			[queueName]: {
-				...queues[queueName],
-				list: newList,
-			},
-		});
-		setSections({
-			...sections,
-			[id]: newSection,
-		});
+		const list = [...queues[queueName].list, id];
+		const queueProps = { ...queues[queueName], list };
+		setQueues({ ...queues, [queueName]: queueProps });
+		setSections({ ...sections, [id]: newSection });
 	};
 
-	const updateSectionTitle = (id, newTitle) =>
-		setSections({
-			...sections,
-			[id]: {
-				...sections[id],
-				title: newTitle,
-			},
-		});
+	// ------------------ Section handlers/selectors -------------------
+
+	//const addFollowUpSection = () => {}; // i.e. to answer
+
+	const getSectionData = (id) => sections[id];
+
+	const updateSectionTitle = (id, title) =>
+		setSections({ ...sections, [id]: { ...sections[id], title } });
+
+	const addQuestion = () => {};
+
+	const deleteSection = () => {};
+
+	// ----------------------------- View ------------------------------
 
 	return (
 		<div className={clx.page}>
-			{Object.entries(queues).map((entry) => {
-				const [queueName, queueContent] = entry;
-				const { label, list, info } = queueContent;
+			{/* ------------ Queues ------------ */}
 
-				return (
-					<Accordion
-						key={label}
-						className={clx.accordion}
-						TransitionProps={{ unmountOnExit: true }}
-					>
-						<AccordionSummary
-							classes={{ content: clx.accordionSummaryContent }}
-							expandIcon={<ExpandMoreIcon />}
-						>
-							<Typography variant="h6">{label}</Typography>
-							<IconButton
-								children={<InfoOutlinedIcon />}
-								onClick={(e) => handleInfoClick(e, info)}
-							/>
-						</AccordionSummary>
+			{Object.entries(queues).map(([queueName, queueProps]) => (
+				<Queue
+					key={queueName}
+					name={queueName}
+					{...queueProps}
+					{...{ getSectionData, showPopover, addSection }}
+					// Drilled props (section)
+					{...{ updateSectionTitle, addQuestion, deleteSection }}
+				/>
+			))}
 
-						{/* Sections */}
-						<AccordionDetails className={clx.accordionDetails}>
-							{list.map((sectionId) => {
-								let sectionData = sections[sectionId];
-								if (!sectionData) return "Error";
-								return (
-									<Section
-										{...sectionData}
-										key={sectionId}
-										id={sectionId}
-										updateTitle={updateSectionTitle}
-										addQuestion={() => {}}
-										deleteSection={() => {}}
-									/>
-								);
-							})}
-						</AccordionDetails>
+			{/* ------------ Popover ------------ */}
 
-						{/* New Section button */}
-						<AccordionDetails>
-							<Button
-								fullWidth
-								variant="outlined"
-								children="New Section"
-								onClick={() => addSection(queueName)}
-							/>
-						</AccordionDetails>
-					</Accordion>
-				);
-			})}
-
-			{/* Popover */}
 			<Backdrop
 				className={clx.backdrop}
 				open={!!anchorEl}
-				onClick={handleInfoClose}
+				onClick={hidePopover}
 				invisible
 			>
 				<Popover
 					id="info-popover"
 					open={!!anchorEl}
 					anchorEl={anchorEl}
-					onClose={handleInfoClose}
+					onClose={hidePopover}
 					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 					transformOrigin={{ vertical: "top", horizontal: "center" }}
 					children={<Typography className={clx.popover} children={infoText} />}
