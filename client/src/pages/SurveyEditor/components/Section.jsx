@@ -13,6 +13,8 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
 
+import { Question } from "./index";
+
 import { useStyles } from "../SurveyEditor-styles";
 import { stopPropagation } from "../SurveyEditor-utils";
 
@@ -95,6 +97,8 @@ export const Section = ({
 			className={clx.accordion}
 			TransitionProps={{ unmountOnExit: true }}
 		>
+			{/* ------------------- Head ------------------- */}
+
 			<AccordionSummary
 				classes={{ content: clx.accordionSummaryContent }}
 				expandIcon={<ExpandMoreIcon />}
@@ -103,10 +107,18 @@ export const Section = ({
 				{isEditingTitle ? doneIcon : editIcon}
 			</AccordionSummary>
 
-			<AccordionDetails>
-				{/* Questions */}
+			{/* --------------- Questions list -------------- */}
 
-				{/* New Question button */}
+			<AccordionDetails
+				className={clx.accordionDetails}
+				children={questions.map((questionProps) => (
+					<Question key={questionProps.id} questionProps={questionProps} />
+				))}
+			/>
+
+			{/* ------------ New Question button ------------ */}
+
+			<AccordionDetails>
 				<Button
 					fullWidth
 					variant="outlined"

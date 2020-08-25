@@ -8,7 +8,11 @@ import { Queue } from "./components";
 
 import shortid from "shortid";
 import { useStyles } from "./SurveyEditor-styles";
-import { defaultQueues, defaultSection } from "./SurveyEditor-defaults";
+import {
+	defaultQueues,
+	defaultSection,
+	defaultQuestion,
+} from "./SurveyEditor-defaults";
 
 shortid.characters(
 	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_"
@@ -60,7 +64,10 @@ export const SurveyEditor = () => {
 	const updateSectionTitle = (id, title) =>
 		setSections({ ...sections, [id]: { ...sections[id], title } });
 
-	const addQuestion = () => {};
+	const addQuestion = (id) => {
+		const questions = [...sections[id].questions, defaultQuestion];
+		setSections({ ...sections, [id]: { ...sections[id], questions } });
+	};
 
 	const deleteSection = () => {};
 
