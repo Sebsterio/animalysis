@@ -35,7 +35,13 @@ export const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------
 
-export const Question = ({ questionProps, updateQuestion, deleteQuestion }) => {
+export const Question = ({
+	questionProps,
+	isFirst,
+	isLast,
+	updateQuestion,
+	deleteQuestion,
+}) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
 
 	const clx = useStyles();
@@ -161,8 +167,16 @@ export const Question = ({ questionProps, updateQuestion, deleteQuestion }) => {
 			<div className={clx.row}>
 				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
 				<IconButton children={<EditIcon />} onClick={startEditing} />
-				<IconButton children={<ArrowUpwardIcon />} onClick={() => {}} />
-				<IconButton children={<ArrowDownwardIcon />} onClick={() => {}} />
+				<IconButton
+					children={<ArrowUpwardIcon />}
+					onClick={() => {}}
+					disabled={isFirst}
+				/>
+				<IconButton
+					children={<ArrowDownwardIcon />}
+					onClick={() => {}}
+					disabled={isLast}
+				/>
 			</div>
 		</Paper>
 	);

@@ -155,14 +155,18 @@ export const Section = ({
 
 			<AccordionDetails
 				className={clx.accordionDetails}
-				children={questions.map((questionProps) => (
-					<Question
-						key={questionProps.id}
-						questionProps={questionProps}
-						updateQuestion={handleUpdateQuestion}
-						deleteQuestion={handleDeleteQuestion}
-					/>
-				))}
+				children={questions.map((questionProps, i) => {
+					const isFirst = i === 0;
+					const isLast = i === questions.length - 1;
+					return (
+						<Question
+							key={questionProps.id}
+							{...{ questionProps, isFirst, isLast }}
+							updateQuestion={handleUpdateQuestion}
+							deleteQuestion={handleDeleteQuestion}
+						/>
+					);
+				})}
 			/>
 
 			{/* ------------ New Question button ------------ */}
