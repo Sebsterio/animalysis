@@ -31,6 +31,11 @@ export const Answer = ({ answerProps, handlers }) => {
 		alert = 0,
 		followUp = {},
 	} = answerProps;
+	// followUp: {
+	// 	target: "nose_exam",
+	// 	after: "all",
+	// },
+
 	const { updateAnswer } = handlers;
 
 	const clx = useStyles();

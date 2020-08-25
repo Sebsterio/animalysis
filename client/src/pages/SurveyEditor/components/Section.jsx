@@ -1,25 +1,21 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 import { Question } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
-import { stopPropagation } from "../SurveyEditor-utils";
 
 // ----------------------------------------------------------
 
@@ -42,36 +38,16 @@ export const Section = ({
 }) => {
 	const clx = useStyles();
 
-	// ----------------------- Edit title ---------------------------
+	// ---------------------- Editing/presentation view ------------------------
 
-	const [newTitle, setNewTitle] = useState(null);
-
-	const isEditingTitle = newTitle !== null;
-
-	const editTitle = (e) => setNewTitle(e.target.value);
-
-	const startEditTitle = (e) => {
-		e.stopPropagation();
-		setNewTitle(title);
-	};
-
-	const endEditTitle = useCallback(
-		(e) => {
-			e.stopPropagation();
-			updateTitle(sectionId, newTitle);
-			setNewTitle(null);
-		},
-		[sectionId, newTitle, updateTitle]
-	);
-
-	useEffect(() => {
-		if (!isEditingTitle) return;
-		const handleEnter = (e) => e.key === "Enter" && endEditTitle(e);
-		window.addEventListener("keydown", handleEnter);
-		return () => window.removeEventListener("keydown", handleEnter);
-	}, [isEditingTitle, endEditTitle]);
+	const [editing, setEditing] = useState(false);
+	const editConfig = () => setEditing("config");
+	const editQuestions = () => setEditing("questions");
+	const stopEditing = () => setEditing(false);
 
 	// --------------------- Section handlers --------------------------
+
+	const handleTitleInput = (e) => updateTitle(sectionId, e.target.value);
 
 	const handleDelete = (e) => {
 		e.stopPropagation();
@@ -103,12 +79,72 @@ export const Section = ({
 
 	// --------------------------- View ---------------------------
 
-	const titleDisplayView = (
-		<div className={clx.col}>
-			<Typography variant="h6">{title}</Typography>
+	const configEditor = (
+		<Paper className={clx.innerPaper}>
+			<div className={clx.row}>
+				<TextField
+					autoFocus
+					fullWidth
+					value={title}
+					onChange={handleTitleInput}
+					className={clx.heading}
+				/>
+				<IconButton children={<DoneIcon />} onClick={stopEditing} />
+			</div>
+		</Paper>
+	);
+
+	// --- Questions editor ---
+
+	const questionsEditor = (
+		<Paper className={clx.innerPaper}>
+			<Typography variant="h6" className={clx.heading}>
+				{title}
+			</Typography>
+
+			{!!questions.length && (
+				<div className={clx.group}>
+					{questions.map((questionProps, i) => {
+						const isFirst = i === 0;
+						const isLast = i === questions.length - 1;
+						return (
+							<Question
+								key={questionProps.id}
+								{...{ questionProps, isFirst, isLast }}
+								updateQuestion={handleUpdateQuestion}
+								deleteQuestion={handleDeleteQuestion}
+								moveQuestion={handleMoveQuestion}
+							/>
+						);
+					})}
+				</div>
+			)}
+
+			<div className={clx.row}>
+				<Button
+					fullWidth
+					variant="outlined"
+					children="New Question"
+					onClick={handleAddQuestion}
+				/>
+				<IconButton children={<DoneIcon />} onClick={stopEditing} />
+			</div>
+		</Paper>
+	);
+
+	// --- Viewer ---
+
+	const viewer = (
+		<Paper className={clx.innerPaper}>
+			<Typography variant="h6" className={clx.heading}>
+				{title}
+			</Typography>
+
 			<div className={clx.row}>
 				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
-				<IconButton children={<EditIcon />} onClick={startEditTitle} />
+				<IconButton children={<EditIcon />} onClick={editConfig} />
+				<IconButton children={<QuestionAnswerIcon />} onClick={editQuestions} />
+
 				<IconButton
 					children={<ArrowUpwardIcon />}
 					onClick={handleMoveUp}
@@ -120,69 +156,12 @@ export const Section = ({
 					disabled={isLast}
 				/>
 			</div>
-		</div>
+		</Paper>
 	);
 
-	const titleEditView = (
-		<>
-			<ClickAwayListener
-				mouseEvent="onMouseDown"
-				touchEvent="onTouchStart"
-				onClickAway={endEditTitle}
-			>
-				<TextField
-					autoFocus
-					value={newTitle}
-					onChange={editTitle}
-					onClick={stopPropagation}
-				/>
-			</ClickAwayListener>
-			<IconButton children={<DoneIcon />} onClick={endEditTitle} />
-		</>
-	);
-
-	return (
-		<Accordion
-			className={clx.accordion}
-			TransitionProps={{ unmountOnExit: true }}
-		>
-			{/* ------------------- Head ------------------- */}
-
-			<AccordionSummary
-				classes={{ content: clx.accordionSummaryContent }}
-				expandIcon={<ExpandMoreIcon />}
-				children={isEditingTitle ? titleEditView : titleDisplayView}
-			/>
-
-			{/* --------------- Questions list -------------- */}
-
-			<AccordionDetails
-				className={clx.accordionDetails}
-				children={questions.map((questionProps, i) => {
-					const isFirst = i === 0;
-					const isLast = i === questions.length - 1;
-					return (
-						<Question
-							key={questionProps.id}
-							{...{ questionProps, isFirst, isLast }}
-							updateQuestion={handleUpdateQuestion}
-							deleteQuestion={handleDeleteQuestion}
-							moveQuestion={handleMoveQuestion}
-						/>
-					);
-				})}
-			/>
-
-			{/* ------------ New Question button ------------ */}
-
-			<AccordionDetails>
-				<Button
-					fullWidth
-					variant="outlined"
-					children="New Question"
-					onClick={handleAddQuestion}
-				/>
-			</AccordionDetails>
-		</Accordion>
-	);
+	return editing === "config"
+		? configEditor
+		: editing === "questions"
+		? questionsEditor
+		: viewer;
 };

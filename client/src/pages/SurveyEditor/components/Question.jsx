@@ -84,7 +84,7 @@ export const Question = ({
 
 	// --- Config editor ---
 
-	const questionConfigEditor = (
+	const configEditor = (
 		<Paper className={clx.innerPaper}>
 			<div className={clx.form}>
 				{/* Label */}
@@ -153,17 +153,23 @@ export const Question = ({
 
 	// --- Answers editor ---
 
-	const questionAnswersEditor = (
+	const answersEditor = (
 		<Paper className={clx.innerPaper}>
-			<Typography>{label}</Typography>
-			{answers.map((answerProps, i) => {
-				answerProps.isFirst = i === 0;
-				answerProps.isLast = i === answers.length - 1;
-				const handlers = {
-					updateAnswer: () => {},
-				};
-				return <Answer key={answerProps.id} {...{ answerProps, handlers }} />;
-			})}
+			<Typography className={clx.heading}>{label}</Typography>
+			{!!answers.length && (
+				<div className={clx.group}>
+					{answers.map((answerProps, i) => {
+						answerProps.isFirst = i === 0;
+						answerProps.isLast = i === answers.length - 1;
+						const handlers = {
+							updateAnswer: () => {},
+						};
+						return (
+							<Answer key={answerProps.id} {...{ answerProps, handlers }} />
+						);
+					})}
+				</div>
+			)}
 			<div className={clx.row}>
 				<Button
 					fullWidth
@@ -178,9 +184,9 @@ export const Question = ({
 
 	// --- Viewer ---
 
-	const questionViewer = (
+	const viewer = (
 		<Paper className={clx.innerPaper}>
-			<Typography>{label}</Typography>
+			<Typography className={clx.heading}>{label}</Typography>
 			<div className={clx.row}>
 				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
 				<IconButton children={<EditIcon />} onClick={editConfig} />
@@ -207,8 +213,8 @@ export const Question = ({
 	// ---------------
 
 	return editing === "config"
-		? questionConfigEditor
+		? configEditor
 		: editing === "answers"
-		? questionAnswersEditor
-		: questionViewer;
+		? answersEditor
+		: viewer;
 };

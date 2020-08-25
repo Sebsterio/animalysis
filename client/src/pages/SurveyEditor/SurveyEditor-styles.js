@@ -25,8 +25,14 @@ export const useStyles = makeStyles((theme) => ({
 	col: {
 		width: "100%",
 	},
+	heading: {
+		marginBottom: theme.spacing(2),
+	},
+	group: {
+		margin: theme.spacing(2, 0),
+	},
 	row: {
-		marginTop: theme.spacing(1),
+		marginTop: theme.spacing(2),
 		display: "flex",
 		justifyContent: "center",
 	},

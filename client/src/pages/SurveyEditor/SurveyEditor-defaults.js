@@ -32,13 +32,6 @@ export const defaultQuestion = {
 
 export const defaultAnswer = {
 	text: "Answer text...",
-	// print,
-	// printNote,
-	// alert,
-	// followUp: {
-	// 	target: "nose_exam",
-	// 	after: "all",
-	// },
 };
 
 // TEMP ========================
