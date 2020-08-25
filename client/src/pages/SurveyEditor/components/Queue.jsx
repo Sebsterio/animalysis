@@ -37,6 +37,8 @@ export const Queue = ({
 
 	const handleAddSectionClick = () => addSection(name);
 
+	const handleDeleteSection = (id) => deleteSection(name, id);
+
 	// ----------------------------- View ------------------------------
 
 	return (
@@ -67,7 +69,8 @@ export const Queue = ({
 							id={sectionId}
 							{...sectionData}
 							updateTitle={updateSectionTitle}
-							{...{ deleteSection, addQuestion, updateQuestion }}
+							deleteSection={handleDeleteSection}
+							{...{ addQuestion, updateQuestion }}
 						/>
 					) : (
 						"Error: Section data not found; sectionId=" + sectionId

@@ -12,6 +12,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
 import { Question } from "./index";
 
@@ -32,6 +33,12 @@ export const Section = ({
 	updateQuestion,
 }) => {
 	const clx = useStyles();
+
+	const handleDelete = (e) => {
+		e.stopPropagation();
+		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
+		if (confirmed) deleteSection(id);
+	};
 
 	// --------------------- Editing title --------------------------
 
@@ -70,29 +77,30 @@ export const Section = ({
 
 	// --------------------------- View ---------------------------
 
-	const titleDisplay = <Typography variant="h6">{title}</Typography>;
-
-	const titleInput = (
-		<ClickAwayListener
-			mouseEvent="onMouseDown"
-			touchEvent="onTouchStart"
-			onClickAway={endEditTitle}
-		>
-			<TextField
-				autoFocus
-				value={newTitle}
-				onChange={editTitle}
-				onClick={stopPropagation}
-			/>
-		</ClickAwayListener>
+	const titleDisplayView = (
+		<>
+			<Typography variant="h6">{title}</Typography>
+			<IconButton children={<EditIcon />} onClick={startEditTitle} />
+			<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
+		</>
 	);
 
-	const editIcon = (
-		<IconButton children={<EditIcon />} onClick={startEditTitle} />
-	);
-
-	const doneIcon = (
-		<IconButton children={<DoneIcon />} onClick={endEditTitle} />
+	const titleEditView = (
+		<>
+			<ClickAwayListener
+				mouseEvent="onMouseDown"
+				touchEvent="onTouchStart"
+				onClickAway={endEditTitle}
+			>
+				<TextField
+					autoFocus
+					value={newTitle}
+					onChange={editTitle}
+					onClick={stopPropagation}
+				/>
+			</ClickAwayListener>
+			<IconButton children={<DoneIcon />} onClick={endEditTitle} />
+		</>
 	);
 
 	return (
@@ -106,8 +114,7 @@ export const Section = ({
 				classes={{ content: clx.accordionSummaryContent }}
 				expandIcon={<ExpandMoreIcon />}
 			>
-				{isEditingTitle ? titleInput : titleDisplay}
-				{isEditingTitle ? doneIcon : editIcon}
+				{isEditingTitle ? titleEditView : titleDisplayView}
 			</AccordionSummary>
 
 			{/* --------------- Questions list -------------- */}

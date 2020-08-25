@@ -49,10 +49,21 @@ export const SurveyEditor = () => {
 	const addSection = (queueName) => {
 		const id = "_" + shortid.generate();
 		const newSection = { ...defaultSection };
+		setSections({ ...sections, [id]: newSection });
+
 		const list = [...queues[queueName].list, id];
 		const queueProps = { ...queues[queueName], list };
 		setQueues({ ...queues, [queueName]: queueProps });
-		setSections({ ...sections, [id]: newSection });
+	};
+
+	const deleteSection = (queueName, id) => {
+		const newSections = { ...sections };
+		delete newSections[id];
+		setSections(newSections);
+
+		const list = [...queues[queueName].list.filter((item) => item !== id)];
+		const queueProps = { ...queues[queueName], list };
+		setQueues({ ...queues, [queueName]: queueProps });
 	};
 
 	// ------------------ Section handlers/selectors -------------------
@@ -63,8 +74,6 @@ export const SurveyEditor = () => {
 
 	const updateSectionTitle = (id, title) =>
 		setSections({ ...sections, [id]: { ...sections[id], title } });
-
-	const deleteSection = () => {};
 
 	const addQuestion = (id) => {
 		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
