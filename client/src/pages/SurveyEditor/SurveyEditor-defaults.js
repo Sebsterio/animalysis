@@ -1,5 +1,3 @@
-import shortid from "shortid";
-
 export const defaultQueues = {
 	primerQueue: {
 		list: [],
@@ -27,8 +25,7 @@ export const defaultSection = {
 };
 
 export const defaultQuestion = {
-	id: shortid.generate(),
-	label: "New Question",
+	label: "",
 	type: "select-one",
 	answers: [],
 };

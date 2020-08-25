@@ -27,8 +27,9 @@ export const Section = ({
 	questions,
 	// handlers
 	updateTitle,
-	addQuestion,
 	deleteSection,
+	addQuestion,
+	updateQuestion,
 }) => {
 	const clx = useStyles();
 
@@ -61,9 +62,11 @@ export const Section = ({
 		return () => window.removeEventListener("keydown", handleEnter);
 	}, [isEditingTitle, endEditTitle]);
 
-	// --------------------- Adding question --------------------------
+	// --------------------- Question handlers --------------------------
 
 	const handleAddQuestion = () => addQuestion(id);
+
+	const handleUpdateQuestion = (data) => updateQuestion(id, data);
 
 	// --------------------------- View ---------------------------
 
@@ -112,7 +115,11 @@ export const Section = ({
 			<AccordionDetails
 				className={clx.accordionDetails}
 				children={questions.map((questionProps) => (
-					<Question key={questionProps.id} questionProps={questionProps} />
+					<Question
+						key={questionProps.id}
+						questionProps={questionProps}
+						updateQuestion={handleUpdateQuestion}
+					/>
 				))}
 			/>
 

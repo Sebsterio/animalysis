@@ -64,12 +64,21 @@ export const SurveyEditor = () => {
 	const updateSectionTitle = (id, title) =>
 		setSections({ ...sections, [id]: { ...sections[id], title } });
 
+	const deleteSection = () => {};
+
 	const addQuestion = (id) => {
-		const questions = [...sections[id].questions, defaultQuestion];
+		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
+		const questions = [...sections[id].questions, newQuestion];
 		setSections({ ...sections, [id]: { ...sections[id], questions } });
 	};
 
-	const deleteSection = () => {};
+	const updateQuestion = (id, data) => {
+		console.log({ id, data });
+		const questions = sections[id].questions.map((question) =>
+			question.id === data.id ? { ...data } : question
+		);
+		setSections({ ...sections, [id]: { ...sections[id], questions } });
+	};
 
 	// ----------------------------- View ------------------------------
 
@@ -84,7 +93,12 @@ export const SurveyEditor = () => {
 					{...queueProps}
 					{...{ getSectionData, showPopover, addSection }}
 					// Drilled props (section)
-					{...{ updateSectionTitle, addQuestion, deleteSection }}
+					{...{
+						updateSectionTitle,
+						deleteSection,
+						addQuestion,
+						updateQuestion,
+					}}
 				/>
 			))}
 

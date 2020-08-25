@@ -6,8 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
 
-import shortid from "shortid";
-
 export const useStyles = makeStyles((theme) => ({
 	paper: {
 		padding: theme.spacing(2),
@@ -22,27 +20,35 @@ export const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------
 
-export const Question = ({ questionProps }) => {
+export const Question = ({ questionProps, updateQuestion }) => {
+	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
+
 	const clx = useStyles();
 
-	const [newQuestion, setNewQuestion] = useState({
-		...questionProps,
-		setsTitle: questionProps.setsTitle || false,
-		lengthLimit: questionProps.lengthLimit || 0,
-	});
+	// ---------------------- Editing question ------------------------
 
-	const editNewQuestion = (e) => {
+	const copyQuestion = () => {
+		let newQuestion = { id, label, type, answers };
+		if (type === "text")
+			newQuestion = { ...newQuestion, setsTitle, lengthLimit };
+		return newQuestion;
+	};
+
+	const includeInputValue = (newQuestion, e) => {
 		let { type, name, value, checked } = e.target;
 		if (type === "number") value = Number(value);
 		else if (checked !== undefined) value = checked;
-		setNewQuestion({ ...newQuestion, [name]: value });
+		newQuestion[name] = value;
 	};
 
-	// updateQuestion - discard type=text specific props if diffferent type
+	const editQuestion = (e) => {
+		let newQuestion = copyQuestion();
+		includeInputValue(newQuestion, e);
+		updateQuestion(newQuestion);
+	};
 
-	const { label, type, setsTitle, lengthLimit, answers } = newQuestion;
+	// ----------------------------- View ------------------------------
 
-	const id = shortid.generate();
 	const labelId = id + "-label";
 	const typeId = id + "-type";
 	const setsTitleId = id + "-setsTitle";
@@ -51,7 +57,7 @@ export const Question = ({ questionProps }) => {
 	return (
 		<Paper className={clx.paper}>
 			{/* Label */}
-			<Typography component="label" htmlFor={labelId} children="Label" />
+			<Typography component="label" htmlFor={labelId} children="Question" />
 			<TextField
 				autoFocus
 				fullWidth
@@ -59,7 +65,7 @@ export const Question = ({ questionProps }) => {
 				name="label"
 				value={label}
 				inputProps={{ id: labelId }}
-				onChange={editNewQuestion}
+				onChange={editQuestion}
 			/>
 
 			{/* Type */}
@@ -70,7 +76,7 @@ export const Question = ({ questionProps }) => {
 				name="type"
 				value={type}
 				inputProps={{ id: typeId }}
-				onChange={editNewQuestion}
+				onChange={editQuestion}
 			>
 				<MenuItem value="text">Text</MenuItem>
 				<MenuItem value="select-one">Select one</MenuItem>
@@ -87,7 +93,7 @@ export const Question = ({ questionProps }) => {
 					/>
 					<Switch
 						checked={setsTitle}
-						onChange={editNewQuestion}
+						onChange={editQuestion}
 						name="setsTitle"
 					/>
 
@@ -103,7 +109,7 @@ export const Question = ({ questionProps }) => {
 						name="lengthLimit"
 						value={lengthLimit}
 						inputProps={{ id: lengthLimitId }}
-						onChange={editNewQuestion}
+						onChange={editQuestion}
 					/>
 				</>
 			)}
