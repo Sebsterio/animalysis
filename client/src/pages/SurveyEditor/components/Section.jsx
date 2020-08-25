@@ -24,7 +24,9 @@ import { stopPropagation } from "../SurveyEditor-utils";
 // ----------------------------------------------------------
 
 export const Section = ({
-	id,
+	sectionId,
+	isFirst,
+	isLast,
 	// sectionData
 	title,
 	questions,
@@ -55,10 +57,10 @@ export const Section = ({
 	const endEditTitle = useCallback(
 		(e) => {
 			e.stopPropagation();
-			updateTitle(id, newTitle);
+			updateTitle(sectionId, newTitle);
 			setNewTitle(null);
 		},
-		[id, newTitle, updateTitle]
+		[sectionId, newTitle, updateTitle]
 	);
 
 	useEffect(() => {
@@ -73,26 +75,27 @@ export const Section = ({
 	const handleDelete = (e) => {
 		e.stopPropagation();
 		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
-		if (confirmed) deleteSection(id);
+		if (confirmed) deleteSection(sectionId);
 	};
 
 	const handleMoveUp = (e) => {
 		e.stopPropagation();
-		moveSection(id, "up");
+		moveSection(sectionId, "up");
 	};
 
 	const handleMoveDown = (e) => {
 		e.stopPropagation();
-		moveSection(id, "down");
+		moveSection(sectionId, "down");
 	};
 
 	// --------------------- Question handlers --------------------------
 
-	const handleAddQuestion = () => addQuestion(id);
+	const handleAddQuestion = () => addQuestion(sectionId);
 
-	const handleUpdateQuestion = (data) => updateQuestion(id, data);
+	const handleUpdateQuestion = (data) => updateQuestion(sectionId, data);
 
-	const handleDeleteQuestion = (questionId) => deleteQuestion(id, questionId);
+	const handleDeleteQuestion = (questionId) =>
+		deleteQuestion(sectionId, questionId);
 
 	// --------------------------- View ---------------------------
 
@@ -102,8 +105,16 @@ export const Section = ({
 			<div className={clx.row}>
 				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
 				<IconButton children={<EditIcon />} onClick={startEditTitle} />
-				<IconButton children={<ArrowUpwardIcon />} onClick={handleMoveUp} />
-				<IconButton children={<ArrowDownwardIcon />} onClick={handleMoveDown} />
+				<IconButton
+					children={<ArrowUpwardIcon />}
+					onClick={handleMoveUp}
+					disabled={isFirst}
+				/>
+				<IconButton
+					children={<ArrowDownwardIcon />}
+					onClick={handleMoveDown}
+					disabled={isLast}
+				/>
 			</div>
 		</div>
 	);

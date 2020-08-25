@@ -65,13 +65,14 @@ export const Queue = ({
 
 			<AccordionDetails
 				className={clx.accordionDetails}
-				children={list.map((sectionId) => {
+				children={list.map((sectionId, i) => {
 					const sectionData = getSectionData(sectionId);
+					const isFirst = i === 0;
+					const isLast = i === list.length - 1;
 					return !!sectionData ? (
 						<Section
 							key={sectionId}
-							id={sectionId}
-							{...sectionData}
+							{...{ ...sectionData, sectionId, isFirst, isLast }}
 							// handlers
 							updateTitle={updateSectionTitle}
 							deleteSection={handleDeleteSection}

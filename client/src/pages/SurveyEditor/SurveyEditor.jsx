@@ -82,24 +82,33 @@ export const SurveyEditor = () => {
 		setQueues({ ...queues, [queueName]: queueProps });
 	};
 
-	const addQuestion = (id) => {
+	const addQuestion = (sectionId) => {
 		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
-		const questions = [...sections[id].questions, newQuestion];
-		setSections({ ...sections, [id]: { ...sections[id], questions } });
+		const questions = [...sections[sectionId].questions, newQuestion];
+		setSections({
+			...sections,
+			[sectionId]: { ...sections[sectionId], questions },
+		});
 	};
 
-	const updateQuestion = (id, data) => {
-		const questions = sections[id].questions.map((question) =>
+	const updateQuestion = (sectionId, data) => {
+		const questions = sections[sectionId].questions.map((question) =>
 			question.id === data.id ? { ...data } : question
 		);
-		setSections({ ...sections, [id]: { ...sections[id], questions } });
+		setSections({
+			...sections,
+			[sectionId]: { ...sections[sectionId], questions },
+		});
 	};
 
-	const deleteQuestion = (id, questionId) => {
-		const questions = sections[id].questions.filter(
+	const deleteQuestion = (sectionId, questionId) => {
+		const questions = sections[sectionId].questions.filter(
 			(question) => question.id !== questionId
 		);
-		setSections({ ...sections, [id]: { ...sections[id], questions } });
+		setSections({
+			...sections,
+			[sectionId]: { ...sections[sectionId], questions },
+		});
 	};
 
 	// ----------------------------- View ------------------------------
