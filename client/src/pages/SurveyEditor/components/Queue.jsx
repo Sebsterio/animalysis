@@ -58,7 +58,7 @@ export const Queue = ({
 				classes={{ content: clx.accordionSummaryContent }}
 				expandIcon={<ExpandMoreIcon />}
 			>
-				<Typography variant="h6">{label}</Typography>
+				<Typography variant="h5">{label}</Typography>
 				<IconButton children={<InfoOutlinedIcon />} onClick={handleInfoClick} />
 			</AccordionSummary>
 

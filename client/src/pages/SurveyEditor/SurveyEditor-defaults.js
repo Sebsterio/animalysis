@@ -6,7 +6,7 @@ export const defaultQueues = {
 			"Primer sections are presented only when reporting a problem, not during a routine health check.",
 	},
 	mainQueue: {
-		list: [],
+		list: ["initialSection"],
 		label: "Main Queue",
 		info:
 			"Mandatory queue; interrupted only by a red alert. An orange alert allows the user to submit the results and then continue analysis.",
@@ -28,4 +28,35 @@ export const defaultQuestion = {
 	label: "Question text...",
 	type: "select-one",
 	answers: [],
+};
+
+export const defaultAnswer = {
+	text: "Answer text...",
+	// print,
+	// printNote,
+	// alert,
+	// followUp: {
+	// 	target: "nose_exam",
+	// 	after: "all",
+	// },
+};
+
+// TEMP ========================
+
+export const initialAnswer = {
+	id: "initialAnswer",
+	text: "Initial Answer",
+};
+
+export const initialQuestion = {
+	id: "initialQuestion",
+	label: "Initial question",
+	type: "select-one",
+	answers: [{ ...initialAnswer }],
+};
+
+export const initialSection = {
+	id: "initialSection",
+	title: "Initial section",
+	questions: [{ ...initialQuestion }],
 };

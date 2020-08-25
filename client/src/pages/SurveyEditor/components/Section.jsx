@@ -151,9 +151,8 @@ export const Section = ({
 			<AccordionSummary
 				classes={{ content: clx.accordionSummaryContent }}
 				expandIcon={<ExpandMoreIcon />}
-			>
-				{isEditingTitle ? titleEditView : titleDisplayView}
-			</AccordionSummary>
+				children={isEditingTitle ? titleEditView : titleDisplayView}
+			/>
 
 			{/* --------------- Questions list -------------- */}
 

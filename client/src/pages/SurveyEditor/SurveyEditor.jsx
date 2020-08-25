@@ -13,6 +13,8 @@ import {
 	defaultQueues,
 	defaultSection,
 	defaultQuestion,
+	defaultAnswer,
+	initialSection,
 } from "./SurveyEditor-defaults";
 
 shortid.characters(
@@ -27,7 +29,9 @@ export const SurveyEditor = () => {
 	const clx = useStyles();
 
 	const [queues, setQueues] = useState(defaultQueues);
-	const [sections, setSections] = useState({});
+	const [sections, setSections] = useState({
+		initialSection: { ...initialSection },
+	});
 
 	// ---------------------- Popover ----------------------
 
@@ -51,6 +55,8 @@ export const SurveyEditor = () => {
 
 	// ------------------------ Handlers -------------------------
 
+	// --- Section ---
+
 	const addSection = (queueName) => {
 		const id = "_" + shortid.generate();
 		const newSection = { ...defaultSection };
@@ -71,8 +77,9 @@ export const SurveyEditor = () => {
 		setQueues({ ...queues, [queueName]: queueProps });
 	};
 
-	const updateSectionTitle = (id, title) =>
+	const updateSectionTitle = (id, title) => {
 		setSections({ ...sections, [id]: { ...sections[id], title } });
+	};
 
 	const moveSection = (queueName, id, direction) => {
 		const steps = direction === "down" ? 1 : direction === "up" ? -1 : 0;
@@ -81,6 +88,8 @@ export const SurveyEditor = () => {
 		const queueProps = { ...queues[queueName], list };
 		setQueues({ ...queues, [queueName]: queueProps });
 	};
+
+	// --- Question ---
 
 	const addQuestion = (sectionId) => {
 		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
@@ -121,6 +130,16 @@ export const SurveyEditor = () => {
 			[sectionId]: { ...sections[sectionId], questions },
 		});
 	};
+
+	// --- Answer ---
+
+	// const addAnswer = (sectionId, questionId) => {
+	// 	const newAnswer = { ...defaultAnswer, id: shortid.generate() };
+	// 	const questions = sections[sectionId].questions.map((question) =>
+	// 		question.id === data.id ? { ...data } : question
+	// 	);
+	// 	updateQuestion();
+	// };
 
 	// ----------------------------- View ------------------------------
 

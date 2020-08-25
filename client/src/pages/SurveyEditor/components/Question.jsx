@@ -6,32 +6,18 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
-export const useStyles = makeStyles((theme) => ({
-	paper: {
-		padding: theme.spacing(2),
-		margin: theme.spacing(1, 0),
-	},
-	row: {
-		marginTop: theme.spacing(2),
-		display: "flex",
-		justifyContent: "center",
-	},
-	form: {
-		display: "grid",
-		gridTemplateColumns: "auto 1fr",
-		alignContent: "center",
-		alignItems: "center",
-		gridGap: theme.spacing(2),
-	},
-	viewer: {},
-}));
+import { Answer } from "./index";
+
+import { useStyles } from "../SurveyEditor-styles";
 
 // ----------------------------------------------------------
 
@@ -50,7 +36,8 @@ export const Question = ({
 	// ---------------------- Editing/presentation view ------------------------
 
 	const [editing, setEditing] = useState(false);
-	const startEditing = () => setEditing(true);
+	const editConfig = () => setEditing("config");
+	const editAnswers = () => setEditing("answers");
 	const stopEditing = () => setEditing(false);
 
 	// ---------------------- Editing question ------------------------
@@ -86,6 +73,8 @@ export const Question = ({
 
 	const handleMoveDown = () => moveQuestion(id, "down");
 
+	const handleAddAnswer = () => {};
+
 	// ----------------------------- View ------------------------------
 
 	const labelId = id + "-label";
@@ -93,10 +82,10 @@ export const Question = ({
 	const setsTitleId = id + "-setsTitle";
 	const lengthLimitId = id + "-lengthLimit";
 
-	// --- Form ---
+	// --- Config editor ---
 
-	const questionEditView = (
-		<Paper className={clx.paper}>
+	const questionConfigEditor = (
+		<Paper className={clx.innerPaper}>
 			<div className={clx.form}>
 				{/* Label */}
 				<Typography component="label" htmlFor={labelId} children="Question" />
@@ -155,8 +144,6 @@ export const Question = ({
 						/>
 					</>
 				)}
-
-				{/* answers */}
 			</div>
 			<div className={clx.row}>
 				<IconButton children={<DoneIcon />} onClick={stopEditing} />
@@ -164,14 +151,45 @@ export const Question = ({
 		</Paper>
 	);
 
+	// --- Answers editor ---
+
+	const questionAnswersEditor = (
+		<Paper className={clx.innerPaper}>
+			<Typography>{label}</Typography>
+			{answers.map((answerProps, i) => {
+				answerProps.isFirst = i === 0;
+				answerProps.isLast = i === answers.length - 1;
+				const handlers = {
+					updateAnswer: () => {},
+				};
+				return <Answer key={answerProps.id} {...{ answerProps, handlers }} />;
+			})}
+			<div className={clx.row}>
+				<Button
+					fullWidth
+					variant="outlined"
+					children="New Answer"
+					onClick={handleAddAnswer}
+				/>
+				<IconButton children={<DoneIcon />} onClick={stopEditing} />
+			</div>
+		</Paper>
+	);
+
 	// --- Viewer ---
 
-	const questionDisplayView = (
-		<Paper className={clx.paper}>
+	const questionViewer = (
+		<Paper className={clx.innerPaper}>
 			<Typography>{label}</Typography>
 			<div className={clx.row}>
 				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
-				<IconButton children={<EditIcon />} onClick={startEditing} />
+				<IconButton children={<EditIcon />} onClick={editConfig} />
+				<IconButton
+					children={<QuestionAnswerIcon />}
+					onClick={editAnswers}
+					disabled={type === "text"}
+				/>
+
 				<IconButton
 					children={<ArrowUpwardIcon />}
 					onClick={handleMoveUp}
@@ -188,5 +206,9 @@ export const Question = ({
 
 	// ---------------
 
-	return editing ? questionEditView : questionDisplayView;
+	return editing === "config"
+		? questionConfigEditor
+		: editing === "answers"
+		? questionAnswersEditor
+		: questionViewer;
 };

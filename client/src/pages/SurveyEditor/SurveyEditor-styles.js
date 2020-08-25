@@ -30,4 +30,16 @@ export const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "center",
 	},
+	// question
+	innerPaper: {
+		padding: theme.spacing(2),
+		margin: theme.spacing(1, 0),
+	},
+	form: {
+		display: "grid",
+		gridTemplateColumns: "auto 1fr",
+		alignContent: "center",
+		alignItems: "center",
+		gridGap: theme.spacing(2),
+	},
 }));
