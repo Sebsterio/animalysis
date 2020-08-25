@@ -30,6 +30,7 @@ export const Queue = ({
 	deleteSection,
 	addQuestion,
 	updateQuestion,
+	deleteQuestion,
 }) => {
 	const clx = useStyles();
 
@@ -70,7 +71,7 @@ export const Queue = ({
 							{...sectionData}
 							updateTitle={updateSectionTitle}
 							deleteSection={handleDeleteSection}
-							{...{ addQuestion, updateQuestion }}
+							{...{ addQuestion, updateQuestion, deleteQuestion }}
 						/>
 					) : (
 						"Error: Section data not found; sectionId=" + sectionId

@@ -35,7 +35,7 @@ export const useStyles = makeStyles((theme) => ({
 
 // ----------------------------------------------------------
 
-export const Question = ({ questionProps, updateQuestion }) => {
+export const Question = ({ questionProps, updateQuestion, deleteQuestion }) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
 
 	const clx = useStyles();
@@ -70,7 +70,10 @@ export const Question = ({ questionProps, updateQuestion }) => {
 
 	// --------------------------- handlers ----------------------------
 
-	const handleDelete = () => {};
+	const handleDelete = () => {
+		const confirmed = window.confirm("Permanently delete question?");
+		if (confirmed) deleteQuestion(id);
+	};
 
 	// ----------------------------- View ------------------------------
 
@@ -158,8 +161,8 @@ export const Question = ({ questionProps, updateQuestion }) => {
 			<div className={clx.row}>
 				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
 				<IconButton children={<EditIcon />} onClick={startEditing} />
-				<IconButton children={<ArrowUpwardIcon />} onClick={handleDelete} />
-				<IconButton children={<ArrowDownwardIcon />} onClick={handleDelete} />
+				<IconButton children={<ArrowUpwardIcon />} onClick={() => {}} />
+				<IconButton children={<ArrowDownwardIcon />} onClick={() => {}} />
 			</div>
 		</Paper>
 	);

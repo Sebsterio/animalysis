@@ -31,6 +31,7 @@ export const Section = ({
 	deleteSection,
 	addQuestion,
 	updateQuestion,
+	deleteQuestion,
 }) => {
 	const clx = useStyles();
 
@@ -74,6 +75,8 @@ export const Section = ({
 	const handleAddQuestion = () => addQuestion(id);
 
 	const handleUpdateQuestion = (data) => updateQuestion(id, data);
+
+	const handleDeleteQuestion = (questionId) => deleteQuestion(id, questionId);
 
 	// --------------------------- View ---------------------------
 
@@ -126,6 +129,7 @@ export const Section = ({
 						key={questionProps.id}
 						questionProps={questionProps}
 						updateQuestion={handleUpdateQuestion}
+						deleteQuestion={handleDeleteQuestion}
 					/>
 				))}
 			/>

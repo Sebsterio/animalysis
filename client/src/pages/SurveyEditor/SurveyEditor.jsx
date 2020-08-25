@@ -28,7 +28,7 @@ export const SurveyEditor = () => {
 	const [queues, setQueues] = useState(defaultQueues);
 	const [sections, setSections] = useState({});
 
-	// ---------------------- Queue info buttons ----------------------
+	// ---------------------- Popover ----------------------
 
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [infoText, setInfoText] = useState("");
@@ -44,7 +44,7 @@ export const SurveyEditor = () => {
 		setAnchorEl(null);
 	};
 
-	// ------------------------ Queue handlers -------------------------
+	// ------------------------ Handlers -------------------------
 
 	const addSection = (queueName) => {
 		const id = "_" + shortid.generate();
@@ -66,8 +66,6 @@ export const SurveyEditor = () => {
 		setQueues({ ...queues, [queueName]: queueProps });
 	};
 
-	// ------------------ Section handlers/selectors -------------------
-
 	const getSectionData = (id) => sections[id];
 
 	const updateSectionTitle = (id, title) =>
@@ -80,9 +78,15 @@ export const SurveyEditor = () => {
 	};
 
 	const updateQuestion = (id, data) => {
-		console.log({ id, data });
 		const questions = sections[id].questions.map((question) =>
 			question.id === data.id ? { ...data } : question
+		);
+		setSections({ ...sections, [id]: { ...sections[id], questions } });
+	};
+
+	const deleteQuestion = (id, questionId) => {
+		const questions = sections[id].questions.filter(
+			(question) => question.id !== questionId
 		);
 		setSections({ ...sections, [id]: { ...sections[id], questions } });
 	};
@@ -105,6 +109,7 @@ export const SurveyEditor = () => {
 						deleteSection,
 						addQuestion,
 						updateQuestion,
+						deleteQuestion,
 					}}
 				/>
 			))}
