@@ -68,8 +68,6 @@ export const SurveyEditor = () => {
 
 	// ------------------ Section handlers/selectors -------------------
 
-	//const addFollowUpSection = () => {}; // i.e. to answer
-
 	const getSectionData = (id) => sections[id];
 
 	const updateSectionTitle = (id, title) =>

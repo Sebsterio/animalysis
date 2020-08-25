@@ -25,7 +25,7 @@ export const defaultSection = {
 };
 
 export const defaultQuestion = {
-	label: "",
+	label: "Question text...",
 	type: "select-one",
 	answers: [],
 };
