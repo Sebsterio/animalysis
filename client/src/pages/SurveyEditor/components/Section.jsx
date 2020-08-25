@@ -13,6 +13,8 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 import { Question } from "./index";
 
@@ -29,19 +31,15 @@ export const Section = ({
 	// handlers
 	updateTitle,
 	deleteSection,
+	moveSection,
+	// drilled props
 	addQuestion,
 	updateQuestion,
 	deleteQuestion,
 }) => {
 	const clx = useStyles();
 
-	const handleDelete = (e) => {
-		e.stopPropagation();
-		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
-		if (confirmed) deleteSection(id);
-	};
-
-	// --------------------- Editing title --------------------------
+	// ----------------------- Edit title ---------------------------
 
 	const [newTitle, setNewTitle] = useState(null);
 
@@ -70,6 +68,24 @@ export const Section = ({
 		return () => window.removeEventListener("keydown", handleEnter);
 	}, [isEditingTitle, endEditTitle]);
 
+	// --------------------- Section handlers --------------------------
+
+	const handleDelete = (e) => {
+		e.stopPropagation();
+		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
+		if (confirmed) deleteSection(id);
+	};
+
+	const handleMoveUp = (e) => {
+		e.stopPropagation();
+		moveSection(id, "up");
+	};
+
+	const handleMoveDown = (e) => {
+		e.stopPropagation();
+		moveSection(id, "down");
+	};
+
 	// --------------------- Question handlers --------------------------
 
 	const handleAddQuestion = () => addQuestion(id);
@@ -81,11 +97,15 @@ export const Section = ({
 	// --------------------------- View ---------------------------
 
 	const titleDisplayView = (
-		<>
+		<div className={clx.col}>
 			<Typography variant="h6">{title}</Typography>
-			<IconButton children={<EditIcon />} onClick={startEditTitle} />
-			<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
-		</>
+			<div className={clx.row}>
+				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
+				<IconButton children={<EditIcon />} onClick={startEditTitle} />
+				<IconButton children={<ArrowUpwardIcon />} onClick={handleMoveUp} />
+				<IconButton children={<ArrowDownwardIcon />} onClick={handleMoveDown} />
+			</div>
+		</div>
 	);
 
 	const titleEditView = (

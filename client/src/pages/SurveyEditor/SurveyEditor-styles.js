@@ -22,4 +22,12 @@ export const useStyles = makeStyles((theme) => ({
 	backdrop: {
 		zIndex: theme.zIndex.accordion + 1,
 	},
+	col: {
+		width: "100%",
+	},
+	row: {
+		marginTop: theme.spacing(1),
+		display: "flex",
+		justifyContent: "center",
+	},
 }));

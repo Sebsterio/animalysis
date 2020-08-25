@@ -20,7 +20,7 @@ export const defaultQueues = {
 };
 
 export const defaultSection = {
-	title: "New Section",
+	title: "Section name...",
 	questions: [],
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import shortid from "shortid";
 
 import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
@@ -6,8 +7,8 @@ import Backdrop from "@material-ui/core/Backdrop";
 
 import { Queue } from "./components";
 
-import shortid from "shortid";
 import { useStyles } from "./SurveyEditor-styles";
+import { moveArrayItem } from "./SurveyEditor-utils";
 import {
 	defaultQueues,
 	defaultSection,
@@ -19,7 +20,7 @@ shortid.characters(
 );
 
 /**************************************************************************
- * This component will be used very sparcely; performance is not a priority
+ * This module will be used very sparcely; performance is not a priority
  **************************************************************************/
 
 export const SurveyEditor = () => {
@@ -44,6 +45,10 @@ export const SurveyEditor = () => {
 		setAnchorEl(null);
 	};
 
+	// ------------------------ Selectors -------------------------
+
+	const getSectionData = (id) => sections[id];
+
 	// ------------------------ Handlers -------------------------
 
 	const addSection = (queueName) => {
@@ -66,10 +71,16 @@ export const SurveyEditor = () => {
 		setQueues({ ...queues, [queueName]: queueProps });
 	};
 
-	const getSectionData = (id) => sections[id];
-
 	const updateSectionTitle = (id, title) =>
 		setSections({ ...sections, [id]: { ...sections[id], title } });
+
+	const moveSection = (queueName, id, direction) => {
+		const steps = direction === "down" ? 1 : direction === "up" ? -1 : 0;
+		let list = [...queues[queueName].list];
+		list = moveArrayItem(list, id, steps);
+		const queueProps = { ...queues[queueName], list };
+		setQueues({ ...queues, [queueName]: queueProps });
+	};
 
 	const addQuestion = (id) => {
 		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
@@ -107,6 +118,7 @@ export const SurveyEditor = () => {
 					{...{
 						updateSectionTitle,
 						deleteSection,
+						moveSection,
 						addQuestion,
 						updateQuestion,
 						deleteQuestion,

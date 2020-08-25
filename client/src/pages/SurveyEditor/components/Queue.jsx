@@ -21,13 +21,14 @@ export const Queue = ({
 	label,
 	list,
 	info,
-	// Handler/selectors
+	// Handlers/selectors
 	getSectionData,
 	showPopover,
 	addSection,
 	// Drilled
 	updateSectionTitle,
 	deleteSection,
+	moveSection,
 	addQuestion,
 	updateQuestion,
 	deleteQuestion,
@@ -39,6 +40,8 @@ export const Queue = ({
 	const handleAddSectionClick = () => addSection(name);
 
 	const handleDeleteSection = (id) => deleteSection(name, id);
+
+	const handleMoveSection = (id, dir) => moveSection(name, id, dir);
 
 	// ----------------------------- View ------------------------------
 
@@ -69,8 +72,11 @@ export const Queue = ({
 							key={sectionId}
 							id={sectionId}
 							{...sectionData}
+							// handlers
 							updateTitle={updateSectionTitle}
 							deleteSection={handleDeleteSection}
+							moveSection={handleMoveSection}
+							// drilled props
 							{...{ addQuestion, updateQuestion, deleteQuestion }}
 						/>
 					) : (
