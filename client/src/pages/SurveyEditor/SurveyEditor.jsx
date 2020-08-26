@@ -15,7 +15,7 @@ import { useSurveyState, usePopover } from "./hooks";
  ******************************************************************/
 
 export const SurveyEditor = () => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const [
 		{ isOpen, anchorEl, infoText },
@@ -27,7 +27,7 @@ export const SurveyEditor = () => {
 	const queues = selectors.getQueues();
 
 	return (
-		<div className={clx.page}>
+		<div className={c.page}>
 			{/* ------------ Queues ------------ */}
 
 			{Object.entries(queues).map(([queueName, queueProps]) => (
@@ -41,7 +41,7 @@ export const SurveyEditor = () => {
 			{/* ------------ Popover ------------ */}
 
 			<Backdrop
-				className={clx.backdrop}
+				className={c.backdrop}
 				open={isOpen}
 				onClick={hidePopover}
 				invisible
@@ -53,7 +53,7 @@ export const SurveyEditor = () => {
 					onClose={hidePopover}
 					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 					transformOrigin={{ vertical: "top", horizontal: "center" }}
-					children={<Typography className={clx.popover} children={infoText} />}
+					children={<Typography className={c.popover} children={infoText} />}
 				/>
 			</Backdrop>
 		</div>

@@ -33,7 +33,7 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 
 	const { updateAnswer } = operations;
 
-	const clx = useStyles();
+	const c = useStyles();
 
 	// ---------------------- Edit answer ------------------------
 
@@ -79,8 +79,8 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 	const followUpId = id + "-followUp";
 
 	return (
-		<Paper className={clx.innerPaper}>
-			<div className={clx.form}>
+		<Paper className={c.division}>
+			<div className={c.form}>
 				{/* text */}
 				<Typography component="label" htmlFor={textlId} children="Text" />
 				<TextField

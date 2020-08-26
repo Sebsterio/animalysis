@@ -15,7 +15,7 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
 	const { updateQuestion, deleteQuestion, moveQuestion } = operations;
 
-	const clx = useStyles();
+	const c = useStyles();
 
 	// ----------------------- Editing question -------------------------
 

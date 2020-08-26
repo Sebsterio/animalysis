@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Form = ({ fields, state, setState, layout }) => {
-	const clx = useStyles({ layout, numItems: fields.length });
+	const c = useStyles({ layout, numItems: fields.length });
 
 	const handleChange = (e) => {
 		let { name, value, type, files } = e.target;
@@ -48,7 +48,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 	};
 
 	return (
-		<div className={clx.stack}>
+		<div className={c.stack}>
 			{fields.map(([type, name, config]) => {
 				if (!config) config = {};
 
@@ -68,7 +68,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 					error: !!err,
 					required: !!req,
 					onChange: handleChange,
-					className: clx.inputContainer,
+					className: c.inputContainer,
 				};
 
 				const textInputProps = {

@@ -30,7 +30,7 @@ export const Head = ({
 	dismissClinicReminder,
 	dismissUserReminder,
 }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const handleClinicAlertActionClick = (e) => {
 		e.preventDefault();
@@ -48,13 +48,13 @@ export const Head = ({
 	};
 
 	return (
-		<div className={clx.container}>
-			<Collapse in={clinicReminderOn} className={clx.item}>
-				<Link to="/my-clinic" className={clx.link}>
+		<div className={c.container}>
+			<Collapse in={clinicReminderOn} className={c.item}>
+				<Link to="/my-clinic" className={c.link}>
 					<Alert
 						severity="warning"
 						children="Choose a clinic to send your pet's health reports to."
-						className={clx.alert}
+						className={c.alert}
 						action={
 							<IconButton
 								children={<CloseIcon fontSize="inherit" />}
@@ -67,12 +67,12 @@ export const Head = ({
 				</Link>
 			</Collapse>
 
-			<Collapse in={userReminderOn} className={clx.item}>
-				<Link to="/profile" className={clx.link}>
+			<Collapse in={userReminderOn} className={c.item}>
+				<Link to="/profile" className={c.link}>
 					<Alert
 						severity="warning"
 						children="Add a phone number so that your clinic can contact you."
-						className={clx.alert}
+						className={c.alert}
 						action={
 							<IconButton
 								children={<CloseIcon fontSize="inherit" />}
@@ -85,12 +85,12 @@ export const Head = ({
 				</Link>
 			</Collapse>
 
-			<Collapse in={surveyIsLoaded} className={clx.item}>
-				<Link to="/analysis" className={clx.link}>
+			<Collapse in={surveyIsLoaded} className={c.item}>
+				<Link to="/analysis" className={c.link}>
 					<Alert
 						severity="info"
 						children="Click to continue unfinished analysis"
-						className={clx.alert}
+						className={c.alert}
 						action={
 							<IconButton
 								children={<CloseIcon fontSize="inherit" />}
@@ -107,7 +107,7 @@ export const Head = ({
 				variant="h4"
 				align="center"
 				children={`Welcome, ${username || "Guest"}`}
-				className={clx.greeting}
+				className={c.greeting}
 			/>
 		</div>
 	);

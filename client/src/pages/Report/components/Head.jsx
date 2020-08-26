@@ -15,26 +15,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Head = ({ pet, clinicIsSet, userHasPhone }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	return (
 		// separte content from parent's grid layout
 		<div>
 			<PetSnippet pet={pet} small />
 			{!clinicIsSet ? (
-				<Link to="/my-clinic" className={clx.link}>
+				<Link to="/my-clinic" className={c.link}>
 					<Alert
 						severity="error"
 						children="You haven't chosen a clinic to send reports to. Click here to add one."
-						className={clx.alert}
+						className={c.alert}
 					/>
 				</Link>
 			) : !userHasPhone ? (
-				<Link to="/profile" className={clx.link}>
+				<Link to="/profile" className={c.link}>
 					<Alert
 						severity="warning"
 						children="Add a phone number so that your clinic can contact you."
-						className={clx.alert}
+						className={c.alert}
 					/>
 				</Link>
 			) : null}

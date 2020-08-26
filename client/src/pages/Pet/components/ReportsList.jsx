@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ReportsList = ({ history, reports }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	if (!reports.length)
 		return (
@@ -39,9 +39,9 @@ export const ReportsList = ({ history, reports }) => {
 				fullWidth
 				orientation="vertical"
 				children={reports.map(({ id, date, title, alert }) => (
-					<Button className={clx.report} onClick={() => openReport(id)}>
-						<span className={clx.date}>{getDateString(date)}</span>
-						<span className={clx.title}>{title}</span>
+					<Button className={c.report} onClick={() => openReport(id)}>
+						<span className={c.date}>{getDateString(date)}</span>
+						<span className={c.title}>{title}</span>
 						<FiberManualRecordIcon style={getStyle(alert)} />
 					</Button>
 				))}

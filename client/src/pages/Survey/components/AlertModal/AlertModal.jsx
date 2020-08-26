@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AlertModal = ({ isActive, closeModal, endSurvey, callClinic }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const handleClose = () => {
 		closeModal();
@@ -38,7 +38,7 @@ const AlertModal = ({ isActive, closeModal, endSurvey, callClinic }) => {
 			aria-labelledby="alert-modal-title"
 			aria-describedby="alert-modal-description"
 		>
-			<Container className={clx.paper}>
+			<Container className={c.paper}>
 				<Typography
 					children="Attention!"
 					component="h2"
@@ -48,7 +48,7 @@ const AlertModal = ({ isActive, closeModal, endSurvey, callClinic }) => {
 				/>
 				<Typography
 					children="Your pet's issue is urgent. Please book an appointment immediately."
-					className={clx.subHeading}
+					className={c.subHeading}
 					color="error"
 					id="alert-modal-description"
 				/>
@@ -57,7 +57,7 @@ const AlertModal = ({ isActive, closeModal, endSurvey, callClinic }) => {
 					variant="contained"
 					color="default"
 					children="Call Clinic"
-					className={clx.callButton}
+					className={c.callButton}
 					onClick={callClinic}
 				/>
 				<Typography children="You may complete the analysis at any time or send it to your vet now." />

@@ -29,7 +29,7 @@ export const Division = ({
 	addButtonText,
 	handleAddButtonClick,
 }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	// --------------------------- Mode ----------------------------
 
@@ -54,12 +54,12 @@ export const Division = ({
 	// --- Viewer ---
 
 	const viewer = (
-		<Paper className={clx.innerPaper}>
-			<Typography variant={headingVariant} className={clx.heading}>
+		<Paper className={c.division}>
+			<Typography variant={headingVariant} className={c.heading}>
 				{heading}
 			</Typography>
 
-			<div className={clx.row}>
+			<div className={c.row}>
 				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
 				<IconButton children={<EditIcon />} onClick={editConfig} />
 				<IconButton children={<QuestionAnswerIcon />} onClick={editQuestions} />
@@ -86,17 +86,17 @@ export const Division = ({
 			touchEvent="onTouchStart"
 			onClickAway={stopEditing}
 		>
-			<Paper className={clx.innerPaper}>
+			<Paper className={c.division}>
 				{formType === "row" ? (
-					<div className={clx.row}>
+					<div className={c.row}>
 						{form}
 						<IconButton children={<DoneIcon />} onClick={stopEditing} />
 					</div>
 				) : (
 					formType === "grid" && (
 						<>
-							<div className={clx.form}>{form}</div>
-							<div className={clx.row}>
+							<div className={c.form}>{form}</div>
+							<div className={c.row}>
 								<IconButton children={<DoneIcon />} onClick={stopEditing} />
 							</div>
 						</>
@@ -109,14 +109,14 @@ export const Division = ({
 	// --- Questions editor ---
 
 	const questionsEditor = (
-		<Paper className={clx.innerPaper}>
-			<Typography variant={headingVariant} className={clx.heading}>
+		<Paper className={c.division}>
+			<Typography variant={headingVariant} className={c.heading}>
 				{heading}
 			</Typography>
 
-			{!!fields.length && <div className={clx.group}>{fields}</div>}
+			{!!fields.length && <div className={c.group}>{fields}</div>}
 
-			<div className={clx.row}>
+			<div className={c.row}>
 				<Button
 					fullWidth
 					variant="outlined"

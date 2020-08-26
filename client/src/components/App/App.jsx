@@ -14,7 +14,7 @@ import { useStyles } from "./App-styles";
  *******************************/
 
 export const App = ({ authenticated }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	// TEMP
 	useEffect(() => {
@@ -40,13 +40,13 @@ export const App = ({ authenticated }) => {
 	);
 
 	return (
-		<div className={clx.app}>
+		<div className={c.app}>
 			{authenticated && (
-				<header className={clx.header}>
+				<header className={c.header}>
 					<Navbar />
 				</header>
 			)}
-			<main className={clx.main}>
+			<main className={c.main}>
 				<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
 			</main>
 		</div>

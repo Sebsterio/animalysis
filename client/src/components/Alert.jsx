@@ -26,19 +26,19 @@ const useStyles = makeStyles((theme) => ({
 
 export const Alert = ({ level, alignLeft, clickHandler }) => {
 	const data = alertData[level];
-	const clx = useStyles({ ...data, alignLeft, clickHandler });
+	const c = useStyles({ ...data, alignLeft, clickHandler });
 
 	const { urgency } = data;
 
 	return (
-		<div className={clx.container}>
+		<div className={c.container}>
 			<Typography children="Urgency Level" variant="h5" />
 			<AlertFrame
-				className={clx.alertFrame}
+				className={c.alertFrame}
 				icon={false}
 				onClick={clickHandler || null}
 			>
-				<AlertTitle className={clx.alertText}>{urgency}</AlertTitle>
+				<AlertTitle className={c.alertText}>{urgency}</AlertTitle>
 			</AlertFrame>
 		</div>
 	);

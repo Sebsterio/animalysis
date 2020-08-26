@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Survey = ({ surveyIsLoaded, history }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	if (!surveyIsLoaded) {
 		history.goBack();
@@ -21,7 +21,7 @@ export const Survey = ({ surveyIsLoaded, history }) => {
 	}
 
 	return (
-		<Container maxWidth="xs" className={clx.container}>
+		<Container maxWidth="xs" className={c.container}>
 			<Section />
 			<Question history={history} />
 			<Nav history={history} />

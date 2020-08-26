@@ -24,7 +24,7 @@ export const Queue = ({
 }) => {
 	const { addSection, deleteSection, moveSection } = operations;
 
-	const clx = useStyles();
+	const c = useStyles();
 
 	const handleInfoClick = (e) => showPopover(e, info);
 
@@ -41,13 +41,13 @@ export const Queue = ({
 	return (
 		<Accordion
 			key={label}
-			className={clx.accordion}
+			className={c.accordion}
 			TransitionProps={{ unmountOnExit: true }}
 		>
 			{/* ------------------- Head ------------------- */}
 
 			<AccordionSummary
-				classes={{ content: clx.accordionSummaryContent }}
+				classes={{ content: c.accordionSummaryContent }}
 				expandIcon={<ExpandMoreIcon />}
 			>
 				<Typography variant="h5">{label}</Typography>
@@ -57,7 +57,7 @@ export const Queue = ({
 			{/* --------------- Sections list -------------- */}
 
 			<AccordionDetails
-				className={clx.accordionDetails}
+				className={c.accordionDetails}
 				children={list.map((sectionName, i) => {
 					const sectionData = getSectionData(sectionName);
 					const isFirst = i === 0;

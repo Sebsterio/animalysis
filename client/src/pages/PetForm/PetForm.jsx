@@ -47,7 +47,7 @@ export const PetForm = ({
 	modifyPet,
 	deletePet,
 }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	// Load edited-pet data OR assign default values
 	const { name } = match.params;
@@ -124,7 +124,7 @@ export const PetForm = ({
 	});
 
 	return (
-		<Container maxWidth="xs" className={clx.page}>
+		<Container maxWidth="xs" className={c.page}>
 			<Form
 				state={getAugmentedPet(pet)}
 				setState={useSetPet}
@@ -140,7 +140,7 @@ export const PetForm = ({
 				confirm={handleDelete}
 			/>
 
-			<div className={clx.footer}>
+			<div className={c.footer}>
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={closeForm}

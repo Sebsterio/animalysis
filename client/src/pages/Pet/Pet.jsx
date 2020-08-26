@@ -26,7 +26,7 @@ export const Pet = ({
 	getPetByName,
 	getReports,
 }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const { name } = match.params;
 	const pet = getPetByName(name);
@@ -37,7 +37,7 @@ export const Pet = ({
 	const reports = getReports(pet).reverse();
 
 	return (
-		<Container maxWidth="xs" className={clx.page}>
+		<Container maxWidth="xs" className={c.page}>
 			<PetSnippet {...{ history, pet }} />
 			<ReportsList {...{ history, reports }} />
 			<Footer {...{ history, petId, data }} />

@@ -29,7 +29,7 @@ const Question = ({
 
 	const [answerTooLong, setAnswerTooLong] = useState(isAnswerTooLong(answer));
 
-	const clx = useStyles();
+	const c = useStyles();
 
 	return (
 		<Box>
@@ -44,7 +44,7 @@ const Question = ({
 				<Typography
 					component="label"
 					variant="h5"
-					className={clx.question}
+					className={c.question}
 					htmlFor="Survey__Question"
 					children={label}
 				/>

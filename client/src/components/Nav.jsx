@@ -27,10 +27,10 @@ export const Nav = ({
 	onlyRight = false,
 	noArrows = false,
 }) => {
-	const clx = useStyles({ enlargedRight });
+	const c = useStyles({ enlargedRight });
 
 	return (
-		<div className={clx.container}>
+		<div className={c.container}>
 			{!onlyRight && (
 				<Button
 					children={textLeft}
@@ -46,7 +46,7 @@ export const Nav = ({
 				disabled={disabledRight}
 				fullWidth={onlyRight}
 				endIcon={noArrows ? null : <KeyboardArrowRight />}
-				className={clx.nextButton}
+				className={c.nextButton}
 			/>
 		</div>
 	);

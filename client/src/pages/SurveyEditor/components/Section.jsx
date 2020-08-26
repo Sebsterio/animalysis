@@ -22,7 +22,7 @@ export const Section = ({
 		moveQuestion,
 	} = operations;
 
-	const clx = useStyles();
+	const c = useStyles();
 
 	// --------------------------- Operations ----------------------------
 
@@ -61,7 +61,7 @@ export const Section = ({
 			fullWidth
 			value={title}
 			onChange={(e) => modifySectionTitle(sectionName, e.target.value)}
-			className={clx.heading}
+			className={c.heading}
 		/>
 	);
 

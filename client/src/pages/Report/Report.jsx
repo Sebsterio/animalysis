@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Report = ({ history, match, getReport, getPet }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const openDialog = () => setDialogOpen(true);
@@ -40,11 +40,11 @@ const Report = ({ history, match, getReport, getPet }) => {
 	const closePage = () => history.push("/pet/" + pet.name);
 
 	return (
-		<Container maxWidth="xs" className={clx.page}>
+		<Container maxWidth="xs" className={c.page}>
 			<Head pet={pet} />
 
-			<div className={clx.main}>
-				<div className={clx.titleBlock}>
+			<div className={c.main}>
+				<div className={c.titleBlock}>
 					<Typography
 						component="h2"
 						variant="h4"
@@ -63,7 +63,7 @@ const Report = ({ history, match, getReport, getPet }) => {
 				<Alert level={alert} alignLeft clickHandler={openDialog} />
 
 				<Dialog open={dialogOpen} onClose={closeDialog} maxWidth="xs">
-					<Typography className={clx.dialogContent} children={dialogText} />
+					<Typography className={c.dialogContent} children={dialogText} />
 				</Dialog>
 
 				<ProblemList data={problemList} />

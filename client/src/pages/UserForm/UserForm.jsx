@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const UserForm = ({ history, currentUser, updateUser }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const [user, setUser] = useState({ ...currentUser });
 
@@ -33,9 +33,9 @@ export const UserForm = ({ history, currentUser, updateUser }) => {
 	const canSubmit = () => isFormFilled(formFields, user);
 
 	return (
-		<Container maxWidth="xs" className={clx.page}>
+		<Container maxWidth="xs" className={c.page}>
 			<Form state={user} setState={setUser} fields={formFields} />
-			<div className={clx.footer}>
+			<div className={c.footer}>
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={closeForm}

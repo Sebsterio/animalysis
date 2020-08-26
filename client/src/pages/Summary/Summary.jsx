@@ -26,15 +26,15 @@ const Summary = ({
 	endSurvey,
 }) => {
 	const data = summaryData[alertLevel];
-	const clx = useStyles(data);
+	const c = useStyles(data);
 
 	const canContinue = optionalQueueExists && alertLevel < 4;
 
 	return (
-		<Container maxWidth="xs" className={clx.page}>
+		<Container maxWidth="xs" className={c.page}>
 			<Alert level={alertLevel} />
 
-			<Container className={clx.main}>
+			<Container className={c.main}>
 				<Typography children={data.textMain(pet)} />
 				{canContinue && !!data.textContinue && (
 					<Typography children={data.textContinue(pet)} />
@@ -46,7 +46,7 @@ const Summary = ({
 					variant={alertLevel ? "contained" : "outlined"}
 					color="primary"
 					children="Call Clinic"
-					className={clx.callButton}
+					className={c.callButton}
 					onClick={callClinic}
 				/>
 			</Container>

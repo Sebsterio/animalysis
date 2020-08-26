@@ -19,7 +19,7 @@ export const Footer = ({
 	startProblemReport,
 	startRoutineCheck,
 }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const unfinishedAnalysis = isPetIdActive(petId);
 
@@ -28,7 +28,7 @@ export const Footer = ({
 			<Button
 				fullWidth
 				variant="contained"
-				className={clx.button}
+				className={c.button}
 				onClick={() => startRoutineCheck(data)}
 				children="Routine Health Check"
 			/>
@@ -36,7 +36,7 @@ export const Footer = ({
 				fullWidth
 				variant="contained"
 				color={unfinishedAnalysis ? "default" : "primary"}
-				className={clx.button}
+				className={c.button}
 				onClick={() => startProblemReport(data)}
 				children="Report a Problem"
 			/>
@@ -45,7 +45,7 @@ export const Footer = ({
 					fullWidth
 					variant="contained"
 					color="primary"
-					className={clx.button}
+					className={c.button}
 					onClick={() => history.push("/analysis")}
 					children="Continue Analysis"
 				/>
@@ -53,7 +53,7 @@ export const Footer = ({
 			<Button
 				fullWidth
 				variant="outlined"
-				className={clx.button}
+				className={c.button}
 				onClick={() => history.push("/")}
 				children="Back"
 			/>

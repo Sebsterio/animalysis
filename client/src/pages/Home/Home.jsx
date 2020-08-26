@@ -21,15 +21,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Home = ({ history, pets }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const noPets = !pets.length;
 
 	return (
-		<Container maxWidth="xs" className={clx.page}>
+		<Container maxWidth="xs" className={c.page}>
 			<Head history={history} />
 
-			<div className={clx.main}>
+			<div className={c.main}>
 				{noPets ? (
 					<PetCard handleClick={() => history.push("/add-pet")} />
 				) : (
@@ -46,7 +46,7 @@ export const Home = ({ history, pets }) => {
 			{!noPets ? (
 				<Button
 					variant="outlined"
-					className={clx.surveyBtn}
+					className={c.surveyBtn}
 					onClick={() => history.push("/add-pet")}
 					children="New Pet"
 				/>

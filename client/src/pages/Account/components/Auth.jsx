@@ -50,7 +50,7 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export const Auth = ({ mode, signIn }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const modesData = {
 		[authModes.signIn]: {
@@ -70,8 +70,8 @@ export const Auth = ({ mode, signIn }) => {
 	};
 
 	return (
-		<Container maxWidth="xs" className={clx.container}>
-			<Box className={clx.head}>
+		<Container maxWidth="xs" className={c.container}>
+			<Box className={c.head}>
 				<Typography component="h1" variant="h2">
 					VetCheck
 				</Typography>
@@ -83,8 +83,8 @@ export const Auth = ({ mode, signIn }) => {
 				</Typography>
 			</Box>
 
-			<Box className={clx.paper}>
-				<form className={clx.form} noValidate>
+			<Box className={c.paper}>
+				<form className={c.form} noValidate>
 					<Grid container spacing={2}>
 						{modesData[mode].userInfo || ""}
 
@@ -119,7 +119,7 @@ export const Auth = ({ mode, signIn }) => {
 						fullWidth
 						variant="contained"
 						color="primary"
-						className={clx.submit}
+						className={c.submit}
 						onClick={modesData[mode].btnHandler}
 					>
 						{modesData[mode].btnText || ""}

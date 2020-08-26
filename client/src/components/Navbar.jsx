@@ -21,7 +21,7 @@ import { useStyles } from "./Navbar-styles";
 // ----------------------------------------------------------------
 
 export const Navbar = () => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const titles = routes.map(({ path, title, exact }) => (
 		<Route exact={exact} path={path} render={() => title} key={path} />
@@ -33,19 +33,19 @@ export const Navbar = () => {
 	return (
 		<div>
 			<AppBar position="static">
-				{/* <AppBar position="fixed" className={clx.appBar}> */}
-				<Toolbar className={clx.toolbar}>
+				{/* <AppBar position="fixed" className={c.appBar}> */}
+				<Toolbar className={c.toolbar}>
 					<IconButton
 						color="inherit"
 						aria-label="logo"
 						children={
-							<Link to="/" className={clx.appLogo}>
+							<Link to="/" className={c.appLogo}>
 								<PetsIcon />
 							</Link>
 						}
 					/>
 
-					<Typography variant="h6" align="center" className={clx.title}>
+					<Typography variant="h6" align="center" className={c.title}>
 						<Switch>{titles}</Switch>
 					</Typography>
 
@@ -65,14 +65,14 @@ export const Navbar = () => {
 						anchor="right"
 						open={menuOpen}
 						onClose={toggleMenu}
-						classes={{ paper: clx.drawerPaper }}
+						classes={{ paper: c.drawerPaper }}
 						ModalProps={{ keepMounted: true }} // Better mobile performance
 					>
 						<IconButton
 							aria-label="Close menu"
 							children={<CloseIcon fontSize="large" />}
 							onClick={toggleMenu}
-							className={clx.closeMenuButton}
+							className={c.closeMenuButton}
 						/>
 						<List>
 							{routes.map(
@@ -83,8 +83,8 @@ export const Navbar = () => {
 											component={NavLink}
 											to={path}
 											exact={exact}
-											className={clx.navLink}
-											activeClassName={clx.navLinkActive}
+											className={c.navLink}
+											activeClassName={c.navLinkActive}
 											onClick={toggleMenu}
 											key={path}
 										>

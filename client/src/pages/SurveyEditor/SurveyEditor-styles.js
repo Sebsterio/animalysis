@@ -36,8 +36,7 @@ export const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "center",
 	},
-	// question
-	innerPaper: {
+	division: {
 		padding: theme.spacing(2),
 		margin: theme.spacing(1, 0),
 	},

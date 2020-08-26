@@ -24,7 +24,7 @@ export const ClinicForm = ({
 	currentClinic,
 	updateClinic,
 }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	const [clinic, setClinic] = useState({ ...currentClinic });
 
@@ -38,9 +38,9 @@ export const ClinicForm = ({
 	const canSubmit = () => isFormFilled(formFields, clinic);
 
 	return (
-		<Container maxWidth="xs" className={clx.page}>
+		<Container maxWidth="xs" className={c.page}>
 			<Form state={clinic} setState={setClinic} fields={formFields} />
-			<div className={clx.footer}>
+			<div className={c.footer}>
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={closeForm}

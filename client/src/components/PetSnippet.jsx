@@ -40,7 +40,7 @@ export const PetSnippet = ({
 	history,
 	small,
 }) => {
-	const clx = useStyles({ small });
+	const c = useStyles({ small });
 
 	const editPet = () => history.push("/edit-pet/" + name.toLowerCase());
 
@@ -48,10 +48,10 @@ export const PetSnippet = ({
 	const ageString = age[1] > 0 ? `${age[1]} years old` : `${age[0]} months old`;
 
 	return (
-		<div className={clx.container}>
-			<Avatar alt={name} src={imageUrl} className={clx.avatar} />
-			<div className={clx.info}>
-				<div className={clx.infoHeader}>
+		<div className={c.container}>
+			<Avatar alt={name} src={imageUrl} className={c.avatar} />
+			<div className={c.info}>
+				<div className={c.infoHeader}>
 					<Typography variant={small ? "h6" : "h4"} children={name} />
 					{!!history && (
 						<IconButton aria-label="edit pet details" onClick={editPet}>
@@ -59,7 +59,7 @@ export const PetSnippet = ({
 						</IconButton>
 					)}
 				</div>
-				<div className={clx.infoDesc}>
+				<div className={c.infoDesc}>
 					<Typography>
 						{ageString} {sex} {breed}
 					</Typography>

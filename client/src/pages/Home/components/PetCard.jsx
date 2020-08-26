@@ -20,17 +20,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const PetCard = ({ pet, handleClick }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	if (!pet) pet = { name: "Add a pet", imageUrl: PlusImage };
 
 	const { name, imageUrl } = pet;
 
 	return (
-		<Card className={clx.root} onClick={handleClick}>
+		<Card className={c.root} onClick={handleClick}>
 			<CardActionArea>
 				<CardMedia
-					className={clx.media}
+					className={c.media}
 					image={imageUrl}
 					title={`${name}'s profile picture`}
 				/>

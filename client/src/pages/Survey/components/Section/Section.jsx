@@ -18,14 +18,14 @@ export const Section = ({
 	historySections,
 	historyAndQueueSections,
 }) => {
-	const clx = useStyles();
+	const c = useStyles();
 
 	return (
-		<Box className={clx.container}>
+		<Box className={c.container}>
 			<Box mb={1}>
 				<MobileStepper
 					variant="dots"
-					className={clx.stepper}
+					className={c.stepper}
 					position="static"
 					activeStep={historySections.length - 1}
 					steps={historyAndQueueSections.length}
