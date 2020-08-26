@@ -66,7 +66,10 @@ export const useStyles = makeStyles((theme) => ({
 
 	// Helpers
 
-	mTop: {
+	mTop2: {
 		marginTop: theme.spacing(2),
+	},
+	mTop1: {
+		marginTop: theme.spacing(1),
 	},
 }));

@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -47,6 +46,7 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 	};
 
 	// --------------------------- Operations ----------------------------
+
 	const curriedOperations = {
 		...operations,
 		updateAnswer: () => {},

@@ -39,6 +39,8 @@ export const defaultAnswer = {
 export const initialAnswer = {
 	id: "initialAnswer",
 	text: "Initial answer",
+	alert: 3,
+	print: "Stuff",
 };
 
 export const initialQuestion = {

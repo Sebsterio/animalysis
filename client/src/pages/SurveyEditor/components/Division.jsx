@@ -18,6 +18,7 @@ import { useStyles } from "../SurveyEditor-styles";
 export const Division = ({
 	heading,
 	headingVariant = "body1",
+	body,
 	fields,
 	fieldsType = "stack",
 	form,
@@ -36,7 +37,7 @@ export const Division = ({
 
 	const [editing, setEditing] = useState(false);
 	const editConfig = () => setEditing("config");
-	const editQuestions = () => setEditing("fields");
+	const editFields = () => setEditing("fields");
 	const stopEditing = () => setEditing(false);
 
 	// ------------------------- ENTER key -------------------------
@@ -59,16 +60,18 @@ export const Division = ({
 			<div className={c.viewer}>
 				<Typography variant={headingVariant} className={c.heading}>
 					{heading}
+					{body && body}
 				</Typography>
 
 				<div className={c.row}>
 					<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
 					<IconButton children={<EditIcon />} onClick={editConfig} />
-					<IconButton
-						children={<QuestionAnswerIcon />}
-						onClick={editQuestions}
-					/>
-
+					{!!fields && (
+						<IconButton
+							children={<QuestionAnswerIcon />}
+							onClick={editFields}
+						/>
+					)}
 					<IconButton
 						children={<ArrowUpwardIcon />}
 						onClick={handleMoveUp}
@@ -102,8 +105,10 @@ export const Division = ({
 					formType === "grid" && (
 						<>
 							<div className={c.form}>{form}</div>
-							<div className={c.row}>
-								<IconButton children={<DoneIcon />} onClick={stopEditing} />
+							<div className={c.mTop2}>
+								<div className={c.row}>
+									<IconButton children={<DoneIcon />} onClick={stopEditing} />
+								</div>
 							</div>
 						</>
 					)
@@ -123,11 +128,11 @@ export const Division = ({
 				<IconButton children={<DoneIcon />} onClick={stopEditing} />
 			</div>
 
-			{!!fields.length && (
-				<div className={fieldsType === "grid" ? c.grid : c.mTop}>{fields}</div>
+			{!!fields && !!fields.length && (
+				<div className={fieldsType === "grid" ? c.grid : c.mTop2}>{fields}</div>
 			)}
 
-			<div className={c.mTop}>
+			<div className={c.mTop2}>
 				<Button
 					fullWidth
 					variant="outlined"
