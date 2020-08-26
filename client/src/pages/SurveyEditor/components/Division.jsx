@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
@@ -30,12 +29,23 @@ export const Division = ({
 }) => {
 	const clx = useStyles();
 
-	// ----------------- Mode ---------------------
+	// --------------------------- Mode ----------------------------
 
 	const [editing, setEditing] = useState(false);
 	const editConfig = () => setEditing("config");
 	const editQuestions = () => setEditing("fields");
 	const stopEditing = () => setEditing(false);
+
+	// ------------------------- ENTER key -------------------------
+
+	const isEditingConfig = () => editing === "config";
+
+	useEffect(() => {
+		if (!isEditingConfig) return;
+		const handleEnter = (e) => e.key === "Enter" && stopEditing();
+		window.addEventListener("keydown", handleEnter);
+		return () => window.removeEventListener("keydown", handleEnter);
+	}, [isEditingConfig, stopEditing]);
 
 	// --------------------------- View -------------------------------
 
