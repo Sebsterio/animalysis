@@ -1,5 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 import { Division, Question } from "./index";
 import { useStyles } from "../SurveyEditor-styles";
 
@@ -52,6 +53,16 @@ export const Section = ({
 
 	// ------------------------------ View -------------------------------
 
+	const form = (
+		<TextField
+			autoFocus
+			fullWidth
+			value={title}
+			onChange={(e) => modifySectionTitle(sectionName, e.target.value)}
+			className={c.heading}
+		/>
+	);
+
 	const fields = questions.map((questionProps, i) => {
 		const isFirst = i === 0;
 		const isLast = i === questions.length - 1;
@@ -64,13 +75,12 @@ export const Section = ({
 		);
 	});
 
-	const form = (
-		<TextField
-			autoFocus
+	const fieldsFooter = (
+		<Button
 			fullWidth
-			value={title}
-			onChange={(e) => modifySectionTitle(sectionName, e.target.value)}
-			className={c.heading}
+			variant="outlined"
+			children="New Question"
+			onClick={() => addQuestion(sectionName)}
 		/>
 	);
 
@@ -79,14 +89,13 @@ export const Section = ({
 			heading={title}
 			headingVariant="h6"
 			fields={fields}
+			fieldsFooter={fieldsFooter}
 			form={form}
 			isFirst={isFirst}
 			isLast={isLast}
 			handleDelete={handleDelete}
 			handleMoveUp={() => moveSection(sectionName, "up")}
 			handleMoveDown={() => moveSection(sectionName, "down")}
-			addButtonText="New Question"
-			handleAddButtonClick={() => addQuestion(sectionName)}
 		/>
 	);
 };

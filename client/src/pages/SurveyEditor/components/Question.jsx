@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
+import Button from "@material-ui/core/Button";
 
 import { Division, Answer } from "./index";
 
@@ -146,11 +147,21 @@ export const Question = ({
 		);
 	});
 
+	const fieldsFooter = (
+		<Button
+			fullWidth
+			variant="outlined"
+			children="New Answer"
+			onClick={() => addAnswer(id)}
+		/>
+	);
+
 	return (
 		<Division
 			heading={label}
 			fields={fields}
 			fieldsType="grid"
+			fieldsFooter={fieldsFooter}
 			form={form}
 			formType="grid"
 			isFirst={isFirst}
@@ -158,8 +169,6 @@ export const Question = ({
 			handleDelete={handleDelete}
 			handleMoveUp={() => moveQuestion(id, "up")}
 			handleMoveDown={() => moveQuestion(id, "down")}
-			addButtonText="New Answer"
-			handleAddButtonClick={() => addAnswer(id)}
 		/>
 	);
 };

@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 import EditIcon from "@material-ui/icons/Edit";
@@ -21,6 +20,8 @@ export const Division = ({
 	body,
 	fields,
 	fieldsType = "stack",
+	fieldsHeader,
+	fieldsFooter,
 	form,
 	formType = "row",
 	isFirst,
@@ -28,8 +29,6 @@ export const Division = ({
 	handleDelete,
 	handleMoveUp,
 	handleMoveDown,
-	addButtonText,
-	handleAddButtonClick,
 }) => {
 	const c = useStyles();
 
@@ -68,12 +67,7 @@ export const Division = ({
 				<div className={c.row}>
 					<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
 					<IconButton children={<EditIcon />} onClick={editConfig} />
-					{!!fields && (
-						<IconButton
-							children={<QuestionAnswerIcon />}
-							onClick={editFields}
-						/>
-					)}
+					<IconButton children={<QuestionAnswerIcon />} onClick={editFields} />
 					<IconButton
 						children={<ArrowUpwardIcon />}
 						onClick={handleMoveUp}
@@ -130,20 +124,17 @@ export const Division = ({
 				<IconButton children={<DoneIcon />} onClick={stopEditing} />
 			</div>
 
+			{!!fieldsHeader && <div className={c.mTop2}>{fieldsHeader}</div>}
+
 			{!!fields && !!fields.length && (
 				<div className={fieldsType === "grid" ? c.grid : c.mTop2}>{fields}</div>
 			)}
 
-			<div className={c.mTop2}>
-				<Button
-					fullWidth
-					variant="outlined"
-					children={addButtonText}
-					onClick={handleAddButtonClick}
-				/>
-			</div>
+			{!!fieldsFooter && <div className={c.mTop2}>{fieldsFooter}</div>}
 		</Paper>
 	);
+
+	console.log({ fields });
 
 	return editing === "config"
 		? configEditor

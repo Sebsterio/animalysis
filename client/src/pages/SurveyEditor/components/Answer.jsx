@@ -3,11 +3,12 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 import { Division } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
-import { isEmpty } from "utils/object";
 
 // ----------------------------------------------------------
 
@@ -26,7 +27,7 @@ export const Answer = ({
 		alert = 0,
 		followUp = {
 			after: [], // ['none'] | "all" | (Str | [Str]: sectionName(s))
-			target: "", // (Str | [Str]: sectionName),
+			target: [], // (Str | [Str]: sectionName),
 		},
 	} = answerProps;
 
@@ -46,7 +47,7 @@ export const Answer = ({
 		if (print !== "") newQuestion.print = print;
 		if (printNote !== "") newQuestion.printNote = printNote;
 		if (alert !== 0) newQuestion.alert = alert;
-		if (followUp.target)
+		if (!!followUp.target.length)
 			newQuestion.followUp = {
 				after: followUp.after,
 				target: followUp.target,
@@ -223,18 +224,32 @@ export const Answer = ({
 		</>
 	);
 
+	const fields = followUp.target.map((target, i) => {
+		// const isFirst = i === 0;
+		// const isLast = i === answers.length - 1;
+		return <div key={answerProps.id}>{target}</div>;
+	});
+
+	const fieldsFooter = (
+		<ButtonGroup fullWidth variant="outlined">
+			<Button children="Add Nested Section" onClick={() => {}} />
+			<Button children="Add Section Reference" onClick={() => {}} />
+		</ButtonGroup>
+	);
+
 	return (
 		<Division
 			heading={text}
 			body={body}
+			fieldsHeader="Follow-up sections:"
+			fields={fields}
+			fieldsFooter={fieldsFooter}
 			form={form}
-			formType="grid"
 			isFirst={isFirst}
 			isLast={isLast}
 			handleDelete={handleDelete}
 			handleMoveUp={() => moveAnswer(id, "up")}
 			handleMoveDown={() => moveAnswer(id, "down")}
-			addButtonText="New Answer"
 		/>
 	);
 };
