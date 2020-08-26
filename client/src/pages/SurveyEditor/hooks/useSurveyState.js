@@ -179,6 +179,14 @@ export const useSurveyState = () => {
 		);
 	};
 
+	const updateAnswer = (sectionName, questionId, answerId, value) => {
+		const selector = (answer) => answer.id === answerId;
+		const modifier = typeof value === "function" ? value : () => ({ ...value });
+		modifyAnswers(sectionName, questionId, (answers) =>
+			makeArrayWithReplacedItem(answers, selector, modifier)
+		);
+	};
+
 	// -----------------------
 
 	const operations = {
@@ -200,6 +208,7 @@ export const useSurveyState = () => {
 		addAnswer,
 		deleteAnswer,
 		moveAnswer,
+		updateAnswer,
 	};
 
 	// -----------------------

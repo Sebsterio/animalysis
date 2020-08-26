@@ -41,15 +41,16 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 
 	const includeInputValue = (newAnswer, e) => {
 		let { type, name, value, checked } = e.target;
+		console.log({ checked });
 		if (type === "number") value = Number(value);
-		else if (checked !== undefined) value = checked;
+		else if (type === "checkbox") value = checked;
 		newAnswer[name] = value;
 	};
 
 	const editAnswer = (e) => {
 		let newAnswer = copyAnswer();
 		includeInputValue(newAnswer, e);
-		updateAnswer(newAnswer);
+		updateAnswer(id, newAnswer);
 	};
 
 	// --------------------------- handlers ----------------------------
@@ -167,7 +168,6 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 			handleMoveUp={() => moveAnswer(id, "up")}
 			handleMoveDown={() => moveAnswer(id, "down")}
 			addButtonText="New Answer"
-			handleAddButtonClick={() => {}}
 		/>
 	);
 };

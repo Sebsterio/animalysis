@@ -58,10 +58,12 @@ export const Division = ({
 	const viewer = (
 		<Paper className={c.division}>
 			<div className={c.viewer}>
-				<Typography variant={headingVariant} className={c.heading}>
-					{heading}
+				<div>
+					<Typography variant={headingVariant} className={c.heading}>
+						{heading}
+					</Typography>
 					{body && body}
-				</Typography>
+				</div>
 
 				<div className={c.row}>
 					<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />

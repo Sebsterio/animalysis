@@ -23,6 +23,7 @@ export const Section = ({
 		addAnswer,
 		deleteAnswer,
 		moveAnswer,
+		updateAnswer,
 	} = operations;
 
 	const c = useStyles();
@@ -38,6 +39,7 @@ export const Section = ({
 		addAnswer: (questionId) => addAnswer(sectionName, questionId),
 		deleteAnswer: (questionId, id) => deleteAnswer(sectionName, questionId, id),
 		moveAnswer: (qId, aId, dir) => moveAnswer(sectionName, qId, aId, dir),
+		updateAnswer: (qId, aId, val) => updateAnswer(sectionName, qId, aId, val),
 	};
 
 	// ---------------------------- Handlers -----------------------------
