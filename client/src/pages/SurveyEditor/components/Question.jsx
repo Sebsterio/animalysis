@@ -137,6 +137,7 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 		<Division
 			heading={label}
 			fields={fields}
+			fieldsType="grid"
 			form={form}
 			formType="grid"
 			isFirst={isFirst}

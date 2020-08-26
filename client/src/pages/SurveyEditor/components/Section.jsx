@@ -71,7 +71,6 @@ export const Section = ({
 			headingVariant="h6"
 			fields={fields}
 			form={form}
-			formType="row"
 			isFirst={isFirst}
 			isLast={isLast}
 			handleDelete={handleDelete}

@@ -19,8 +19,9 @@ export const Division = ({
 	heading,
 	headingVariant = "body1",
 	fields,
+	fieldsType = "stack",
 	form,
-	formType,
+	formType = "row",
 	isFirst,
 	isLast,
 	handleDelete,
@@ -122,7 +123,9 @@ export const Division = ({
 				<IconButton children={<DoneIcon />} onClick={stopEditing} />
 			</div>
 
-			{!!fields.length && <div className={c.mTop}>{fields}</div>}
+			{!!fields.length && (
+				<div className={fieldsType === "grid" ? c.grid : c.mTop}>{fields}</div>
+			)}
 
 			<div className={c.mTop}>
 				<Button

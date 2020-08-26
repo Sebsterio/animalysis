@@ -59,6 +59,10 @@ export const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		gridGap: theme.spacing(2),
 	},
+	grid: {
+		display: "grid",
+		gridTemplateColumns: "repeat(auto-fit, minmax(200px, 400px))",
+	},
 
 	// Helpers
 
