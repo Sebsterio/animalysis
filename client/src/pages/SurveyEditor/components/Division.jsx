@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
@@ -16,6 +17,7 @@ import { useStyles } from "../SurveyEditor-styles";
 
 export const Division = ({
 	heading,
+	headingVariant = "body1",
 	fields,
 	form,
 	formType,
@@ -53,7 +55,7 @@ export const Division = ({
 
 	const viewer = (
 		<Paper className={clx.innerPaper}>
-			<Typography variant="h6" className={clx.heading}>
+			<Typography variant={headingVariant} className={clx.heading}>
 				{heading}
 			</Typography>
 
@@ -78,32 +80,37 @@ export const Division = ({
 
 	// --- Config editor ---
 
-	const configEditor =
-		formType === "row" ? (
+	const configEditor = (
+		<ClickAwayListener
+			mouseEvent="onMouseDown"
+			touchEvent="onTouchStart"
+			onClickAway={stopEditing}
+		>
 			<Paper className={clx.innerPaper}>
-				<div className={clx.row}>
-					{form}
-					<IconButton children={<DoneIcon />} onClick={stopEditing} />
-				</div>
-			</Paper>
-		) : (
-			formType === "grid" && (
-				<Paper className={clx.innerPaper}>
-					<div className={clx.form}>
+				{formType === "row" ? (
+					<div className={clx.row}>
 						{form}
-						<div className={clx.row}>
-							<IconButton children={<DoneIcon />} onClick={stopEditing} />
-						</div>
+						<IconButton children={<DoneIcon />} onClick={stopEditing} />
 					</div>
-				</Paper>
-			)
-		);
+				) : (
+					formType === "grid" && (
+						<>
+							<div className={clx.form}>{form}</div>
+							<div className={clx.row}>
+								<IconButton children={<DoneIcon />} onClick={stopEditing} />
+							</div>
+						</>
+					)
+				)}
+			</Paper>
+		</ClickAwayListener>
+	);
 
 	// --- Questions editor ---
 
 	const questionsEditor = (
 		<Paper className={clx.innerPaper}>
-			<Typography variant="h6" className={clx.heading}>
+			<Typography variant={headingVariant} className={clx.heading}>
 				{heading}
 			</Typography>
 

@@ -68,6 +68,7 @@ export const Section = ({
 	return (
 		<Division
 			heading={title}
+			headingVariant="h6"
 			fields={fields}
 			form={form}
 			formType="row"
