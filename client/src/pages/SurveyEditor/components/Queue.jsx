@@ -26,7 +26,7 @@ export const Queue = ({
 	showPopover,
 	addSection,
 	// Drilled
-	updateSectionTitle,
+	modifySectionTitle,
 	deleteSection,
 	moveSection,
 	addQuestion,
@@ -75,7 +75,7 @@ export const Queue = ({
 							key={sectionId}
 							{...{ ...sectionData, sectionId, isFirst, isLast }}
 							// handlers
-							updateTitle={updateSectionTitle}
+							modifySectionTitle={modifySectionTitle}
 							deleteSection={handleDeleteSection}
 							moveSection={handleMoveSection}
 							// drilled props

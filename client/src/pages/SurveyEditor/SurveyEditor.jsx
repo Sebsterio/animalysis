@@ -7,8 +7,8 @@ import Backdrop from "@material-ui/core/Backdrop";
 
 import { Queue } from "./components";
 
-import { makeArrayWithMovedItem } from "utils/array";
 import { useStyles } from "./SurveyEditor-styles";
+import { getStepsFromDirection } from "./SurveyEditor-utils";
 import {
 	defaultQueues,
 	defaultSection,
@@ -16,6 +16,11 @@ import {
 	defaultAnswer,
 	initialSection,
 } from "./SurveyEditor-defaults";
+import {
+	makeArrayWithReplacedItem,
+	makeArrayWithRemovedItems,
+	makeArrayWithMovedItem,
+} from "utils/array";
 
 shortid.characters(
 	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_"
@@ -27,11 +32,6 @@ shortid.characters(
 
 export const SurveyEditor = () => {
 	const clx = useStyles();
-
-	const [queues, setQueues] = useState(defaultQueues);
-	const [sections, setSections] = useState({
-		initialSection: { ...initialSection },
-	});
 
 	// ---------------------- Popover ----------------------
 
@@ -49,97 +49,111 @@ export const SurveyEditor = () => {
 		setAnchorEl(null);
 	};
 
-	// ------------------------ Selectors -------------------------
+	// ------------------------ Queues -------------------------
 
-	const getSectionData = (id) => sections[id];
+	const [queues, setQueues] = useState(defaultQueues);
+
+	const addOrModifyQueue = (queueName, value) => {
+		const modifier = typeof value === "function" ? value : () => value;
+		setQueues({ ...queues, [queueName]: modifier(queues[queueName]) });
+	};
+
+	const modifyQueueProp = (queueName, prop, value) => {
+		const modifier = typeof value === "function" ? value : () => value;
+		addOrModifyQueue(queueName, (queue) => ({
+			...queue,
+			[prop]: modifier(queue[prop]),
+		}));
+	};
+
+	// ------------------------ Sections -------------------------
+
+	const [sections, setSections] = useState({
+		initialSection: { ...initialSection },
+	});
+
+	const getSectionData = (sectionName) => sections[sectionName];
+
+	const addOrModifySection = (id, value) => {
+		const modifier = typeof value === "function" ? value : () => value;
+		setSections({ ...sections, [id]: modifier(sections[id]) });
+	};
+
+	const modifySectionProp = (id, prop, value) => {
+		const modifier = typeof value === "function" ? value : () => value;
+		addOrModifySection(id, (section) => ({
+			...section,
+			[prop]: modifier(section[prop]),
+		}));
+	};
+
+	const deleteSectionFromSections = (sectionName) => {
+		const newSections = { ...sections };
+		delete newSections[sectionName];
+		setSections(newSections);
+	};
 
 	// ------------------------ Handlers -------------------------
 
-	// --- Section ---
+	const modifyQueueList = (queueName, value) =>
+		modifyQueueProp(queueName, "list", value);
+
+	const modifySectionTitle = (id, value) =>
+		modifySectionProp(id, "title", value);
+
+	const modifySectionQuestions = (id, value) =>
+		modifySectionProp(id, "questions", value);
+
+	// -------------------- TO EXTRACT ---------------------------
 
 	const addSection = (queueName) => {
-		const id = "_" + shortid.generate();
-		const newSection = { ...defaultSection };
-		setSections({ ...sections, [id]: newSection });
-
-		const list = [...queues[queueName].list, id];
-		const queueProps = { ...queues[queueName], list };
-		setQueues({ ...queues, [queueName]: queueProps });
+		const sectionName = "_" + shortid.generate();
+		addOrModifySection(sectionName, { ...defaultSection });
+		modifyQueueList(queueName, (list) => [...list, sectionName]);
 	};
 
-	const deleteSection = (queueName, id) => {
-		const newSections = { ...sections };
-		delete newSections[id];
-		setSections(newSections);
-
-		const list = [...queues[queueName].list.filter((item) => item !== id)];
-		const queueProps = { ...queues[queueName], list };
-		setQueues({ ...queues, [queueName]: queueProps });
+	const deleteSection = (queueName, sectionName) => {
+		deleteSectionFromSections(sectionName);
+		modifyQueueList(queueName, (list) =>
+			list.filter((item) => item !== sectionName)
+		);
 	};
 
-	const updateSectionTitle = (id, title) => {
-		setSections({ ...sections, [id]: { ...sections[id], title } });
+	const moveSection = (queueName, sectionName, direction) => {
+		const steps = getStepsFromDirection(direction);
+		const selector = (listItem) => listItem === sectionName;
+		modifyQueueList(queueName, (list) =>
+			makeArrayWithMovedItem(list, null, steps, selector)
+		);
 	};
-
-	const moveSection = (queueName, id, direction) => {
-		const steps = direction === "down" ? 1 : direction === "up" ? -1 : 0;
-		let list = [...queues[queueName].list];
-		list = makeArrayWithMovedItem(list, id, steps);
-		const queueProps = { ...queues[queueName], list };
-		setQueues({ ...queues, [queueName]: queueProps });
-	};
-
-	// --- Question ---
 
 	const addQuestion = (sectionId) => {
 		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
-		const questions = [...sections[sectionId].questions, newQuestion];
-		setSections({
-			...sections,
-			[sectionId]: { ...sections[sectionId], questions },
-		});
+		const modifier = (questions) => [...questions, newQuestion];
+		modifySectionQuestions(sectionId, modifier);
 	};
 
 	const updateQuestion = (sectionId, data) => {
-		const questions = sections[sectionId].questions.map((question) =>
-			question.id === data.id ? { ...data } : question
+		const selector = (question) => question.id === data.id;
+		modifySectionQuestions(sectionId, (questions) =>
+			makeArrayWithReplacedItem(questions, null, { ...data }, selector)
 		);
-		setSections({
-			...sections,
-			[sectionId]: { ...sections[sectionId], questions },
-		});
 	};
 
 	const deleteQuestion = (sectionId, questionId) => {
-		const questions = sections[sectionId].questions.filter(
-			(question) => question.id !== questionId
+		const selector = (question) => question.id === questionId;
+		modifySectionQuestions(sectionId, (questions) =>
+			makeArrayWithRemovedItems(questions, null, selector)
 		);
-		setSections({
-			...sections,
-			[sectionId]: { ...sections[sectionId], questions },
-		});
 	};
 
 	const moveQuestion = (sectionId, questionId, direction) => {
-		const steps = direction === "down" ? 1 : direction === "up" ? -1 : 0;
-		let questions = [...sections[sectionId].questions];
+		const steps = getStepsFromDirection(direction);
 		const selector = (question) => question.id === questionId;
-		questions = makeArrayWithMovedItem(questions, null, steps, selector);
-		setSections({
-			...sections,
-			[sectionId]: { ...sections[sectionId], questions },
-		});
+		modifySectionQuestions(sectionId, (questions) =>
+			makeArrayWithMovedItem(questions, null, steps, selector)
+		);
 	};
-
-	// --- Answer ---
-
-	// const addAnswer = (sectionId, questionId) => {
-	// 	const newAnswer = { ...defaultAnswer, id: shortid.generate() };
-	// 	const questions = sections[sectionId].questions.map((question) =>
-	// 		question.id === data.id ? { ...data } : question
-	// 	);
-	// 	updateQuestion();
-	// };
 
 	// ----------------------------- View ------------------------------
 
@@ -155,7 +169,7 @@ export const SurveyEditor = () => {
 					{...{ getSectionData, showPopover, addSection }}
 					// Drilled props (section)
 					{...{
-						updateSectionTitle,
+						modifySectionTitle,
 						deleteSection,
 						moveSection,
 						addQuestion,

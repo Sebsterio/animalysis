@@ -65,6 +65,11 @@ export const makeArrayWithReplacedItem = (
 	newItem,
 	selector = (item) => item === oldItem
 ) => arr.map((item) => (selector(item) ? newItem : item));
+// export const makeArrayWithReplacedItem = (arr, selector, modifier) => {
+// 	if (typeof selector !== "function") selector = (item) => item === selector;
+// 	if (typeof modifier !== "function") modifier = () => modifier;
+// 	return arr.map((item) => (selector(item) ? modifier(item) : item));
+// };
 
 // MODIFY array item - supports negative index (counted form end)
 export const makeArrayWithModifiedItems = (

@@ -27,7 +27,7 @@ export const Section = ({
 	title,
 	questions,
 	// handlers
-	updateTitle,
+	modifySectionTitle,
 	deleteSection,
 	moveSection,
 	// drilled props
@@ -47,8 +47,6 @@ export const Section = ({
 
 	// --------------------- Section handlers --------------------------
 
-	const handleTitleInput = (e) => updateTitle(sectionId, e.target.value);
-
 	const handleDelete = (e) => {
 		e.stopPropagation();
 		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
@@ -64,6 +62,8 @@ export const Section = ({
 		e.stopPropagation();
 		moveSection(sectionId, "down");
 	};
+
+	const handleTitleInput = (e) => modifySectionTitle(sectionId, e.target.value);
 
 	// --------------------- Question handlers --------------------------
 
