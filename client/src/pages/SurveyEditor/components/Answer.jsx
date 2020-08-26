@@ -24,7 +24,7 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 	// 	after: "all",
 	// },
 
-	const { deleteAnswer, updateAnswer } = operations;
+	const { deleteAnswer, moveAnswer, updateAnswer } = operations;
 
 	const c = useStyles();
 
@@ -164,8 +164,8 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 			isFirst={isFirst}
 			isLast={isLast}
 			handleDelete={handleDelete}
-			handleMoveUp={() => {}}
-			handleMoveDown={() => {}}
+			handleMoveUp={() => moveAnswer(id, "up")}
+			handleMoveDown={() => moveAnswer(id, "down")}
 			addButtonText="New Answer"
 			handleAddButtonClick={() => {}}
 		/>

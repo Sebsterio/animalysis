@@ -157,7 +157,7 @@ export const useSurveyState = () => {
 	};
 
 	const addAnswer = (sectionName, questionId) => {
-		const newAnswer = { ...defaultAnswer };
+		const newAnswer = { ...defaultAnswer, id: shortid.generate() };
 		modifyAnswers(sectionName, questionId, (answers) => [
 			...answers,
 			newAnswer,
@@ -168,6 +168,14 @@ export const useSurveyState = () => {
 		const selector = (answer) => answer.id === answerId;
 		modifyAnswers(sectionName, questionId, (answers) =>
 			makeArrayWithRemovedItems(answers, null, selector)
+		);
+	};
+
+	const moveAnswer = (sectionName, questionId, answerId, direction) => {
+		const steps = getStepsFromDirection(direction);
+		const selector = (answer) => answer.id === answerId;
+		modifyAnswers(sectionName, questionId, (answers) =>
+			makeArrayWithMovedItem(answers, null, steps, selector)
 		);
 	};
 
@@ -191,6 +199,7 @@ export const useSurveyState = () => {
 		updateQuestion,
 		addAnswer,
 		deleteAnswer,
+		moveAnswer,
 	};
 
 	// -----------------------
