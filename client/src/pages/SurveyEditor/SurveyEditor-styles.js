@@ -34,6 +34,11 @@ export const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(2),
 		margin: theme.spacing(1, 0),
 	},
+	divisionExpanded: {
+		padding: theme.spacing(2),
+		margin: theme.spacing(1, 0),
+		gridColumn: "1 / -1",
+	},
 	heading: {
 		display: "block",
 		width: "100%",

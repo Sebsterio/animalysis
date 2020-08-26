@@ -116,7 +116,7 @@ export const Division = ({
 	// --- Questions editor ---
 
 	const fieldsEditor = (
-		<Paper className={c.division}>
+		<Paper className={c.divisionExpanded}>
 			<div className={c.row}>
 				<Typography variant={headingVariant} className={c.heading}>
 					{heading}
