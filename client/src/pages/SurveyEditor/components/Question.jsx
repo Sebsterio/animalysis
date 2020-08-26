@@ -15,6 +15,7 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 		deleteQuestion,
 		moveQuestion,
 		addAnswer,
+		deleteAnswer,
 	} = operations;
 
 	// ----------------------- Editing question -------------------------
@@ -50,6 +51,7 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 
 	const curriedOperations = {
 		...operations,
+		deleteAnswer: (answerId) => deleteAnswer(id, answerId),
 		updateAnswer: () => {},
 	};
 

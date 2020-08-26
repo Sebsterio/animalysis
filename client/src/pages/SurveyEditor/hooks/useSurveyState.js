@@ -164,6 +164,13 @@ export const useSurveyState = () => {
 		]);
 	};
 
+	const deleteAnswer = (sectionName, questionId, answerId) => {
+		const selector = (answer) => answer.id === answerId;
+		modifyAnswers(sectionName, questionId, (answers) =>
+			makeArrayWithRemovedItems(answers, null, selector)
+		);
+	};
+
 	// -----------------------
 
 	const operations = {
@@ -183,6 +190,7 @@ export const useSurveyState = () => {
 		moveQuestion,
 		updateQuestion,
 		addAnswer,
+		deleteAnswer,
 	};
 
 	// -----------------------

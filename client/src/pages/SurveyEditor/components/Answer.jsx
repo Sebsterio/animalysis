@@ -24,7 +24,7 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 	// 	after: "all",
 	// },
 
-	const { updateAnswer } = operations;
+	const { deleteAnswer, updateAnswer } = operations;
 
 	const c = useStyles();
 
@@ -55,8 +55,8 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 	// --------------------------- handlers ----------------------------
 
 	const handleDelete = () => {
-		// const confirmed = window.confirm("Delete answer?");
-		// if (confirmed) deleteQuestion(id);
+		const confirmed = window.confirm("Delete answer?");
+		if (confirmed) deleteAnswer(id);
 	};
 
 	// ----------------------------- View ------------------------------
@@ -68,7 +68,7 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 			case 2:	return "yellow";
 			case 3:	return "orange";
 			case 4:	return "red";
-			default:return "none";
+			default: return "none";
 		}
 	};
 
