@@ -5,40 +5,52 @@ export const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(2),
 		width: "100%",
 	},
-	accordion: {
-		width: "100%",
-	},
-	accordionSummaryContent: {
-		display: "flex",
-		alignItems: "center",
-		margin: theme.spacing(1, 0) + " !important",
-	},
-	accordionDetails: {
-		flexFlow: "column nowrap",
-	},
+
+	// Popover
+
 	popover: {
 		padding: theme.spacing(2),
 	},
 	backdrop: {
 		zIndex: theme.zIndex.accordion + 1,
 	},
-	col: {
+
+	// Queues
+
+	accordion: {
 		width: "100%",
 	},
-	heading: {
-		marginBottom: theme.spacing(2),
-	},
-	group: {
-		margin: theme.spacing(2, 0),
-	},
-	row: {
-		marginTop: theme.spacing(2),
+	accordionSummaryContent: {
 		display: "flex",
-		justifyContent: "center",
+		alignItems: "center",
 	},
+	accordionDetails: {
+		flexFlow: "column nowrap",
+	},
+
+	// Division
+
 	division: {
 		padding: theme.spacing(2),
 		margin: theme.spacing(1, 0),
+	},
+	heading: {
+		display: "block",
+		width: "100%",
+	},
+	row: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	viewer: {
+		display: "grid",
+		gridGap: theme.spacing(2),
+		[theme.breakpoints.up("sm")]: {
+			gridTemplateColumns: "1fr auto",
+			alignContent: "center",
+			alignItems: "center",
+		},
 	},
 	form: {
 		display: "grid",
@@ -46,5 +58,11 @@ export const useStyles = makeStyles((theme) => ({
 		alignContent: "center",
 		alignItems: "center",
 		gridGap: theme.spacing(2),
+	},
+
+	// Helpers
+
+	mTop: {
+		marginTop: theme.spacing(2),
 	},
 }));

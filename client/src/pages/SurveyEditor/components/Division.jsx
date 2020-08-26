@@ -55,25 +55,30 @@ export const Division = ({
 
 	const viewer = (
 		<Paper className={c.division}>
-			<Typography variant={headingVariant} className={c.heading}>
-				{heading}
-			</Typography>
+			<div className={c.viewer}>
+				<Typography variant={headingVariant} className={c.heading}>
+					{heading}
+				</Typography>
 
-			<div className={c.row}>
-				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
-				<IconButton children={<EditIcon />} onClick={editConfig} />
-				<IconButton children={<QuestionAnswerIcon />} onClick={editQuestions} />
+				<div className={c.row}>
+					<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
+					<IconButton children={<EditIcon />} onClick={editConfig} />
+					<IconButton
+						children={<QuestionAnswerIcon />}
+						onClick={editQuestions}
+					/>
 
-				<IconButton
-					children={<ArrowUpwardIcon />}
-					onClick={handleMoveUp}
-					disabled={isFirst}
-				/>
-				<IconButton
-					children={<ArrowDownwardIcon />}
-					onClick={handleMoveDown}
-					disabled={isLast}
-				/>
+					<IconButton
+						children={<ArrowUpwardIcon />}
+						onClick={handleMoveUp}
+						disabled={isFirst}
+					/>
+					<IconButton
+						children={<ArrowDownwardIcon />}
+						onClick={handleMoveDown}
+						disabled={isLast}
+					/>
+				</div>
 			</div>
 		</Paper>
 	);
@@ -108,22 +113,24 @@ export const Division = ({
 
 	// --- Questions editor ---
 
-	const questionsEditor = (
+	const fieldsEditor = (
 		<Paper className={c.division}>
-			<Typography variant={headingVariant} className={c.heading}>
-				{heading}
-			</Typography>
-
-			{!!fields.length && <div className={c.group}>{fields}</div>}
-
 			<div className={c.row}>
+				<Typography variant={headingVariant} className={c.heading}>
+					{heading}
+				</Typography>
+				<IconButton children={<DoneIcon />} onClick={stopEditing} />
+			</div>
+
+			{!!fields.length && <div className={c.mTop}>{fields}</div>}
+
+			<div className={c.mTop}>
 				<Button
 					fullWidth
 					variant="outlined"
 					children={addButtonText}
 					onClick={handleAddButtonClick}
 				/>
-				<IconButton children={<DoneIcon />} onClick={stopEditing} />
 			</div>
 		</Paper>
 	);
@@ -131,6 +138,6 @@ export const Division = ({
 	return editing === "config"
 		? configEditor
 		: editing === "fields"
-		? questionsEditor
+		? fieldsEditor
 		: viewer;
 };
