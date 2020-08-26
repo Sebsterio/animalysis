@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -38,11 +38,11 @@ export const Division = ({
 	const [editing, setEditing] = useState(false);
 	const editConfig = () => setEditing("config");
 	const editFields = () => setEditing("fields");
-	const stopEditing = () => setEditing(false);
+	const stopEditing = useCallback(() => setEditing(false), [setEditing]);
 
 	// ------------------------- ENTER key -------------------------
 
-	const isEditingConfig = () => editing === "config";
+	const isEditingConfig = useCallback(() => editing === "config", [editing]);
 
 	useEffect(() => {
 		if (!isEditingConfig) return;

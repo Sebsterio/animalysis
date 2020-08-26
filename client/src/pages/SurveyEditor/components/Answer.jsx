@@ -55,15 +55,9 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 	// --------------------------- handlers ----------------------------
 
 	const handleDelete = () => {
-		const confirmed = window.confirm("Delete answer?");
+		// const confirmed = window.confirm("Delete answer?");
 		// if (confirmed) deleteQuestion(id);
 	};
-
-	// const handleMoveUp = () => moveQuestion(id, "up");
-	const handleMoveUp = () => {};
-
-	// const handleMoveDown = () => moveQuestion(id, "down");
-	const handleMoveDown = () => {};
 
 	// ----------------------------- View ------------------------------
 
@@ -103,7 +97,7 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 	const printId = id + "-print";
 	const printNoteId = id + "-printNote";
 	const alertId = id + "-alert";
-	const followUpId = id + "-followUp";
+	// const followUpId = id + "-followUp";
 
 	const form = (
 		<>

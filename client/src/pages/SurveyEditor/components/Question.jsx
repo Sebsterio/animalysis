@@ -6,15 +6,11 @@ import Switch from "@material-ui/core/Switch";
 
 import { Division, Answer } from "./index";
 
-import { useStyles } from "../SurveyEditor-styles";
-
 // ----------------------------------------------------------
 
 export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
 	const { updateQuestion, deleteQuestion, moveQuestion } = operations;
-
-	const c = useStyles();
 
 	// ----------------------- Editing question -------------------------
 
