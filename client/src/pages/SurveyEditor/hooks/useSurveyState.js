@@ -30,10 +30,18 @@ export const useSurveyState = () => {
 	// --------------------- Selectors ---------------------
 
 	const getQueues = () => queues;
+
+	const getSectionsNamesAndTitles = () =>
+		Object.entries(sections).map(([name, data]) => ({
+			name,
+			title: data.title,
+		}));
+
 	const getSectionData = (sectionName) => sections[sectionName];
 
 	const selectors = {
 		getQueues,
+		getSectionsNamesAndTitles,
 		getSectionData,
 	};
 

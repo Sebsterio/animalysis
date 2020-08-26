@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
+import Switch from "@material-ui/core/Switch";
 
 import { Division } from "./index";
 
@@ -10,46 +11,68 @@ import { isEmpty } from "utils/object";
 
 // ----------------------------------------------------------
 
-export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
+export const Answer = ({
+	answerProps,
+	isFirst,
+	isLast,
+	operations,
+	selectors,
+}) => {
 	const {
 		id,
 		text,
 		print = "",
 		printNote = "",
 		alert = 0,
-		followUp = {},
+		followUp = {
+			after: [], // ['none'] | "all" | (Str | [Str]: sectionName(s))
+			target: "", // (Str | [Str]: sectionName),
+		},
 	} = answerProps;
-	// followUp: {
-	// 	target: "nose_exam",
-	// 	after: "all",
-	// },
 
 	const { deleteAnswer, moveAnswer, updateAnswer } = operations;
+	const { getSectionsNamesAndTitles } = selectors;
+	const sections = getSectionsNamesAndTitles();
 
 	const c = useStyles();
 
-	// ---------------------- Edit answer ------------------------
+	const [editingFollowUp, setEditingFollowup] = useState(false);
+	const updateEditingFollowup = (e) => setEditingFollowup(e.target.checked);
+
+	// ------------------------- Edit answer --------------------------
 
 	const copyAnswer = () => {
 		let newQuestion = { id, text };
 		if (print !== "") newQuestion.print = print;
 		if (printNote !== "") newQuestion.printNote = printNote;
 		if (alert !== 0) newQuestion.alert = alert;
-		if (!isEmpty(followUp)) newQuestion.followUp = followUp;
+		if (followUp.target)
+			newQuestion.followUp = {
+				after: followUp.after,
+				target: followUp.target,
+			};
 		return newQuestion;
 	};
 
 	const includeInputValue = (newAnswer, e) => {
 		let { type, name, value, checked } = e.target;
-		console.log({ checked });
 		if (type === "number") value = Number(value);
 		else if (type === "checkbox") value = checked;
 		newAnswer[name] = value;
 	};
 
+	const includeFollowUpInputValue = (newAnswer, e) => {
+		let { name, value } = e.target;
+		if (value.includes("none")) value = ["none"];
+		if (value.includes("all")) value = ["all"];
+		newAnswer.followUp = { ...followUp, [name]: value };
+	};
+
 	const editAnswer = (e) => {
+		const { name } = e.target;
 		let newAnswer = copyAnswer();
-		includeInputValue(newAnswer, e);
+		if (name === "after") includeFollowUpInputValue(newAnswer, e);
+		else includeInputValue(newAnswer, e);
 		updateAnswer(id, newAnswer);
 	};
 
@@ -98,7 +121,9 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 	const printId = id + "-print";
 	const printNoteId = id + "-printNote";
 	const alertId = id + "-alert";
-	// const followUpId = id + "-followUp";
+	const followUpId = id + "-followUp";
+	const followUpAfterId = id + "-followUp-after";
+	// const followUpTargetId = id + '-followUp-target'
 
 	const form = (
 		<>
@@ -153,6 +178,48 @@ export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 				<MenuItem value={3}>Orange</MenuItem>
 				<MenuItem value={4}>Red</MenuItem>
 			</TextField>
+
+			{/* followUp */}
+			<Typography component="label" htmlFor={followUpId} children="Follow-up" />
+			<Switch
+				name="followUp"
+				checked={editingFollowUp}
+				inputProps={{ id: followUpId }}
+				onChange={updateEditingFollowup}
+			/>
+
+			{/* followUp after*/}
+			{editingFollowUp && (
+				<>
+					<Typography
+						component="label"
+						htmlFor={followUpAfterId}
+						children="When"
+					/>
+					<TextField
+						select
+						SelectProps={{ multiple: true }}
+						fullWidth
+						name="after"
+						value={followUp.after}
+						inputProps={{ id: followUpAfterId }}
+						onChange={editAnswer}
+					>
+						<MenuItem value={"none"} className={c.bold}>
+							After this question
+						</MenuItem>
+						<MenuItem value={"all"} className={c.bold}>
+							At the end of this queue
+						</MenuItem>
+						{/* TODO: map sectionNames */}
+						{sections.map(({ name, title }) => (
+							<MenuItem value={name} key={name}>
+								{title}
+							</MenuItem>
+						))}
+					</TextField>
+				</>
+			)}
 		</>
 	);
 

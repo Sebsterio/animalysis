@@ -73,4 +73,7 @@ export const useStyles = makeStyles((theme) => ({
 	mTop1: {
 		marginTop: theme.spacing(1),
 	},
+	bold: {
+		fontWeight: "bold",
+	},
 }));

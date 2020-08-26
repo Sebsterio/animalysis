@@ -8,7 +8,13 @@ import { Division, Answer } from "./index";
 
 // ----------------------------------------------------------
 
-export const Question = ({ questionProps, isFirst, isLast, operations }) => {
+export const Question = ({
+	questionProps,
+	isFirst,
+	isLast,
+	operations,
+	selectors,
+}) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
 	const {
 		updateQuestion,
@@ -103,9 +109,10 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 						children="Sets title"
 					/>
 					<Switch
-						checked={setsTitle}
-						onChange={editQuestion}
 						name="setsTitle"
+						checked={setsTitle}
+						inputProps={{ id: setsTitleId }}
+						onChange={editQuestion}
 					/>
 
 					{/* lengthLimit */}
@@ -133,7 +140,7 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 		return (
 			<Answer
 				key={answerProps.id}
-				{...{ answerProps, isFirst, isLast }}
+				{...{ answerProps, isFirst, isLast, selectors }}
 				operations={curriedOperations}
 			/>
 		);

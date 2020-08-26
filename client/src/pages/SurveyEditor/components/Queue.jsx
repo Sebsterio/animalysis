@@ -18,11 +18,12 @@ import { useStyles } from "../SurveyEditor-styles";
 export const Queue = ({
 	name,
 	queueProps: { label, list, info },
-	selectors: { getSectionData },
+	selectors,
 	operations,
 	showPopover,
 }) => {
 	const { addSection, deleteSection, moveSection } = operations;
+	const { getSectionData } = selectors;
 
 	const c = useStyles();
 
@@ -65,7 +66,7 @@ export const Queue = ({
 					return !!sectionData ? (
 						<Section
 							key={sectionName}
-							{...{ sectionData, sectionName, isFirst, isLast }}
+							{...{ sectionData, sectionName, isFirst, isLast, selectors }}
 							operations={curriedOperations}
 						/>
 					) : (

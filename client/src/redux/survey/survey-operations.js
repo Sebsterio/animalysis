@@ -188,7 +188,7 @@ const addFollowUpToQueue = ({ followUp, answerIndex }) => (dispatch, getState) =
 			newLocations = newLocations.map(addProps);
 
 			if (after === "all") dispatch($.pushLocationsToQueue({ newLocations }));
-			else if (!after) dispatch($.unshiftLocationsToQueue({ newLocations }));
+			else if (after === "none") dispatch($.unshiftLocationsToQueue({ newLocations }));
 			else dispatch($.injectLocationsToQueue({ newLocations, after }));
 
 			dispatch($.removeFromOptionalQueue(target));

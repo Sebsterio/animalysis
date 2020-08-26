@@ -21,7 +21,7 @@
  * -------- after: place(s) to inject target
  * ----------( Str | [Str]): sectionName(s) after which to inject target
  * ----------('all'): push target to queue (i.e. redirect at the end of survey)
- * ----------( null): unshift target to queue (i.e. redirect immediately)
+ * ----------('none'): unshift target to queue (i.e. redirect immediately)
  */
 
 export const surveyData = (pet) => ({
