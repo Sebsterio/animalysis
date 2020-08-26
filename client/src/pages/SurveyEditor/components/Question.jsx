@@ -10,7 +10,12 @@ import { Division, Answer } from "./index";
 
 export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
-	const { updateQuestion, deleteQuestion, moveQuestion } = operations;
+	const {
+		updateQuestion,
+		deleteQuestion,
+		moveQuestion,
+		addAnswer,
+	} = operations;
 
 	// ----------------------- Editing question -------------------------
 
@@ -31,7 +36,7 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 	const editQuestion = (e) => {
 		let newQuestion = copyQuestion();
 		includeInputValue(newQuestion, e);
-		updateQuestion(newQuestion);
+		updateQuestion(id, newQuestion);
 	};
 
 	// ---------------------------- Handlers -----------------------------
@@ -142,7 +147,7 @@ export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 			handleMoveUp={() => moveQuestion(id, "up")}
 			handleMoveDown={() => moveQuestion(id, "down")}
 			addButtonText="New Answer"
-			handleAddButtonClick={() => {}}
+			handleAddButtonClick={() => addAnswer(id)}
 		/>
 	);
 };

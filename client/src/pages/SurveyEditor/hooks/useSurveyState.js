@@ -5,6 +5,7 @@ import {
 	initialSection,
 	defaultSection,
 	defaultQuestion,
+	defaultAnswer,
 } from "../SurveyEditor-defaults";
 import {
 	makeArrayWithReplacedItem,
@@ -112,33 +113,58 @@ export const useSurveyState = () => {
 	const modifySectionQuestions = (id, value) =>
 		modifySectionProp(id, "questions", value);
 
-	const addQuestion = (sectionId) => {
+	const addQuestion = (sectionName) => {
 		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
 		const modifier = (questions) => [...questions, newQuestion];
-		modifySectionQuestions(sectionId, modifier);
+		modifySectionQuestions(sectionName, modifier);
 	};
 
-	const deleteQuestion = (sectionId, questionId) => {
+	const deleteQuestion = (sectionName, questionId) => {
 		const selector = (question) => question.id === questionId;
-		modifySectionQuestions(sectionId, (questions) =>
+		modifySectionQuestions(sectionName, (questions) =>
 			makeArrayWithRemovedItems(questions, null, selector)
 		);
 	};
 
-	const moveQuestion = (sectionId, questionId, direction) => {
+	const moveQuestion = (sectionName, questionId, direction) => {
 		const steps = getStepsFromDirection(direction);
 		const selector = (question) => question.id === questionId;
-		modifySectionQuestions(sectionId, (questions) =>
+		modifySectionQuestions(sectionName, (questions) =>
 			makeArrayWithMovedItem(questions, null, steps, selector)
 		);
 	};
 
-	const updateQuestion = (sectionId, data) => {
-		const selector = (question) => question.id === data.id;
-		modifySectionQuestions(sectionId, (questions) =>
-			makeArrayWithReplacedItem(questions, null, { ...data }, selector)
+	const updateQuestion = (sectionName, questionId, value) => {
+		const selector = (question) => question.id === questionId;
+		const modifier = typeof value === "function" ? value : () => ({ ...value });
+		modifySectionQuestions(sectionName, (questions) =>
+			makeArrayWithReplacedItem(questions, selector, modifier)
 		);
 	};
+
+	const modifyQuestionProp = (sectionName, questionId, prop, value) => {
+		const modifier = typeof value === "function" ? value : () => value;
+		updateQuestion(sectionName, questionId, (question) => ({
+			...question,
+			[prop]: modifier(question[prop]),
+		}));
+	};
+
+	// Question answers
+
+	const modifyAnswers = (sectionName, questionId, value) => {
+		modifyQuestionProp(sectionName, questionId, "answers", value);
+	};
+
+	const addAnswer = (sectionName, questionId) => {
+		const newAnswer = { ...defaultAnswer };
+		modifyAnswers(sectionName, questionId, (answers) => [
+			...answers,
+			newAnswer,
+		]);
+	};
+
+	// -----------------------
 
 	const operations = {
 		addOrModifyQueue,
@@ -156,7 +182,10 @@ export const useSurveyState = () => {
 		deleteQuestion,
 		moveQuestion,
 		updateQuestion,
+		addAnswer,
 	};
+
+	// -----------------------
 
 	return [selectors, operations];
 };

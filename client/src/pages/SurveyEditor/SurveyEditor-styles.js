@@ -61,7 +61,8 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	grid: {
 		display: "grid",
-		gridTemplateColumns: "repeat(auto-fit, minmax(200px, 400px))",
+		gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+		gridGap: theme.spacing(2),
 	},
 
 	// Helpers

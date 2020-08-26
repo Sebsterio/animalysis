@@ -20,6 +20,7 @@ export const Section = ({
 		updateQuestion,
 		deleteQuestion,
 		moveQuestion,
+		addAnswer,
 	} = operations;
 
 	const c = useStyles();
@@ -28,10 +29,11 @@ export const Section = ({
 
 	const curriedOperations = {
 		...operations,
-		updateQuestion: (data) => updateQuestion(sectionName, data),
+		updateQuestion: (id, data) => updateQuestion(sectionName, id, data),
 		deleteQuestion: (questionId) => deleteQuestion(sectionName, questionId),
 		moveQuestion: (questionId, direction) =>
 			moveQuestion(sectionName, questionId, direction),
+		addAnswer: (questionId) => addAnswer(sectionName, questionId),
 	};
 
 	// ---------------------------- Handlers -----------------------------
