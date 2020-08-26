@@ -17,32 +17,24 @@ import { useStyles } from "../SurveyEditor-styles";
 
 export const Queue = ({
 	name,
-	// queueProps
-	label,
-	list,
-	info,
-	// Handlers/selectors
-	getSectionData,
+	queueProps: { label, list, info },
+	selectors: { getSectionData },
+	operations,
 	showPopover,
-	addSection,
-	// Drilled
-	modifySectionTitle,
-	deleteSection,
-	moveSection,
-	addQuestion,
-	updateQuestion,
-	deleteQuestion,
-	moveQuestion,
 }) => {
+	const { addSection, deleteSection, moveSection } = operations;
+
 	const clx = useStyles();
 
 	const handleInfoClick = (e) => showPopover(e, info);
 
 	const handleAddSectionClick = () => addSection(name);
 
-	const handleDeleteSection = (id) => deleteSection(name, id);
-
-	const handleMoveSection = (id, dir) => moveSection(name, id, dir);
+	const curriedOperations = {
+		...operations,
+		deleteSection: (id) => deleteSection(name, id),
+		moveSection: (id, dir) => moveSection(name, id, dir),
+	};
 
 	// ----------------------------- View ------------------------------
 
@@ -66,23 +58,18 @@ export const Queue = ({
 
 			<AccordionDetails
 				className={clx.accordionDetails}
-				children={list.map((sectionId, i) => {
-					const sectionData = getSectionData(sectionId);
+				children={list.map((sectionName, i) => {
+					const sectionData = getSectionData(sectionName);
 					const isFirst = i === 0;
 					const isLast = i === list.length - 1;
 					return !!sectionData ? (
 						<Section
-							key={sectionId}
-							{...{ ...sectionData, sectionId, isFirst, isLast }}
-							// handlers
-							modifySectionTitle={modifySectionTitle}
-							deleteSection={handleDeleteSection}
-							moveSection={handleMoveSection}
-							// drilled props
-							{...{ addQuestion, updateQuestion, deleteQuestion, moveQuestion }}
+							key={sectionName}
+							{...{ sectionData, sectionName, isFirst, isLast }}
+							operations={curriedOperations}
 						/>
 					) : (
-						"Error: Section data not found; sectionId=" + sectionId
+						"Error: Section data not found; sectionName=" + sectionName
 					);
 				})}
 			/>

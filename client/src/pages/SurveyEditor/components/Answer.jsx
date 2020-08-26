@@ -17,7 +17,7 @@ import { isEmpty } from "utils/object";
 
 // ----------------------------------------------------------
 
-export const Answer = ({ answerProps, handlers }) => {
+export const Answer = ({ answerProps, isFirst, isLast, operations }) => {
 	const {
 		id,
 		text,
@@ -31,7 +31,7 @@ export const Answer = ({ answerProps, handlers }) => {
 	// 	after: "all",
 	// },
 
-	const { updateAnswer } = handlers;
+	const { updateAnswer } = operations;
 
 	const clx = useStyles();
 

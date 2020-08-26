@@ -21,15 +21,9 @@ import { useStyles } from "../SurveyEditor-styles";
 
 // ----------------------------------------------------------
 
-export const Question = ({
-	questionProps,
-	isFirst,
-	isLast,
-	updateQuestion,
-	deleteQuestion,
-	moveQuestion,
-}) => {
+export const Question = ({ questionProps, isFirst, isLast, operations }) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
+	const { updateQuestion, deleteQuestion, moveQuestion } = operations;
 
 	const clx = useStyles();
 
@@ -40,7 +34,7 @@ export const Question = ({
 	const editAnswers = () => setEditing("answers");
 	const stopEditing = () => setEditing(false);
 
-	// ---------------------- Editing question ------------------------
+	// ----------------------- Editing question -------------------------
 
 	const copyQuestion = () => {
 		let newQuestion = { id, label, type, answers };
@@ -62,7 +56,7 @@ export const Question = ({
 		updateQuestion(newQuestion);
 	};
 
-	// --------------------------- handlers ----------------------------
+	// ---------------------------- Handlers -----------------------------
 
 	const handleDelete = () => {
 		const confirmed = window.confirm("Permanently delete question?");
@@ -75,7 +69,13 @@ export const Question = ({
 
 	const handleAddAnswer = () => {};
 
-	// ----------------------------- View ------------------------------
+	// --------------------------- Operations ----------------------------
+	const curriedOperations = {
+		...operations,
+		updateAnswer: () => {},
+	};
+
+	// ------------------------------ View -------------------------------
 
 	const labelId = id + "-label";
 	const typeId = id + "-type";
@@ -159,13 +159,14 @@ export const Question = ({
 			{!!answers.length && (
 				<div className={clx.group}>
 					{answers.map((answerProps, i) => {
-						answerProps.isFirst = i === 0;
-						answerProps.isLast = i === answers.length - 1;
-						const handlers = {
-							updateAnswer: () => {},
-						};
+						const isFirst = i === 0;
+						const isLast = i === answers.length - 1;
 						return (
-							<Answer key={answerProps.id} {...{ answerProps, handlers }} />
+							<Answer
+								key={answerProps.id}
+								{...{ answerProps, isFirst, isLast }}
+								operations={curriedOperations}
+							/>
 						);
 					})}
 				</div>

@@ -20,64 +20,60 @@ import { useStyles } from "../SurveyEditor-styles";
 // ----------------------------------------------------------
 
 export const Section = ({
-	sectionId,
+	sectionName,
+	sectionData: { title, questions },
 	isFirst,
 	isLast,
-	// sectionData
-	title,
-	questions,
-	// handlers
-	modifySectionTitle,
-	deleteSection,
-	moveSection,
-	// drilled props
-	addQuestion,
-	updateQuestion,
-	deleteQuestion,
-	moveQuestion,
+	operations,
 }) => {
+	const {
+		modifySectionTitle,
+		deleteSection,
+		moveSection,
+		addQuestion,
+		updateQuestion,
+		deleteQuestion,
+		moveQuestion,
+	} = operations;
+
 	const clx = useStyles();
 
-	// ---------------------- Editing/presentation view ------------------------
+	// ----------------- Editing/presentation view ---------------------
 
 	const [editing, setEditing] = useState(false);
 	const editConfig = () => setEditing("config");
 	const editQuestions = () => setEditing("questions");
 	const stopEditing = () => setEditing(false);
 
-	// --------------------- Section handlers --------------------------
+	// ------------------------- Handlers ------------------------------
 
-	const handleDelete = (e) => {
-		e.stopPropagation();
+	const handleDeleteButtonClick = () => {
 		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
-		if (confirmed) deleteSection(sectionId);
+		if (confirmed) deleteSection(sectionName);
 	};
 
-	const handleMoveUp = (e) => {
-		e.stopPropagation();
-		moveSection(sectionId, "up");
+	const handleMoveUpButtonClick = () => moveSection(sectionName, "up");
+
+	const handleMoveDownButtonClick = () => moveSection(sectionName, "down");
+
+	const handleTitleInput = (e) =>
+		modifySectionTitle(sectionName, e.target.value);
+
+	const handleAddQuestionButtonClick = () => addQuestion(sectionName);
+
+	// ------------------------ Operations -----------------------------
+
+	const curriedOperations = {
+		...operations,
+		updateQuestion: (data) => updateQuestion(sectionName, data),
+		deleteQuestion: (questionId) => deleteQuestion(sectionName, questionId),
+		moveQuestion: (questionId, direction) =>
+			moveQuestion(sectionName, questionId, direction),
 	};
 
-	const handleMoveDown = (e) => {
-		e.stopPropagation();
-		moveSection(sectionId, "down");
-	};
+	// --------------------------- View -------------------------------
 
-	const handleTitleInput = (e) => modifySectionTitle(sectionId, e.target.value);
-
-	// --------------------- Question handlers --------------------------
-
-	const handleAddQuestion = () => addQuestion(sectionId);
-
-	const handleUpdateQuestion = (data) => updateQuestion(sectionId, data);
-
-	const handleDeleteQuestion = (questionId) =>
-		deleteQuestion(sectionId, questionId);
-
-	const handleMoveQuestion = (questionId, direction) =>
-		moveQuestion(sectionId, questionId, direction);
-
-	// --------------------------- View ---------------------------
+	// --- Config editor ---
 
 	const configEditor = (
 		<Paper className={clx.innerPaper}>
@@ -111,9 +107,7 @@ export const Section = ({
 							<Question
 								key={questionProps.id}
 								{...{ questionProps, isFirst, isLast }}
-								updateQuestion={handleUpdateQuestion}
-								deleteQuestion={handleDeleteQuestion}
-								moveQuestion={handleMoveQuestion}
+								operations={curriedOperations}
 							/>
 						);
 					})}
@@ -125,7 +119,7 @@ export const Section = ({
 					fullWidth
 					variant="outlined"
 					children="New Question"
-					onClick={handleAddQuestion}
+					onClick={handleAddQuestionButtonClick}
 				/>
 				<IconButton children={<DoneIcon />} onClick={stopEditing} />
 			</div>
@@ -141,18 +135,21 @@ export const Section = ({
 			</Typography>
 
 			<div className={clx.row}>
-				<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
+				<IconButton
+					children={<DeleteOutlineIcon />}
+					onClick={handleDeleteButtonClick}
+				/>
 				<IconButton children={<EditIcon />} onClick={editConfig} />
 				<IconButton children={<QuestionAnswerIcon />} onClick={editQuestions} />
 
 				<IconButton
 					children={<ArrowUpwardIcon />}
-					onClick={handleMoveUp}
+					onClick={handleMoveUpButtonClick}
 					disabled={isFirst}
 				/>
 				<IconButton
 					children={<ArrowDownwardIcon />}
-					onClick={handleMoveDown}
+					onClick={handleMoveDownButtonClick}
 					disabled={isLast}
 				/>
 			</div>
