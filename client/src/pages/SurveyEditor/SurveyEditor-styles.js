@@ -25,17 +25,18 @@ export const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 	},
 	accordionDetails: {
+		padding: theme.spacing(0, 1),
 		flexFlow: "column nowrap",
 	},
 
 	// Division
 
 	division: {
-		padding: theme.spacing(2),
+		padding: theme.spacing(2, 1),
 		margin: theme.spacing(1, 0),
 	},
 	divisionExpanded: {
-		padding: theme.spacing(2),
+		padding: theme.spacing(2, 1),
 		margin: theme.spacing(1, 0),
 		gridColumn: "1 / -1",
 	},

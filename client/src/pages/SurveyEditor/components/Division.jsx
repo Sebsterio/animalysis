@@ -121,6 +121,7 @@ export const Division = ({
 		<Paper className={c.divisionExpanded}>
 			<div className={c.row}>
 				<Typography variant={headingVariant} className={c.heading}>
+					{headingPrefix && headingPrefix + ": "}
 					{heading}
 				</Typography>
 				<IconButton children={<DoneIcon />} onClick={stopEditing} />

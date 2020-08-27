@@ -281,9 +281,7 @@ export const Answer = ({
 				</MenuItem>
 				{/* TODO: map sectionNames */}
 				{sections.map(({ name, title }) => (
-					<MenuItem value={name} key={name}>
-						After {title}
-					</MenuItem>
+					<MenuItem value={name} key={name} children={"After " + title} />
 				))}
 			</TextField>
 		</>
@@ -300,7 +298,7 @@ export const Answer = ({
 			<Section
 				key={t}
 				sectionName={t}
-				{...{ sectionData, isFirst, isLast, selectors }}
+				{...{ sectionData, isFirst, isLast, selectors, helpers }}
 				operations={curriedOperations}
 			/>
 		);
