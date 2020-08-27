@@ -61,7 +61,10 @@ export const useSurveyState = () => {
 
 	const addOrModifyQueue = (queueName, value) => {
 		const modifier = typeof value === "function" ? value : () => value;
-		setQueues({ ...queues, [queueName]: modifier(queues[queueName]) });
+		setQueues((queues) => ({
+			...queues,
+			[queueName]: modifier(queues[queueName]),
+		}));
 	};
 
 	const modifyQueueProp = (queueName, prop, value) => {
@@ -111,9 +114,11 @@ export const useSurveyState = () => {
 	};
 
 	const deleteSectionFromSections = ({ sectionName }) => {
-		const newSections = { ...sections };
-		delete newSections[sectionName];
-		setSections(newSections);
+		setSections((sections) => {
+			const newSections = { ...sections };
+			delete newSections[sectionName];
+			return newSections;
+		});
 	};
 
 	const modifySectionProp = (sectionName, prop, value) => {

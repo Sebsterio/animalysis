@@ -9,6 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { Section, Division } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
+import { makeArrayWithRemovedItems } from "utils/array";
 
 // ----------------------------------------------------------
 
@@ -28,8 +29,7 @@ export const Answer = ({
 		alert = 0,
 		followUp = {
 			after: ["none"],
-			// target: [],
-			target: ["initialSection"], // TEMP
+			target: [],
 		},
 	} = answerProps;
 	const { after, target } = followUp;
@@ -53,10 +53,11 @@ export const Answer = ({
 	const curriedOperations = {
 		...operations,
 		deleteSection: (data) => {
-			// deleteSectionFromSections(data);
-			// const { sectionName } = data;
-			// const e = { target: { name: "nestedTarget", sectionName } };
-			// editAnswer(e);
+			deleteSectionFromSections(data);
+			const { sectionName } = data;
+			editAnswer({
+				target: { name: "nestedTarget", action: "delete", sectionName },
+			});
 		},
 		moveSection: (data) => {}, // local only TODO
 	};
@@ -99,11 +100,14 @@ export const Answer = ({
 
 	// Push new target section to followUp.target
 	const includeFollowUpTarget = (newAnswer, e) => {
-		const { sectionName } = e.target;
-		newAnswer.followUp = {
-			...followUp,
-			target: [...target, sectionName],
-		};
+		const { sectionName, action } = e.target;
+		const newTarget =
+			action === "add"
+				? [...target, sectionName]
+				: action === "delete"
+				? makeArrayWithRemovedItems(target, sectionName)
+				: target;
+		newAnswer.followUp = { ...followUp, target: newTarget };
 	};
 
 	// Update answer in store
@@ -120,22 +124,13 @@ export const Answer = ({
 
 	// --------------------------- handlers ----------------------------
 
-	// ISSUE: second function crashes because first one doesn't update store in time
 	const handleAddNested = () => {
 		const sectionName = getNewName();
-		const e = { target: { name: "nestedTarget", sectionName } };
 		addSectionToSections({ sectionName });
-		editAnswer(e);
-		// TODO: addSectioTOSections after rerender when new target comes in from store
+		editAnswer({
+			target: { name: "nestedTarget", action: "add", sectionName },
+		});
 	};
-
-	// const sectionNames = sections.map((s) => s.name);
-	// console.log(sectionNames);
-	// useEffect(() => {
-	// 	const newTarget = target.find((t) => !sectionNames.includes(t));
-	// 	console.log({ newTarget });
-	// 	if (newTarget)
-	// }, [target, addSectionToSections]);
 
 	const handleAddLinked = () => {};
 
