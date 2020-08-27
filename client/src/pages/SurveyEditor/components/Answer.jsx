@@ -31,6 +31,7 @@ export const Answer = ({
 			target: ["initialSection"], // TEMP
 		},
 	} = answerProps;
+	const answerId = id;
 
 	const { deleteAnswer, moveAnswer, updateAnswer } = operations;
 	const { getSectionsNamesAndTitles, getSectionData } = selectors;
@@ -38,6 +39,20 @@ export const Answer = ({
 	const sections = getSectionsNamesAndTitles();
 
 	const c = useStyles();
+
+	// --------------------------- Operations ----------------------------
+
+	const curriedOperations = {
+		...operations,
+		// updateQuestion: (id, data) => updateQuestion(sectionName, id, data),
+		// deleteQuestion: (questionId) => deleteQuestion(sectionName, questionId),
+		// moveQuestion: (questionId, direction) =>
+		// 	moveQuestion(sectionName, questionId, direction),
+		// addAnswer: (questionId) => addAnswer(sectionName, questionId),
+		// deleteAnswer: (questionId, id) => deleteAnswer(sectionName, questionId, id),
+		// moveAnswer: (qId, aId, dir) => moveAnswer(sectionName, qId, aId, dir),
+		// updateAnswer: (qId, aId, val) => updateAnswer(sectionName, qId, aId, val),
+	};
 
 	// ------------------------- Edit answer --------------------------
 
@@ -87,29 +102,23 @@ export const Answer = ({
 		let newAnswer = copyAnswer();
 		if (name === "followUp") includeFollowUpInputValue(newAnswer, e);
 		else includeInputValue(newAnswer, e);
-		updateAnswer(id, newAnswer);
+		updateAnswer({ answerId, value: newAnswer });
 	};
 
 	// --------------------------- handlers ----------------------------
 
+	const handleAddNested = () => {};
+
+	const handleAddLinked = () => {};
+
 	const handleDelete = () => {
 		const confirmed = window.confirm("Delete answer?");
-		if (confirmed) deleteAnswer(id);
+		if (confirmed) deleteAnswer({ answerId });
 	};
 
-	// --------------------------- Operations ----------------------------
+	const handleMoveUp = () => moveAnswer({ answerId, direction: "up" });
 
-	const curriedOperations = {
-		...operations,
-		// updateQuestion: (id, data) => updateQuestion(sectionName, id, data),
-		// deleteQuestion: (questionId) => deleteQuestion(sectionName, questionId),
-		// moveQuestion: (questionId, direction) =>
-		// 	moveQuestion(sectionName, questionId, direction),
-		// addAnswer: (questionId) => addAnswer(sectionName, questionId),
-		// deleteAnswer: (questionId, id) => deleteAnswer(sectionName, questionId, id),
-		// moveAnswer: (qId, aId, dir) => moveAnswer(sectionName, qId, aId, dir),
-		// updateAnswer: (qId, aId, val) => updateAnswer(sectionName, qId, aId, val),
-	};
+	const handleMoveDown = () => moveAnswer({ answerId, direction: "down" });
 
 	// ----------------------------- View ------------------------------
 
@@ -256,10 +265,10 @@ export const Answer = ({
 	const fieldsFooter = (
 		<ButtonGroup fullWidth variant="outlined">
 			<Tooltip title="Create a new section.">
-				<Button children="New Nested Section" onClick={() => {}} />
+				<Button children="New Nested Section" onClick={handleAddNested} />
 			</Tooltip>
 			<Tooltip title="Choose an existing section from the Optional Queue. If reached, it will get removed from Optional Queue.">
-				<Button children="New Section Reference" onClick={() => {}} />
+				<Button children="New Section Reference" onClick={handleAddLinked} />
 			</Tooltip>
 		</ButtonGroup>
 	);
@@ -276,8 +285,8 @@ export const Answer = ({
 			isFirst={isFirst}
 			isLast={isLast}
 			handleDelete={handleDelete}
-			handleMoveUp={() => moveAnswer(id, "up")}
-			handleMoveDown={() => moveAnswer(id, "down")}
+			handleMoveUp={handleMoveUp}
+			handleMoveDown={handleMoveDown}
 		/>
 	);
 };

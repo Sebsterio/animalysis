@@ -67,7 +67,7 @@ export const useSurveyState = () => {
 	const modifyQueueList = (queueName, value) =>
 		modifyQueueProp(queueName, "list", value);
 
-	const moveSection = (queueName, sectionName, direction) => {
+	const moveSection = ({ queueName, sectionName, direction }) => {
 		const steps = getStepsFromDirection(direction);
 		const selector = (listItem) => listItem === sectionName;
 		modifyQueueList(queueName, (list) =>
@@ -77,9 +77,12 @@ export const useSurveyState = () => {
 
 	// Sections
 
-	const addOrModifySection = (id, value) => {
+	const addOrModifySection = (sectionName, value) => {
 		const modifier = typeof value === "function" ? value : () => value;
-		setSections({ ...sections, [id]: modifier(sections[id]) });
+		setSections({
+			...sections,
+			[sectionName]: modifier(sections[sectionName]),
+		});
 	};
 
 	const deleteSectionFromSections = (sectionName) => {
@@ -98,13 +101,13 @@ export const useSurveyState = () => {
 
 	// Combo modifiers
 
-	const addSection = (queueName) => {
+	const addSection = ({ queueName }) => {
 		const sectionName = "_" + shortid.generate();
 		addOrModifySection(sectionName, { ...defaultSection });
 		modifyQueueList(queueName, (list) => [...list, sectionName]);
 	};
 
-	const deleteSection = (queueName, sectionName) => {
+	const deleteSection = ({ queueName, sectionName }) => {
 		deleteSectionFromSections(sectionName);
 		modifyQueueList(queueName, (list) =>
 			list.filter((item) => item !== sectionName)
@@ -113,28 +116,28 @@ export const useSurveyState = () => {
 
 	// Section title
 
-	const modifySectionTitle = (id, value) =>
-		modifySectionProp(id, "title", value);
+	const modifySectionTitle = ({ sectionName, value }) =>
+		modifySectionProp(sectionName, "title", value);
 
-	// Section questions
+	// Questions
 
 	const modifySectionQuestions = (id, value) =>
 		modifySectionProp(id, "questions", value);
 
-	const addQuestion = (sectionName) => {
+	const addQuestion = ({ sectionName }) => {
 		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
 		const modifier = (questions) => [...questions, newQuestion];
 		modifySectionQuestions(sectionName, modifier);
 	};
 
-	const deleteQuestion = (sectionName, questionId) => {
+	const deleteQuestion = ({ sectionName, questionId }) => {
 		const selector = (question) => question.id === questionId;
 		modifySectionQuestions(sectionName, (questions) =>
 			makeArrayWithRemovedItems(questions, null, selector)
 		);
 	};
 
-	const moveQuestion = (sectionName, questionId, direction) => {
+	const moveQuestion = ({ sectionName, questionId, direction }) => {
 		const steps = getStepsFromDirection(direction);
 		const selector = (question) => question.id === questionId;
 		modifySectionQuestions(sectionName, (questions) =>
@@ -142,7 +145,7 @@ export const useSurveyState = () => {
 		);
 	};
 
-	const updateQuestion = (sectionName, questionId, value) => {
+	const updateQuestion = ({ sectionName, questionId, value }) => {
 		const selector = (question) => question.id === questionId;
 		const modifier = typeof value === "function" ? value : () => ({ ...value });
 		modifySectionQuestions(sectionName, (questions) =>
@@ -152,10 +155,14 @@ export const useSurveyState = () => {
 
 	const modifyQuestionProp = (sectionName, questionId, prop, value) => {
 		const modifier = typeof value === "function" ? value : () => value;
-		updateQuestion(sectionName, questionId, (question) => ({
-			...question,
-			[prop]: modifier(question[prop]),
-		}));
+		updateQuestion({
+			sectionName,
+			questionId,
+			value: (question) => ({
+				...question,
+				[prop]: modifier(question[prop]),
+			}),
+		});
 	};
 
 	// Question answers
@@ -164,7 +171,7 @@ export const useSurveyState = () => {
 		modifyQuestionProp(sectionName, questionId, "answers", value);
 	};
 
-	const addAnswer = (sectionName, questionId) => {
+	const addAnswer = ({ sectionName, questionId }) => {
 		const newAnswer = { ...defaultAnswer, id: shortid.generate() };
 		modifyAnswers(sectionName, questionId, (answers) => [
 			...answers,
@@ -172,14 +179,14 @@ export const useSurveyState = () => {
 		]);
 	};
 
-	const deleteAnswer = (sectionName, questionId, answerId) => {
+	const deleteAnswer = ({ sectionName, questionId, answerId }) => {
 		const selector = (answer) => answer.id === answerId;
 		modifyAnswers(sectionName, questionId, (answers) =>
 			makeArrayWithRemovedItems(answers, null, selector)
 		);
 	};
 
-	const moveAnswer = (sectionName, questionId, answerId, direction) => {
+	const moveAnswer = ({ sectionName, questionId, answerId, direction }) => {
 		const steps = getStepsFromDirection(direction);
 		const selector = (answer) => answer.id === answerId;
 		modifyAnswers(sectionName, questionId, (answers) =>
@@ -187,7 +194,7 @@ export const useSurveyState = () => {
 		);
 	};
 
-	const updateAnswer = (sectionName, questionId, answerId, value) => {
+	const updateAnswer = ({ sectionName, questionId, answerId, value }) => {
 		const selector = (answer) => answer.id === answerId;
 		const modifier = typeof value === "function" ? value : () => ({ ...value });
 		modifyAnswers(sectionName, questionId, (answers) =>
@@ -198,17 +205,10 @@ export const useSurveyState = () => {
 	// -----------------------
 
 	const operations = {
-		addOrModifyQueue,
-		modifyQueueProp,
-		modifyQueueList,
 		moveSection,
-		addOrModifySection,
-		deleteSectionFromSections,
-		modifySectionProp,
 		addSection,
 		deleteSection,
 		modifySectionTitle,
-		modifySectionQuestions,
 		addQuestion,
 		deleteQuestion,
 		moveQuestion,

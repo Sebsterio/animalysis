@@ -34,22 +34,30 @@ export const Section = ({
 
 	const curriedOperations = {
 		...operations,
-		updateQuestion: (id, data) => updateQuestion(sectionName, id, data),
-		deleteQuestion: (questionId) => deleteQuestion(sectionName, questionId),
-		moveQuestion: (questionId, direction) =>
-			moveQuestion(sectionName, questionId, direction),
-		addAnswer: (questionId) => addAnswer(sectionName, questionId),
-		deleteAnswer: (questionId, id) => deleteAnswer(sectionName, questionId, id),
-		moveAnswer: (qId, aId, dir) => moveAnswer(sectionName, qId, aId, dir),
-		updateAnswer: (qId, aId, val) => updateAnswer(sectionName, qId, aId, val),
+		updateQuestion: (data) => updateQuestion({ ...data, sectionName }),
+		deleteQuestion: (data) => deleteQuestion({ ...data, sectionName }),
+		moveQuestion: (data) => moveQuestion({ ...data, sectionName }),
+		addAnswer: (data) => addAnswer({ ...data, sectionName }),
+		deleteAnswer: (data) => deleteAnswer({ ...data, sectionName }),
+		moveAnswer: (data) => moveAnswer({ ...data, sectionName }),
+		updateAnswer: (data) => updateAnswer({ ...data, sectionName }),
 	};
 
 	// ---------------------------- Handlers -----------------------------
 
+	const handleTitleInput = (e) =>
+		modifySectionTitle({ sectionName, value: e.target.value });
+
 	const handleDelete = () => {
 		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
-		if (confirmed) deleteSection(sectionName);
+		if (confirmed) deleteSection({ sectionName });
 	};
+
+	const handleAdd = () => addQuestion({ sectionName });
+
+	const handleMoveUp = () => moveSection({ sectionName, direction: "up" });
+
+	const handleMoveDown = () => moveSection({ sectionName, direction: "down" });
 
 	// ------------------------------ View -------------------------------
 
@@ -58,7 +66,7 @@ export const Section = ({
 			autoFocus
 			fullWidth
 			value={title}
-			onChange={(e) => modifySectionTitle(sectionName, e.target.value)}
+			onChange={handleTitleInput}
 			className={c.heading}
 		/>
 	);
@@ -80,7 +88,7 @@ export const Section = ({
 			fullWidth
 			variant="outlined"
 			children="New Question"
-			onClick={() => addQuestion(sectionName)}
+			onClick={handleAdd}
 		/>
 	);
 
@@ -88,14 +96,14 @@ export const Section = ({
 		<Division
 			heading={title}
 			headingVariant="h6"
+			form={form}
 			fields={fields}
 			fieldsFooter={fieldsFooter}
-			form={form}
 			isFirst={isFirst}
 			isLast={isLast}
 			handleDelete={handleDelete}
-			handleMoveUp={() => moveSection(sectionName, "up")}
-			handleMoveDown={() => moveSection(sectionName, "down")}
+			handleMoveUp={handleMoveUp}
+			handleMoveDown={handleMoveDown}
 		/>
 	);
 };

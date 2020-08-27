@@ -17,6 +17,7 @@ export const Question = ({
 	selectors,
 }) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
+	const questionId = id;
 	const {
 		updateQuestion,
 		deleteQuestion,
@@ -26,6 +27,15 @@ export const Question = ({
 		moveAnswer,
 		updateAnswer,
 	} = operations;
+
+	// --------------------------- Operations ----------------------------
+
+	const curriedOperations = {
+		...operations,
+		deleteAnswer: (data) => deleteAnswer({ ...data, questionId }),
+		moveAnswer: (data) => moveAnswer({ ...data, questionId }),
+		updateAnswer: (data) => updateAnswer({ ...data, questionId }),
+	};
 
 	// ----------------------- Editing question -------------------------
 
@@ -46,24 +56,21 @@ export const Question = ({
 	const editQuestion = (e) => {
 		let newQuestion = copyQuestion();
 		includeInputValue(newQuestion, e);
-		updateQuestion(id, newQuestion);
+		updateQuestion({ questionId, value: newQuestion });
 	};
 
 	// ---------------------------- Handlers -----------------------------
 
 	const handleDelete = () => {
 		const confirmed = window.confirm("Permanently delete question?");
-		if (confirmed) deleteQuestion(id);
+		if (confirmed) deleteQuestion({ questionId });
 	};
 
-	// --------------------------- Operations ----------------------------
+	const handleAdd = () => addAnswer({ questionId });
 
-	const curriedOperations = {
-		...operations,
-		deleteAnswer: (answerId) => deleteAnswer(id, answerId),
-		moveAnswer: (answerId, direction) => moveAnswer(id, answerId, direction),
-		updateAnswer: (answerId, value) => updateAnswer(id, answerId, value),
-	};
+	const handleMoveUp = () => moveQuestion({ questionId, direction: "up" });
+
+	const handleMoveDown = () => moveQuestion({ questionId, direction: "down" });
 
 	// ------------------------------ View -------------------------------
 
@@ -152,7 +159,7 @@ export const Question = ({
 			fullWidth
 			variant="outlined"
 			children="New Answer"
-			onClick={() => addAnswer(id)}
+			onClick={handleAdd}
 		/>
 	);
 
@@ -167,8 +174,8 @@ export const Question = ({
 			isFirst={isFirst}
 			isLast={isLast}
 			handleDelete={handleDelete}
-			handleMoveUp={() => moveQuestion(id, "up")}
-			handleMoveDown={() => moveQuestion(id, "down")}
+			handleMoveUp={handleMoveUp}
+			handleMoveDown={handleMoveDown}
 		/>
 	);
 };

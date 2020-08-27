@@ -33,8 +33,7 @@ export const SurveyEditor = () => {
 			{Object.entries(queues).map(([queueName, queueProps]) => (
 				<Queue
 					key={queueName}
-					name={queueName}
-					{...{ queueProps, selectors, operations, showPopover }}
+					{...{ queueName, queueProps, selectors, operations, showPopover }}
 				/>
 			))}
 

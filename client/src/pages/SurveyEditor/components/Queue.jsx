@@ -16,7 +16,7 @@ import { useStyles } from "../SurveyEditor-styles";
 // -------------------------------------------------------------------
 
 export const Queue = ({
-	name,
+	queueName,
 	queueProps: { label, list, info },
 	selectors,
 	operations,
@@ -27,15 +27,18 @@ export const Queue = ({
 
 	const c = useStyles();
 
-	const handleInfoClick = (e) => showPopover(e, info);
-
-	const handleAddSectionClick = () => addSection(name);
+	// --------------------------- Operations ----------------------------
 
 	const curriedOperations = {
 		...operations,
-		deleteSection: (id) => deleteSection(name, id),
-		moveSection: (id, dir) => moveSection(name, id, dir),
+		deleteSection: (data) => deleteSection({ ...data, queueName }),
+		moveSection: (data) => moveSection({ ...data, queueName }),
 	};
+	// ---------------------------- Handlers -----------------------------
+
+	const handleInfoClick = (e) => showPopover(e, info);
+
+	const handleAdd = () => addSection({ queueName });
 
 	// ----------------------------- View ------------------------------
 
@@ -82,7 +85,7 @@ export const Queue = ({
 					fullWidth
 					variant="outlined"
 					children="New Section"
-					onClick={handleAddSectionClick}
+					onClick={handleAdd}
 				/>
 			</AccordionDetails>
 		</Accordion>

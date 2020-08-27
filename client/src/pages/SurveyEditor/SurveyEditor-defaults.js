@@ -37,7 +37,7 @@ export const defaultAnswer = {
 // TEMP ========================
 
 const getinitialAnswer = (n) => ({
-	id: "initialAnswer",
+	id: "initialAnswer " + n,
 	text: "Test answer " + n,
 	alert: n,
 	print: (() =>
@@ -49,7 +49,7 @@ const getinitialAnswer = (n) => ({
 });
 
 const getinitialQuestion = (n) => ({
-	id: "initialQuestion",
+	id: "initialQuestion " + n,
 	label: "Test question " + n,
 	type: "select-one",
 	answers: [getinitialAnswer(1), getinitialAnswer(2), getinitialAnswer(3)],
