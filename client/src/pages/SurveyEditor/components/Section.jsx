@@ -35,13 +35,13 @@ export const Section = ({
 
 	const curriedOperations = {
 		...operations,
-		updateQuestion: (data) => updateQuestion({ ...data, sectionName }),
-		deleteQuestion: (data) => deleteQuestion({ ...data, sectionName }),
-		moveQuestion: (data) => moveQuestion({ ...data, sectionName }),
-		addAnswer: (data) => addAnswer({ ...data, sectionName }),
-		deleteAnswer: (data) => deleteAnswer({ ...data, sectionName }),
-		moveAnswer: (data) => moveAnswer({ ...data, sectionName }),
-		updateAnswer: (data) => updateAnswer({ ...data, sectionName }),
+		updateQuestion: (data) => updateQuestion({ sectionName, ...data }),
+		deleteQuestion: (data) => deleteQuestion({ sectionName, ...data }),
+		moveQuestion: (data) => moveQuestion({ sectionName, ...data }),
+		addAnswer: (data) => addAnswer({ sectionName, ...data }),
+		deleteAnswer: (data) => deleteAnswer({ sectionName, ...data }),
+		moveAnswer: (data) => moveAnswer({ sectionName, ...data }),
+		updateAnswer: (data) => updateAnswer({ sectionName, ...data }),
 	};
 
 	// ---------------------------- Handlers -----------------------------

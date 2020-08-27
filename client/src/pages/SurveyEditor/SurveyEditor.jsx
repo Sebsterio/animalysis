@@ -9,10 +9,10 @@ import { Queue } from "./components";
 import { useStyles } from "./SurveyEditor-styles";
 import { useSurveyState, usePopover } from "./hooks";
 
-/******************************************************************
- * Experimenting with not using Redux or Context
+/******************************************************************************
  * Module will be used very sparcely; performance is not a priority
- ******************************************************************/
+ * Experimenting with not using Redux or Context. Conclusion: don't do it again
+ ******************************************************************************/
 
 export const SurveyEditor = () => {
 	const c = useStyles();

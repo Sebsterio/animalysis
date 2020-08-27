@@ -41,9 +41,9 @@ export const Queue = ({
 		...operations,
 		deleteSection: (data) => {
 			deleteSectionFromSections(data);
-			deleteSectionFromQueue({ ...data, queueName });
+			deleteSectionFromQueue({ queueName, ...data });
 		},
-		moveSection: (data) => moveSection({ ...data, queueName }),
+		moveSection: (data) => moveSection({ queueName, ...data }),
 	};
 	// ---------------------------- Handlers -----------------------------
 

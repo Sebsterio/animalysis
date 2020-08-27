@@ -33,9 +33,9 @@ export const Question = ({
 
 	const curriedOperations = {
 		...operations,
-		deleteAnswer: (data) => deleteAnswer({ ...data, questionId }),
-		moveAnswer: (data) => moveAnswer({ ...data, questionId }),
-		updateAnswer: (data) => updateAnswer({ ...data, questionId }),
+		deleteAnswer: (data) => deleteAnswer({ questionId, ...data }),
+		moveAnswer: (data) => moveAnswer({ questionId, ...data }),
+		updateAnswer: (data) => updateAnswer({ questionId, ...data }),
 	};
 
 	// ----------------------- Editing question -------------------------
