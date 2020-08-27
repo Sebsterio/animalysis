@@ -49,12 +49,22 @@ export const useSurveyState = () => {
 			title: data.title,
 		}));
 
+	const getOptionalQueueNamesAndTitles = () => {
+		const allSections = getSectionsNamesAndTitles();
+		const optionalQueue = getOptionalQueue();
+		return optionalQueue.map((section) => ({
+			name: section,
+			title: allSections.find((s) => s.name === section).title,
+		}));
+	};
+
 	const getSectionData = (sectionName) => sections[sectionName];
 
 	const selectors = {
 		getQueues,
 		getOptionalQueue,
 		getSectionsNamesAndTitles,
+		getOptionalQueueNamesAndTitles,
 		getSectionData,
 	};
 

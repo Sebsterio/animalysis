@@ -12,7 +12,6 @@ export const usePopover = () => {
 
 	const operations = {
 		showPopover: (e, infoText) => {
-			console.log({ e, infoText });
 			e.stopPropagation();
 			setInfoText(infoText);
 			setAnchorEl(e.currentTarget);

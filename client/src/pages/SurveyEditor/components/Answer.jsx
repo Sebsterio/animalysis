@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -54,12 +54,12 @@ export const Answer = ({
 	const {
 		getSectionsNamesAndTitles,
 		getSectionData,
-		getOptionalQueue,
+		getOptionalQueueNamesAndTitles,
 	} = selectors;
 
 	const sections = getSectionsNamesAndTitles();
-	const optionalQueue = getOptionalQueue();
-	const optionalQueueEmpty = !optionalQueue.length;
+	const optionalSections = getOptionalQueueNamesAndTitles();
+	const noOptionalSections = !optionalSections.length;
 
 	const { getNewName } = helpers;
 
@@ -110,16 +110,22 @@ export const Answer = ({
 
 	// ------------------------ Other handlers -------------------------
 
+	const [pickerOpen, setPickerOpen] = useState(false);
+
+	const handleAddLinked = (e) => {
+		if (noOptionalSections) return showPopover(e, message_optionalQueueIsEmpty);
+		if (!pickerOpen) setPickerOpen(true); // -> addLinkedSection(sectionName)
+	};
+
+	const addLinkedSection = (e) => {
+		const sectionName = e.target.value;
+		editAnswer(makeNestedTargetEvent("add", sectionName));
+		setPickerOpen(false);
+	};
+
 	const handleAddNested = () => {
 		const sectionName = getNewName();
 		addSectionToSections({ sectionName });
-		editAnswer(makeNestedTargetEvent("add", sectionName));
-	};
-
-	const handleAddLinked = (e) => {
-		const msg = message_optionalQueueIsEmpty;
-		if (optionalQueueEmpty) return showPopover(e, msg);
-		const sectionName = optionalQueue[0];
 		editAnswer(makeNestedTargetEvent("add", sectionName));
 	};
 
@@ -146,6 +152,8 @@ export const Answer = ({
 
 	// ----------------------------- View ------------------------------
 
+	// ------------- Viewer -------------
+
 	const body =
 		print || printNote || alert ? (
 			<div className={c.mTop1}>
@@ -166,6 +174,8 @@ export const Answer = ({
 				)}
 			</div>
 		) : null;
+
+	// ------------- Config -------------
 
 	const textlId = id + "-text";
 	const printId = id + "-print";
@@ -251,7 +261,6 @@ export const Answer = ({
 				<MenuItem value={"all"} className={c.bold}>
 					At the end of this queue
 				</MenuItem>
-				{/* TODO: map sectionNames */}
 				{sections.map(({ name, title }) => (
 					<MenuItem value={name} key={name} children={"After " + title} />
 				))}
@@ -259,11 +268,12 @@ export const Answer = ({
 		</>
 	);
 
+	// ------------- Fields -------------
+
+	const pickerId = "followUpPicker";
+
 	const fields = target.map((t, i) => {
 		const sectionData = getSectionData(t);
-
-		if (!sectionData) return "ERROR";
-
 		const isFirst = i === 0;
 		const isLast = i === target.length - 1;
 		return (
@@ -275,6 +285,30 @@ export const Answer = ({
 			/>
 		);
 	});
+
+	console.log({ optionalSections });
+	/* Follow-up link picker */
+	if (pickerOpen) {
+		fields.push(
+			<div key="picker" className={c.form}>
+				<Typography
+					component="label"
+					htmlFor={pickerId}
+					children="Optional Queue sections"
+				/>
+				<TextField
+					select
+					fullWidth
+					inputProps={{ id: pickerId }}
+					onChange={addLinkedSection}
+				>
+					{optionalSections.map(({ name, title }) => (
+						<MenuItem value={name} key={name} children={title} />
+					))}
+				</TextField>
+			</div>
+		);
+	}
 
 	const fieldsFooter = (
 		<ButtonGroup fullWidth variant="outlined">
