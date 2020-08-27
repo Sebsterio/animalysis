@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import { Division } from "./index";
+import { Section, Division } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
 
@@ -26,13 +26,15 @@ export const Answer = ({
 		printNote = "",
 		alert = 0,
 		followUp = {
-			after: ["none"], // ['none'] | "all" | (Str | [Str]: sectionName(s))
-			target: [], // (Str | [Str]: sectionName),
+			after: ["none"],
+			// target: [],
+			target: ["initialSection"], // TEMP
 		},
 	} = answerProps;
 
 	const { deleteAnswer, moveAnswer, updateAnswer } = operations;
-	const { getSectionsNamesAndTitles } = selectors;
+	const { getSectionsNamesAndTitles, getSectionData } = selectors;
+
 	const sections = getSectionsNamesAndTitles();
 
 	const c = useStyles();
@@ -93,6 +95,20 @@ export const Answer = ({
 	const handleDelete = () => {
 		const confirmed = window.confirm("Delete answer?");
 		if (confirmed) deleteAnswer(id);
+	};
+
+	// --------------------------- Operations ----------------------------
+
+	const curriedOperations = {
+		...operations,
+		// updateQuestion: (id, data) => updateQuestion(sectionName, id, data),
+		// deleteQuestion: (questionId) => deleteQuestion(sectionName, questionId),
+		// moveQuestion: (questionId, direction) =>
+		// 	moveQuestion(sectionName, questionId, direction),
+		// addAnswer: (questionId) => addAnswer(sectionName, questionId),
+		// deleteAnswer: (questionId, id) => deleteAnswer(sectionName, questionId, id),
+		// moveAnswer: (qId, aId, dir) => moveAnswer(sectionName, qId, aId, dir),
+		// updateAnswer: (qId, aId, val) => updateAnswer(sectionName, qId, aId, val),
 	};
 
 	// ----------------------------- View ------------------------------
@@ -224,9 +240,17 @@ export const Answer = ({
 	);
 
 	const fields = followUp.target.map((target, i) => {
+		const sectionData = getSectionData(target);
 		const isFirst = i === 0;
-		const isLast = i === fields.length - 1;
-		return <div key={answerProps.id}>{target}</div>;
+		const isLast = i === followUp.target.length - 1;
+		return (
+			<Section
+				key={target}
+				sectionName={target}
+				{...{ sectionData, isFirst, isLast, selectors }}
+				operations={curriedOperations}
+			/>
+		);
 	});
 
 	const fieldsFooter = (
