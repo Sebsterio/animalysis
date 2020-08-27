@@ -9,7 +9,7 @@
  * ---- label (Str): diplayed in UI
  * ---- type (Str): text | select-one | select-multiple
  * ---- if (type=text) setsTitle (Bool): answer becomes the report's title
- * ----	if (type=text) lengthLimit (Num): character limit of answer
+ * ----	if (type=text) lengthLimit (Num): character limit of answer; 0 = no limit
  * ---- answers (Arr)
  * ------ text (Str): displayed in UI
  * ------ print (Str): displayed in final report

@@ -25,7 +25,8 @@ const Question = ({
 }) => {
 	const { label, answers, type, setsTitle, lengthLimit } = question;
 
-	const isAnswerTooLong = (text) => !!text && text.length > lengthLimit;
+	const isAnswerTooLong = (text) =>
+		!!text && text.length > lengthLimit && lengthLimit > 0;
 
 	const [answerTooLong, setAnswerTooLong] = useState(isAnswerTooLong(answer));
 

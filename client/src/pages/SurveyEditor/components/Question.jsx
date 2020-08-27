@@ -17,7 +17,14 @@ export const Question = ({
 	selectors,
 	helpers,
 }) => {
-	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
+	const {
+		id,
+		label,
+		type,
+		setsTitle = false,
+		lengthLimit = 0,
+		answers,
+	} = questionProps;
 	const questionId = id;
 	const {
 		updateQuestion,
@@ -64,7 +71,7 @@ export const Question = ({
 
 	const handleMoveDown = () => moveQuestion({ questionId, direction: "down" });
 
-	// ------------------ Drilled props modifications --------------------
+	// ------------------ Drilled props modifications ------------------
 
 	const curriedOperations = {
 		...operations,
