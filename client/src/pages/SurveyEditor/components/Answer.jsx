@@ -9,12 +9,12 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { Section, Division } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
-import { getStepsFromDirection } from "../SurveyEditor-utils";
 import {
-	makeArrayWithPushedItems,
-	makeArrayWithRemovedItems,
-	makeArrayWithMovedItem,
-} from "utils/array";
+	makeModifiedAfter,
+	makeModifiedTarget,
+	makeNestedTargetEvent,
+	getAlertMessage,
+} from "../SurveyEditor-utils";
 
 // ----------------------------------------------------------
 
@@ -37,8 +37,10 @@ export const Answer = ({
 			target: [],
 		},
 	} = answerProps;
-	const { after, target } = followUp;
+
 	const answerId = id;
+	const { after, target } = followUp;
+
 	const {
 		deleteAnswer,
 		moveAnswer,
@@ -46,39 +48,22 @@ export const Answer = ({
 		addSectionToSections,
 		deleteSectionFromSections,
 	} = operations;
-	const { getSectionsNamesAndTitles, getSectionData } = selectors;
-	const { getNewName } = helpers;
+
+	const {
+		getSectionsNamesAndTitles,
+		getSectionData,
+		getOptionalQueue,
+	} = selectors;
 
 	const sections = getSectionsNamesAndTitles();
+	const optionalQueue = getOptionalQueue();
+	const optionalQueueEmpty = !optionalQueue.length;
+
+	const { getNewName } = helpers;
 
 	const c = useStyles();
 
-	// --------------------------- Operations ----------------------------
-
-	const curriedOperations = {
-		...operations,
-		deleteSection: ({ sectionName }) => {
-			deleteSectionFromSections({ sectionName });
-			editAnswer({
-				target: {
-					name: "nestedTarget",
-					action: "delete",
-					sectionName,
-				},
-			});
-		},
-		moveSection: ({ sectionName, direction }) =>
-			editAnswer({
-				target: {
-					name: "nestedTarget",
-					action: "move",
-					sectionName,
-					direction,
-				},
-			}),
-	};
-
-	// ------------------------- Edit answer --------------------------
+	// --------------------- Edit answer handler ----------------------
 
 	// Include non-empty answerProps in data to submit
 	const copyAnswer = () => {
@@ -100,32 +85,13 @@ export const Answer = ({
 
 	// Selecting 'none' or 'all' deselects all other options
 	// Selecting any other option, deselects 'none' and 'all'
-	const includeFollowUpInputValue = (newAnswer, e) => {
-		let { value } = e.target;
-		const prevValue = after;
-		if (value.includes("none")) {
-			if (!prevValue.includes("none")) value = ["none"];
-			else value = value.filter((v) => v !== "none");
-		}
-		if (value.includes("all")) {
-			if (!prevValue.includes("all")) value = ["all"];
-			else value = value.filter((v) => v !== "all");
-		}
-		newAnswer.followUp = { ...followUp, after: value };
+	const includeFollowUpAfter = (newAnswer, e) => {
+		newAnswer.followUp = { ...followUp, after: makeModifiedAfter(e, after) };
 	};
 
-	// Push new target section to followUp.target
+	// Add/delete/move target section in followUp.target in response to event
 	const includeFollowUpTarget = (newAnswer, e) => {
-		const { sectionName, action, direction: d } = e.target;
-		const newTarget =
-			action === "add"
-				? makeArrayWithPushedItems(target, sectionName)
-				: action === "delete"
-				? makeArrayWithRemovedItems(target, sectionName)
-				: action === "move"
-				? makeArrayWithMovedItem(target, sectionName, getStepsFromDirection(d))
-				: target;
-		newAnswer.followUp = { ...followUp, target: newTarget };
+		newAnswer.followUp = { ...followUp, target: makeModifiedTarget(e, target) };
 	};
 
 	// Update answer in store
@@ -134,23 +100,24 @@ export const Answer = ({
 	const editAnswer = (e) => {
 		const { name } = e.target;
 		let newAnswer = copyAnswer();
-		if (name === "after") includeFollowUpInputValue(newAnswer, e);
-		else if (name === "nestedTarget") includeFollowUpTarget(newAnswer, e);
+		if (name === "after") includeFollowUpAfter(newAnswer, e);
+		else if (name === "target") includeFollowUpTarget(newAnswer, e);
 		else includeInputValue(newAnswer, e);
 		updateAnswer({ answerId, value: { ...newAnswer } });
 	};
 
-	// --------------------------- handlers ----------------------------
+	// ------------------------ Other handlers -------------------------
 
 	const handleAddNested = () => {
 		const sectionName = getNewName();
 		addSectionToSections({ sectionName });
-		editAnswer({
-			target: { name: "nestedTarget", action: "add", sectionName },
-		});
+		editAnswer(makeNestedTargetEvent("add", sectionName));
 	};
 
-	const handleAddLinked = () => {};
+	const handleAddLinked = () => {
+		const sectionName = optionalQueue[0];
+		editAnswer(makeNestedTargetEvent("add", sectionName));
+	};
 
 	const handleDelete = () => {
 		const confirmed = window.confirm("Delete answer?");
@@ -161,18 +128,19 @@ export const Answer = ({
 
 	const handleMoveDown = () => moveAnswer({ answerId, direction: "down" });
 
-	// ----------------------------- View ------------------------------
+	// ----------------- Drilled props modifications ------------------
 
-	// prettier-ignore
-	const getAlertMessage = (alertCode) => {
-		switch (alertCode) {
-			case 1:	return "green";
-			case 2:	return "yellow";
-			case 3:	return "orange";
-			case 4:	return "red";
-			default: return "none";
-		}
+	const curriedOperations = {
+		...operations,
+		deleteSection: ({ sectionName }) => {
+			deleteSectionFromSections({ sectionName });
+			editAnswer(makeNestedTargetEvent("delete", sectionName));
+		},
+		moveSection: ({ sectionName, direction }) =>
+			editAnswer(makeNestedTargetEvent("move", sectionName, direction)),
 	};
+
+	// ----------------------------- View ------------------------------
 
 	const body =
 		print || printNote || alert ? (
@@ -310,7 +278,11 @@ export const Answer = ({
 				<Button children="New Nested Follow-up" onClick={handleAddNested} />
 			</Tooltip>
 			<Tooltip title="Choose an existing section from Optional Queue. If reached, it will get removed from Optional Queue.">
-				<Button children="New Follow-up Reference" onClick={handleAddLinked} />
+				<Button
+					children="New Follow-up Reference"
+					onClick={handleAddLinked}
+					disabled={optionalQueueEmpty}
+				/>
 			</Tooltip>
 		</ButtonGroup>
 	);

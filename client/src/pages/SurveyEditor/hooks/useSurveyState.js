@@ -41,6 +41,8 @@ export const useSurveyState = () => {
 
 	const getQueues = () => queues;
 
+	const getOptionalQueue = () => getQueues().optionalQueue.list;
+
 	const getSectionsNamesAndTitles = () =>
 		Object.entries(sections).map(([name, data]) => ({
 			name,
@@ -51,6 +53,7 @@ export const useSurveyState = () => {
 
 	const selectors = {
 		getQueues,
+		getOptionalQueue,
 		getSectionsNamesAndTitles,
 		getSectionData,
 	};

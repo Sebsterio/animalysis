@@ -35,16 +35,6 @@ export const Queue = ({
 
 	const c = useStyles();
 
-	// --------------------------- Operations ----------------------------
-
-	const curriedOperations = {
-		...operations,
-		deleteSection: (data) => {
-			deleteSectionFromSections(data);
-			deleteSectionFromQueue({ queueName, ...data });
-		},
-		moveSection: (data) => moveSection({ queueName, ...data }),
-	};
 	// ---------------------------- Handlers -----------------------------
 
 	const handleInfoClick = (e) => showPopover(e, info);
@@ -53,6 +43,17 @@ export const Queue = ({
 		const sectionName = getNewName();
 		addSectionToSections({ sectionName });
 		addSectionToQueue({ queueName, sectionName });
+	};
+
+	// ----------------- Drilled props modifications ------------------
+
+	const curriedOperations = {
+		...operations,
+		deleteSection: (data) => {
+			deleteSectionFromSections(data);
+			deleteSectionFromQueue({ queueName, ...data });
+		},
+		moveSection: (data) => moveSection({ queueName, ...data }),
 	};
 
 	// ----------------------------- View ------------------------------

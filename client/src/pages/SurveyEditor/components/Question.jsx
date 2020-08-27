@@ -29,16 +29,7 @@ export const Question = ({
 		updateAnswer,
 	} = operations;
 
-	// --------------------------- Operations ----------------------------
-
-	const curriedOperations = {
-		...operations,
-		deleteAnswer: (data) => deleteAnswer({ questionId, ...data }),
-		moveAnswer: (data) => moveAnswer({ questionId, ...data }),
-		updateAnswer: (data) => updateAnswer({ questionId, ...data }),
-	};
-
-	// ----------------------- Editing question -------------------------
+	// --------------------- Edit question handler ----------------------
 
 	const copyQuestion = () => {
 		let newQuestion = { id, label, type, answers };
@@ -60,7 +51,7 @@ export const Question = ({
 		updateQuestion({ questionId, value: newQuestion });
 	};
 
-	// ---------------------------- Handlers -----------------------------
+	// ------------------------- Other handlers --------------------------
 
 	const handleDelete = () => {
 		const confirmed = window.confirm("Permanently delete question?");
@@ -72,6 +63,15 @@ export const Question = ({
 	const handleMoveUp = () => moveQuestion({ questionId, direction: "up" });
 
 	const handleMoveDown = () => moveQuestion({ questionId, direction: "down" });
+
+	// ------------------ Drilled props modifications --------------------
+
+	const curriedOperations = {
+		...operations,
+		deleteAnswer: (data) => deleteAnswer({ questionId, ...data }),
+		moveAnswer: (data) => moveAnswer({ questionId, ...data }),
+		updateAnswer: (data) => updateAnswer({ questionId, ...data }),
+	};
 
 	// ------------------------------ View -------------------------------
 

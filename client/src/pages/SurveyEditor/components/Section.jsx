@@ -31,19 +31,6 @@ export const Section = ({
 
 	const c = useStyles();
 
-	// --------------------------- Operations ----------------------------
-
-	const curriedOperations = {
-		...operations,
-		updateQuestion: (data) => updateQuestion({ sectionName, ...data }),
-		deleteQuestion: (data) => deleteQuestion({ sectionName, ...data }),
-		moveQuestion: (data) => moveQuestion({ sectionName, ...data }),
-		addAnswer: (data) => addAnswer({ sectionName, ...data }),
-		deleteAnswer: (data) => deleteAnswer({ sectionName, ...data }),
-		moveAnswer: (data) => moveAnswer({ sectionName, ...data }),
-		updateAnswer: (data) => updateAnswer({ sectionName, ...data }),
-	};
-
 	// ---------------------------- Handlers -----------------------------
 
 	const handleTitleInput = (e) =>
@@ -59,6 +46,19 @@ export const Section = ({
 	const handleMoveUp = () => moveSection({ sectionName, direction: "up" });
 
 	const handleMoveDown = () => moveSection({ sectionName, direction: "down" });
+
+	// ----------------- Drilled props modifications ------------------
+
+	const curriedOperations = {
+		...operations,
+		updateQuestion: (data) => updateQuestion({ sectionName, ...data }),
+		deleteQuestion: (data) => deleteQuestion({ sectionName, ...data }),
+		moveQuestion: (data) => moveQuestion({ sectionName, ...data }),
+		addAnswer: (data) => addAnswer({ sectionName, ...data }),
+		deleteAnswer: (data) => deleteAnswer({ sectionName, ...data }),
+		moveAnswer: (data) => moveAnswer({ sectionName, ...data }),
+		updateAnswer: (data) => updateAnswer({ sectionName, ...data }),
+	};
 
 	// ------------------------------ View -------------------------------
 
