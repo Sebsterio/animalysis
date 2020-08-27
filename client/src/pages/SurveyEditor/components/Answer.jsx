@@ -15,7 +15,10 @@ import {
 	makeNestedTargetEvent,
 	getAlertMessage,
 } from "../SurveyEditor-utils";
-import { message_optionalQueueIsEmpty } from "../SurveyEditor-defaults";
+import {
+	message_optionalQueueIsEmpty,
+	message_allOptionalSectionsAdded,
+} from "../SurveyEditor-defaults";
 
 // ----------------------------------------------------------
 
@@ -65,6 +68,12 @@ export const Answer = ({
 
 	const c = useStyles();
 
+	const isFollowUpAdded = (section) => target.includes(section.name);
+
+	const allOptionalSectionsAdded = optionalSections.every((section) =>
+		target.includes(section.name)
+	);
+
 	// --------------------- Edit answer handler ----------------------
 
 	// Include non-empty answerProps in data to submit
@@ -113,8 +122,10 @@ export const Answer = ({
 	const [pickerOpen, setPickerOpen] = useState(false);
 
 	const handleAddLinked = (e) => {
-		if (noOptionalSections) return showPopover(e, message_optionalQueueIsEmpty);
-		if (!pickerOpen) setPickerOpen(true); // -> addLinkedSection(sectionName)
+		if (noOptionalSections) showPopover(e, message_optionalQueueIsEmpty);
+		else if (allOptionalSectionsAdded)
+			showPopover(e, message_allOptionalSectionsAdded);
+		else if (!pickerOpen) setPickerOpen(true); // -> addLinkedSection(sectionName)
 	};
 
 	const addLinkedSection = (e) => {
@@ -302,9 +313,11 @@ export const Answer = ({
 					inputProps={{ id: pickerId }}
 					onChange={addLinkedSection}
 				>
-					{optionalSections.map(({ name, title }) => (
-						<MenuItem value={name} key={name} children={title} />
-					))}
+					{optionalSections
+						.filter((section) => !isFollowUpAdded(section))
+						.map(({ name, title }) => (
+							<MenuItem value={name} key={name} children={title} />
+						))}
 				</TextField>
 			</div>
 		);

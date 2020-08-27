@@ -22,6 +22,9 @@ export const defaultQueues = {
 export const message_optionalQueueIsEmpty =
 	"There are currently no sections in Optional Queue.";
 
+export const message_allOptionalSectionsAdded =
+	"All Optional Queue sections are already added to this answer.";
+
 export const defaultSection = {
 	title: "Section name...",
 	questions: [],

@@ -127,11 +127,12 @@ export const useSurveyState = () => {
 	};
 
 	const deleteSectionFromSections = ({ sectionName }) => {
-		setSections((sections) => {
-			const newSections = { ...sections };
-			delete newSections[sectionName];
-			return newSections;
-		});
+		deleteSectionFromAllAnswerTargets(sectionName);
+		// setSections((sections) => {
+		// 	const newSections = { ...sections };
+		// 	delete newSections[sectionName];
+		// 	return newSections;
+		// });
 	};
 
 	const modifySectionProp = (sectionName, prop, value) => {
@@ -209,6 +210,8 @@ export const useSurveyState = () => {
 	};
 
 	const deleteAnswer = ({ sectionName, questionId, answerId }) => {
+		console.log({ sectionName, questionId, answerId });
+		//////////
 		const selector = (answer) => answer.id === answerId;
 		modifyAnswers(sectionName, questionId, (answers) =>
 			makeArrayWithRemovedItems(answers, null, selector)
@@ -224,11 +227,41 @@ export const useSurveyState = () => {
 	};
 
 	const updateAnswer = ({ sectionName, questionId, answerId, value }) => {
+		console.log({ sectionName, questionId, answerId, value });
+		/////////////////
 		const selector = (answer) => answer.id === answerId;
 		const modifier = typeof value === "function" ? value : () => ({ ...value });
 		modifyAnswers(sectionName, questionId, (answers) =>
 			makeArrayWithReplacedItem(answers, selector, modifier)
 		);
+	};
+
+	// Messy but quick solution. TODO: improve
+	const deleteSectionFromAllAnswerTargets = (sectionToRemove) => {
+		Object.entries(sections).forEach(([sectionName, { questions }]) => {
+			questions.forEach(({ id: questionId, answers }) => {
+				answers.forEach((answer) => {
+					const { id: answerId, followUp } = answer;
+					if (!!followUp && followUp.target.includes(sectionToRemove)) {
+						updateAnswer({
+							sectionName,
+							questionId,
+							answerId,
+							value: {
+								...answer,
+								followUp: {
+									...answer.followUp,
+									target: makeArrayWithRemovedItems(
+										followUp.target,
+										sectionToRemove
+									),
+								},
+							},
+						});
+					}
+				});
+			});
+		});
 	};
 
 	// -----------------------
