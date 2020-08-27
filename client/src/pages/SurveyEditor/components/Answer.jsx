@@ -5,6 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { Division } from "./index";
 
@@ -26,7 +27,7 @@ export const Answer = ({
 		printNote = "",
 		alert = 0,
 		followUp = {
-			after: [], // ['none'] | "all" | (Str | [Str]: sectionName(s))
+			after: ["none"], // ['none'] | "all" | (Str | [Str]: sectionName(s))
 			target: [], // (Str | [Str]: sectionName),
 		},
 	} = answerProps;
@@ -37,11 +38,9 @@ export const Answer = ({
 
 	const c = useStyles();
 
-	const [editingFollowUp, setEditingFollowup] = useState(false);
-	const updateEditingFollowup = (e) => setEditingFollowup(e.target.checked);
-
 	// ------------------------- Edit answer --------------------------
 
+	// Include non-empty answerProps in data to submit
 	const copyAnswer = () => {
 		let newQuestion = { id, text };
 		if (print !== "") newQuestion.print = print;
@@ -55,6 +54,7 @@ export const Answer = ({
 		return newQuestion;
 	};
 
+	// Choose correct input prop and convert format if needed
 	const includeInputValue = (newAnswer, e) => {
 		let { type, name, value, checked } = e.target;
 		if (type === "number") value = Number(value);
@@ -62,17 +62,29 @@ export const Answer = ({
 		newAnswer[name] = value;
 	};
 
+	// Selecting 'none' or 'all' deselects all other options
+	// Selecting any other option, deselects 'none' and 'all'
 	const includeFollowUpInputValue = (newAnswer, e) => {
-		let { name, value } = e.target;
-		if (value.includes("none")) value = ["none"];
-		if (value.includes("all")) value = ["all"];
-		newAnswer.followUp = { ...followUp, [name]: value };
+		let { value } = e.target;
+		const prevValue = followUp.after;
+		if (value.includes("none")) {
+			if (!prevValue.includes("none")) value = ["none"];
+			else value = value.filter((v) => v !== "none");
+		}
+		if (value.includes("all")) {
+			if (!prevValue.includes("none")) value = ["all"];
+			else value = value.filter((v) => v !== "all");
+		}
+		newAnswer.followUp = { ...followUp, after: value };
 	};
 
+	// Update answer in store
+	// Don't include answerProps with default values (i.e. empty)
+	// Include event input in correct format
 	const editAnswer = (e) => {
 		const { name } = e.target;
 		let newAnswer = copyAnswer();
-		if (name === "after") includeFollowUpInputValue(newAnswer, e);
+		if (name === "followUp") includeFollowUpInputValue(newAnswer, e);
 		else includeInputValue(newAnswer, e);
 		updateAnswer(id, newAnswer);
 	};
@@ -123,8 +135,6 @@ export const Answer = ({
 	const printNoteId = id + "-printNote";
 	const alertId = id + "-alert";
 	const followUpId = id + "-followUp";
-	const followUpAfterId = id + "-followUp-after";
-	// const followUpTargetId = id + '-followUp-target'
 
 	const form = (
 		<>
@@ -180,47 +190,31 @@ export const Answer = ({
 				<MenuItem value={4}>Red</MenuItem>
 			</TextField>
 
-			{/* followUp */}
-			<Typography component="label" htmlFor={followUpId} children="Follow-up" />
-			<Switch
-				name="followUp"
-				checked={editingFollowUp}
-				inputProps={{ id: followUpId }}
-				onChange={updateEditingFollowup}
-			/>
-
 			{/* followUp after*/}
-			{editingFollowUp && (
-				<>
-					<Typography
-						component="label"
-						htmlFor={followUpAfterId}
-						children="When"
-					/>
-					<TextField
-						select
-						SelectProps={{ multiple: true }}
-						fullWidth
-						name="after"
-						value={followUp.after}
-						inputProps={{ id: followUpAfterId }}
-						onChange={editAnswer}
-					>
-						<MenuItem value={"none"} className={c.bold}>
-							After this question
-						</MenuItem>
-						<MenuItem value={"all"} className={c.bold}>
-							At the end of this queue
-						</MenuItem>
-						{/* TODO: map sectionNames */}
-						{sections.map(({ name, title }) => (
-							<MenuItem value={name} key={name}>
-								{title}
-							</MenuItem>
-						))}
-					</TextField>
-				</>
-			)}
+
+			<Typography component="label" htmlFor={followUpId} children="Follow-up" />
+			<TextField
+				select
+				SelectProps={{ multiple: true }}
+				fullWidth
+				name="followUp"
+				value={followUp.after}
+				inputProps={{ id: followUpId }}
+				onChange={editAnswer}
+			>
+				<MenuItem value={"none"} className={c.bold}>
+					After this question
+				</MenuItem>
+				<MenuItem value={"all"} className={c.bold}>
+					At the end of this queue
+				</MenuItem>
+				{/* TODO: map sectionNames */}
+				{sections.map(({ name, title }) => (
+					<MenuItem value={name} key={name}>
+						After {title}
+					</MenuItem>
+				))}
+			</TextField>
 		</>
 	);
 
@@ -232,8 +226,12 @@ export const Answer = ({
 
 	const fieldsFooter = (
 		<ButtonGroup fullWidth variant="outlined">
-			<Button children="Add Nested Section" onClick={() => {}} />
-			<Button children="Add Section Reference" onClick={() => {}} />
+			<Tooltip title="Create a new section.">
+				<Button children="New Nested Section" onClick={() => {}} />
+			</Tooltip>
+			<Tooltip title="Choose an existing section from the Optional Queue. If reached, it will get removed from Optional Queue.">
+				<Button children="New Section Reference" onClick={() => {}} />
+			</Tooltip>
 		</ButtonGroup>
 	);
 
@@ -245,6 +243,7 @@ export const Answer = ({
 			fields={fields}
 			fieldsFooter={fieldsFooter}
 			form={form}
+			formType="grid"
 			isFirst={isFirst}
 			isLast={isLast}
 			handleDelete={handleDelete}

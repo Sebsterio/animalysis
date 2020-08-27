@@ -134,8 +134,6 @@ export const Division = ({
 		</Paper>
 	);
 
-	console.log({ fields });
-
 	return editing === "config"
 		? configEditor
 		: editing === "fields"
