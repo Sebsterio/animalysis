@@ -180,6 +180,7 @@ export const Question = ({
 			fields={fields}
 			fieldsType="grid"
 			fieldsFooter={fieldsFooter}
+			fieldsButtonDisabled={type === "text"}
 			form={form}
 			formType="grid"
 			isFirst={isFirst}

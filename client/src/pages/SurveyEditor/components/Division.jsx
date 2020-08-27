@@ -23,6 +23,7 @@ export const Division = ({
 	fieldsType = "stack",
 	fieldsHeader,
 	fieldsFooter,
+	fieldsButtonDisabled,
 	form,
 	formType = "row",
 	isFirst,
@@ -69,7 +70,12 @@ export const Division = ({
 				<div className={c.row}>
 					<IconButton children={<DeleteOutlineIcon />} onClick={handleDelete} />
 					<IconButton children={<EditIcon />} onClick={editConfig} />
-					<IconButton children={<QuestionAnswerIcon />} onClick={editFields} />
+					{!fieldsButtonDisabled && (
+						<IconButton
+							children={<QuestionAnswerIcon />}
+							onClick={editFields}
+						/>
+					)}
 					<IconButton
 						children={<ArrowUpwardIcon />}
 						onClick={handleMoveUp}
