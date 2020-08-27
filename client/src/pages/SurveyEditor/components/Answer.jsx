@@ -9,7 +9,12 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { Section, Division } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
-import { makeArrayWithRemovedItems } from "utils/array";
+import { getStepsFromDirection } from "../SurveyEditor-utils";
+import {
+	makeArrayWithPushedItems,
+	makeArrayWithRemovedItems,
+	makeArrayWithMovedItem,
+} from "utils/array";
 
 // ----------------------------------------------------------
 
@@ -52,14 +57,25 @@ export const Answer = ({
 
 	const curriedOperations = {
 		...operations,
-		deleteSection: (data) => {
-			deleteSectionFromSections(data);
-			const { sectionName } = data;
+		deleteSection: ({ sectionName }) => {
+			deleteSectionFromSections({ sectionName });
 			editAnswer({
-				target: { name: "nestedTarget", action: "delete", sectionName },
+				target: {
+					name: "nestedTarget",
+					action: "delete",
+					sectionName,
+				},
 			});
 		},
-		moveSection: (data) => {}, // local only TODO
+		moveSection: ({ sectionName, direction }) =>
+			editAnswer({
+				target: {
+					name: "nestedTarget",
+					action: "move",
+					sectionName,
+					direction,
+				},
+			}),
 	};
 
 	// ------------------------- Edit answer --------------------------
@@ -100,12 +116,14 @@ export const Answer = ({
 
 	// Push new target section to followUp.target
 	const includeFollowUpTarget = (newAnswer, e) => {
-		const { sectionName, action } = e.target;
+		const { sectionName, action, direction: d } = e.target;
 		const newTarget =
 			action === "add"
-				? [...target, sectionName]
+				? makeArrayWithPushedItems(target, sectionName)
 				: action === "delete"
 				? makeArrayWithRemovedItems(target, sectionName)
+				: action === "move"
+				? makeArrayWithMovedItem(target, sectionName, getStepsFromDirection(d))
 				: target;
 		newAnswer.followUp = { ...followUp, target: newTarget };
 	};
