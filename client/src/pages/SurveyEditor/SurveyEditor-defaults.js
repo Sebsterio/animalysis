@@ -56,7 +56,6 @@ const getinitialQuestion = (n) => ({
 });
 
 export const initialSection = {
-	id: "initialSection",
 	title: "Test section",
 	questions: [
 		getinitialQuestion(1),

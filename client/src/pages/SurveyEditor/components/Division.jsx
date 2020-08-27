@@ -17,6 +17,7 @@ import { useStyles } from "../SurveyEditor-styles";
 export const Division = ({
 	heading,
 	headingVariant = "body1",
+	headingPrefix,
 	body,
 	fields,
 	fieldsType = "stack",
@@ -59,6 +60,7 @@ export const Division = ({
 			<div className={c.viewer}>
 				<div>
 					<Typography variant={headingVariant} className={c.heading}>
+						{headingPrefix && headingPrefix + ": "}
 						{heading}
 					</Typography>
 					{body && body}

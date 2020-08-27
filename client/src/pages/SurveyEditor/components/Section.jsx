@@ -13,6 +13,7 @@ export const Section = ({
 	isLast,
 	operations,
 	selectors,
+	helpers,
 }) => {
 	const {
 		modifySectionTitle,
@@ -77,7 +78,7 @@ export const Section = ({
 		return (
 			<Question
 				key={questionProps.id}
-				{...{ questionProps, isFirst, isLast, selectors }}
+				{...{ questionProps, isFirst, isLast, selectors, helpers }}
 				operations={curriedOperations}
 			/>
 		);

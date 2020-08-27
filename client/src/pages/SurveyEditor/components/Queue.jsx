@@ -20,10 +20,18 @@ export const Queue = ({
 	queueProps: { label, list, info },
 	selectors,
 	operations,
+	helpers,
 	showPopover,
 }) => {
-	const { addSection, deleteSection, moveSection } = operations;
+	const {
+		addSectionToQueue,
+		addSectionToSections,
+		deleteSectionFromQueue,
+		deleteSectionFromSections,
+		moveSection,
+	} = operations;
 	const { getSectionData } = selectors;
+	const { getNewName } = helpers;
 
 	const c = useStyles();
 
@@ -31,14 +39,21 @@ export const Queue = ({
 
 	const curriedOperations = {
 		...operations,
-		deleteSection: (data) => deleteSection({ ...data, queueName }),
+		deleteSection: (data) => {
+			deleteSectionFromSections(data);
+			deleteSectionFromQueue({ ...data, queueName });
+		},
 		moveSection: (data) => moveSection({ ...data, queueName }),
 	};
 	// ---------------------------- Handlers -----------------------------
 
 	const handleInfoClick = (e) => showPopover(e, info);
 
-	const handleAdd = () => addSection({ queueName });
+	const handleAdd = () => {
+		const sectionName = getNewName();
+		addSectionToSections({ sectionName });
+		addSectionToQueue({ queueName, sectionName });
+	};
 
 	// ----------------------------- View ------------------------------
 
@@ -66,14 +81,19 @@ export const Queue = ({
 					const sectionData = getSectionData(sectionName);
 					const isFirst = i === 0;
 					const isLast = i === list.length - 1;
-					return !!sectionData ? (
+					return (
 						<Section
-							key={sectionName}
-							{...{ sectionData, sectionName, isFirst, isLast, selectors }}
-							operations={curriedOperations}
+							{...{
+								key: sectionName,
+								sectionName,
+								sectionData,
+								isFirst,
+								isLast,
+								selectors,
+								helpers,
+								operations: curriedOperations,
+							}}
 						/>
-					) : (
-						"Error: Section data not found; sectionName=" + sectionName
 					);
 				})}
 			/>

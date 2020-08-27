@@ -27,6 +27,16 @@ export const useSurveyState = () => {
 		initialSection: { ...initialSection },
 	});
 
+	// --------------------- Helpers ---------------------
+
+	const getNewId = () => shortid.generate();
+
+	const getNewName = () => "_" + getNewId();
+
+	const helpers = {
+		getNewName,
+	};
+
 	// --------------------- Selectors ---------------------
 
 	const getQueues = () => queues;
@@ -67,6 +77,17 @@ export const useSurveyState = () => {
 	const modifyQueueList = (queueName, value) =>
 		modifyQueueProp(queueName, "list", value);
 
+	const addSectionToQueue = ({ queueName, sectionName }) => {
+		addOrModifySection(sectionName, { ...defaultSection });
+		modifyQueueList(queueName, (list) => [...list, sectionName]);
+	};
+
+	const deleteSectionFromQueue = ({ queueName, sectionName }) => {
+		modifyQueueList(queueName, (list) =>
+			list.filter((item) => item !== sectionName)
+		);
+	};
+
 	const moveSection = ({ queueName, sectionName, direction }) => {
 		const steps = getStepsFromDirection(direction);
 		const selector = (listItem) => listItem === sectionName;
@@ -79,13 +100,17 @@ export const useSurveyState = () => {
 
 	const addOrModifySection = (sectionName, value) => {
 		const modifier = typeof value === "function" ? value : () => value;
-		setSections({
+		setSections((sections) => ({
 			...sections,
 			[sectionName]: modifier(sections[sectionName]),
-		});
+		}));
 	};
 
-	const deleteSectionFromSections = (sectionName) => {
+	const addSectionToSections = ({ sectionName }) => {
+		addOrModifySection(sectionName, { ...defaultSection });
+	};
+
+	const deleteSectionFromSections = ({ sectionName }) => {
 		const newSections = { ...sections };
 		delete newSections[sectionName];
 		setSections(newSections);
@@ -99,21 +124,6 @@ export const useSurveyState = () => {
 		}));
 	};
 
-	// Combo modifiers
-
-	const addSection = ({ queueName }) => {
-		const sectionName = "_" + shortid.generate();
-		addOrModifySection(sectionName, { ...defaultSection });
-		modifyQueueList(queueName, (list) => [...list, sectionName]);
-	};
-
-	const deleteSection = ({ queueName, sectionName }) => {
-		deleteSectionFromSections(sectionName);
-		modifyQueueList(queueName, (list) =>
-			list.filter((item) => item !== sectionName)
-		);
-	};
-
 	// Section title
 
 	const modifySectionTitle = ({ sectionName, value }) =>
@@ -121,11 +131,11 @@ export const useSurveyState = () => {
 
 	// Questions
 
-	const modifySectionQuestions = (id, value) =>
-		modifySectionProp(id, "questions", value);
+	const modifySectionQuestions = (sectionName, value) =>
+		modifySectionProp(sectionName, "questions", value);
 
 	const addQuestion = ({ sectionName }) => {
-		const newQuestion = { ...defaultQuestion, id: shortid.generate() };
+		const newQuestion = { ...defaultQuestion, id: getNewId() };
 		const modifier = (questions) => [...questions, newQuestion];
 		modifySectionQuestions(sectionName, modifier);
 	};
@@ -147,7 +157,7 @@ export const useSurveyState = () => {
 
 	const updateQuestion = ({ sectionName, questionId, value }) => {
 		const selector = (question) => question.id === questionId;
-		const modifier = typeof value === "function" ? value : () => ({ ...value });
+		const modifier = typeof value === "function" ? value : () => value;
 		modifySectionQuestions(sectionName, (questions) =>
 			makeArrayWithReplacedItem(questions, selector, modifier)
 		);
@@ -165,14 +175,14 @@ export const useSurveyState = () => {
 		});
 	};
 
-	// Question answers
+	// Answers
 
 	const modifyAnswers = (sectionName, questionId, value) => {
 		modifyQuestionProp(sectionName, questionId, "answers", value);
 	};
 
 	const addAnswer = ({ sectionName, questionId }) => {
-		const newAnswer = { ...defaultAnswer, id: shortid.generate() };
+		const newAnswer = { ...defaultAnswer, id: getNewId() };
 		modifyAnswers(sectionName, questionId, (answers) => [
 			...answers,
 			newAnswer,
@@ -205,10 +215,12 @@ export const useSurveyState = () => {
 	// -----------------------
 
 	const operations = {
+		addSectionToQueue,
+		deleteSectionFromQueue,
 		moveSection,
-		addSection,
-		deleteSection,
+		addSectionToSections,
 		modifySectionTitle,
+		deleteSectionFromSections,
 		addQuestion,
 		deleteQuestion,
 		moveQuestion,
@@ -221,5 +233,5 @@ export const useSurveyState = () => {
 
 	// -----------------------
 
-	return [selectors, operations];
+	return [selectors, operations, helpers];
 };

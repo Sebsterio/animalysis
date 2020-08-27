@@ -15,6 +15,7 @@ export const Question = ({
 	isLast,
 	operations,
 	selectors,
+	helpers,
 }) => {
 	const { id, label, type, setsTitle, lengthLimit, answers } = questionProps;
 	const questionId = id;
@@ -148,7 +149,7 @@ export const Question = ({
 		return (
 			<Answer
 				key={answerProps.id}
-				{...{ answerProps, isFirst, isLast, selectors }}
+				{...{ answerProps, isFirst, isLast, selectors, helpers }}
 				operations={curriedOperations}
 			/>
 		);
@@ -166,6 +167,7 @@ export const Question = ({
 	return (
 		<Division
 			heading={label}
+			headingPrefix="Q"
 			fields={fields}
 			fieldsType="grid"
 			fieldsFooter={fieldsFooter}

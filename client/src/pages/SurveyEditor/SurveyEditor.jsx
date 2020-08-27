@@ -22,7 +22,7 @@ export const SurveyEditor = () => {
 		{ hidePopover, showPopover },
 	] = usePopover();
 
-	const [selectors, operations] = useSurveyState();
+	const [selectors, operations, helpers] = useSurveyState();
 
 	const queues = selectors.getQueues();
 
@@ -33,7 +33,14 @@ export const SurveyEditor = () => {
 			{Object.entries(queues).map(([queueName, queueProps]) => (
 				<Queue
 					key={queueName}
-					{...{ queueName, queueProps, selectors, operations, showPopover }}
+					{...{
+						queueName,
+						queueProps,
+						selectors,
+						operations,
+						helpers,
+						showPopover,
+					}}
 				/>
 			))}
 

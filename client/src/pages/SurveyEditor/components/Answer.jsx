@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -18,6 +18,7 @@ export const Answer = ({
 	isLast,
 	operations,
 	selectors,
+	helpers,
 }) => {
 	const {
 		id,
@@ -31,10 +32,17 @@ export const Answer = ({
 			target: ["initialSection"], // TEMP
 		},
 	} = answerProps;
+	const { after, target } = followUp;
 	const answerId = id;
-
-	const { deleteAnswer, moveAnswer, updateAnswer } = operations;
+	const {
+		deleteAnswer,
+		moveAnswer,
+		updateAnswer,
+		addSectionToSections,
+		deleteSectionFromSections,
+	} = operations;
 	const { getSectionsNamesAndTitles, getSectionData } = selectors;
+	const { getNewName } = helpers;
 
 	const sections = getSectionsNamesAndTitles();
 
@@ -44,30 +52,25 @@ export const Answer = ({
 
 	const curriedOperations = {
 		...operations,
-		// updateQuestion: (id, data) => updateQuestion(sectionName, id, data),
-		// deleteQuestion: (questionId) => deleteQuestion(sectionName, questionId),
-		// moveQuestion: (questionId, direction) =>
-		// 	moveQuestion(sectionName, questionId, direction),
-		// addAnswer: (questionId) => addAnswer(sectionName, questionId),
-		// deleteAnswer: (questionId, id) => deleteAnswer(sectionName, questionId, id),
-		// moveAnswer: (qId, aId, dir) => moveAnswer(sectionName, qId, aId, dir),
-		// updateAnswer: (qId, aId, val) => updateAnswer(sectionName, qId, aId, val),
+		deleteSection: (data) => {
+			// deleteSectionFromSections(data);
+			// const { sectionName } = data;
+			// const e = { target: { name: "nestedTarget", sectionName } };
+			// editAnswer(e);
+		},
+		moveSection: (data) => {}, // local only TODO
 	};
 
 	// ------------------------- Edit answer --------------------------
 
 	// Include non-empty answerProps in data to submit
 	const copyAnswer = () => {
-		let newQuestion = { id, text };
-		if (print !== "") newQuestion.print = print;
-		if (printNote !== "") newQuestion.printNote = printNote;
-		if (alert !== 0) newQuestion.alert = alert;
-		if (!!followUp.target.length)
-			newQuestion.followUp = {
-				after: followUp.after,
-				target: followUp.target,
-			};
-		return newQuestion;
+		let newAnswer = { id, text };
+		if (print !== "") newAnswer.print = print;
+		if (printNote !== "") newAnswer.printNote = printNote;
+		if (alert !== 0) newAnswer.alert = alert;
+		if (!!target.length) newAnswer.followUp = { after, target };
+		return newAnswer;
 	};
 
 	// Choose correct input prop and convert format if needed
@@ -82,16 +85,25 @@ export const Answer = ({
 	// Selecting any other option, deselects 'none' and 'all'
 	const includeFollowUpInputValue = (newAnswer, e) => {
 		let { value } = e.target;
-		const prevValue = followUp.after;
+		const prevValue = after;
 		if (value.includes("none")) {
 			if (!prevValue.includes("none")) value = ["none"];
 			else value = value.filter((v) => v !== "none");
 		}
 		if (value.includes("all")) {
-			if (!prevValue.includes("none")) value = ["all"];
+			if (!prevValue.includes("all")) value = ["all"];
 			else value = value.filter((v) => v !== "all");
 		}
 		newAnswer.followUp = { ...followUp, after: value };
+	};
+
+	// Push new target section to followUp.target
+	const includeFollowUpTarget = (newAnswer, e) => {
+		const { sectionName } = e.target;
+		newAnswer.followUp = {
+			...followUp,
+			target: [...target, sectionName],
+		};
 	};
 
 	// Update answer in store
@@ -100,14 +112,30 @@ export const Answer = ({
 	const editAnswer = (e) => {
 		const { name } = e.target;
 		let newAnswer = copyAnswer();
-		if (name === "followUp") includeFollowUpInputValue(newAnswer, e);
+		if (name === "after") includeFollowUpInputValue(newAnswer, e);
+		else if (name === "nestedTarget") includeFollowUpTarget(newAnswer, e);
 		else includeInputValue(newAnswer, e);
-		updateAnswer({ answerId, value: newAnswer });
+		updateAnswer({ answerId, value: { ...newAnswer } });
 	};
 
 	// --------------------------- handlers ----------------------------
 
-	const handleAddNested = () => {};
+	// ISSUE: second function crashes because first one doesn't update store in time
+	const handleAddNested = () => {
+		const sectionName = getNewName();
+		const e = { target: { name: "nestedTarget", sectionName } };
+		addSectionToSections({ sectionName });
+		editAnswer(e);
+		// TODO: addSectioTOSections after rerender when new target comes in from store
+	};
+
+	// const sectionNames = sections.map((s) => s.name);
+	// console.log(sectionNames);
+	// useEffect(() => {
+	// 	const newTarget = target.find((t) => !sectionNames.includes(t));
+	// 	console.log({ newTarget });
+	// 	if (newTarget)
+	// }, [target, addSectionToSections]);
 
 	const handleAddLinked = () => {};
 
@@ -227,8 +255,8 @@ export const Answer = ({
 				select
 				SelectProps={{ multiple: true }}
 				fullWidth
-				name="followUp"
-				value={followUp.after}
+				name="after"
+				value={after}
 				inputProps={{ id: followUpId }}
 				onChange={editAnswer}
 			>
@@ -248,14 +276,17 @@ export const Answer = ({
 		</>
 	);
 
-	const fields = followUp.target.map((target, i) => {
-		const sectionData = getSectionData(target);
+	const fields = target.map((t, i) => {
+		const sectionData = getSectionData(t);
+
+		if (!sectionData) return "ERROR";
+
 		const isFirst = i === 0;
-		const isLast = i === followUp.target.length - 1;
+		const isLast = i === target.length - 1;
 		return (
 			<Section
-				key={target}
-				sectionName={target}
+				key={t}
+				sectionName={t}
 				{...{ sectionData, isFirst, isLast, selectors }}
 				operations={curriedOperations}
 			/>
@@ -264,11 +295,11 @@ export const Answer = ({
 
 	const fieldsFooter = (
 		<ButtonGroup fullWidth variant="outlined">
-			<Tooltip title="Create a new section.">
-				<Button children="New Nested Section" onClick={handleAddNested} />
+			<Tooltip title="Create a new section within the answer.">
+				<Button children="New Nested Follow-up" onClick={handleAddNested} />
 			</Tooltip>
-			<Tooltip title="Choose an existing section from the Optional Queue. If reached, it will get removed from Optional Queue.">
-				<Button children="New Section Reference" onClick={handleAddLinked} />
+			<Tooltip title="Choose an existing section from Optional Queue. If reached, it will get removed from Optional Queue.">
+				<Button children="New Follow-up Reference" onClick={handleAddLinked} />
 			</Tooltip>
 		</ButtonGroup>
 	);
@@ -276,8 +307,8 @@ export const Answer = ({
 	return (
 		<Division
 			heading={text}
+			headingPrefix="A"
 			body={body}
-			fieldsHeader="Follow-up sections:"
 			fields={fields}
 			fieldsFooter={fieldsFooter}
 			form={form}
