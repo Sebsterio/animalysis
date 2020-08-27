@@ -74,6 +74,9 @@ export const Answer = ({
 		target.includes(section.name)
 	);
 
+	const isSectionLinked = (sectionName) =>
+		optionalSections.some((section) => section.name === sectionName);
+
 	// --------------------- Edit answer handler ----------------------
 
 	// Include non-empty answerProps in data to submit
@@ -287,17 +290,18 @@ export const Answer = ({
 		const sectionData = getSectionData(t);
 		const isFirst = i === 0;
 		const isLast = i === target.length - 1;
+		const isLinked = isSectionLinked(t);
 		return (
 			<Section
 				key={t}
 				sectionName={t}
 				{...{ sectionData, isFirst, isLast, selectors, helpers }}
 				operations={curriedOperations}
+				headingPrefix={isLinked ? "Ref" : null}
 			/>
 		);
 	});
 
-	console.log({ optionalSections });
 	/* Follow-up link picker */
 	if (pickerOpen) {
 		fields.push(

@@ -210,8 +210,6 @@ export const useSurveyState = () => {
 	};
 
 	const deleteAnswer = ({ sectionName, questionId, answerId }) => {
-		console.log({ sectionName, questionId, answerId });
-		//////////
 		const selector = (answer) => answer.id === answerId;
 		modifyAnswers(sectionName, questionId, (answers) =>
 			makeArrayWithRemovedItems(answers, null, selector)
@@ -227,8 +225,6 @@ export const useSurveyState = () => {
 	};
 
 	const updateAnswer = ({ sectionName, questionId, answerId, value }) => {
-		console.log({ sectionName, questionId, answerId, value });
-		/////////////////
 		const selector = (answer) => answer.id === answerId;
 		const modifier = typeof value === "function" ? value : () => ({ ...value });
 		modifyAnswers(sectionName, questionId, (answers) =>

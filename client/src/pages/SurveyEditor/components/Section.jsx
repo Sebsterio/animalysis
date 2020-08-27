@@ -14,6 +14,7 @@ export const Section = ({
 	operations,
 	selectors,
 	helpers,
+	headingPrefix,
 }) => {
 	const {
 		modifySectionTitle,
@@ -97,6 +98,7 @@ export const Section = ({
 		<Division
 			heading={title}
 			headingVariant="h6"
+			headingPrefix={headingPrefix}
 			form={form}
 			fields={fields}
 			fieldsFooter={fieldsFooter}
