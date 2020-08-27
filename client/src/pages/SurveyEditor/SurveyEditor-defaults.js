@@ -36,22 +36,31 @@ export const defaultAnswer = {
 
 // TEMP ========================
 
-export const initialAnswer = {
+const getinitialAnswer = (n) => ({
 	id: "initialAnswer",
-	text: "Initial answer",
-	alert: 3,
-	print: "Stuff",
-};
+	text: "Test answer " + n,
+	alert: n,
+	print: (() =>
+		Math.random() < 0.3
+			? "Hey how's it goin'"
+			: Math.random() < 0.3
+			? "Not too shabby"
+			: "")(),
+});
 
-export const initialQuestion = {
+const getinitialQuestion = (n) => ({
 	id: "initialQuestion",
-	label: "Initial question",
+	label: "Test question " + n,
 	type: "select-one",
-	answers: [{ ...initialAnswer }],
-};
+	answers: [getinitialAnswer(1), getinitialAnswer(2), getinitialAnswer(3)],
+});
 
 export const initialSection = {
 	id: "initialSection",
-	title: "Initial section",
-	questions: [{ ...initialQuestion }],
+	title: "Test section",
+	questions: [
+		getinitialQuestion(1),
+		getinitialQuestion(2),
+		getinitialQuestion(3),
+	],
 };
