@@ -40,8 +40,10 @@ export const Question = ({
 
 	const copyQuestion = () => {
 		let newQuestion = { id, label, type, answers };
-		if (type === "text")
-			newQuestion = { ...newQuestion, setsTitle, lengthLimit };
+		if (type === "text") {
+			newQuestion = { ...newQuestion, setsTitle };
+			if (lengthLimit > 0) newQuestion = { ...newQuestion, lengthLimit };
+		}
 		return newQuestion;
 	};
 
