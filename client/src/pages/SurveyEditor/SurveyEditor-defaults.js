@@ -19,6 +19,9 @@ export const defaultQueues = {
 	},
 };
 
+export const message_optionalQueueIsEmpty =
+	"There are currently no sections in Optional Queue.";
+
 export const defaultSection = {
 	title: "Section name...",
 	questions: [],

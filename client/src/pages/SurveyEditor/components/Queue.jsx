@@ -21,7 +21,6 @@ export const Queue = ({
 	selectors,
 	operations,
 	helpers,
-	showPopover,
 }) => {
 	const {
 		addSectionToQueue,
@@ -29,6 +28,7 @@ export const Queue = ({
 		deleteSectionFromQueue,
 		deleteSectionFromSections,
 		moveSection,
+		showPopover,
 	} = operations;
 	const { getSectionData } = selectors;
 	const { getNewName } = helpers;

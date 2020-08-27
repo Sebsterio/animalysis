@@ -15,6 +15,7 @@ import {
 	makeNestedTargetEvent,
 	getAlertMessage,
 } from "../SurveyEditor-utils";
+import { message_optionalQueueIsEmpty } from "../SurveyEditor-defaults";
 
 // ----------------------------------------------------------
 
@@ -47,6 +48,7 @@ export const Answer = ({
 		updateAnswer,
 		addSectionToSections,
 		deleteSectionFromSections,
+		showPopover,
 	} = operations;
 
 	const {
@@ -114,7 +116,9 @@ export const Answer = ({
 		editAnswer(makeNestedTargetEvent("add", sectionName));
 	};
 
-	const handleAddLinked = () => {
+	const handleAddLinked = (e) => {
+		const msg = message_optionalQueueIsEmpty;
+		if (optionalQueueEmpty) return showPopover(e, msg);
 		const sectionName = optionalQueue[0];
 		editAnswer(makeNestedTargetEvent("add", sectionName));
 	};
@@ -278,11 +282,7 @@ export const Answer = ({
 				<Button children="New Nested Follow-up" onClick={handleAddNested} />
 			</Tooltip>
 			<Tooltip title="Choose an existing section from Optional Queue. If reached, it will get removed from Optional Queue.">
-				<Button
-					children="New Follow-up Reference"
-					onClick={handleAddLinked}
-					disabled={optionalQueueEmpty}
-				/>
+				<Button children="New Follow-up Reference" onClick={handleAddLinked} />
 			</Tooltip>
 		</ButtonGroup>
 	);
