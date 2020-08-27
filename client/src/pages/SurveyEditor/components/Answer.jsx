@@ -157,7 +157,8 @@ export const Answer = ({
 	const curriedOperations = {
 		...operations,
 		deleteSection: ({ sectionName }) => {
-			deleteSectionFromSections({ sectionName });
+			if (!isSectionLinked(sectionName))
+				deleteSectionFromSections({ sectionName });
 			editAnswer(makeNestedTargetEvent("delete", sectionName));
 		},
 		moveSection: ({ sectionName, direction }) =>
