@@ -45,17 +45,18 @@ export const surveyData = (pet) => ({
 					type: "select-multiple",
 					answers: [
 						{
-							text: "Nose",
+							text:
+								"Nose (schedule follo-up Nose Exam at the end of the queue)",
 							followUp: {
 								target: "nose_exam",
-								after: "all",
+								after: ["all"],
 							},
 						},
 						{
-							text: "Ears",
+							text: "Ears (schedule follo-up Ears Exam after this question)",
 							followUp: {
 								target: "ears_exam",
-								after: "all",
+								after: ["none"],
 							},
 						},
 						{
@@ -113,6 +114,7 @@ export const surveyData = (pet) => ({
 							text: "Yes",
 							followUp: {
 								target: "bleeding_exam",
+								after: "none",
 							},
 						},
 						{ text: "No" },
@@ -145,6 +147,7 @@ export const surveyData = (pet) => ({
 							alert: 2,
 							followUp: {
 								target: ["behaviour_exam", "bleeding_exam"],
+								after: "none",
 							},
 						},
 						{
@@ -174,6 +177,7 @@ export const surveyData = (pet) => ({
 							text: "More than normal",
 							followUp: {
 								target: "increased_urination",
+								after: "none",
 							},
 						},
 					],
@@ -187,6 +191,7 @@ export const surveyData = (pet) => ({
 							alert: 2,
 							followUp: {
 								target: "bleeding_exam",
+								after: "none",
 							},
 						},
 						{
@@ -320,6 +325,7 @@ export const surveyData = (pet) => ({
 							text: "Skin wound",
 							followUp: {
 								target: "skin_wound",
+								after: "none",
 							},
 						},
 						{
@@ -358,6 +364,7 @@ export const surveyData = (pet) => ({
 							text: "yes",
 							followUp: {
 								target: "skin_wound",
+								after: "none",
 							},
 						},
 						{
