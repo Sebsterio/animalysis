@@ -192,7 +192,13 @@ export const Answer = ({
 
 			{/* followUp after*/}
 
-			<Typography component="label" htmlFor={followUpId} children="Follow-up" />
+			<Tooltip title="If chosen section is already completed, the follow-up will appear after this question.">
+				<Typography
+					component="label"
+					htmlFor={followUpId}
+					children="Follow-up"
+				/>
+			</Tooltip>
 			<TextField
 				select
 				SelectProps={{ multiple: true }}
@@ -219,8 +225,8 @@ export const Answer = ({
 	);
 
 	const fields = followUp.target.map((target, i) => {
-		// const isFirst = i === 0;
-		// const isLast = i === answers.length - 1;
+		const isFirst = i === 0;
+		const isLast = i === fields.length - 1;
 		return <div key={answerProps.id}>{target}</div>;
 	});
 
