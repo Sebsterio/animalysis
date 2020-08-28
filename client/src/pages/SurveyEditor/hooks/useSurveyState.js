@@ -33,9 +33,7 @@ export const useSurveyState = () => {
 
 	const getNewName = () => "_" + getNewId();
 
-	const helpers = {
-		getNewName,
-	};
+	const helpers = { getNewName };
 
 	// --------------------- Selectors ---------------------
 
@@ -128,11 +126,11 @@ export const useSurveyState = () => {
 
 	const deleteSectionFromSections = ({ sectionName }) => {
 		deleteSectionFromAllAnswerTargets(sectionName);
-		// setSections((sections) => {
-		// 	const newSections = { ...sections };
-		// 	delete newSections[sectionName];
-		// 	return newSections;
-		// });
+		setSections((sections) => {
+			const newSections = { ...sections };
+			delete newSections[sectionName];
+			return newSections;
+		});
 	};
 
 	const modifySectionProp = (sectionName, prop, value) => {
@@ -232,7 +230,7 @@ export const useSurveyState = () => {
 		);
 	};
 
-	// Messy but quick solution. TODO: improve
+	// Messy quick solution...
 	const deleteSectionFromAllAnswerTargets = (sectionToRemove) => {
 		Object.entries(sections).forEach(([sectionName, { questions }]) => {
 			questions.forEach(({ id: questionId, answers }) => {

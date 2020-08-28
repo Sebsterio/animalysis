@@ -10,6 +10,7 @@ import { Section, Division } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
 import {
+	includeInputValue,
 	makeModifiedAfter,
 	makeModifiedTarget,
 	makeNestedTargetEvent,
@@ -20,7 +21,7 @@ import {
 	message_allOptionalSectionsAdded,
 } from "../SurveyEditor-defaults";
 
-// ----------------------------------------------------------
+// -------------- This is the result of notusing Redux... --------------
 
 export const Answer = ({
 	answerProps,
@@ -37,8 +38,8 @@ export const Answer = ({
 		printNote = "",
 		alert = 0,
 		followUp = {
-			after: ["none"],
-			target: [],
+			after: ["none"], // TODO: rename to "targets"
+			target: [], // TODO: rename to "sections"
 		},
 	} = answerProps;
 
@@ -60,22 +61,26 @@ export const Answer = ({
 		getOptionalQueueNamesAndTitles,
 	} = selectors;
 
-	const sections = getSectionsNamesAndTitles();
-	const optionalSections = getOptionalQueueNamesAndTitles();
-	const noOptionalSections = !optionalSections.length;
-
 	const { getNewName } = helpers;
 
 	const c = useStyles();
 
-	const isFollowUpAdded = (section) => target.includes(section.name);
+	const sections = getSectionsNamesAndTitles();
+	const optionalSections = getOptionalQueueNamesAndTitles();
+	const noOptionalSections = !optionalSections.length;
 
-	const allOptionalSectionsAdded = optionalSections.every((section) =>
-		target.includes(section.name)
+	const isOptionalSectionAddedAsFollowUp = (section) =>
+		target.includes(section.name);
+
+	const areAllOptionalSectionsAddedAsFollowUps = optionalSections.every(
+		(section) => target.includes(section.name)
 	);
 
-	const isSectionLinked = (sectionName) =>
+	const isFollowUpInOptionalQueue = (sectionName) =>
 		optionalSections.some((section) => section.name === sectionName);
+
+	const isSectionNested = (sectionName) =>
+		!isFollowUpInOptionalQueue(sectionName);
 
 	// --------------------- Edit answer handler ----------------------
 
@@ -87,14 +92,6 @@ export const Answer = ({
 		if (alert !== 0) newAnswer.alert = alert;
 		if (!!target.length) newAnswer.followUp = { after, target };
 		return newAnswer;
-	};
-
-	// Choose correct input prop and convert format if needed
-	const includeInputValue = (newAnswer, e) => {
-		let { type, name, value, checked } = e.target;
-		if (type === "number") value = Number(value);
-		else if (type === "checkbox") value = checked;
-		newAnswer[name] = value;
 	};
 
 	// Selecting 'none' or 'all' deselects all other options
@@ -120,46 +117,53 @@ export const Answer = ({
 		updateAnswer({ answerId, value: { ...newAnswer } });
 	};
 
-	// ------------------------ Other handlers -------------------------
+	// ------------------ Add-linked-section handler -------------------
 
 	const [pickerOpen, setPickerOpen] = useState(false);
 
-	const handleAddLinked = (e) => {
+	// On right Button click, open picker or show error popup
+	const handleAddLinkedSection = (e) => {
 		if (noOptionalSections) showPopover(e, message_optionalQueueIsEmpty);
-		else if (allOptionalSectionsAdded)
+		else if (areAllOptionalSectionsAddedAsFollowUps)
 			showPopover(e, message_allOptionalSectionsAdded);
-		else if (!pickerOpen) setPickerOpen(true); // -> addLinkedSection(sectionName)
+		else if (!pickerOpen) setPickerOpen(true);
 	};
 
+	// On picker option selected, add section
 	const addLinkedSection = (e) => {
 		const sectionName = e.target.value;
 		editAnswer(makeNestedTargetEvent("add", sectionName));
 		setPickerOpen(false);
 	};
 
-	const handleAddNested = () => {
+	// ------------------------ Other handlers -------------------------
+
+	// On left button click, add section
+	const handleAddNestedSection = () => {
 		const sectionName = getNewName();
 		addSectionToSections({ sectionName });
 		editAnswer(makeNestedTargetEvent("add", sectionName));
 	};
 
-	const handleDelete = () => {
+	const handleDeleteAnswer = () => {
 		const confirmed = window.confirm("Delete answer?");
 		if (confirmed) deleteAnswer({ answerId });
 	};
 
-	const handleMoveUp = () => moveAnswer({ answerId, direction: "up" });
+	const handleMoveAnswerUp = () => moveAnswer({ answerId, direction: "up" });
 
-	const handleMoveDown = () => moveAnswer({ answerId, direction: "down" });
+	const handleMoveAnswerDown = () =>
+		moveAnswer({ answerId, direction: "down" });
 
 	// ----------------- Drilled props modifications ------------------
 
-	const curriedOperations = {
+	const modifiedOperations = {
 		...operations,
+		// If section is nested, remove its data from "sections" store
+		// Remove section refrence from "target" list
 		deleteSection: ({ sectionName }) => {
-			if (!isSectionLinked(sectionName))
-				deleteSectionFromSections({ sectionName });
 			editAnswer(makeNestedTargetEvent("delete", sectionName));
+			if (isSectionNested) deleteSectionFromSections({ sectionName });
 		},
 		moveSection: ({ sectionName, direction }) =>
 			editAnswer(makeNestedTargetEvent("move", sectionName, direction)),
@@ -287,23 +291,20 @@ export const Answer = ({
 
 	const pickerId = "followUpPicker";
 
-	const fields = target.map((t, i) => {
-		const sectionData = getSectionData(t);
-		const isFirst = i === 0;
-		const isLast = i === target.length - 1;
-		const isLinked = isSectionLinked(t);
-		return (
-			<Section
-				key={t}
-				sectionName={t}
-				{...{ sectionData, isFirst, isLast, selectors, helpers }}
-				operations={curriedOperations}
-				headingPrefix={isLinked ? "Ref" : null}
-			/>
-		);
-	});
+	const fields = target.map((targetSection, i) => (
+		<Section
+			key={targetSection}
+			sectionName={targetSection}
+			sectionData={getSectionData(targetSection)}
+			isFirst={i === 0}
+			isLast={i === target.length - 1}
+			headingPrefix={!isSectionNested(targetSection) ? "Ref" : null}
+			operations={modifiedOperations}
+			{...{ selectors, helpers }}
+		/>
+	));
 
-	/* Follow-up link picker */
+	// Follow-up link picker
 	if (pickerOpen) {
 		fields.push(
 			<div key="picker" className={c.form}>
@@ -319,7 +320,8 @@ export const Answer = ({
 					onChange={addLinkedSection}
 				>
 					{optionalSections
-						.filter((section) => !isFollowUpAdded(section))
+						// Prevent linking the same section twice
+						.filter((section) => !isOptionalSectionAddedAsFollowUp(section))
 						.map(({ name, title }) => (
 							<MenuItem value={name} key={name} children={title} />
 						))}
@@ -331,13 +333,21 @@ export const Answer = ({
 	const fieldsFooter = (
 		<ButtonGroup fullWidth variant="outlined">
 			<Tooltip title="Create a new section within the answer.">
-				<Button children="New Nested Follow-up" onClick={handleAddNested} />
+				<Button
+					children="New Nested Follow-up"
+					onClick={handleAddNestedSection}
+				/>
 			</Tooltip>
 			<Tooltip title="Choose an existing section from Optional Queue. If reached, it will get removed from Optional Queue.">
-				<Button children="New Follow-up Reference" onClick={handleAddLinked} />
+				<Button
+					children="New Follow-up Reference"
+					onClick={handleAddLinkedSection}
+				/>
 			</Tooltip>
 		</ButtonGroup>
 	);
+
+	// -------------------------
 
 	return (
 		<Division
@@ -350,9 +360,9 @@ export const Answer = ({
 			formType="grid"
 			isFirst={isFirst}
 			isLast={isLast}
-			handleDelete={handleDelete}
-			handleMoveUp={handleMoveUp}
-			handleMoveDown={handleMoveDown}
+			handleDelete={handleDeleteAnswer}
+			handleMoveUp={handleMoveAnswerUp}
+			handleMoveDown={handleMoveAnswerDown}
 		/>
 	);
 };

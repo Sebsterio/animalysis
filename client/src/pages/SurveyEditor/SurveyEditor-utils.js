@@ -4,15 +4,27 @@ import {
 	makeArrayWithMovedItem,
 } from "utils/array";
 
-export const stopPropagation = (e) => e.stopPropagation();
+// Add correct input prop to data to be submitted
+// Convert format if needed
+export const includeInputValue = (data, e) => {
+	let { type, name, value, checked } = e.target;
+	if (type === "number") value = Number(value);
+	else if (type === "checkbox") value = checked;
+	data[name] = value;
+};
 
+// move-up/down util
 export const getStepsFromDirection = (direction) =>
 	direction === "down" ? 1 : direction === "up" ? -1 : 0;
 
+// fake event object holding data about "target" input action
 export const makeNestedTargetEvent = (action, sectionName, direction) => ({
 	target: { name: "target", action, sectionName, direction },
 });
 
+// "after" input event value modifier
+// selecting 'none' or 'all' deselcts all sectionNames options
+// selecting an sectionNames option deselcts 'none' and 'all'
 export const makeModifiedAfter = (e, currentAfter) => {
 	let { value } = e.target;
 	return value.includes("none")
@@ -26,6 +38,8 @@ export const makeModifiedAfter = (e, currentAfter) => {
 		: value;
 };
 
+// "target" input event value modifier
+// handles add/delete/move target
 export const makeModifiedTarget = (e, currentTarget) => {
 	const { sectionName, action, direction } = e.target;
 	return action === "add"

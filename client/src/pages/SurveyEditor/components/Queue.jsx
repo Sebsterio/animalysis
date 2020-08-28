@@ -39,7 +39,7 @@ export const Queue = ({
 
 	const handleInfoClick = (e) => showPopover(e, info);
 
-	const handleAdd = () => {
+	const handleAddSection = () => {
 		const sectionName = getNewName();
 		addSectionToSections({ sectionName });
 		addSectionToQueue({ queueName, sectionName });
@@ -47,7 +47,7 @@ export const Queue = ({
 
 	// ----------------- Drilled props modifications ------------------
 
-	const curriedOperations = {
+	const modifiedOperations = {
 		...operations,
 		deleteSection: (data) => {
 			deleteSectionFromSections(data);
@@ -78,25 +78,16 @@ export const Queue = ({
 
 			<AccordionDetails
 				className={c.accordionDetails}
-				children={list.map((sectionName, i) => {
-					const sectionData = getSectionData(sectionName);
-					const isFirst = i === 0;
-					const isLast = i === list.length - 1;
-					return (
-						<Section
-							{...{
-								key: sectionName,
-								sectionName,
-								sectionData,
-								isFirst,
-								isLast,
-								selectors,
-								helpers,
-								operations: curriedOperations,
-							}}
-						/>
-					);
-				})}
+				children={list.map((sectionName, i) => (
+					<Section
+						key={sectionName}
+						sectionData={getSectionData(sectionName)}
+						operations={modifiedOperations}
+						isFirst={i === 0}
+						isLast={i === list.length - 1}
+						{...{ sectionName, selectors, helpers }}
+					/>
+				))}
 			/>
 
 			{/* ------------ New Section button ------------ */}
@@ -106,7 +97,7 @@ export const Queue = ({
 					fullWidth
 					variant="outlined"
 					children="New Section"
-					onClick={handleAdd}
+					onClick={handleAddSection}
 				/>
 			</AccordionDetails>
 		</Accordion>

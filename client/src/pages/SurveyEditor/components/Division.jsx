@@ -14,23 +14,40 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 import { useStyles } from "../SurveyEditor-styles";
 
+/*********************************************************************
+ * Container for Section, Question, and Answer
+ *
+ * Has three modes:
+ * 	- Viewer - compact and non-editable; has buttons for:
+ * 		- Switch to other modes
+ * 		- Delete parent
+ * 		- Move parent up/down
+ * 	- Config-editor - form for editing various parameters of parent
+ * 	- Fields-editor - list of children
+ *
+ * "Done" button, ENTER-key, and click-away event - switch mode to "viewer"
+ *********************************************************************/
+
 export const Division = ({
-	heading,
-	headingVariant = "body1",
-	headingPrefix,
-	body,
-	fields,
-	fieldsType = "stack",
-	fieldsHeader,
-	fieldsFooter,
+	// ------------ Viewer ------------
+	heading, // (String)
+	headingVariant = "body1", // Typography prop
+	headingPrefix, // (String)
+	body, // (String | Component)
+	isFirst, // is move-up button disabled
+	isLast, // is move-down button disabled
 	fieldsButtonDisabled,
-	form,
-	formType = "row",
-	isFirst,
-	isLast,
 	handleDelete,
 	handleMoveUp,
 	handleMoveDown,
+	// --------- Fields editor --------
+	fields, // (Component)
+	fieldsType = "stack", // 'stack' | 'grid'
+	fieldsHeader, // (String | Component)
+	fieldsFooter, // (String | Component)
+	// --------- Config editor --------
+	form, // (Component)
+	formType = "row", // 'row' | 'grid'
 }) => {
 	const c = useStyles();
 

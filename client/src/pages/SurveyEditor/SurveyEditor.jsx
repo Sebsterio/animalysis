@@ -24,7 +24,7 @@ export const SurveyEditor = () => {
 
 	const [selectors, operations, helpers] = useSurveyState();
 
-	const extendedOperations = { ...operations, showPopover };
+	const modifiedOperations = { ...operations, showPopover };
 
 	const queues = selectors.getQueues();
 
@@ -36,7 +36,7 @@ export const SurveyEditor = () => {
 				<Queue
 					key={queueName}
 					{...{ queueName, queueProps, selectors, helpers }}
-					operations={extendedOperations}
+					operations={modifiedOperations}
 				/>
 			))}
 

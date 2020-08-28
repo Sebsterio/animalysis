@@ -34,23 +34,25 @@ export const Section = ({
 
 	// ---------------------------- Handlers -----------------------------
 
-	const handleTitleInput = (e) =>
+	const handleSectionTitleInput = (e) =>
 		modifySectionTitle({ sectionName, value: e.target.value });
 
-	const handleDelete = () => {
+	const handleDeleteSection = () => {
 		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
 		if (confirmed) deleteSection({ sectionName });
 	};
 
-	const handleAdd = () => addQuestion({ sectionName });
+	const handleAddQuestion = () => addQuestion({ sectionName });
 
-	const handleMoveUp = () => moveSection({ sectionName, direction: "up" });
+	const handleMoveSectionUp = () =>
+		moveSection({ sectionName, direction: "up" });
 
-	const handleMoveDown = () => moveSection({ sectionName, direction: "down" });
+	const handleMoveSectionDown = () =>
+		moveSection({ sectionName, direction: "down" });
 
 	// ----------------- Drilled props modifications ------------------
 
-	const curriedOperations = {
+	const modifiedOperations = {
 		...operations,
 		updateQuestion: (data) => updateQuestion({ sectionName, ...data }),
 		deleteQuestion: (data) => deleteQuestion({ sectionName, ...data }),
@@ -63,36 +65,40 @@ export const Section = ({
 
 	// ------------------------------ View -------------------------------
 
+	// Viewer
+
 	const form = (
 		<TextField
 			autoFocus
 			fullWidth
 			value={title}
-			onChange={handleTitleInput}
+			onChange={handleSectionTitleInput}
 			className={c.heading}
 		/>
 	);
 
-	const fields = questions.map((questionProps, i) => {
-		const isFirst = i === 0;
-		const isLast = i === questions.length - 1;
-		return (
-			<Question
-				key={questionProps.id}
-				{...{ questionProps, isFirst, isLast, selectors, helpers }}
-				operations={curriedOperations}
-			/>
-		);
-	});
+	// Fields editor
+
+	const fields = questions.map((questionProps, i) => (
+		<Question
+			key={questionProps.id}
+			isFirst={i === 0}
+			isLast={i === questions.length - 1}
+			operations={modifiedOperations}
+			{...{ questionProps, selectors, helpers }}
+		/>
+	));
 
 	const fieldsFooter = (
 		<Button
 			fullWidth
 			variant="outlined"
 			children="New Question"
-			onClick={handleAdd}
+			onClick={handleAddQuestion}
 		/>
 	);
+
+	// ---------
 
 	return (
 		<Division
@@ -104,9 +110,9 @@ export const Section = ({
 			fieldsFooter={fieldsFooter}
 			isFirst={isFirst}
 			isLast={isLast}
-			handleDelete={handleDelete}
-			handleMoveUp={handleMoveUp}
-			handleMoveDown={handleMoveDown}
+			handleDelete={handleDeleteSection}
+			handleMoveUp={handleMoveSectionUp}
+			handleMoveDown={handleMoveSectionDown}
 		/>
 	);
 };

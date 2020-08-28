@@ -7,7 +7,9 @@ import Button from "@material-ui/core/Button";
 
 import { Division, Answer } from "./index";
 
-// ----------------------------------------------------------
+import { includeInputValue } from "../SurveyEditor-utils";
+
+// ------------------------------------------------------------------
 
 export const Question = ({
 	questionProps,
@@ -25,7 +27,9 @@ export const Question = ({
 		lengthLimit = 0,
 		answers,
 	} = questionProps;
+
 	const questionId = id;
+
 	const {
 		updateQuestion,
 		deleteQuestion,
@@ -36,24 +40,20 @@ export const Question = ({
 		updateAnswer,
 	} = operations;
 
-	// --------------------- Edit question handler ----------------------
+	// --------------------- Edit-question handler ----------------------
 
 	const copyQuestion = () => {
 		let newQuestion = { id, label, type, answers };
 		if (type === "text") {
-			newQuestion = { ...newQuestion, setsTitle };
+			if (setsTitle) newQuestion = { ...newQuestion, setsTitle };
 			if (lengthLimit > 0) newQuestion = { ...newQuestion, lengthLimit };
 		}
 		return newQuestion;
 	};
 
-	const includeInputValue = (newQuestion, e) => {
-		let { type, name, value, checked } = e.target;
-		if (type === "number") value = Number(value);
-		else if (checked !== undefined) value = checked;
-		newQuestion[name] = value;
-	};
-
+	// Update question in store
+	// Don't include questionProps with default values (i.e. empty)
+	// Include event input in correct format
 	const editQuestion = (e) => {
 		let newQuestion = copyQuestion();
 		includeInputValue(newQuestion, e);
@@ -62,20 +62,22 @@ export const Question = ({
 
 	// ------------------------- Other handlers --------------------------
 
-	const handleDelete = () => {
+	const handleDeleteQuestion = () => {
 		const confirmed = window.confirm("Permanently delete question?");
 		if (confirmed) deleteQuestion({ questionId });
 	};
 
-	const handleAdd = () => addAnswer({ questionId });
+	const handleAddAnswer = () => addAnswer({ questionId });
 
-	const handleMoveUp = () => moveQuestion({ questionId, direction: "up" });
+	const handleMoveQuestionUp = () =>
+		moveQuestion({ questionId, direction: "up" });
 
-	const handleMoveDown = () => moveQuestion({ questionId, direction: "down" });
+	const handleMoveQuestionDown = () =>
+		moveQuestion({ questionId, direction: "down" });
 
 	// ------------------ Drilled props modifications ------------------
 
-	const curriedOperations = {
+	const modifiedOperations = {
 		...operations,
 		deleteAnswer: (data) => deleteAnswer({ questionId, ...data }),
 		moveAnswer: (data) => moveAnswer({ questionId, ...data }),
@@ -83,6 +85,8 @@ export const Question = ({
 	};
 
 	// ------------------------------ View -------------------------------
+
+	// Config editor
 
 	const labelId = id + "-label";
 	const typeId = id + "-type";
@@ -152,26 +156,28 @@ export const Question = ({
 		</>
 	);
 
-	const fields = answers.map((answerProps, i) => {
-		const isFirst = i === 0;
-		const isLast = i === answers.length - 1;
-		return (
-			<Answer
-				key={answerProps.id}
-				{...{ answerProps, isFirst, isLast, selectors, helpers }}
-				operations={curriedOperations}
-			/>
-		);
-	});
+	// Fields editor
+
+	const fields = answers.map((answerProps, i) => (
+		<Answer
+			key={answerProps.id}
+			isFirst={i === 0}
+			isLast={i === answers.length - 1}
+			operations={modifiedOperations}
+			{...{ answerProps, selectors, helpers }}
+		/>
+	));
 
 	const fieldsFooter = (
 		<Button
 			fullWidth
 			variant="outlined"
 			children="New Answer"
-			onClick={handleAdd}
+			onClick={handleAddAnswer}
 		/>
 	);
+
+	// -------------
 
 	return (
 		<Division
@@ -185,9 +191,9 @@ export const Question = ({
 			formType="grid"
 			isFirst={isFirst}
 			isLast={isLast}
-			handleDelete={handleDelete}
-			handleMoveUp={handleMoveUp}
-			handleMoveDown={handleMoveDown}
+			handleDelete={handleDeleteQuestion}
+			handleMoveUp={handleMoveQuestionUp}
+			handleMoveDown={handleMoveQuestionDown}
 		/>
 	);
 };
