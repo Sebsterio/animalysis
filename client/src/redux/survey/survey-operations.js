@@ -35,7 +35,7 @@ export const startRoutineCheck = (data, history) => (dispatch) =>
 // Add primer section to mainQueue and set alert to green
 export const startProblemReport = (data, history) => (dispatch) => {
 	let { problemIntro, mainQueue } = data;
-	mainQueue = [problemIntro, ...mainQueue];
+	mainQueue = [...problemIntro, ...mainQueue];
 	dispatch(
 		initSurvey({ ...data, mainQueue, alert: 1, title: "New Problem" }, history)
 	);
