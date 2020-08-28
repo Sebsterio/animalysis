@@ -79,6 +79,9 @@ export const useStyles = makeStyles((theme) => ({
 	mTop1: {
 		marginTop: theme.spacing(1),
 	},
+	mBottom2: {
+		marginBottom: theme.spacing(2),
+	},
 	bold: {
 		fontWeight: "bold",
 	},

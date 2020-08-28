@@ -305,47 +305,52 @@ export const Answer = ({
 		/>
 	));
 
-	// Follow-up link picker
-	if (pickerOpen) {
-		fields.push(
-			<div key="picker" className={c.form}>
-				<Typography
-					component="label"
-					htmlFor={pickerId}
-					children="Optional Queue sections"
-				/>
-				<TextField
-					select
-					fullWidth
-					inputProps={{ id: pickerId }}
-					onChange={addLinkedSection}
-				>
-					{optionalSections
-						// Prevent linking the same section twice
-						.filter((section) => !isOptionalSectionAddedAsFollowUp(section))
-						.map(({ name, title }) => (
-							<MenuItem value={name} key={name} children={title} />
-						))}
-				</TextField>
-			</div>
-		);
-	}
-
 	const fieldsFooter = (
-		<ButtonGroup fullWidth variant="outlined">
-			<Tooltip title="Create a new section within the answer.">
-				<Button
-					children="New Nested Follow-up"
-					onClick={handleAddNestedSection}
-				/>
-			</Tooltip>
-			<Tooltip title="Choose an existing section from Optional Queue. If reached, it will get removed from Optional Queue.">
-				<Button
-					children="New Follow-up Reference"
-					onClick={handleAddLinkedSection}
-				/>
-			</Tooltip>
-		</ButtonGroup>
+		<>
+			{
+				// Follow-up link picker
+				pickerOpen && (
+					<div className={c.mBottom2}>
+						<div className={c.form}>
+							<Typography
+								component="label"
+								htmlFor={pickerId}
+								children="Reference:"
+							/>
+							<TextField
+								select
+								fullWidth
+								inputProps={{ id: pickerId }}
+								onChange={addLinkedSection}
+							>
+								{optionalSections
+									// Prevent linking the same section twice
+									.filter(
+										(section) => !isOptionalSectionAddedAsFollowUp(section)
+									)
+									.map(({ name, title }) => (
+										<MenuItem value={name} key={name} children={title} />
+									))}
+							</TextField>
+						</div>
+					</div>
+				)
+			}
+			<ButtonGroup fullWidth variant="outlined">
+				<Tooltip title="Create a new section within the answer.">
+					<Button
+						children="New Nested Follow-up"
+						onClick={handleAddNestedSection}
+					/>
+				</Tooltip>
+				<Tooltip title="Choose an existing section from Optional Queue. If reached, it will get removed from Optional Queue.">
+					<Button
+						children="New Follow-up Reference"
+						onClick={handleAddLinkedSection}
+					/>
+				</Tooltip>
+			</ButtonGroup>
+		</>
 	);
 
 	// -------------------------
