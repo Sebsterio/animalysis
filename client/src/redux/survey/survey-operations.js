@@ -1,3 +1,4 @@
+import shortid from "shortid";
 import {
 	getCurrentLocation,
 	getCurrentLocationHistoryIndex,
@@ -19,26 +20,38 @@ import {
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { addReportToPet } from "redux/pets/pets-actions";
+import { getPersonalizedSurveyData } from "./survey-utils";
 import { arrayify } from "utils/array";
-import shortid from "shortid";
+
+// TODO: move to redux
+import { surveyData } from "redux/survey/survey-data";
 
 // TEMP
 export const callClinic = () => alert("CALL_CLINIC--STUB");
 
 // --------------------- Initialization -------------------------
 
-export const startRoutineCheck = (data, history) => (dispatch) =>
-	dispatch(
-		initSurvey({ ...data, alert: 0, title: "Routine Health Check" }, history)
-	);
+export const startRoutineCheck = (pet, history) => (dispatch) => {
+	const data = {
+		...getPersonalizedSurveyData(surveyData, pet),
+		petId: pet.id,
+		alert: 0,
+		title: "Routine Health Check",
+	};
+	dispatch(initSurvey(data, history));
+};
 
 // Add primer section to mainQueue and set alert to green
-export const startProblemReport = (data, history) => (dispatch) => {
-	let { problemIntro, mainQueue } = data;
-	mainQueue = [...problemIntro, ...mainQueue];
-	dispatch(
-		initSurvey({ ...data, mainQueue, alert: 1, title: "New Problem" }, history)
-	);
+export const startProblemReport = (pet, history) => (dispatch) => {
+	const data = {
+		...getPersonalizedSurveyData(surveyData, pet),
+		petId: pet.id,
+		alert: 1,
+		title: "New Problem",
+	};
+	const { problemIntro, mainQueue } = data;
+	data.mainQueue = [...problemIntro, ...mainQueue];
+	dispatch(initSurvey(data, history));
 };
 
 // Initialize survey store & set first question

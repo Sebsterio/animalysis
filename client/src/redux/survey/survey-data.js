@@ -24,7 +24,7 @@
  * ----------('none'): unshift target to queue (i.e. redirect immediately)
  */
 
-export const surveyData = (pet) => ({
+export const surveyData = {
 	problemIntro: ["primer"], // prepended to mainQueue if reporting a problem
 	mainQueue: ["bleeding", "activity", "urinating"],
 	optionalQueue: ["nose_exam", "ears_exam", "behaviour_exam", "bleeding_exam"],
@@ -35,13 +35,13 @@ export const surveyData = (pet) => ({
 			title: "Primer Questions",
 			questions: [
 				{
-					label: `What's wrong with ${pet.name} today?`,
+					label: `What's wrong with [name] today?`,
 					type: "text",
 					setsTitle: true,
 					lengthLimit: 40,
 				},
 				{
-					label: `Where on ${pet.name}’s body is the problem/problems?`,
+					label: `Where on [name]’s body is the problem/problems?`,
 					type: "select-multiple",
 					answers: [
 						{
@@ -107,7 +107,7 @@ export const surveyData = (pet) => ({
 					],
 				},
 				{
-					label: `Is ${pet.name} bleeding?`,
+					label: `Is [name] bleeding?`,
 					type: "select-one",
 					answers: [
 						{
@@ -129,20 +129,14 @@ export const surveyData = (pet) => ({
 			title: "Activity Level",
 			questions: [
 				{
-					label: `Is ${pet.name} lethargic (i.e. not as active as usual)?`,
+					label: `Is [name] lethargic (i.e. not as active as usual)?`,
 					type: "select-one",
 					answers: [
 						{
 							text: "Normal activity",
 						},
 						{
-							text: `Still; ${
-								pet.species === "canine"
-									? "wants to go on walks"
-									: pet.species === "feline"
-									? "wants to play or interact with humans"
-									: ""
-							} but not as much as usual`,
+							text: `Still; wants to [species? dog: go on walks | cat: play or interact with humans] but not as much as usual`,
 							print: "Mild lethargy",
 							alert: 2,
 							followUp: {
@@ -166,7 +160,7 @@ export const surveyData = (pet) => ({
 			title: "Urinating",
 			questions: [
 				{
-					label: `How much urine is ${pet.name} producing?`,
+					label: `How much urine is [name] producing?`,
 					type: "select-one",
 					answers: [
 						{
@@ -230,7 +224,7 @@ export const surveyData = (pet) => ({
 			title: "Behaviour",
 			questions: [
 				{
-					label: `Does ${pet.name} have any of the following movement issues?`,
+					label: `Does [name] have any of the following movement issues?`,
 					type: "select-one",
 					answers: [
 						{
@@ -375,4 +369,4 @@ export const surveyData = (pet) => ({
 			],
 		},
 	},
-});
+};

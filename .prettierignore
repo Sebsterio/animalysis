@@ -1,0 +1,2 @@
+client/src/redux/survey/survey-utils/getPersonalizedString.js
+client/src/redux/survey/survey-utils/getPersonalizedSurveyData.js

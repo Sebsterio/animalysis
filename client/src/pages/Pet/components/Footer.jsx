@@ -11,8 +11,7 @@ const useStyles = makeStyles((theme) => ({
 export const Footer = ({
 	// parent
 	history,
-	data,
-	petId,
+	pet,
 	// store
 	isPetIdActive,
 	// dispatch
@@ -21,7 +20,7 @@ export const Footer = ({
 }) => {
 	const c = useStyles();
 
-	const unfinishedAnalysis = isPetIdActive(petId);
+	const unfinishedAnalysis = isPetIdActive(pet.id);
 
 	return (
 		<div>
@@ -29,7 +28,7 @@ export const Footer = ({
 				fullWidth
 				variant="contained"
 				className={c.button}
-				onClick={() => startRoutineCheck(data)}
+				onClick={() => startRoutineCheck(pet, history)}
 				children="Routine Health Check"
 			/>
 			<Button
@@ -37,7 +36,7 @@ export const Footer = ({
 				variant="contained"
 				color={unfinishedAnalysis ? "default" : "primary"}
 				className={c.button}
-				onClick={() => startProblemReport(data)}
+				onClick={() => startProblemReport(pet, history)}
 				children="Report a Problem"
 			/>
 			{unfinishedAnalysis && (

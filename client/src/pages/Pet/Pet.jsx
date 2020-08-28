@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
 import { ReportsList, Footer } from "./components";
 import { PetSnippet } from "components";
-import { surveyData } from "redux/survey/survey-data";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -32,15 +31,13 @@ export const Pet = ({
 	const pet = getPetByName(name);
 	if (!pet) return <Redirect to="/not-found" />;
 
-	const petId = pet.id;
-	const data = { ...surveyData(pet), petId };
 	const reports = getReports(pet).reverse();
 
 	return (
 		<Container maxWidth="xs" className={c.page}>
 			<PetSnippet {...{ history, pet }} />
 			<ReportsList {...{ history, reports }} />
-			<Footer {...{ history, petId, data }} />
+			<Footer {...{ history, pet }} />
 		</Container>
 	);
 };
