@@ -40,11 +40,11 @@ export const Instructions = () => {
 					</Typography>
 
 					<Typography paragraph>
-						<strong>example:</strong>
+						<strong>Example:</strong>
 					</Typography>
 					<Typography paragraph>
 						<code className={c.codeBlock}>
-							Does [name] want to play[species?canine: and go on walks]?
+							Does [name] want to play[species? canine: and go on walks]?
 						</code>
 					</Typography>
 					<Typography paragraph>
@@ -70,11 +70,11 @@ export const Instructions = () => {
 					</Typography>
 
 					<Typography paragraph>
-						<strong>example:</strong>
+						<strong>Example:</strong>
 					</Typography>
 					<Typography paragraph>
 						<code className={c.codeBlock}>
-							Does [name] want to [species?canine: go on walks | feline: play]?
+							Does [name] want to [species? canine: go on walks | feline: play]?
 						</code>
 					</Typography>
 					<Typography paragraph>
