@@ -159,11 +159,12 @@ export const Answer = ({
 
 	const modifiedOperations = {
 		...operations,
-		// If section is nested, remove its data from "sections" store
 		// Remove section refrence from "target" list
+		// If section is nested, remove its data from "sections" store
 		deleteSection: ({ sectionName }) => {
 			editAnswer(makeNestedTargetEvent("delete", sectionName));
-			if (isSectionNested) deleteSectionFromSections({ sectionName });
+			if (isSectionNested(sectionName))
+				deleteSectionFromSections({ sectionName });
 		},
 		moveSection: ({ sectionName, direction }) =>
 			editAnswer(makeNestedTargetEvent("move", sectionName, direction)),
