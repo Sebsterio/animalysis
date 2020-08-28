@@ -1,9 +1,9 @@
 export const INITIAL_STATE = {
-	problemIntro: ["_sectionName"], // prepended to mainQueue if reporting a problem (i.e. (not in routine health check))
-	mainQueue: ["_sectionName"],
-	optionalQueue: ["_sectionName"],
+	primerQueue: ["_sectionName_"], // prepended to mainQueue if reporting a problem (i.e. (not in routine health check))
+	mainQueue: ["_sectionName_"],
+	optionalQueue: ["_sectionName_"],
 	sections: {
-		_sectionName: { 	// (variable)
+		_sectionName_: { 	// (variable)
 			title: "",    	// displayed in UI
 			questions: [
 				{
@@ -19,8 +19,8 @@ export const INITIAL_STATE = {
 							print: "", 			// displayed in final report
 							printNote: "",	// displayed in final report
 							followUp: {
-								target: ["_sectionName"], // sections to inject
-								after: ["_sectionName"],	// location(s) after which to inject target
+								target: ["_sectionName_"], // sections to inject
+								after: ["_sectionName_"],	// location(s) after which to inject target
 																					// ['all']: push target to queue (i.e. redirect at the end of survey)
 																					// ['none']: unshift target to queue (i.e. redirect immediately)
 							},

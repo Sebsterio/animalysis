@@ -8,9 +8,13 @@ const INITIAL_STATE = surveyData;
 const surveyDataReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case $.SET_SURVEY_DATA: {
-			const { queues, sections } = action.payload;
-			const { primerQueue, mainQueue, optionalQueue } = queues;
-			return { sections, primerQueue, mainQueue, optionalQueue };
+			const { sections, queues } = action.payload;
+			return {
+				sections,
+				primerQueue: [...queues.primerQueue.list],
+				mainQueue: [...queues.mainQueue.list],
+				optionalQueue: [...queues.optionalQueue.list],
+			};
 		}
 
 		default:

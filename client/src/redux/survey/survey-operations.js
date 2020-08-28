@@ -46,8 +46,8 @@ export const startProblemReport = (pet, history) => (dispatch, getState) => {
 		alert: 1,
 		title: "New Problem",
 	};
-	const { problemIntro, mainQueue } = data;
-	data.mainQueue = [...problemIntro, ...mainQueue];
+	const { primerQueue, mainQueue } = data;
+	data.mainQueue = [...primerQueue, ...mainQueue];
 	dispatch(initSurvey(data, history));
 };
 

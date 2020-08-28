@@ -77,6 +77,15 @@ export const useStyles = makeStyles((theme) => ({
 		gridGap: theme.spacing(2),
 	},
 
+	// Instructions
+
+	codeBlock: {
+		display: "block",
+		padding: theme.spacing(1),
+		backgroundColor: "#eee",
+		borderRadius: 4,
+	},
+
 	// Helpers
 
 	mTop2: {
@@ -93,14 +102,5 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	bold: {
 		fontWeight: "bold",
-	},
-
-	// Other
-
-	codeBlock: {
-		display: "block",
-		padding: theme.spacing(1),
-		backgroundColor: "#eee",
-		borderRadius: 4,
 	},
 }));

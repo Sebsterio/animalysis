@@ -1,5 +1,5 @@
 export const surveyData = {
-	problemIntro: ["primer"], // prepended to mainQueue if reporting a problem
+	primerQueue: ["primer"],
 	mainQueue: ["bleeding", "activity", "urinating"],
 	optionalQueue: ["nose_exam", "ears_exam", "behaviour_exam", "bleeding_exam"],
 	sections: {
@@ -22,14 +22,14 @@ export const surveyData = {
 							text:
 								"Nose (schedule follo-up Nose Exam at the end of the queue)",
 							followUp: {
-								target: "nose_exam",
+								target: ["nose_exam"],
 								after: ["all"],
 							},
 						},
 						{
 							text: "Ears (schedule follo-up Ears Exam after this question)",
 							followUp: {
-								target: "ears_exam",
+								target: ["ears_exam"],
 								after: ["none"],
 							},
 						},
@@ -55,7 +55,7 @@ export const surveyData = {
 							text:
 								"Schedule follow-up 'behaviour' after 'bleeding' and 'activity'",
 							followUp: {
-								target: "behaviour_exam",
+								target: ["behaviour_exam"],
 								after: ["bleeding", "activity"],
 							},
 						},
@@ -87,8 +87,8 @@ export const surveyData = {
 						{
 							text: "Yes",
 							followUp: {
-								target: "bleeding_exam",
-								after: "none",
+								target: ["bleeding_exam"],
+								after: ["none"],
 							},
 						},
 						{ text: "No" },
@@ -115,7 +115,7 @@ export const surveyData = {
 							alert: 2,
 							followUp: {
 								target: ["behaviour_exam", "bleeding_exam"],
-								after: "none",
+								after: ["none"],
 							},
 						},
 						{
@@ -144,8 +144,8 @@ export const surveyData = {
 						{
 							text: "More than normal",
 							followUp: {
-								target: "increased_urination",
-								after: "none",
+								target: ["increased_urination"],
+								after: ["none"],
 							},
 						},
 					],
@@ -158,8 +158,8 @@ export const surveyData = {
 							text: "Yes",
 							alert: 2,
 							followUp: {
-								target: "bleeding_exam",
-								after: "none",
+								target: ["bleeding_exam"],
+								after: ["none"],
 							},
 						},
 						{
@@ -292,8 +292,8 @@ export const surveyData = {
 						{
 							text: "Skin wound",
 							followUp: {
-								target: "skin_wound",
-								after: "none",
+								target: ["skin_wound"],
+								after: ["none"],
 							},
 						},
 						{
@@ -331,8 +331,8 @@ export const surveyData = {
 						{
 							text: "yes",
 							followUp: {
-								target: "skin_wound",
-								after: "none",
+								target: ["skin_wound"],
+								after: ["none"],
 							},
 						},
 						{

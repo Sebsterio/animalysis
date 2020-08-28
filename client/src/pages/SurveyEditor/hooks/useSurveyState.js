@@ -2,7 +2,6 @@ import { useState } from "react";
 import { getStepsFromDirection } from "../SurveyEditor-utils";
 import {
 	defaultQueues,
-	initialSection,
 	defaultSection,
 	defaultQuestion,
 	defaultAnswer,
@@ -18,14 +17,25 @@ shortid.characters(
 	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_"
 );
 
-export const useSurveyState = (data) => {
+export const useSurveyState = (initialData) => {
 	// ----------------------- State -----------------------
 
-	const [queues, setQueues] = useState(defaultQueues);
+	const {
+		primerQueue,
+		mainQueue,
+		optionalQueue,
+		sections: { ...initialSections },
+	} = initialData;
 
-	const [sections, setSections] = useState({
-		initialSection: { ...initialSection },
-	});
+	const initialQueues = {
+		primerQueue: { ...defaultQueues.primerQueue, list: [...primerQueue] },
+		mainQueue: { ...defaultQueues.mainQueue, list: [...mainQueue] },
+		optionalQueue: { ...defaultQueues.optionalQueue, list: [...optionalQueue] },
+	};
+
+	const [queues, setQueues] = useState(initialQueues);
+
+	const [sections, setSections] = useState(initialSections);
 
 	// --------------------- Helpers ---------------------
 
@@ -233,28 +243,20 @@ export const useSurveyState = (data) => {
 		);
 	};
 
-	// Messy quick solution...
+	// Remove sectionName from the followUp.target prop of every answer in survey
+	// prettier-ignore
 	const deleteSectionFromAllAnswerTargets = (sectionToRemove) => {
 		Object.entries(sections).forEach(([sectionName, { questions }]) => {
 			questions.forEach(({ id: questionId, answers }) => {
-				answers.forEach((answer) => {
+				if (!!answers) answers.forEach((answer) => {
 					const { id: answerId, followUp } = answer;
-					if (!!followUp && followUp.target.includes(sectionToRemove)) {
-						updateAnswer({
-							sectionName,
-							questionId,
-							answerId,
-							value: {
-								...answer,
-								followUp: {
-									...answer.followUp,
-									target: makeArrayWithRemovedItems(
-										followUp.target,
-										sectionToRemove
-									),
-								},
-							},
-						});
+					if (!followUp || !followUp.target) return;
+					if (followUp.target.includes(sectionToRemove)) {
+						const { target } = followUp;
+						const newTarget = makeArrayWithRemovedItems(target,sectionToRemove);
+						const newFollowUp = { ...answer.followUp, target: newTarget };
+						const newValue = { ...answer, followUp: newFollowUp };
+						updateAnswer({ sectionName, questionId, answerId, value: newValue });
 					}
 				});
 			});

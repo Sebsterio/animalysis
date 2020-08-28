@@ -4,7 +4,7 @@ import { setSurveyData } from "redux/survey-data/survey-data-actions";
 import { SurveyEditor } from "./SurveyEditor";
 
 const mapStateToProps = (state) => ({
-	data: state.SurveyEditor,
+	data: state.surveyData,
 });
 
 const mapDispatchToProps = (dispatch) => ({

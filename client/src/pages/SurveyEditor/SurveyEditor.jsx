@@ -33,7 +33,7 @@ export const SurveyEditor = ({ history, data, submit }) => {
 
 	const handleSave = () => {
 		submit({ queues, sections });
-		goBack();
+		// goBack();
 	};
 
 	const modifiedOperations = { ...operations, showPopover };
