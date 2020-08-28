@@ -29,6 +29,7 @@ import { useStyles } from "../SurveyEditor-styles";
  *********************************************************************/
 
 export const Division = ({
+	backgroundColor,
 	// ------------ Viewer ------------
 	heading, // (String)
 	headingVariant = "body1", // Typography prop
@@ -71,10 +72,13 @@ export const Division = ({
 
 	// --------------------------- View -------------------------------
 
+	let style = {};
+	if (backgroundColor) style = { backgroundColor };
+
 	// --- Viewer ---
 
 	const viewer = (
-		<Paper className={c.division}>
+		<Paper className={c.division} style={style}>
 			<div className={c.viewer}>
 				<div>
 					<Typography variant={headingVariant} className={c.heading}>
@@ -116,7 +120,7 @@ export const Division = ({
 			touchEvent="onTouchStart"
 			onClickAway={stopEditing}
 		>
-			<Paper className={c.division}>
+			<Paper className={c.division} style={style}>
 				{formType === "row" ? (
 					<div className={c.row}>
 						{form}
@@ -141,7 +145,7 @@ export const Division = ({
 	// --- Questions editor ---
 
 	const fieldsEditor = (
-		<Paper className={c.divisionExpanded}>
+		<Paper className={c.divisionExpanded} style={style}>
 			<div className={c.row}>
 				<Typography variant={headingVariant} className={c.heading}>
 					{headingPrefix && headingPrefix + ": "}
@@ -159,6 +163,8 @@ export const Division = ({
 			{!!fieldsFooter && <div className={c.mTop2}>{fieldsFooter}</div>}
 		</Paper>
 	);
+
+	// -----------------------
 
 	return editing === "config"
 		? configEditor

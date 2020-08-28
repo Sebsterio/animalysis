@@ -181,6 +181,7 @@ export const Question = ({
 
 	return (
 		<Division
+			backgroundColor="rgba(0,0,0,0.03)"
 			heading={label}
 			headingPrefix="Q"
 			fields={fields}

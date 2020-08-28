@@ -102,6 +102,7 @@ export const Section = ({
 
 	return (
 		<Division
+			backgroundColor="rgba(0,0,0,0.02)"
 			heading={title}
 			headingVariant="h6"
 			headingPrefix={headingPrefix}
