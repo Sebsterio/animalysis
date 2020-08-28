@@ -4,7 +4,8 @@ import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
 import Backdrop from "@material-ui/core/Backdrop";
 
-import { Queue } from "./components";
+import { Queue, Instructions } from "./components";
+import { Nav } from "components";
 
 import { useStyles } from "./SurveyEditor-styles";
 import { useSurveyState, usePopover } from "./hooks";
@@ -14,7 +15,7 @@ import { useSurveyState, usePopover } from "./hooks";
  * Experimenting with not using Redux or Context. Conclusion: don't do it again
  ******************************************************************************/
 
-export const SurveyEditor = () => {
+export const SurveyEditor = ({ history, data, submit }) => {
 	const c = useStyles();
 
 	const [
@@ -22,23 +23,45 @@ export const SurveyEditor = () => {
 		{ showPopover, hidePopover },
 	] = usePopover();
 
-	const [selectors, operations, helpers] = useSurveyState();
+	const [selectors, operations, helpers] = useSurveyState(data);
+
+	const { getQueues, getSections } = selectors;
+	const sections = getSections();
+	const queues = getQueues();
+
+	const goBack = () => history.push("/admin");
+
+	const handleSave = () => {
+		submit({ queues, sections });
+		goBack();
+	};
 
 	const modifiedOperations = { ...operations, showPopover };
 
-	const queues = selectors.getQueues();
-
 	return (
 		<div className={c.page}>
-			{/* ------------ Queues ------------ */}
+			{/* ------------ Body ------------ */}
+			<div>
+				{Object.entries(queues).map(([queueName, queueProps]) => (
+					<Queue
+						key={queueName}
+						{...{ queueName, queueProps, selectors, helpers }}
+						operations={modifiedOperations}
+					/>
+				))}
 
-			{Object.entries(queues).map(([queueName, queueProps]) => (
-				<Queue
-					key={queueName}
-					{...{ queueName, queueProps, selectors, helpers }}
-					operations={modifiedOperations}
+				<Instructions />
+			</div>
+
+			<div className={c.footer}>
+				<Nav
+					textLeft="Cancel"
+					onClickLeft={goBack}
+					textRight="Save"
+					onClickRight={handleSave}
+					noArrows
 				/>
-			))}
+			</div>
 
 			{/* ------------ Popover ------------ */}
 

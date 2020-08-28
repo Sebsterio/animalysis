@@ -2,9 +2,10 @@
 
 Raw reusable (non-personalized) survey data
 
-- Read-only
+- Read-only for pet-owner
+- Clinic admin replaces entire store on submit
 - Persisted
-- Re-fetched only when user changed clinic or when survey got updated by clinic admin
+- Re-fetched only when user changed clinic or when survey remote version is newer than local
 
 When survey gets initialized, a personalized copy is stored in survey reducer
 

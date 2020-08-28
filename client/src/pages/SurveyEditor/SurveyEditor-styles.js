@@ -4,6 +4,12 @@ export const useStyles = makeStyles((theme) => ({
 	page: {
 		padding: theme.spacing(2),
 		width: "100%",
+		display: "flex",
+		flexFlow: "column nowrap",
+		justifyContent: "space-between",
+	},
+	footer: {
+		marginTop: theme.spacing(3),
 	},
 
 	// Popover
@@ -79,10 +85,22 @@ export const useStyles = makeStyles((theme) => ({
 	mTop1: {
 		marginTop: theme.spacing(1),
 	},
+	mTop0: {
+		marginTop: 0,
+	},
 	mBottom2: {
 		marginBottom: theme.spacing(2),
 	},
 	bold: {
 		fontWeight: "bold",
+	},
+
+	// Other
+
+	codeBlock: {
+		display: "block",
+		padding: theme.spacing(1),
+		backgroundColor: "#eee",
+		borderRadius: 4,
 	},
 }));

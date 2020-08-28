@@ -18,7 +18,7 @@ shortid.characters(
 	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_"
 );
 
-export const useSurveyState = () => {
+export const useSurveyState = (data) => {
 	// ----------------------- State -----------------------
 
 	const [queues, setQueues] = useState(defaultQueues);
@@ -38,6 +38,8 @@ export const useSurveyState = () => {
 	// --------------------- Selectors ---------------------
 
 	const getQueues = () => queues;
+
+	const getSections = () => sections;
 
 	const getOptionalQueue = () => getQueues().optionalQueue.list;
 
@@ -61,6 +63,7 @@ export const useSurveyState = () => {
 	const selectors = {
 		getQueues,
 		getOptionalQueue,
+		getSections,
 		getSectionsNamesAndTitles,
 		getOptionalQueueNamesAndTitles,
 		getSectionData,
