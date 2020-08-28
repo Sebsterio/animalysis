@@ -1,2 +1,3 @@
 client/src/redux/survey/survey-utils/getPersonalizedString.js
 client/src/redux/survey/survey-utils/getPersonalizedSurveyData.js
+client/src/redux/survey-data/survey-data-INITIAL_STATE.js

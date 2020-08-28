@@ -5,7 +5,13 @@ export const INITIAL_STATE = {
 	// Past  location in survey, along with selected answers
 	// Used to 'goBack' and to compile final report
 	// Last item = current location
-	history: [],
+	history: [
+		// {
+		// 	sectionName: "",   name of the section object in data
+		// 	questionIndex: 0,  index in questions array in data[section]
+		// 	answer: null,      index | [indexes] | text
+		// },
+	],
 
 	// Locations to visit next; unshifted on 'goBack';
 	// answers kept and used to restore location & history on 'goNext'
@@ -33,10 +39,3 @@ export const INITIAL_STATE = {
 	// ID of the pet the survye applies to
 	petId: null,
 };
-
-// location in survey sequence; used as element of history and queues
-// const location = {
-// 	sectionName: "",  // = prop name of the data object
-// 	questionIndex: 0, // index in the section array in data
-// 	answer: null,     // index | [indexes] | text
-// };

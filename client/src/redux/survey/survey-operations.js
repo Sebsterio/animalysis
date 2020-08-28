@@ -23,17 +23,14 @@ import { addReportToPet } from "redux/pets/pets-actions";
 import { getPersonalizedSurveyData } from "./survey-utils";
 import { arrayify } from "utils/array";
 
-// TODO: move to redux
-import { surveyData } from "redux/survey/survey-data";
-
 // TEMP
 export const callClinic = () => alert("CALL_CLINIC--STUB");
 
 // --------------------- Initialization -------------------------
 
-export const startRoutineCheck = (pet, history) => (dispatch) => {
+export const startRoutineCheck = (pet, history) => (dispatch, getState) => {
 	const data = {
-		...getPersonalizedSurveyData(surveyData, pet),
+		...getPersonalizedSurveyData(getState, pet),
 		petId: pet.id,
 		alert: 0,
 		title: "Routine Health Check",
@@ -42,9 +39,9 @@ export const startRoutineCheck = (pet, history) => (dispatch) => {
 };
 
 // Add primer section to mainQueue and set alert to green
-export const startProblemReport = (pet, history) => (dispatch) => {
+export const startProblemReport = (pet, history) => (dispatch, getState) => {
 	const data = {
-		...getPersonalizedSurveyData(surveyData, pet),
+		...getPersonalizedSurveyData(getState, pet),
 		petId: pet.id,
 		alert: 1,
 		title: "New Problem",

@@ -3,8 +3,9 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import userReducer from "redux/user/user-reducer";
-import surveyReducer from "redux/survey/survey-reducer";
 import petsReducer from "redux/pets/pets-reducer";
+import surveyReducer from "redux/survey/survey-reducer";
+import surveyDataReducer from "redux/survey-data/survey-data-reducer";
 
 const persistConfig = {
 	key: "root",
@@ -20,8 +21,9 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
 	user: userReducer,
-	survey: surveyReducer,
 	pets: petsReducer,
+	survey: surveyReducer,
+	surveyData: surveyDataReducer,
 	// survey: persistReducer(surveyPersistConfig, surveyReducer),
 });
 

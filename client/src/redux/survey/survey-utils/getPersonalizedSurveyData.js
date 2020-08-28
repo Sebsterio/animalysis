@@ -1,8 +1,8 @@
 import { getPersonalizedString } from "./index";
 
 // Inject pet props into question labels and aswer text across survey data
-export const getPersonalizedSurveyData = (data, pet) => {
-	const newData = { ...data };
+export const getPersonalizedSurveyData = (getState, pet) => {
+	const newData = { ...getState().surveyData };
 	const sections = Object.entries(newData.sections);
 
 	sections.forEach(([sectionName, sectionData]) => {

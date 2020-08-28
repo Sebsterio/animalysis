@@ -1,29 +1,3 @@
-/*
- * problemIntro (Str): prepended to mainQueue if reporting a problem (not in routine health check)
- * queue: ['sectionName']
- * sections (Arr)
- * - sectionName (Obj)
- * -- title (Str): displayed in UI
- * -- questions (Arr)
- * --- question (Obj || Func(pet) => Obj)
- * ---- label (Str): diplayed in UI
- * ---- type (Str): text | select-one | select-multiple
- * ---- if (type=text) setsTitle (Bool): answer becomes the report's title
- * ----	if (type=text) lengthLimit (Num): character limit of answer; 0 = no limit
- * ---- answers (Arr)
- * ------ text (Str): displayed in UI
- * ------ print (Str): displayed in final report
- * ------ printNote (Str): displayed in final report
- * ------ alert (Num): displayed in final report (highest alert reached only)
- * -------- 0 (none) | 1 (green) | 2 (yellow) | 3 (orange) | 4 (red),
- * ------ followUp (Obj)
- * -------- target (Str | [Str]: sectionName): sections to inject
- * -------- after: place(s) to inject target
- * ----------( Str | [Str]): sectionName(s) after which to inject target
- * ----------('all'): push target to queue (i.e. redirect at the end of survey)
- * ----------('none'): unshift target to queue (i.e. redirect immediately)
- */
-
 export const surveyData = {
 	problemIntro: ["primer"], // prepended to mainQueue if reporting a problem
 	mainQueue: ["bleeding", "activity", "urinating"],
