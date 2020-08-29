@@ -1,17 +1,43 @@
 import * as $ from "./user-actions";
 
 const INITIAL_STATE = {
-	isAuthenticated: true,
+	isLoading: false,
+	isAuthenticated: false,
+	email: "",
+	token: "", // JWT
+	type: "", // clinic | pet-owner | superuser | demo
+	role: "", // (if type:clinic) admin | assistant
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case $.SING_IN: {
+		case $.AUTH_START:
 			return {
 				...state,
-				isAuthenticated: true,
+				isLoading: true,
 			};
-		}
+
+		case $.AUTH_SUCCESS:
+			return {
+				...state,
+				isLoading: false,
+				isAuthenticated: true,
+				...action.payload,
+			};
+
+		case $.AUTH_FAIL:
+			const { err, msg } = action;
+			console.log({ err, msg });
+			return {
+				...state,
+				isLoading: false,
+				isAuthenticated: false,
+			};
+
+		case $.CLEAR_DATA:
+			return {
+				...INITIAL_STATE,
+			};
 
 		default:
 			return state;

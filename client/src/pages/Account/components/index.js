@@ -1,4 +1,5 @@
 export * from "./Auth";
-export * from "./UserInfo";
-export * from "./OptIn";
 export * from "./Main";
+export * from "./ProfileInfo";
+export * from "./UserInfo";
+export * from "./Terms";

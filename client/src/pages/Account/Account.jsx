@@ -3,6 +3,12 @@ import { Redirect } from "react-router-dom";
 import { Auth, Main } from "./components";
 import { mainModes, authModes } from "./Account-modes";
 
+/*********************************
+ * Handle auth state,
+ * render corresponding component,
+ * and redirect if needed
+ *********************************/
+
 const AccountPage = ({
 	// router
 	match,
@@ -10,12 +16,21 @@ const AccountPage = ({
 	isAuthenticated,
 	// dispatch
 	signIn,
+	signUp,
 }) => {
 	// ---------------------- Handlers ----------------------
 
-	const handleSignIn = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
-		signIn();
+		const {
+			email: { value: email },
+			password: { value: password },
+			firstName,
+		} = e.target;
+		const data = { email, password, firstName: firstName && firstName.value };
+		// if (firstName) data.firstName = firstName.value;
+		if (mode === authModes.signIn) return signIn(data);
+		if (mode === authModes.signUp) return signUp(data);
 	};
 
 	// ------------------ Routing & Render ------------------
@@ -25,16 +40,23 @@ const AccountPage = ({
 	const mainModesIsMatched = Object.values(mainModes).includes(mode);
 	const authModesIsMatched = Object.values(authModes).includes(mode);
 
+	const accountPageUrl = `/account`;
+	const singInPageUrl = `/account/${authModes.signIn}`;
+
 	if (isAuthenticated) {
-		if (authModesIsMatched) return <Redirect to="/" />; // After auth success
-		if (mode && !mainModesIsMatched) return <Redirect to="/account" />;
+		// After auth success, redirect to Home
+		if (authModesIsMatched) return <Redirect to="/" />;
+		// Ensure URL param is valid
+		if (mode && !mainModesIsMatched) return <Redirect to={accountPageUrl} />;
+		// Render Account page
 		return <Main />;
 	}
 	// Not authenticated
 	else {
-		if (!mode || !authModesIsMatched)
-			return <Redirect to={`/account/${authModes.signIn}`} />;
-		return <Auth mode={mode} signIn={handleSignIn} />;
+		// Ensure URL param is present and valid
+		if (!mode || !authModesIsMatched) return <Redirect to={singInPageUrl} />;
+		// Render Auth form
+		return <Auth mode={mode} submit={handleSubmit} />;
 	}
 };
 

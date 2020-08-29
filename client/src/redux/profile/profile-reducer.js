@@ -3,9 +3,9 @@ import * as $ from "./profile-actions";
 const INITIAL_STATE = {
 	name: "",
 	surname: "",
-	email: "",
 	phone: "",
 	reminderDismissed: false,
+	// email in user-reducer
 };
 
 const profileReducer = (state = INITIAL_STATE, action) => {

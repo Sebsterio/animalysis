@@ -5,27 +5,25 @@ import TextField from "@material-ui/core/TextField";
 
 export const UserInfo = (
 	<>
-		<Grid item xs={12} sm={6}>
+		<Grid item xs={12}>
 			<TextField
-				autoComplete="fname"
-				name="firstName"
 				variant="outlined"
 				required
 				fullWidth
-				id="firstName"
-				label="First Name"
-				autoFocus
+				label="Email Address"
+				name="email"
+				autoComplete="email"
 			/>
 		</Grid>
-		<Grid item xs={12} sm={6}>
+		<Grid item xs={12}>
 			<TextField
 				variant="outlined"
 				required
 				fullWidth
-				id="lastName"
-				label="Last Name"
-				name="lastName"
-				autoComplete="lname"
+				name="password"
+				label="Password"
+				type="password"
+				autoComplete="current-password"
 			/>
 		</Grid>
 	</>

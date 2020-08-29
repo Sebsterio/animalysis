@@ -6,7 +6,15 @@ const INITIAL_STATE = {
 	address: "",
 	email: "",
 	phone: "",
+	// pet-owner-mode only
 	reminderDismissed: false,
+	// vet-mode only
+	members: [
+		// {
+		// 	username: '',
+		// 	role: '' // admin | assistant
+		// }
+	],
 };
 
 const clinicReducer = (state = INITIAL_STATE, action) => {

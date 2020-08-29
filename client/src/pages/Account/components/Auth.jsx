@@ -3,17 +3,16 @@ import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 // Components
-import { OptIn, UserInfo } from "./index";
-import { Copyright } from "components";
 import {
 	Container,
 	Box,
 	Grid,
 	Typography,
-	TextField,
 	Button,
 	Link,
 } from "@material-ui/core";
+import { ProfileInfo, UserInfo, Terms } from "./index";
+import { Copyright } from "components";
 
 // Other
 import { authModes } from "../Account-modes";
@@ -42,35 +41,34 @@ export const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 	},
 	form: {
-		width: "100%", // Fix IE 11 issue.
+		width: "100%", // Fixes IE 11 issue.
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 	},
 }));
 
-export const Auth = ({ mode, signIn }) => {
+export const Auth = ({ mode, submit }) => {
 	const c = useStyles();
 
 	const modesData = {
 		[authModes.signIn]: {
 			btnText: "Sign In",
-			btnHandler: signIn,
 			linkText: "Don't have an account? Sing up",
 			linkHref: authModes.signUp,
 		},
 		[authModes.signUp]: {
 			btnText: "Sign Up",
-			btnHandler: signIn,
 			linkText: "Already have an account? Sign in",
-			optIn: OptIn,
-			userInfo: UserInfo,
+			terms: Terms,
+			profileInfo: ProfileInfo,
 			linkHref: authModes.signIn,
 		},
 	};
 
 	return (
 		<Container maxWidth="xs" className={c.container}>
+			{/* Head */}
 			<Box className={c.head}>
 				<Typography component="h1" variant="h2">
 					VetCheck
@@ -83,48 +81,27 @@ export const Auth = ({ mode, signIn }) => {
 				</Typography>
 			</Box>
 
-			<Box className={c.paper}>
-				<form className={c.form} noValidate>
+			<Box className={c.paper} onSubmit={submit}>
+				<form className={c.form}>
+					{/* Main form */}
 					<Grid container spacing={2}>
-						{modesData[mode].userInfo || ""}
-
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="email"
-								label="Email Address"
-								name="email"
-								autoComplete="email"
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								name="password"
-								label="Password"
-								type="password"
-								id="password"
-								autoComplete="current-password"
-							/>
-						</Grid>
-						{modesData[mode].optIn || ""}
+						{modesData[mode].profileInfo || null}
+						{UserInfo}
+						{modesData[mode].terms || null}
 					</Grid>
 
+					{/* Button */}
 					<Button
-						type="submit"
 						fullWidth
-						variant="contained"
+						type="submit"
 						color="primary"
+						variant="contained"
 						className={c.submit}
-						onClick={modesData[mode].btnHandler}
 					>
-						{modesData[mode].btnText || ""}
+						{modesData[mode].btnText || null}
 					</Button>
 
+					{/* Change mode link (sing-in/up) */}
 					<Grid container justify="flex-end">
 						<Grid item>
 							<Link
