@@ -1,6 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getIsClinicSet, getHasPhone } from "redux/user/user-selectors";
+
+import { getIsClinicSet } from "redux/clinic/clinic-selectors";
+import { getHasPhone } from "redux/profile/profile-selectors";
 
 import { Head } from "./Head";
 

@@ -24,11 +24,11 @@ export const Head = ({
 	username,
 	surveyIsLoaded,
 	clinicReminderOn,
-	userReminderOn,
+	profileReminderOn,
 	// dispatch
 	clearSurvey,
 	dismissClinicReminder,
-	dismissUserReminder,
+	dismissProfileReminder,
 }) => {
 	const c = useStyles();
 
@@ -39,7 +39,7 @@ export const Head = ({
 
 	const handleUserAlertActionClick = (e) => {
 		e.preventDefault();
-		dismissUserReminder();
+		dismissProfileReminder();
 	};
 
 	const handleSurveyAlertActionClick = (e) => {
@@ -67,7 +67,7 @@ export const Head = ({
 				</Link>
 			</Collapse>
 
-			<Collapse in={userReminderOn} className={c.item}>
+			<Collapse in={profileReminderOn} className={c.item}>
 				<Link to="/profile" className={c.link}>
 					<Alert
 						severity="warning"

@@ -1,30 +1,37 @@
 import React from "react";
 import { connect } from "react-redux";
+
+// Profile redux
 import {
 	getName,
-	getShouldShowClinicReminder,
-	getShouldShowUserReminder,
-} from "redux/user/user-selectors";
+	getShouldShowProfileReminder,
+} from "redux/profile/profile-selectors";
+import { dismissProfileReminder } from "redux/profile/profile-actions";
+
+// Clinic redux
+import { getShouldShowClinicReminder } from "redux/clinic/clinic-selectors";
+import { dismissClinicReminder } from "redux/clinic/clinic-actions";
+
+// Survey redux
 import { getIsSurveyLoaded } from "redux/survey/survey-selectors";
 import { clearSurvey } from "redux/survey/survey-actions";
-import {
-	dismissClinicReminder,
-	dismissUserReminder,
-} from "redux/user/user-actions";
 
+// Child component
 import { Head } from "./Head";
+
+// --------------------------------------------------------------
 
 const mapStateToProps = (state) => ({
 	username: getName(state),
 	surveyIsLoaded: getIsSurveyLoaded(state),
 	clinicReminderOn: getShouldShowClinicReminder(state),
-	userReminderOn: getShouldShowUserReminder(state),
+	profileReminderOn: getShouldShowProfileReminder(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	clearSurvey: () => dispatch(clearSurvey()),
 	dismissClinicReminder: () => dispatch(dismissClinicReminder()),
-	dismissUserReminder: () => dispatch(dismissUserReminder()),
+	dismissProfileReminder: () => dispatch(dismissProfileReminder()),
 });
 
 const HeadContainer = (props) => <Head {...props} />;

@@ -1,16 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getUserClinic } from "redux/user/user-selectors";
-import { modifyUserClinic } from "redux/user/user-actions";
+
+import { getClinic } from "redux/clinic/clinic-selectors";
+import { modifyClinic } from "redux/clinic/clinic-actions";
 
 import { ClinicForm } from "./ClinicForm";
 
 const mapStateToProps = (state) => ({
-	currentClinic: () => getUserClinic(state),
+	currentClinic: () => getClinic(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	updateClinic: (id, data) => dispatch(modifyUserClinic(id, data)),
+	updateClinic: (id, data) => dispatch(modifyClinic(id, data)),
 });
 
 const ClinicFormContainer = (props) => <ClinicForm {...props} />;

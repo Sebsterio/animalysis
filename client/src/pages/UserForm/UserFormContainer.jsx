@@ -1,16 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getUserInfo } from "redux/user/user-selectors";
-import { modifyUserInfo } from "redux/user/user-actions";
+
+import { getProfile } from "redux/profile/profile-selectors";
+import { modifyProfile } from "redux/profile/profile-actions";
 
 import { UserForm } from "./UserForm";
 
 const mapStateToProps = (state) => ({
-	currentUser: getUserInfo(state),
+	currentUser: getProfile(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	updateUser: (data) => dispatch(modifyUserInfo(data)),
+	updateUser: (data) => dispatch(modifyProfile(data)),
 });
 
 const UserFormContainer = (props) => <UserForm {...props} />;
