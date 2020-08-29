@@ -1,12 +1,12 @@
 import { usePrevWithTimeout } from "./index";
 
-// Return value based on given async status
+// Return value based on a given async status
 // When process is done return valueDone and, after timeout, valueDefault
 // When process is ongoing, return valueOngoing
 export const useValueWithTimeout = ({
 	isOngoing, // async status
 	valueDefault, // if is not ongoing
-	valueOngoing,
+	valueOngoing = valueDefault,
 	valueDone,
 	timeout,
 }) => {

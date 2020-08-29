@@ -78,6 +78,12 @@ export const SurveyEditor = ({
 		valueDone: "Done!",
 	});
 
+	const saveButtonText = useValueWithTimeout({
+		isOngoing: hasChanged,
+		valueDefault: "Save",
+		valueDone: "Done!",
+	});
+
 	return (
 		<div className={c.page}>
 			{/* ------------ Body ------------ */}
@@ -100,7 +106,7 @@ export const SurveyEditor = ({
 					textMiddle={publishButtonText}
 					onClickMiddle={handlePublishClick}
 					disabledMiddle={publishing || isPublished}
-					textRight="Save"
+					textRight={saveButtonText}
 					onClickRight={save}
 					disabledRight={!hasChanged}
 					noArrows
