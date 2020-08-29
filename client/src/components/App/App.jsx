@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { Navbar } from "components";
+import { Navbar, Spinner } from "components";
 import { Account } from "pages";
 
 import { routes } from "routes";
@@ -13,7 +13,7 @@ import { useStyles } from "./App-styles";
  * Trigger authentication (TODO)
  *******************************/
 
-export const App = ({ authenticated }) => {
+export const App = ({ loading, authenticated }) => {
 	const c = useStyles();
 
 	// TEMP
@@ -39,6 +39,7 @@ export const App = ({ authenticated }) => {
 		</>
 	);
 
+	if (loading) return <Spinner />;
 	return (
 		<div className={c.app}>
 			{authenticated && (

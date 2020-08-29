@@ -3,6 +3,7 @@ import * as $ from "./user-actions";
 const INITIAL_STATE = {
 	isLoading: false,
 	isAuthenticated: false,
+	error: null,
 	email: "",
 	token: "", // JWT
 	type: "", // clinic | pet-owner | superuser | demo
@@ -26,12 +27,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			};
 
 		case $.AUTH_FAIL:
-			const { err, msg } = action;
-			console.log({ err, msg });
 			return {
 				...state,
 				isLoading: false,
 				isAuthenticated: false,
+				error: action.msg,
 			};
 
 		case $.CLEAR_DATA:

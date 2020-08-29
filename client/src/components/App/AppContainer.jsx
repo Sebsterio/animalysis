@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getIsAuthenticated } from "redux/user/user-selectors";
+import { getIsLoading, getIsAuthenticated } from "redux/user/user-selectors";
 
 import { App } from "./App";
 
 const mapStateToProps = (state) => ({
+	loading: getIsLoading(state),
 	authenticated: getIsAuthenticated(state),
 });
 

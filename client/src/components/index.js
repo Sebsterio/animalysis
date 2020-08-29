@@ -8,3 +8,4 @@ export * from "./Page";
 export * from "./PetSnippet";
 export * from "./FileInput";
 export * from "./ConfirmDialog";
+export * from "./Spinner";
