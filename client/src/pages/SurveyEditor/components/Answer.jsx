@@ -10,6 +10,7 @@ import { Section, Division } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
 import {
+	getNewName,
 	includeInputValue,
 	makeModifiedAfter,
 	makeModifiedTarget,
@@ -29,7 +30,6 @@ export const Answer = ({
 	isLast,
 	operations,
 	selectors,
-	helpers,
 }) => {
 	const {
 		id,
@@ -60,8 +60,6 @@ export const Answer = ({
 		getSectionData,
 		getOptionalQueueNamesAndTitles,
 	} = selectors;
-
-	const { getNewName } = helpers;
 
 	const c = useStyles();
 
@@ -301,7 +299,7 @@ export const Answer = ({
 			isLast={i === target.length - 1}
 			headingPrefix={!isSectionNested(targetSection) ? "Ref" : null}
 			operations={modifiedOperations}
-			{...{ selectors, helpers }}
+			{...{ selectors }}
 		/>
 	));
 

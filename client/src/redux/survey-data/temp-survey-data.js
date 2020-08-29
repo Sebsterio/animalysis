@@ -1,4 +1,8 @@
 export const surveyData = {
+	dateModified: null,
+	datePublished: null,
+	publishing: false,
+	//-----------------
 	primerQueue: ["primer"],
 	mainQueue: ["bleeding", "activity", "urinating"],
 	optionalQueue: ["nose_exam", "ears_exam", "behaviour_exam", "bleeding_exam"],

@@ -1,8 +1,17 @@
+import shortid from "shortid";
 import {
 	makeArrayWithPushedItems,
 	makeArrayWithRemovedItems,
 	makeArrayWithMovedItem,
 } from "utils/array";
+
+shortid.characters(
+	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_"
+);
+
+export const getNewId = () => shortid.generate();
+
+export const getNewName = () => "_" + getNewId();
 
 // Add correct input prop to data to be submitted
 // Convert format if needed

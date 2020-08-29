@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
@@ -12,10 +12,15 @@ import { useSurveyState, usePopover } from "./hooks";
 
 /******************************************************************************
  * Module will be used very sparcely; performance is not a priority
- * Experimenting with not using Redux or Context. Conclusion: don't do it again
+ * Experimented with not using Redux or Context. Conclusion: don't do it again
+ *
+ * Handlers:
+ * 	Save    - Replace store with local state
+ * 	Publish - Save and POST
+ * 	Cancel  - Abandon chages and exit
  ******************************************************************************/
 
-export const SurveyEditor = ({ history, data, submit }) => {
+export const SurveyEditor = ({ history, data, updateStore, publish }) => {
 	const c = useStyles();
 
 	const [
@@ -23,20 +28,42 @@ export const SurveyEditor = ({ history, data, submit }) => {
 		{ showPopover, hidePopover },
 	] = usePopover();
 
-	const [selectors, operations, helpers] = useSurveyState(data);
+	const [selectors, operations] = useSurveyState(data);
 
-	const { getQueues, getSections } = selectors;
-	const sections = getSections();
+	const { getQueues, getSections, getHasChanged, getDatePublished } = selectors;
+
 	const queues = getQueues();
+	const sections = getSections();
+	const hasChanged = getHasChanged();
+	// const initialDatePublished = getDatePublished();
 
-	const goBack = () => history.push("/admin");
+	// const isUpToDate = data.datePublished === initialDatePublished;
+
+	// console.log({ new: data.datePublished, initial: getDatePublished() });
+
+	const { resetHasChanged } = operations;
+
+	console.log({ hasChanged });
+
+	// -------------------------- Handlers -----------------------------
+
+	const handleCancel = () => history.push("/admin");
 
 	const handleSave = () => {
-		submit({ queues, sections });
-		// goBack();
+		resetHasChanged();
+		updateStore({ queues, sections });
 	};
 
+	const handlePublish = () => {
+		updateStore({ queues, sections });
+		publish();
+	};
+
+	// ------------------ Drilled props modifications ------------------
+
 	const modifiedOperations = { ...operations, showPopover };
+
+	// ----------------------------- View ------------------------------
 
 	return (
 		<div className={c.page}>
@@ -45,7 +72,7 @@ export const SurveyEditor = ({ history, data, submit }) => {
 				{Object.entries(queues).map(([queueName, queueProps]) => (
 					<Queue
 						key={queueName}
-						{...{ queueName, queueProps, selectors, helpers }}
+						{...{ queueName, queueProps, selectors }}
 						operations={modifiedOperations}
 					/>
 				))}
@@ -56,9 +83,13 @@ export const SurveyEditor = ({ history, data, submit }) => {
 			<div className={c.footer}>
 				<Nav
 					textLeft="Cancel"
-					onClickLeft={goBack}
+					onClickLeft={handleCancel}
 					textRight="Save"
+					// textMiddle="Publish"
+					// onClickMiddle={handlePublish}
+					// disabledMiddle={isUpToDate}
 					onClickRight={handleSave}
+					disabledRight={!hasChanged}
 					noArrows
 				/>
 			</div>

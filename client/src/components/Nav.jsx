@@ -18,10 +18,13 @@ export const useStyles = makeStyles((theme) => ({
 
 export const Nav = ({
 	textLeft,
+	textMiddle,
 	textRight,
 	onClickLeft,
+	onClickMiddle,
 	onClickRight,
 	disabledLeft = false,
+	disabledMiddle = false,
 	disabledRight = false,
 	enlargedRight = false,
 	onlyRight = false,
@@ -31,12 +34,22 @@ export const Nav = ({
 
 	return (
 		<div className={c.container}>
-			{!onlyRight && (
+			{textLeft && (
 				<Button
 					children={textLeft}
 					onClick={onClickLeft}
 					disabled={disabledLeft}
 					startIcon={noArrows ? null : <KeyboardArrowLeft />}
+				/>
+			)}
+
+			{textMiddle && (
+				<Button
+					variant="contained"
+					color="primary"
+					children={textMiddle}
+					onClick={onClickMiddle}
+					disabled={disabledMiddle}
 				/>
 			)}
 

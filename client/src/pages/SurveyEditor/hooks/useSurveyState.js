@@ -1,24 +1,19 @@
-import { useState } from "react";
-import { getStepsFromDirection } from "../SurveyEditor-utils";
+import { useState, useEffect, useRef } from "react";
 import {
 	defaultQueues,
 	defaultSection,
 	defaultQuestion,
 	defaultAnswer,
 } from "../SurveyEditor-defaults";
+import { getNewId, getStepsFromDirection } from "../SurveyEditor-utils";
 import {
 	makeArrayWithReplacedItem,
 	makeArrayWithRemovedItems,
 	makeArrayWithMovedItem,
 } from "utils/array";
-import shortid from "shortid";
-
-shortid.characters(
-	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_"
-);
 
 export const useSurveyState = (initialData) => {
-	// ----------------------- State -----------------------
+	// ---------------------- State ----------------------
 
 	const {
 		primerQueue,
@@ -37,13 +32,11 @@ export const useSurveyState = (initialData) => {
 
 	const [sections, setSections] = useState(initialSections);
 
-	// --------------------- Helpers ---------------------
+	const hasChanged = useRef(false);
 
-	const getNewId = () => shortid.generate();
-
-	const getNewName = () => "_" + getNewId();
-
-	const helpers = { getNewName };
+	useEffect(() => {
+		if (!hasChanged.current) hasChanged.current = true;
+	}, [queues, sections, hasChanged]);
 
 	// --------------------- Selectors ---------------------
 
@@ -70,6 +63,10 @@ export const useSurveyState = (initialData) => {
 
 	const getSectionData = (sectionName) => sections[sectionName];
 
+	const getHasChanged = () => hasChanged.current;
+
+	// const getDatePublished = () => datePublished;
+
 	const selectors = {
 		getQueues,
 		getOptionalQueue,
@@ -77,9 +74,13 @@ export const useSurveyState = (initialData) => {
 		getSectionsNamesAndTitles,
 		getOptionalQueueNamesAndTitles,
 		getSectionData,
+		getHasChanged,
+		// getDatePublished,
 	};
 
 	// --------------------- Operations ---------------------
+
+	const resetHasChanged = () => (hasChanged.current = false);
 
 	// Queue
 
@@ -266,6 +267,7 @@ export const useSurveyState = (initialData) => {
 	// -----------------------
 
 	const operations = {
+		resetHasChanged,
 		addSectionToQueue,
 		deleteSectionFromQueue,
 		moveSection,
@@ -284,5 +286,5 @@ export const useSurveyState = (initialData) => {
 
 	// -----------------------
 
-	return [selectors, operations, helpers];
+	return [selectors, operations];
 };

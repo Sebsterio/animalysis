@@ -13,7 +13,6 @@ export const Section = ({
 	isLast,
 	operations,
 	selectors,
-	helpers,
 	headingPrefix,
 }) => {
 	const {
@@ -85,7 +84,7 @@ export const Section = ({
 			isFirst={i === 0}
 			isLast={i === questions.length - 1}
 			operations={modifiedOperations}
-			{...{ questionProps, selectors, helpers }}
+			{...{ questionProps, selectors }}
 		/>
 	));
 

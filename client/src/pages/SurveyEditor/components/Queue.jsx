@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 
 import { Section } from "./index";
 
+import { getNewName } from "../SurveyEditor-utils";
 import { useStyles } from "../SurveyEditor-styles";
 
 // -------------------------------------------------------------------
@@ -20,7 +21,6 @@ export const Queue = ({
 	queueProps: { label, list, info },
 	selectors,
 	operations,
-	helpers,
 }) => {
 	const {
 		addSectionToQueue,
@@ -31,7 +31,6 @@ export const Queue = ({
 		showPopover,
 	} = operations;
 	const { getSectionData } = selectors;
-	const { getNewName } = helpers;
 
 	const c = useStyles();
 
@@ -85,7 +84,7 @@ export const Queue = ({
 						operations={modifiedOperations}
 						isFirst={i === 0}
 						isLast={i === list.length - 1}
-						{...{ sectionName, selectors, helpers }}
+						{...{ sectionName, selectors }}
 					/>
 				))}
 			/>

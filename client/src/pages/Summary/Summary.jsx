@@ -52,11 +52,10 @@ const Summary = ({
 			</Container>
 
 			<Nav
-				textLeft="Continue Analysis"
+				textLeft={canContinue && "Continue Analysis"}
 				onClickLeft={continueSurvey}
 				textRight="Submit report"
 				onClickRight={endSurvey}
-				onlyRight={!canContinue}
 				noArrows
 			/>
 		</Container>

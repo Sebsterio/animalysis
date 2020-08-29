@@ -17,7 +17,6 @@ export const Question = ({
 	isLast,
 	operations,
 	selectors,
-	helpers,
 }) => {
 	const {
 		id,
@@ -164,7 +163,7 @@ export const Question = ({
 			isFirst={i === 0}
 			isLast={i === answers.length - 1}
 			operations={modifiedOperations}
-			{...{ answerProps, selectors, helpers }}
+			{...{ answerProps, selectors }}
 		/>
 	));
 

@@ -32,11 +32,11 @@ export const Instructions = () => {
 					<hr className={c.mBottom2} />
 
 					<Typography paragraph>
-						Question labels and answer text support variables that get replaced
-						by the pet's attributes when displayed to the user. Variables are
-						denoted by square brackets: <code>[variable]</code>. Conditional
-						statements have the following syntax:{" "}
-						<code>[variable ? condition : expression]</code>
+						The text input in summary messages, questions, and answers support
+						variables that get replaced by the pet's attributes when displayed
+						to the user. Variables are denoted by square brackets:{" "}
+						<code>[variable]</code>. Conditional statements have the following
+						syntax: <code>[variable ? condition : expression]</code>
 					</Typography>
 
 					<Typography paragraph>
@@ -84,10 +84,13 @@ export const Instructions = () => {
 					<hr className={c.mBottom2} />
 
 					<Typography paragraph>
-						Any spaces within a conditional statement but not inside an
-						expression are ignored. Should you need to inject a space, use
-						underscore "_" and a space will be put in it's place in the final
-						message.
+						Any spaces within a square brackets but not inside an expression are
+						ignored. Should you need to inject a space, use underscore "_" and a
+						space will be put in it's place in the final message.
+					</Typography>
+					<Typography paragraph>
+						To display square brackets in the final message, surround them by
+						another set of brackets: <code>[[text]]</code>.
 					</Typography>
 
 					<hr className={c.mBottom2} />

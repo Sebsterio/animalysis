@@ -10,10 +10,34 @@ const surveyDataReducer = (state = INITIAL_STATE, action) => {
 		case $.SET_SURVEY_DATA: {
 			const { sections, queues } = action.payload;
 			return {
+				// replace state
 				sections,
 				primerQueue: [...queues.primerQueue.list],
 				mainQueue: [...queues.mainQueue.list],
 				optionalQueue: [...queues.optionalQueue.list],
+				dateModified: new Date(),
+			};
+		}
+
+		// --------- Sync ---------
+
+		case $.PUBLISH_START: {
+			return {
+				...state,
+				publishing: true,
+			};
+		}
+		case $.PUBLISH_SUCCESS: {
+			return {
+				...state,
+				publishing: false,
+				datePublished: new Date(),
+			};
+		}
+		case $.PUBLISH_SUCCESS: {
+			return {
+				...state,
+				publishing: false,
 			};
 		}
 

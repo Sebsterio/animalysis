@@ -1,4 +1,8 @@
 export const INITIAL_STATE = {
+	dateModified: null,
+	datePublished: null,
+	publishing: false,
+	//-----------------
 	primerQueue: ["_sectionName_"], // prepended to mainQueue if reporting a problem (i.e. (not in routine health check))
 	mainQueue: ["_sectionName_"],
 	optionalQueue: ["_sectionName_"],

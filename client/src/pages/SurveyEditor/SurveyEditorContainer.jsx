@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { setSurveyData } from "redux/survey-data/survey-data-actions";
+import { publishSurvey } from "redux/survey-data/survey-data-operations";
 import { SurveyEditor } from "./SurveyEditor";
 
 const mapStateToProps = (state) => ({
@@ -8,7 +9,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	submit: (data) => dispatch(setSurveyData(data)),
+	updateStore: (data) => dispatch(setSurveyData(data)),
+	publish: () => dispatch(publishSurvey()),
 });
 
 const SurveyEditorContainer = (props) => <SurveyEditor {...props} />;
