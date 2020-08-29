@@ -9,6 +9,7 @@ import { Nav } from "components";
 
 import { useStyles } from "./SurveyEditor-styles";
 import { useSurveyState, usePopover } from "./hooks";
+import { useValueWithTimeout } from "hooks";
 
 /******************************************************************************
  * Module will be used very sparcely; performance is not a priority
@@ -28,10 +29,16 @@ export const SurveyEditor = ({
 }) => {
 	const c = useStyles();
 
+	const { publishing } = data;
+
+	// --- Popover ---
+
 	const [
 		{ isOpen, anchorEl, infoText },
 		{ showPopover, hidePopover },
 	] = usePopover();
+
+	// --- Survey state
 
 	const [selectors, operations] = useSurveyState(data);
 
@@ -43,9 +50,7 @@ export const SurveyEditor = ({
 	const hasChanged = getHasChanged();
 	const isPublished = getIsPublished();
 
-	console.log("Component", { hasChanged, isPublished });
-
-	// -------------------------- Handlers -----------------------------
+	// --- Handlers ---
 
 	const goBack = () => history.push("/admin");
 
@@ -59,11 +64,19 @@ export const SurveyEditor = ({
 		resetIsPublished();
 	};
 
-	// ------------------ Drilled props modifications ------------------
+	const handlePublishClick = () => {
+		save();
+		publish();
+	};
 
-	const modifiedOperations = { ...operations, showPopover };
+	// --- View ---
 
-	// ----------------------------- View ------------------------------
+	const publishButtonText = useValueWithTimeout({
+		isOngoing: publishing,
+		valueDefault: "Publish",
+		valueOngoing: "Publishing",
+		valueDone: "Done!",
+	});
 
 	return (
 		<div className={c.page}>
@@ -73,7 +86,7 @@ export const SurveyEditor = ({
 					<Queue
 						key={queueName}
 						{...{ queueName, queueProps, selectors }}
-						operations={modifiedOperations}
+						operations={{ ...operations, showPopover }}
 					/>
 				))}
 
@@ -84,13 +97,10 @@ export const SurveyEditor = ({
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={goBack}
+					textMiddle={publishButtonText}
+					onClickMiddle={handlePublishClick}
+					disabledMiddle={publishing || isPublished}
 					textRight="Save"
-					textMiddle="Publish"
-					onClickMiddle={() => {
-						save();
-						publish();
-					}}
-					disabledMiddle={isPublished}
 					onClickRight={save}
 					disabledRight={!hasChanged}
 					noArrows

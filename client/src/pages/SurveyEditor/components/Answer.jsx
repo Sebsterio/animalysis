@@ -31,6 +31,8 @@ export const Answer = ({
 	operations,
 	selectors,
 }) => {
+	const c = useStyles();
+
 	const {
 		id,
 		text,
@@ -56,15 +58,16 @@ export const Answer = ({
 	} = operations;
 
 	const {
-		getSectionsNamesAndTitles,
 		getSectionData,
-		getOptionalQueueNamesAndTitles,
+		getOptionalQueue,
+		getSectionsNamesAndTitles,
+		getSectionNamesAndTitlesFromQueue,
 	} = selectors;
 
-	const c = useStyles();
-
 	const sections = getSectionsNamesAndTitles();
-	const optionalSections = getOptionalQueueNamesAndTitles();
+
+	const optionalQueue = getOptionalQueue();
+	const optionalSections = getSectionNamesAndTitlesFromQueue(optionalQueue);
 	const noOptionalSections = !optionalSections.length;
 
 	const isOptionalSectionAddedAsFollowUp = (section) =>

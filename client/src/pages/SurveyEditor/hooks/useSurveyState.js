@@ -13,15 +13,9 @@ import {
 } from "utils/array";
 
 export const useSurveyState = (initialData) => {
-	// ---------------------- State ----------------------
+	// ====================== Queues ======================
 
-	const {
-		datePublished,
-		primerQueue,
-		mainQueue,
-		optionalQueue,
-		sections: { ...initialSections },
-	} = initialData;
+	const { primerQueue, mainQueue, optionalQueue } = initialData;
 
 	const initialQueues = {
 		primerQueue: { ...defaultQueues.primerQueue, list: [...primerQueue] },
@@ -31,70 +25,13 @@ export const useSurveyState = (initialData) => {
 
 	const [queues, setQueues] = useState(initialQueues);
 
-	const [sections, setSections] = useState(initialSections);
-
-	// ------------------- Sync status --------------------
-
-	// This is the cleanest solution I found
-	// On mount, timesUpdated sets to 0
-	// On first update, timesUpdated sets to 1
-	// -> hasChanged = true, isPublished = false
-
-	const [, forceUpdate] = useReducer((x) => x + 1, 0);
-	const timesUpdated = useRef(-1);
-	const isPublished = useRef(!!datePublished);
-
-	useEffect(() => {
-		timesUpdated.current++;
-		if (timesUpdated.current === 1) {
-			isPublished.current = false;
-			forceUpdate();
-		}
-	}, [queues, sections]);
-
-	const getHasChanged = () => timesUpdated.current > 0;
-	const getIsPublished = () => isPublished.current;
-
-	const resetHasChanged = () => (timesUpdated.current = 0);
-	const resetIsPublished = () => (isPublished.current = true);
-
-	// --------------------- Selectors ---------------------
+	// ------ Selectors ------
 
 	const getQueues = () => queues;
 
-	const getSections = () => sections;
-
 	const getOptionalQueue = () => getQueues().optionalQueue.list;
 
-	const getSectionsNamesAndTitles = () =>
-		Object.entries(sections).map(([name, data]) => ({
-			name,
-			title: data.title,
-		}));
-
-	const getOptionalQueueNamesAndTitles = () => {
-		const allSections = getSectionsNamesAndTitles();
-		const optionalQueue = getOptionalQueue();
-		return optionalQueue.map((section) => ({
-			name: section,
-			title: allSections.find((s) => s.name === section).title,
-		}));
-	};
-
-	const getSectionData = (sectionName) => sections[sectionName];
-
-	const selectors = {
-		getQueues,
-		getOptionalQueue,
-		getSections,
-		getSectionsNamesAndTitles,
-		getOptionalQueueNamesAndTitles,
-		getSectionData,
-		getHasChanged,
-		getIsPublished,
-	};
-
-	// --------------------- Operations ---------------------
+	// ------ Operations ------
 
 	// Queue
 
@@ -138,7 +75,35 @@ export const useSurveyState = (initialData) => {
 		);
 	};
 
-	// Sections
+	// ====================== Sections ======================
+
+	const {
+		sections: { ...initialSections },
+	} = initialData;
+
+	const [sections, setSections] = useState(initialSections);
+
+	// ------ Selectors ------
+
+	const getSectionData = (sectionName) => sections[sectionName];
+
+	const getSections = () => sections;
+
+	const getSectionsNamesAndTitles = () =>
+		Object.entries(getSections()).map(([name, data]) => ({
+			name,
+			title: data.title,
+		}));
+
+	const getSectionNamesAndTitlesFromQueue = (queue) => {
+		const allSections = getSectionsNamesAndTitles();
+		return queue.map((section) => ({
+			name: section,
+			title: allSections.find((s) => s.name === section).title,
+		}));
+	};
+
+	// ------ Operations ------
 
 	const addOrModifySection = (sectionName, value) => {
 		const modifier = typeof value === "function" ? value : () => value;
@@ -261,7 +226,7 @@ export const useSurveyState = (initialData) => {
 	// Remove sectionName from the followUp.target prop of every answer in survey
 	// prettier-ignore
 	const deleteSectionFromAllAnswerTargets = (sectionToRemove) => {
-		Object.entries(sections).forEach(([sectionName, { questions }]) => {
+		Object.entries(getSections()).forEach(([sectionName, { questions }]) => {
 			questions.forEach(({ id: questionId, answers }) => {
 				if (!!answers) answers.forEach((answer) => {
 					const { id: answerId, followUp } = answer;
@@ -278,7 +243,45 @@ export const useSurveyState = (initialData) => {
 		});
 	};
 
-	// -----------------------
+	// ==================== Sync status ====================
+
+	// This is the cleanest solution I found
+	// On mount, timesUpdated sets to 0
+	// On first update, timesUpdated sets to 1
+	// -> hasChanged = true, isPublished = false
+
+	const { datePublished } = initialData;
+
+	const [, forceUpdate] = useReducer((x) => x + 1, 0);
+	const timesUpdated = useRef(-1);
+	const isPublished = useRef(!!datePublished);
+
+	useEffect(() => {
+		timesUpdated.current++;
+		if (timesUpdated.current === 1) {
+			isPublished.current = false;
+			forceUpdate();
+		}
+	}, [queues, sections]);
+
+	const getHasChanged = () => timesUpdated.current > 0;
+	const getIsPublished = () => isPublished.current;
+
+	const resetHasChanged = () => (timesUpdated.current = 0);
+	const resetIsPublished = () => (isPublished.current = true);
+
+	// ====================== Exports ======================
+
+	const selectors = {
+		getQueues,
+		getOptionalQueue,
+		getSections,
+		getSectionsNamesAndTitles,
+		getSectionNamesAndTitlesFromQueue,
+		getSectionData,
+		getHasChanged,
+		getIsPublished,
+	};
 
 	const operations = {
 		resetHasChanged,
@@ -298,8 +301,6 @@ export const useSurveyState = (initialData) => {
 		moveAnswer,
 		updateAnswer,
 	};
-
-	// -----------------------
 
 	return [selectors, operations];
 };
