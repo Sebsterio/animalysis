@@ -7,6 +7,7 @@ import { mainModes, authModes } from "./Account-modes";
  * Handle auth state,
  * render corresponding component,
  * and redirect if needed
+ * Display auth error feedback in input (TODO)
  *********************************/
 
 const AccountPage = ({

@@ -9,6 +9,7 @@ import { useStyles } from "./App-styles";
 
 /*******************************
  * App layout
+ * Show Spinner when user is loading
  * Root-level Routing
  * Trigger authentication (TODO)
  *******************************/

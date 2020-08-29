@@ -2,7 +2,7 @@ import * as $ from "./user-actions";
 
 const INITIAL_STATE = {
 	isLoading: false,
-	isAuthenticated: false,
+	isAuthenticated: true,
 	error: null,
 	email: "",
 	token: "", // JWT
