@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useReducer } from "react";
 import {
 	defaultQueues,
 	defaultSection,
@@ -16,6 +16,7 @@ export const useSurveyState = (initialData) => {
 	// ---------------------- State ----------------------
 
 	const {
+		datePublished,
 		primerQueue,
 		mainQueue,
 		optionalQueue,
@@ -32,11 +33,30 @@ export const useSurveyState = (initialData) => {
 
 	const [sections, setSections] = useState(initialSections);
 
-	const hasChanged = useRef(false);
+	// ------------------- Sync status --------------------
+
+	// This is the cleanest solution I found
+	// On mount, timesUpdated sets to 0
+	// On first update, timesUpdated sets to 1
+	// -> hasChanged = true, isPublished = false
+
+	const [, forceUpdate] = useReducer((x) => x + 1, 0);
+	const timesUpdated = useRef(-1);
+	const isPublished = useRef(!!datePublished);
 
 	useEffect(() => {
-		if (!hasChanged.current) hasChanged.current = true;
-	}, [queues, sections, hasChanged]);
+		timesUpdated.current++;
+		if (timesUpdated.current === 1) {
+			isPublished.current = false;
+			forceUpdate();
+		}
+	}, [queues, sections]);
+
+	const getHasChanged = () => timesUpdated.current > 0;
+	const getIsPublished = () => isPublished.current;
+
+	const resetHasChanged = () => (timesUpdated.current = 0);
+	const resetIsPublished = () => (isPublished.current = true);
 
 	// --------------------- Selectors ---------------------
 
@@ -63,10 +83,6 @@ export const useSurveyState = (initialData) => {
 
 	const getSectionData = (sectionName) => sections[sectionName];
 
-	const getHasChanged = () => hasChanged.current;
-
-	// const getDatePublished = () => datePublished;
-
 	const selectors = {
 		getQueues,
 		getOptionalQueue,
@@ -75,12 +91,10 @@ export const useSurveyState = (initialData) => {
 		getOptionalQueueNamesAndTitles,
 		getSectionData,
 		getHasChanged,
-		// getDatePublished,
+		getIsPublished,
 	};
 
 	// --------------------- Operations ---------------------
-
-	const resetHasChanged = () => (hasChanged.current = false);
 
 	// Queue
 
@@ -268,6 +282,7 @@ export const useSurveyState = (initialData) => {
 
 	const operations = {
 		resetHasChanged,
+		resetIsPublished,
 		addSectionToQueue,
 		deleteSectionFromQueue,
 		moveSection,

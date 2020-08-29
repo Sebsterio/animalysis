@@ -98,19 +98,17 @@ export const Instructions = () => {
 					<Typography paragraph variant="h6">
 						Available attributes
 					</Typography>
-					<Typography paragraph>
-						<ul className={c.mTop0}>
-							<li>name</li>
-							<li>
-								species: <code>canine | feline</code>
-							</li>
-							<li>
-								sex:{" "}
-								<code>
-									male neutered | male entire | female neutered | female entire
-								</code>
-							</li>
-						</ul>
+					<Typography paragraph component="ul" className={c.mTop0}>
+						<li>name</li>
+						<li>
+							species: <code>canine | feline</code>
+						</li>
+						<li>
+							sex:{" "}
+							<code>
+								male neutered | male entire | female neutered | female entire
+							</code>
+						</li>
 					</Typography>
 				</div>
 			</AccordionDetails>

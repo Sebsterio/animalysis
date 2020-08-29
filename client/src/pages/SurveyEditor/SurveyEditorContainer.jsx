@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	updateStore: (data) => dispatch(setSurveyData(data)),
-	publish: () => dispatch(publishSurvey()),
+	updateDatabase: () => dispatch(publishSurvey()),
 });
 
 const SurveyEditorContainer = (props) => <SurveyEditor {...props} />;

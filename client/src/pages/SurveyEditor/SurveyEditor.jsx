@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import Typography from "@material-ui/core/Typography";
 import Popover from "@material-ui/core/Popover";
@@ -20,7 +20,12 @@ import { useSurveyState, usePopover } from "./hooks";
  * 	Cancel  - Abandon chages and exit
  ******************************************************************************/
 
-export const SurveyEditor = ({ history, data, updateStore, publish }) => {
+export const SurveyEditor = ({
+	history,
+	data,
+	updateStore,
+	updateDatabase,
+}) => {
 	const c = useStyles();
 
 	const [
@@ -30,33 +35,28 @@ export const SurveyEditor = ({ history, data, updateStore, publish }) => {
 
 	const [selectors, operations] = useSurveyState(data);
 
-	const { getQueues, getSections, getHasChanged, getDatePublished } = selectors;
+	const { getQueues, getSections, getHasChanged, getIsPublished } = selectors;
+	const { resetHasChanged, resetIsPublished } = operations;
 
 	const queues = getQueues();
 	const sections = getSections();
 	const hasChanged = getHasChanged();
-	// const initialDatePublished = getDatePublished();
+	const isPublished = getIsPublished();
 
-	// const isUpToDate = data.datePublished === initialDatePublished;
-
-	// console.log({ new: data.datePublished, initial: getDatePublished() });
-
-	const { resetHasChanged } = operations;
-
-	console.log({ hasChanged });
+	console.log("Component", { hasChanged, isPublished });
 
 	// -------------------------- Handlers -----------------------------
 
-	const handleCancel = () => history.push("/admin");
+	const goBack = () => history.push("/admin");
 
-	const handleSave = () => {
-		resetHasChanged();
+	const save = () => {
 		updateStore({ queues, sections });
+		resetHasChanged();
 	};
 
-	const handlePublish = () => {
-		updateStore({ queues, sections });
-		publish();
+	const publish = () => {
+		updateDatabase();
+		resetIsPublished();
 	};
 
 	// ------------------ Drilled props modifications ------------------
@@ -83,12 +83,15 @@ export const SurveyEditor = ({ history, data, updateStore, publish }) => {
 			<div className={c.footer}>
 				<Nav
 					textLeft="Cancel"
-					onClickLeft={handleCancel}
+					onClickLeft={goBack}
 					textRight="Save"
-					// textMiddle="Publish"
-					// onClickMiddle={handlePublish}
-					// disabledMiddle={isUpToDate}
-					onClickRight={handleSave}
+					textMiddle="Publish"
+					onClickMiddle={() => {
+						save();
+						publish();
+					}}
+					disabledMiddle={isPublished}
+					onClickRight={save}
 					disabledRight={!hasChanged}
 					noArrows
 				/>
