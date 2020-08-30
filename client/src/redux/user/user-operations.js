@@ -7,8 +7,9 @@ export const signIn = (formData) => (dispatch) => {
 	axios
 		.post("/api/auth/sign-in", JSON.stringify(formData), getConfig())
 		.then((res) => dispatch($.authSuccess(res.data)))
+		// add name to profile
 		.catch((err) => {
-			dispatch($.authFail(err, "LOGIN_FAIL"));
+			dispatch($.authFail(err, err.msg));
 		});
 };
 
@@ -18,6 +19,7 @@ export const signUp = (formData) => (dispatch) => {
 		.post("/api/auth/sign-up", JSON.stringify(formData), getConfig())
 		.then((res) => dispatch($.authSuccess(res.data)))
 		.catch((err) => {
-			dispatch($.authFail(err, "REGISTER_FAIL"));
+			console.log(err.response.data);
+			dispatch($.authFail(err));
 		});
 };

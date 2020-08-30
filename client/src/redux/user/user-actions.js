@@ -8,10 +8,9 @@ export const authSuccess = (data) => ({
 	payload: data,
 });
 export const AUTH_FAIL = "user/AUTH_FAIL";
-export const authFail = (err, msg) => ({
+export const authFail = (err) => ({
 	type: AUTH_FAIL,
 	err,
-	msg,
 });
 export const CLEAR_DATA = "user/CLEAR_DATA";
 export const clearUser = () => ({
