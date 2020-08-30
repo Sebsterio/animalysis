@@ -12,6 +12,7 @@ export const UserInfo = (
 				fullWidth
 				label="Email Address"
 				name="email"
+				type="email"
 				autoComplete="email"
 			/>
 		</Grid>
