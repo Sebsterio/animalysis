@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { Navbar, Spinner } from "components";
+import { Navbar } from "./components";
+import { Spinner } from "components";
 import { Account } from "pages";
 
-import { routes } from "routes";
 import { useStyles } from "./App-styles";
+import { routes } from "routes";
 
 /*******************************
  * App layout

@@ -10,13 +10,12 @@ import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
 import PetsIcon from "@material-ui/icons/Pets";
 
-import { routes } from "routes";
 import { useStyles } from "./Navbar-styles";
+import { routes } from "routes";
 
 // ----------------------------------------------------------------
 

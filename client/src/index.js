@@ -8,7 +8,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { store, persistor } from "redux/store";
 // import * as serviceWorker from "./serviceWorker";
 
-import { App } from "components/App";
+import { App } from "App";
 import "styles/index.scss";
 
 ReactDOM.render(
