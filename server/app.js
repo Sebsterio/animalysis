@@ -1,5 +1,5 @@
 const express = require("express");
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const path = require("path");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -26,17 +26,19 @@ if (process.env.NODE_ENV === "production") {
 
 // ---------------- Mongo ----------------
 
-// const db = process.env.MONGO_URI;
+const db = process.env.MONGO_URI;
 
-// mongoose
-// 	.connect(db, {
-// 		useNewUrlParser: true,
-// 		useCreateIndex: true,
-// 		useUnifiedTopology: true,
-// 		useFindAndModify: false,
-// 	})
-// 	.then(() => console.log("MongoDB Connected..."))
-// 	.catch((err) => console.log(err));
+console.log(db);
+
+mongoose
+	.connect(db, {
+		useNewUrlParser: true,
+		useCreateIndex: true,
+		useUnifiedTopology: true,
+		useFindAndModify: false,
+	})
+	.then(() => console.log("MongoDB Connected..."))
+	.catch((err) => console.log(err));
 
 // --------------- Routing ---------------
 
