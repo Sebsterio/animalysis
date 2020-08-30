@@ -1,20 +1,3 @@
-// Sync -- on app load
-
-export const SYNC_START = "user/SYNC_START";
-export const syncStart = () => ({
-	type: SYNC_START,
-});
-export const SYNC_SUCCESS = "user/SYNC_SUCCESS";
-export const syncSuccess = (data) => ({
-	type: SYNC_SUCCESS,
-	payload: data,
-});
-export const SYNC_FAIL = "user/SYNC_FAIL";
-export const syncFail = (data) => ({
-	type: SYNC_FAIL,
-	payload: data,
-});
-
 // Sign in
 
 export const SIGN_IN_START = "user/SIGN_IN_START";
@@ -49,9 +32,51 @@ export const signUpFail = (data) => ({
 	payload: data,
 });
 
+// Sync -- on app load
+
+export const SYNC_START = "user/SYNC_START";
+export const syncStart = () => ({
+	type: SYNC_START,
+});
+export const SYNC_SUCCESS = "user/SYNC_SUCCESS";
+export const syncSuccess = (data) => ({
+	type: SYNC_SUCCESS,
+	payload: data,
+});
+export const SYNC_FAIL = "user/SYNC_FAIL";
+export const syncFail = (data) => ({
+	type: SYNC_FAIL,
+	payload: data,
+});
+export const SYNC_CANCELED = "user/SYNC_CANCELED";
+export const syncCanceled = () => ({
+	type: SYNC_CANCELED,
+});
+export const UP_TO_DATE = "user/UP_TO_DATE";
+export const upToDate = () => ({
+	type: UP_TO_DATE,
+});
+
+// Update (POST)
+
+export const UPDATE_START = "user/UPDATE_START";
+export const updateStart = () => ({
+	type: UPDATE_START,
+});
+export const UPDATE_SUCCESS = "user/UPDATE_SUCCESS";
+export const updateSuccess = (data) => ({
+	type: UPDATE_SUCCESS,
+	payload: data,
+});
+export const UPDATE_FAIL = "user/UPDATE_FAIL";
+export const updateFail = (data) => ({
+	type: UPDATE_FAIL,
+	payload: data,
+});
+
 // Other
 
-export const CLEAR_DATA = "user/CLEAR_DATA";
+export const CLEAR = "user/CLEAR";
 export const clearUser = () => ({
-	type: CLEAR_DATA,
+	type: CLEAR,
 });

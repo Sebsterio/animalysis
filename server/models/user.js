@@ -13,12 +13,13 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	type: String,
-	role: String,
-	date_registered: {
+	type: String, // client  | vet | superuser | demo
+	isAdmin: Boolean, // if type = vet
+	dateRegistered: {
 		type: Date,
-		default: Date.now,
+		required: true,
 	},
+	dateModified: Date,
 });
 
 const User = mongoose.model("user", UserSchema);

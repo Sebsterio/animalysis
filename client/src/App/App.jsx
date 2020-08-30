@@ -12,10 +12,10 @@ import { routes } from "routes";
  * App layout
  * Show Spinner when user is loading
  * Root-level Routing
- * Trigger authentication (TODO)
+ * Trigger user sync
  *******************************/
 
-export const App = ({ loading, authenticated }) => {
+export const App = ({ loading, authenticated, syncUser }) => {
 	const c = useStyles();
 
 	// TEMP
@@ -26,6 +26,10 @@ export const App = ({ loading, authenticated }) => {
 		window.addEventListener("keydown", clearStorage);
 		return () => window.removeEventListener("keydown", clearStorage);
 	}, []);
+
+	useEffect(() => {
+		syncUser();
+	}, [syncUser]);
 
 	// Create Routes from routes array
 	const mainRoutes = routes.map((route) => {
