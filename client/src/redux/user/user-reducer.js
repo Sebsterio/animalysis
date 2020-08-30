@@ -3,7 +3,6 @@ import * as $ from "./user-actions";
 const INITIAL_STATE = {
 	isLoading: false,
 	isAuthenticated: false,
-	error: null,
 	email: "",
 	token: "", // JWT
 	type: "", // clinic | pet-owner | superuser | demo
@@ -12,13 +11,17 @@ const INITIAL_STATE = {
 
 const userReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case $.AUTH_START:
+		case $.SYNC_START:
+		case $.SIGN_IN_START:
+		case $.SIGN_UP_START:
 			return {
 				...state,
 				isLoading: true,
 			};
 
-		case $.AUTH_SUCCESS:
+		case $.SYNC_SUCCESS:
+		case $.SIGN_IN_SUCCESS:
+		case $.SIGN_UP_SUCCESS:
 			return {
 				...state,
 				isLoading: false,
@@ -26,12 +29,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				...action.payload,
 			};
 
-		case $.AUTH_FAIL:
+		case $.SYNC_FAIL:
+		case $.SIGN_IN_FAIL:
+		case $.SIGN_UP_FAIL:
 			return {
 				...state,
 				isLoading: false,
 				isAuthenticated: false,
-				error: action.err,
 			};
 
 		case $.CLEAR_DATA:

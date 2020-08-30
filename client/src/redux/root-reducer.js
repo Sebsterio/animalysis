@@ -8,6 +8,7 @@ import clinicReducer from "redux/clinic/clinic-reducer";
 import petsReducer from "redux/pets/pets-reducer";
 import surveyReducer from "redux/survey/survey-reducer";
 import surveyDataReducer from "redux/survey-data/survey-data-reducer";
+import errorReducer from "redux/error/error-reducer";
 
 const persistConfig = {
 	key: "root",
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
 	pets: petsReducer,
 	survey: surveyReducer,
 	surveyData: surveyDataReducer,
+	error: errorReducer,
 	// survey: persistReducer(surveyPersistConfig, surveyReducer),
 });
 

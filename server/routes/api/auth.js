@@ -9,6 +9,13 @@ console.log(User);
 
 const router = express.Router();
 
+/***************************************
+ * Error
+ *  note: developer feedback
+ * 	msg:  displayed to user
+ *  type: determines msg location in UI
+ ***************************************/
+
 // ---------------- Get user data ----------------
 
 // @access: private (token)
@@ -20,7 +27,7 @@ router.get("/", auth, async (req, res) => {
 		if (!user) throw Error("User Does not exist");
 		res.status(200).json({ id: user.id });
 	} catch (e) {
-		res.status(400).json({ msg: e.message });
+		res.status(400).json({ note: e.message });
 	}
 });
 
@@ -33,10 +40,13 @@ router.post("/sign-up", async (req, res) => {
 
 	// Validate
 	if (!email || !password)
-		return res.status(400).json({ msg: "MISSING_FIELDS" });
+		return res.status(400).json({ note: "Missing fields" });
 
 	const user = await User.findOne({ email });
-	if (user) return res.status(403).json({ msg: "USER_EXISTS" });
+	if (user)
+		return res
+			.status(403)
+			.json({ id: "EMAIL_NOT_UNIQUE", msg: "User already exists" });
 
 	// Create user and add to DB
 	try {
@@ -56,7 +66,7 @@ router.post("/sign-up", async (req, res) => {
 		console.log({ token });
 		res.status(200).json({ token, id: savedUser.id, email: savedUser.email });
 	} catch (e) {
-		res.status(500).json({ msg: e.message });
+		res.status(500).json({ note: e.message });
 	}
 });
 
@@ -71,17 +81,23 @@ router.post("/sign-in", async (req, res) => {
 		if (!email || !password) throw Error("Missing credentials");
 
 		const user = await User.findOne({ email });
-		if (!user) throw Error("WRONG_EMAIL");
+		if (!user)
+			return res
+				.status(403)
+				.json({ id: "WRONG_EMAIL", msg: "There's no such user" });
 
 		const isMatch = await bcrypt.compare(password, user.password);
-		if (!isMatch) throw Error("WRONG_PASSWORD");
+		if (!isMatch)
+			return res
+				.status(403)
+				.json({ id: "WRONG_PASSWORD", msg: "Invalid credentials" });
 
 		const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 		if (!token) throw Error("Couldn't sign the token");
 
 		res.status(200).json({ token, id: user.id });
 	} catch (e) {
-		res.status(400).json({ msg: e.message });
+		res.status(400).json({ note: e.message });
 	}
 });
 
@@ -97,12 +113,15 @@ router.post("/delete", auth, async (req, res) => {
 		if (!user) throw Error("User does not exist");
 
 		const isMatch = await bcrypt.compare(password, user.password);
-		if (!isMatch) throw Error("WRONG_PASSWORD");
+		if (!isMatch)
+			return res
+				.status(403)
+				.json({ id: "WRONG_PASSWORD", msg: "Invalid credentials" });
 
 		await User.findByIdAndRemove(userId);
 		res.status(200).send();
 	} catch (e) {
-		res.status(400).json({ msg: e.message });
+		res.status(400).json({ note: e.message });
 	}
 });
 
