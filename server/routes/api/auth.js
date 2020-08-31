@@ -8,20 +8,22 @@ const User = require("../../models/user");
 const router = express.Router();
 
 /*****************************************************************************
- * Error
- *  note: developer feedback (includes message from `throw Error(_message_)`)
- * 	msg:  displayed to user
- *  id:   determines msg location in UI
+ * Error json
+ *  note: developer feedback (e.g. message from `throw Error(_message_)`)
+ * 	msg:  displayed to user; custom-set
+ *  id:   determines msg location in UI; custom-set
  *****************************************************************************/
 
-const getUserData = (savedUser) => {
-	const { dateModified, dateRegistered, email, type, role } = savedUser;
-	return { dateModified, dateRegistered, email, type, role };
+const getFilteredUserData = (savedUser) => {
+	const { dateModified, email, type } = savedUser;
+	const newData = {};
+	if (type) newData.type = type;
+	if (email) newData.email = email;
+	if (dateModified) newData.dateModified = dateModified;
+	return newData;
 };
 
 // ------------------- Sign-up -------------------
-
-// @access: public
 
 router.post("/sign-up", async (req, res) => {
 	const { email, password } = req.body;
@@ -38,7 +40,6 @@ router.post("/sign-up", async (req, res) => {
 	try {
 		const salt = await bcrypt.genSalt(10);
 		if (!salt) throw Error("Error with bcrypt");
-
 		const hash = await bcrypt.hash(password, salt);
 		if (!hash) throw Error("Error hashing the password");
 
@@ -49,15 +50,13 @@ router.post("/sign-up", async (req, res) => {
 		if (!savedUser) throw Error("Error saving the user");
 
 		const token = jwt.sign({ userId: savedUser.id }, process.env.JWT_SECRET);
-		res.status(200).json({ token, ...getUserData(savedUser) });
+		res.status(200).json({ token, ...getFilteredUserData(savedUser) });
 	} catch (e) {
 		res.status(500).json({ note: e.message });
 	}
 });
 
 // --------------------- Sign-in ---------------------
-
-// @access: public
 
 router.post("/sign-in", async (req, res) => {
 	try {
@@ -81,15 +80,13 @@ router.post("/sign-in", async (req, res) => {
 		const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 		if (!token) throw Error("Couldn't sign the token");
 
-		res.status(200).json({ token, ...getUserData(user) });
+		res.status(200).json({ token, ...getFilteredUserData(user) });
 	} catch (e) {
 		res.status(400).json({ note: e.message });
 	}
 });
 
 // ------------------ Sync user -----------------
-
-// @access: private (token)
 
 router.post("/", auth, async (req, res) => {
 	try {
@@ -99,30 +96,59 @@ router.post("/", auth, async (req, res) => {
 
 		const dateLocal = new Date(body.dateModified).getTime();
 		const dateRemote = new Date(user.dateModified).getTime();
-		const localIsNewer = !dateRemote || dateRemote < dateLocal;
-
-		if (dateLocal === dateRemote) return res.status(201).send();
-		if (localIsNewer) return res.status(409).json(getUserData(user));
-		return res.status(200).json(getUserData(user));
+		if (dateLocal == dateRemote) return res.status(201).send();
+		return res.status(200).json(getFilteredUserData(user));
 	} catch (e) {
 		res.status(400).json({ note: e.message });
 	}
 });
 
 // ----------------- Update user ----------------
-
-// @access: private (token)
+// acces: token & password
 
 router.post("/update", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
+		const { password, newEmail, newPassword, type } = body;
 
-		// TODO: remove; return user in find instead
-		const user = await User.findById(userId).select("-password");
+		// Validate credentials
+		if (!password) throw Error("Missing credentials");
+		const user = await User.findById(userId);
 		if (!user) return res.status(404).json({ note: "User doesn't exist" });
+		const passwordsMatch = await bcrypt.compare(password, user.password);
+		if (!passwordsMatch)
+			return res.status(403).json({
+				id: "WRONG_PASSWORD",
+				msg: "Invalid credentials",
+			});
 
-		await User.findByIdAndUpdate(userId, getUserData(body));
-		return res.status(200).send();
+		// Update email
+		let { email } = user;
+		if (newEmail && newEmail !== email) {
+			const foundUser = await User.findOne({ email: newEmail });
+			if (foundUser)
+				return res.status(403).json({
+					id: "EMAIL_NOT_UNIQUE",
+					msg: "User already exists",
+				});
+			user.email = newEmail;
+		}
+
+		// Update password
+		if (newPassword) {
+			const salt = await bcrypt.genSalt(10);
+			if (!salt) throw Error("Error with bcrypt");
+			const hash = await bcrypt.hash(newPassword, salt);
+			if (!hash) throw Error("Error hashing the password");
+			user.password = hash;
+		}
+
+		// Update rest
+		if (type && type !== "superuser") user.type = type;
+		user.dateModified = new Date();
+		await user.save();
+
+		return res.status(200).json(getFilteredUserData(user));
 	} catch (e) {
 		res.status(400).json({ note: e.message });
 	}

@@ -5,3 +5,11 @@ export const getInputDataFromForm = (form, ...inputNames) => {
 	});
 	return data;
 };
+
+export const getTruthyInputDataFromForm = (form, ...inputNames) => {
+	const data = {};
+	inputNames.forEach((name) => {
+		if (!!form[name]) data[name] = form[name].value;
+	});
+	return data;
+};

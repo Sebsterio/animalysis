@@ -1,3 +1,16 @@
+// Base
+
+export const MODIFY = "user/MODIFY";
+export const modifyUser = (data) => ({
+	type: MODIFY,
+	payload: data,
+});
+
+export const CLEAR = "user/CLEAR";
+export const clearUser = () => ({
+	type: CLEAR,
+});
+
 // Sign in
 
 export const SIGN_IN_START = "user/SIGN_IN_START";
@@ -10,9 +23,8 @@ export const signInSuccess = (data) => ({
 	payload: data,
 });
 export const SIGN_IN_FAIL = "user/SIGN_IN_FAIL";
-export const signInFail = (data) => ({
+export const signInFail = () => ({
 	type: SIGN_IN_FAIL,
-	payload: data,
 });
 
 // Sign up
@@ -27,9 +39,8 @@ export const signUpSuccess = (data) => ({
 	payload: data,
 });
 export const SIGN_UP_FAIL = "user/SIGN_UP_FAIL";
-export const signUpFail = (data) => ({
+export const signUpFail = () => ({
 	type: SIGN_UP_FAIL,
-	payload: data,
 });
 
 // Sync -- on app load
@@ -44,9 +55,8 @@ export const syncSuccess = (data) => ({
 	payload: data,
 });
 export const SYNC_FAIL = "user/SYNC_FAIL";
-export const syncFail = (data) => ({
+export const syncFail = () => ({
 	type: SYNC_FAIL,
-	payload: data,
 });
 export const SYNC_CANCELED = "user/SYNC_CANCELED";
 export const syncCanceled = () => ({
@@ -89,11 +99,4 @@ export const DELETE_FAIL = "user/DELETE_FAIL";
 export const deleteFail = (data) => ({
 	type: DELETE_FAIL,
 	payload: data,
-});
-
-// Other
-
-export const CLEAR = "user/CLEAR";
-export const clearUser = () => ({
-	type: CLEAR,
 });

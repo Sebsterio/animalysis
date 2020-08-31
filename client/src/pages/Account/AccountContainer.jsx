@@ -7,7 +7,8 @@ import {
 	signIn,
 	signUp,
 	signOut,
-	deleteAccount,
+	updateUser,
+	deleteUser,
 } from "redux/user/user-operations";
 
 import Account from "./Account";
@@ -19,7 +20,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	signIn: (data) => dispatch(signIn(data)),
 	signUp: (data) => dispatch(signUp(data)),
-	closeAccount: (data) => dispatch(deleteAccount(data)),
+	update: (data) => dispatch(updateUser(data)),
+	close: (data) => dispatch(deleteUser(data)),
 	signOut: () => dispatch(signOut()),
 });
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { Auth, Main } from "./components";
 import { mainModes, authModes, subroutes } from "./Account-constants";
-import { getInputDataFromForm } from "utils/form";
+import { getTruthyInputDataFromForm } from "utils/form";
 
 /*********************************
  * Handle auth state,
@@ -20,17 +20,23 @@ const AccountPage = ({
 	signIn,
 	signUp,
 	signOut,
-	closeAccount,
+	update,
+	close,
 }) => {
 	// ---------------------- Handlers ----------------------
 
+	// prettier-ignore
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const inputNames = ["email", "password", "firstName"];
-		const data = getInputDataFromForm(e.target, ...inputNames);
+		const inputNames = ["email", "password", "newEmail", "newPassword", "firstName"];
+		const data = getTruthyInputDataFromForm(e.target, ...inputNames);
 		if (mode === authModes.signIn) return signIn(data);
 		if (mode === authModes.signUp) return signUp(data);
-		if (mode === mainModes.close) return closeAccount(data);
+		if (mode === mainModes.close) return close(data);
+		if (mode === mainModes.edit) {
+			const { newEmail, newPassword } = data;
+			if (!!newEmail || !!newPassword) return update(data);
+		}
 	};
 
 	// ------------------ Routing & Render ------------------

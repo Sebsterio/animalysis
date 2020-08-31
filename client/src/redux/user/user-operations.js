@@ -1,12 +1,12 @@
 import axios from "axios";
 import * as $ from "./user-actions";
 import { setError } from "redux/error/error-actions";
-import { getUser, getDateModified, getToken } from "./user-selectors";
+import { getIsSignedIn, getDateModified } from "./user-selectors";
 import { getConfig, getTokenConfig } from "utils/ajax";
-import { userSyncConflictMsg } from "constants/messages";
 
 // ------------------------ signIn ------------------------------
 
+// Exchange password for token
 export const signIn = (formData) => (dispatch) => {
 	const endpoint = "/api/auth/sign-in";
 	const data = JSON.stringify(formData);
@@ -23,6 +23,7 @@ export const signIn = (formData) => (dispatch) => {
 
 // ------------------------ signUp ------------------------------
 
+// Create new user and get token
 export const signUp = (formData) => (dispatch) => {
 	const endpoint = "/api/auth/sign-up";
 	const data = JSON.stringify(formData);
@@ -42,10 +43,10 @@ export const signUp = (formData) => (dispatch) => {
 
 // --------------------------- syncUser ------------------------------
 
-// Get user data if newer than local
-// If not found, clear user store
+// GET user data if newer than local
+// If older, resolve conflict
 export const syncUser = () => (dispatch, getState) => {
-	if (!getToken(getState())) return;
+	if (!getIsSignedIn(getState())) return;
 
 	const endpoint = "/api/auth";
 	const dateModified = getDateModified(getState());
@@ -59,37 +60,29 @@ export const syncUser = () => (dispatch, getState) => {
 			if (res.status === 200) return dispatch($.syncSuccess(res.data));
 		})
 		.catch((err) => {
-			const res = err.response;
-			if (res.status === 409) {
-				const overwriteRemote = window.confirm(userSyncConflictMsg);
-				if (!overwriteRemote) return dispatch($.syncSuccess(res.data));
-				dispatch($.syncCanceled(res.data));
-				dispatch(updateUser());
-			} else {
-				dispatch($.syncFail());
-				dispatch(setError(err));
-			}
+			dispatch($.syncFail());
+			dispatch(setError(err));
 		});
 };
 
-// -------------------------- updateUser -----------------------------
+// -------------------------- updateUser ------------------------------
 
-// POST local data to db
-export const updateUser = () => (dispatch, getState) => {
+// POST user data to db
+export const updateUser = (formData) => (dispatch, getState) => {
 	const endpoint = "/api/auth/update";
-	const data = JSON.stringify(getUser(getState()));
+	const data = JSON.stringify(formData);
 	const config = getTokenConfig(getState());
 	dispatch($.updateStart());
 	axios
 		.post(endpoint, data, config)
-		.then(() => dispatch($.updateSuccess()))
+		.then((res) => dispatch($.updateSuccess(res.data)))
 		.catch((err) => {
 			dispatch($.updateFail());
 			dispatch(setError(err));
 		});
 };
 
-// // -------------------------- logout -------------------------------
+// --------------------------- signOut --------------------------------
 
 // Clear store and persistor;
 export const signOut = () => (dispatch) => {
@@ -97,12 +90,10 @@ export const signOut = () => (dispatch) => {
 	localStorage.clear();
 };
 
-// ----------------------- deleteAccount ----------------------------
+// -------------------------- deleteUser ------------------------------
 
-// Remove all user data from db
-export const deleteAccount = (formData) => (dispatch, getState) => {
-	// dispatch(clearError());
-	console.log(formData);
+// DELETE user from db
+export const deleteUser = (formData) => (dispatch, getState) => {
 	const token = getTokenConfig(getState());
 	dispatch($.deleteStart());
 	axios

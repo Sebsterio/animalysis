@@ -4,13 +4,20 @@ import { MenuButton } from "./index";
 
 import { useStyles } from "../Account-styles";
 import { mainModes, subroutes } from "../Account-constants";
-import { PasswordInput } from "./PasswordInput";
+import { EmailInput, PasswordInput } from "./index";
 
 export const Main = ({ mode, mainModeIsMatched, signOut, handleSubmit }) => {
 	const c = useStyles();
 
 	const modesData = {
 		[mainModes.edit]: {
+			body: (
+				<>
+					<EmailInput label="New email" isNew />
+					<PasswordInput label="New password" isNew />
+					<PasswordInput label="Current password" />
+				</>
+			),
 			btnText: "Done",
 		},
 		[mainModes.close]: {
@@ -20,10 +27,10 @@ export const Main = ({ mode, mainModeIsMatched, signOut, handleSubmit }) => {
 					is irreversible.
 				</Typography>
 			),
+			body: <PasswordInput />,
 			btnText: "Close account",
 			btnColor: "secondary",
 			btnVariant: "contained",
-			body: <PasswordInput />,
 		},
 	};
 

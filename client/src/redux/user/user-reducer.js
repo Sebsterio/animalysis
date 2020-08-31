@@ -7,13 +7,21 @@ const INITIAL_STATE = {
 	email: "",
 	token: "", // JWT
 	type: "", // clinic | pet-owner | superuser | demo
-	isAdmin: false,
-	dateRegistered: undefined,
-	dateModified: undefined, // don't use null (/api/auth)
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case $.MODIFY:
+			return {
+				...state,
+				...action.payload,
+			};
+
+		case $.CLEAR:
+			return {
+				...INITIAL_STATE,
+			};
+
 		// --- Sync, Sing-in, Sing-up ---
 
 		case $.SYNC_START:
@@ -50,7 +58,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			};
 
 		case $.SYNC_FAIL:
-		case $.CLEAR:
 			return {
 				...INITIAL_STATE,
 			};
@@ -71,6 +78,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isUpdating: false,
+				...action.payload,
 			};
 
 		// ---------------

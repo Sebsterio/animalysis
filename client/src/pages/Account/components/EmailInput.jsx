@@ -3,16 +3,16 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
-export const EmailInput = ({ label = "Email Address" }) => (
+export const EmailInput = ({ label, isNew }) => (
 	<Grid item xs={12}>
 		<TextField
 			variant="outlined"
-			required
+			required={!isNew}
 			fullWidth
-			label={label}
-			name="email"
 			type="email"
-			autoComplete="email"
+			label={label || "Email Address"}
+			name={isNew ? "newEmail" : "email"}
+			autoComplete={isNew ? undefined : "email"}
 		/>
 	</Grid>
 );
