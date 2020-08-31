@@ -11,6 +11,8 @@ const INITIAL_STATE = {
 
 const userReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		// ------------ Local state ------------
+
 		case $.MODIFY:
 			return {
 				...state,
@@ -22,7 +24,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				...INITIAL_STATE,
 			};
 
-		// --- Sync, Sing-in, Sing-up ---
+		// ------------ Sync status ------------
+
+		// Sync, Sing-in, Sing-up
 
 		case $.SYNC_START:
 		case $.SIGN_IN_START:
@@ -62,7 +66,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				...INITIAL_STATE,
 			};
 
-		// --- Update ---
+		// Update
 
 		case $.UPDATE_START:
 		case $.DELETE_START:
