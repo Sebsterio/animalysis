@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { getIsAuthenticated } from "redux/user/user-selectors";
-
 import {
 	signIn,
 	signUp,
@@ -10,6 +9,7 @@ import {
 	updateUser,
 	deleteUser,
 } from "redux/user/user-operations";
+import { clearError } from "redux/error/error-actions";
 
 import Account from "./Account";
 
@@ -23,6 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
 	update: (data) => dispatch(updateUser(data)),
 	close: (data) => dispatch(deleteUser(data)),
 	signOut: () => dispatch(signOut()),
+	clearError: () => dispatch(clearError()),
 });
 
 const AccountContainer = (props) => <Account {...props} />;

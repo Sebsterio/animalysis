@@ -11,16 +11,13 @@ const router = express.Router();
  * Error json
  *  note: developer feedback (e.g. message from `throw Error(_message_)`)
  * 	msg:  displayed to user; custom-set
- *  id:   determines msg location in UI; custom-set
+ *  target: determines msg location in UI; custom-set
  *****************************************************************************/
 
+// Filter savedUser props for export
 const getFilteredUserData = (savedUser) => {
 	const { dateModified, email, type } = savedUser;
-	const newData = {};
-	if (type) newData.type = type;
-	if (email) newData.email = email;
-	if (dateModified) newData.dateModified = dateModified;
-	return newData;
+	return { dateModified, email, type };
 };
 
 // ------------------- Sign-up -------------------
@@ -33,7 +30,7 @@ router.post("/sign-up", async (req, res) => {
 	const user = await User.findOne({ email });
 	if (user)
 		return res.status(403).json({
-			id: "EMAIL_NOT_UNIQUE",
+			target: "email",
 			msg: "User already exists",
 		});
 
@@ -66,14 +63,14 @@ router.post("/sign-in", async (req, res) => {
 		const user = await User.findOne({ email });
 		if (!user)
 			return res.status(403).json({
-				id: "WRONG_EMAIL",
+				target: "email",
 				msg: "There's no such user",
 			});
 
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch)
 			return res.status(403).json({
-				id: "WRONG_PASSWORD",
+				target: "password",
 				msg: "Invalid credentials",
 			});
 
@@ -118,7 +115,7 @@ router.post("/update", auth, async (req, res) => {
 		const passwordsMatch = await bcrypt.compare(password, user.password);
 		if (!passwordsMatch)
 			return res.status(403).json({
-				id: "WRONG_PASSWORD",
+				target: "password",
 				msg: "Invalid credentials",
 			});
 
@@ -128,7 +125,7 @@ router.post("/update", auth, async (req, res) => {
 			const foundUser = await User.findOne({ email: newEmail });
 			if (foundUser)
 				return res.status(403).json({
-					id: "EMAIL_NOT_UNIQUE",
+					target: "newEmail",
 					msg: "User already exists",
 				});
 			user.email = newEmail;
@@ -167,10 +164,9 @@ router.post("/delete", auth, async (req, res) => {
 
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch)
-			return res.status(403).json({
-				id: "WRONG_PASSWORD",
-				msg: "Invalid credentials",
-			});
+			return res
+				.status(403)
+				.json({ target: "password", msg: "Invalid credentials" });
 
 		await User.findByIdAndRemove(userId);
 		res.status(200).send();

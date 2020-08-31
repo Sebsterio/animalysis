@@ -2,17 +2,16 @@ export const SET_ERROR = "error/SET_ERROR";
 export const setError = (actionData) => {
 	const { response, message } = actionData;
 	const { data, status, statusText } = response || {};
-	const { note, msg, id } = data || {};
+	const { note, msg, target } = data || {};
 	return {
 		type: SET_ERROR,
 		// Native Error props
 		status,
 		statusText,
-		message,
+		// Native or custom
+		message: note || message,
 		// Custom props
-		note,
-		msg,
-		id,
+		feedback: { target, msg },
 		// Entire Error object for quick inspection
 		error: actionData,
 	};
@@ -20,7 +19,5 @@ export const setError = (actionData) => {
 
 export const CLEAR_ERROR = "error/CLEAR_ERROR";
 export const clearError = () => {
-	return {
-		type: CLEAR_ERROR,
-	};
+	return { type: CLEAR_ERROR };
 };

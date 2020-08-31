@@ -22,12 +22,14 @@ const AccountPage = ({
 	signOut,
 	update,
 	close,
+	clearError,
 }) => {
 	// ---------------------- Handlers ----------------------
 
 	// prettier-ignore
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		clearError()
 		const inputNames = ["email", "password", "newEmail", "newPassword", "firstName"];
 		const data = getTruthyInputDataFromForm(e.target, ...inputNames);
 		if (mode === authModes.signIn) return signIn(data);

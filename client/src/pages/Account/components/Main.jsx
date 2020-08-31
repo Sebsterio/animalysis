@@ -33,6 +33,7 @@ export const Main = ({ mode, mainModeIsMatched, signOut, handleSubmit }) => {
 			btnVariant: "contained",
 		},
 	};
+	// clear error on goback
 
 	return (
 		<Container maxWidth="xs">

@@ -1,16 +1,16 @@
 import * as $ from "./error-actions";
 
 const INITIAL_STATE = {
-	note: "", // developer feedback
 	msg: "", // displayed to user
-	id: "", // determines msg location in UI
+	target: "", // determines msg location in UI
+	// email | newEmail | password
 };
 
 const errorReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case $.SET_ERROR: {
-			const { note, msg, id } = action;
-			return { note, msg, id };
+			const { msg, target } = action.feedback;
+			return { msg, target };
 		}
 
 		case $.CLEAR_ERROR: {
