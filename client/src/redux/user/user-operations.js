@@ -35,6 +35,8 @@ export const signUp = (formData) => (dispatch) => {
 		.then((res) => {
 			dispatch($.signUpSuccess(res.data));
 			dispatch(modifyProfile({ name: formData.firstName }));
+			// TODO: get profile data from res after creating profile doc in db (?)
+			// same for pets and clinic stores (?)
 		})
 		.catch((err) => {
 			dispatch($.signUpFail());
