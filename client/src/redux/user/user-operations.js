@@ -1,7 +1,8 @@
 import axios from "axios";
 import * as $ from "./user-actions";
-import { setError } from "redux/error/error-actions";
 import { getIsSignedIn, getDateModified } from "./user-selectors";
+import { setError } from "redux/error/error-actions";
+import { modifyProfile } from "redux/profile/profile-actions";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
 // ------------------------ signIn ------------------------------
@@ -33,7 +34,7 @@ export const signUp = (formData) => (dispatch) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			dispatch($.signUpSuccess(res.data));
-			// TODO: add name to profile store
+			dispatch(modifyProfile({ name: formData.firstName }));
 		})
 		.catch((err) => {
 			dispatch($.signUpFail());
