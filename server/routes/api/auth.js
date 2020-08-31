@@ -116,6 +116,8 @@ router.post("/", auth, async (req, res) => {
 router.post("/update", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
+
+		// TODO: remove; return user in find instead
 		const user = await User.findById(userId).select("-password");
 		if (!user) return res.status(404).json({ note: "User doesn't exist" });
 

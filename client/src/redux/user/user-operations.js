@@ -91,15 +91,11 @@ export const updateUser = () => (dispatch, getState) => {
 
 // // -------------------------- logout -------------------------------
 
-// // Clear store and persistor; fresh start
-// export const logout = () => (dispatch) => {
-// 	dispatch($.clearUserData());
-// 	dispatch(clearLocalLog());
-// 	dispatch(clearLocalPrograms());
-// 	dispatch(clearLocalProgramsList());
-// 	dispatch(setCurrentStandardProgram());
-// 	localStorage.clear();
-// };
+// Clear store and persistor;
+export const signOut = () => (dispatch) => {
+	dispatch($.clearUser());
+	localStorage.clear();
+};
 
 // // ----------------------- closeAccount ----------------------------
 

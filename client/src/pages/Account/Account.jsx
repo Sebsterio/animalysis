@@ -18,6 +18,7 @@ const AccountPage = ({
 	// dispatch
 	signIn,
 	signUp,
+	signOut,
 }) => {
 	// ---------------------- Handlers ----------------------
 
@@ -50,7 +51,7 @@ const AccountPage = ({
 		// Ensure URL param is valid
 		if (mode && !mainModesIsMatched) return <Redirect to={accountPageUrl} />;
 		// Render Account page
-		return <Main />;
+		return <Main signOut={signOut} />;
 	}
 	// Not authenticated
 	else {
