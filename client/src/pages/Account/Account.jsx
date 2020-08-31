@@ -14,6 +14,7 @@ import { getTruthyInputDataFromForm } from "utils/form";
 const AccountPage = ({
 	// router
 	match,
+	history,
 	// state
 	isAuthenticated,
 	// dispatch
@@ -41,6 +42,12 @@ const AccountPage = ({
 		}
 	};
 
+	const goBack = () => {
+		clearError();
+		if (match.params.mode) history.push("/account");
+		else history.push("/");
+	};
+
 	// ------------------ Routing & Render ------------------
 
 	const { mode } = match.params;
@@ -54,7 +61,9 @@ const AccountPage = ({
 		// Ensure URL param is valid
 		if (mode && !mainModeIsMatched) return <Redirect to={subroutes.account} />;
 		// Render Account page
-		return <Main {...{ mode, mainModeIsMatched, signOut, handleSubmit }} />;
+		return (
+			<Main {...{ mode, mainModeIsMatched, signOut, handleSubmit, goBack }} />
+		);
 	}
 	// Not authenticated
 	else {

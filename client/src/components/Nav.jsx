@@ -18,16 +18,15 @@ export const useStyles = makeStyles((theme) => ({
 
 export const Nav = ({
 	textLeft,
-	textMiddle,
-	textRight,
 	onClickLeft,
-	onClickMiddle,
-	onClickRight,
 	disabledLeft = false,
+	textMiddle,
+	onClickMiddle,
 	disabledMiddle = false,
+	textRight,
+	onClickRight,
 	disabledRight = false,
 	enlargedRight = false,
-	onlyRight = false,
 	noArrows = false,
 }) => {
 	const c = useStyles({ enlargedRight });
@@ -53,14 +52,16 @@ export const Nav = ({
 				/>
 			)}
 
-			<Button
-				children={textRight}
-				onClick={onClickRight}
-				disabled={disabledRight}
-				fullWidth={onlyRight}
-				endIcon={noArrows ? null : <KeyboardArrowRight />}
-				className={c.nextButton}
-			/>
+			{textRight && (
+				<Button
+					children={textRight}
+					onClick={onClickRight}
+					disabled={disabledRight}
+					fullWidth={!textLeft && !textMiddle}
+					endIcon={noArrows ? null : <KeyboardArrowRight />}
+					className={c.nextButton}
+				/>
+			)}
 		</div>
 	);
 };

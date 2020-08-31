@@ -12,11 +12,6 @@ import { Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
-		position: "absolute",
-		top: 0,
-		left: 0,
-		right: 0,
-		bottom: 0,
 		display: "flex",
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
@@ -24,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 	header: {},
 	main: {
+		flex: 1,
 		overflowY: "auto",
-		display: "flex",
-		flexFlow: "column nowrap",
-		justifyContent: "center",
+		display: "grid",
+		gridGap: theme.spacing(3),
+		alignContent: "center",
 		paddingTop: theme.spacing(4),
 		paddingBottom: theme.spacing(4),
 	},
@@ -37,12 +33,10 @@ const useStyles = makeStyles((theme) => ({
 export const Page = ({ header, footer, main, children = main }) => {
 	const c = useStyles();
 	return (
-		<div>
-			<Container maxWidth="xs" className={c.page}>
-				{header && <div className={c.header}>{header}</div>}
-				<div className={c.main}>{children}</div>
-				{footer && <div className={c.footer}>{footer}</div>}
-			</Container>
-		</div>
+		<Container maxWidth="xs" className={c.page}>
+			{header && <div className={c.header}>{header}</div>}
+			<div className={c.main}>{children}</div>
+			{footer && <div className={c.footer}>{footer}</div>}
+		</Container>
 	);
 };
