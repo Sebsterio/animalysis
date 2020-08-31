@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getIsAuthenticated } from "redux/user/user-selectors";
+import { getIsAuthenticated, getIsUpdating } from "redux/user/user-selectors";
 import {
 	signIn,
 	signUp,
@@ -14,7 +14,8 @@ import { clearError } from "redux/error/error-actions";
 import Account from "./Account";
 
 const mapStateToProps = (state) => ({
-	isAuthenticated: getIsAuthenticated(state),
+	authenticated: getIsAuthenticated(state),
+	updating: getIsUpdating(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -16,7 +16,8 @@ const AccountPage = ({
 	match,
 	history,
 	// state
-	isAuthenticated,
+	authenticated,
+	updating,
 	// dispatch
 	signIn,
 	signUp,
@@ -55,14 +56,23 @@ const AccountPage = ({
 	const mainModeIsMatched = Object.values(mainModes).includes(mode);
 	const authModeIsMatched = Object.values(authModes).includes(mode);
 
-	if (isAuthenticated) {
+	if (authenticated) {
 		// After auth success, redirect to Home
 		if (authModeIsMatched) return <Redirect to="/" />;
 		// Ensure URL param is valid
 		if (mode && !mainModeIsMatched) return <Redirect to={subroutes.account} />;
 		// Render Account page
 		return (
-			<Main {...{ mode, mainModeIsMatched, signOut, handleSubmit, goBack }} />
+			<Main
+				{...{
+					mode,
+					mainModeIsMatched,
+					updating,
+					signOut,
+					handleSubmit,
+					goBack,
+				}}
+			/>
 		);
 	}
 	// Not authenticated

@@ -1,75 +1,27 @@
 import React from "react";
-import { Button, Typography } from "@material-ui/core";
-import { MenuButton } from "./index";
-import { Page, Nav, Stack } from "components";
-import { useStyles } from "../Account-styles";
-import { mainModes, subroutes } from "../Account-constants";
-import { EmailInput, PasswordInput } from "./index";
+import { MenuButton, Form } from "./index";
+import { Page, Nav } from "components";
+import { subroutes } from "../Account-constants";
 
 export const Main = ({
 	mode,
-	mainModeIsMatched,
+	mainModeIsMatched: isSubroute,
+	updating,
 	signOut,
 	handleSubmit,
 	goBack,
 }) => {
-	const c = useStyles();
-
-	const modesData = {
-		[mainModes.edit]: {
-			body: (
-				<>
-					<EmailInput label="New email" isNew />
-					<PasswordInput label="New password" isNew />
-					<PasswordInput label="Current password" />
-				</>
-			),
-			btnText: "Done",
-		},
-		[mainModes.close]: {
-			heading: (
-				<Typography>
-					Caution! You're about to permanently delete your account. This process
-					is irreversible.
-				</Typography>
-			),
-			body: <PasswordInput />,
-			btnText: "Close account",
-			btnColor: "secondary",
-			btnVariant: "contained",
-		},
-	};
-
+	const menu = (
+		<>
+			<MenuButton children="Edit details" to={subroutes.edit} />
+			<MenuButton children="Register as vet" to={"/register-clinic"} disabled />
+			<MenuButton children="Close account" to={subroutes.close} />
+			<MenuButton children="Sign out" onClick={signOut} />
+		</>
+	);
 	return (
 		<Page
-			main={
-				mainModeIsMatched ? (
-					// ------------------ Form -----------------
-					// route='/account/:mode'
-					<form className={c.form} onSubmit={handleSubmit}>
-						<Stack>
-							{modesData[mode].heading || null}
-							{modesData[mode].body || null}
-							<Button
-								fullWidth
-								type="submit"
-								variant={modesData[mode].btnVariant || "outlined"}
-								color={modesData[mode].btnColor || "default"}
-								children={modesData[mode].btnText}
-							/>
-						</Stack>
-					</form>
-				) : (
-					// -------------- Main menu --------------
-					// route='/account'
-					<>
-						<MenuButton children="Edit details" to={subroutes.edit} />
-						<MenuButton children="Register as vet" to={"/register-clinic"} />
-						<MenuButton children="Close account" to={subroutes.close} />
-						<MenuButton children="Sign out" onClick={signOut} />
-					</>
-				)
-			}
+			main={isSubroute ? <Form {...{ updating, mode, handleSubmit }} /> : menu}
 			footer={<Nav textLeft="Back" onClickLeft={goBack} />}
 		/>
 	);

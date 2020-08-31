@@ -140,7 +140,7 @@ router.post("/update", auth, async (req, res) => {
 			user.password = hash;
 		}
 
-		// Update rest
+		// Update rest and save
 		if (type && type !== "superuser") user.type = type;
 		user.dateModified = new Date();
 		await user.save();

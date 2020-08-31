@@ -6,6 +6,7 @@ export const withError = (Component) =>
 	connect(
 		(state) => ({
 			error: state.error,
+			isError: !!state.error.target,
 		}),
 		(dispatch) => ({
 			clearError: (data) => dispatch(clearError(data)),

@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 export const Copyright = () => (
 	<Typography variant="body2" color="textSecondary" align="center">
 		{"Copyright © "}
-		<Link color="inherit" href="#">
+		<Link color="inherit" href="/">
 			VetCheck
 		</Link>
 		{` ${new Date().getFullYear()}.`}
