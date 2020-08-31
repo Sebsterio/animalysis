@@ -1,6 +1,5 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
 
 // Components
 import {
@@ -11,44 +10,16 @@ import {
 	Button,
 	Link,
 } from "@material-ui/core";
-import { ProfileInfo, UserInfo, Terms } from "./index";
+import { ProfileInfo, EmailInput, PasswordInput, Terms } from "./index";
 import { Copyright } from "components";
 
 // Other
-import { authModes } from "../Account-modes";
+import { authModes } from "../Account-constants";
+import { useStyles } from "../Account-styles";
 
 // --------------------------------------------------------------
 
-export const useStyles = makeStyles((theme) => ({
-	container: {
-		paddingTop: theme.spacing(6),
-		paddingBottom: theme.spacing(4),
-		display: "flex",
-		flexFlow: "column nowrap",
-		alignItems: "stretch",
-		justifyContent: "space-between",
-	},
-	head: {
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-	},
-	paper: {
-		marginTop: theme.spacing(6),
-		marginBottom: theme.spacing(6),
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-	},
-	form: {
-		width: "100%", // Fixes IE 11 issue.
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
-
-export const Auth = ({ mode, submit }) => {
+export const Auth = ({ mode, handleSubmit }) => {
 	const c = useStyles();
 
 	const modesData = {
@@ -81,12 +52,13 @@ export const Auth = ({ mode, submit }) => {
 				</Typography>
 			</Box>
 
-			<Box className={c.paper} onSubmit={submit}>
+			<Box className={c.paper} onSubmit={handleSubmit}>
 				<form className={c.form}>
 					{/* Main form */}
 					<Grid container spacing={2}>
 						{modesData[mode].profileInfo || null}
-						{UserInfo}
+						<EmailInput />
+						<PasswordInput />
 						{modesData[mode].terms || null}
 					</Grid>
 

@@ -12,3 +12,10 @@ export const modes = {
 	...mainModes,
 	...authModes,
 };
+
+export const subroutes = {
+	account: "/account",
+	singIn: "/account/" + authModes.signIn,
+	close: "/account/" + mainModes.close,
+	edit: "/account/" + mainModes.edit,
+};

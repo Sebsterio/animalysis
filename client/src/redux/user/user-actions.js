@@ -74,6 +74,23 @@ export const updateFail = (data) => ({
 	payload: data,
 });
 
+// Delete
+
+export const DELETE_START = "user/DELETE_START";
+export const deleteStart = () => ({
+	type: DELETE_START,
+});
+export const DELETE_SUCCESS = "user/DELETE_SUCCESS";
+export const deleteSuccess = (data) => ({
+	type: DELETE_SUCCESS,
+	payload: data,
+});
+export const DELETE_FAIL = "user/DELETE_FAIL";
+export const deleteFail = (data) => ({
+	type: DELETE_FAIL,
+	payload: data,
+});
+
 // Other
 
 export const CLEAR = "user/CLEAR";

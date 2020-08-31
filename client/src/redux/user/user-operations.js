@@ -3,7 +3,7 @@ import * as $ from "./user-actions";
 import { setError } from "redux/error/error-actions";
 import { getUser, getDateModified, getToken } from "./user-selectors";
 import { getConfig, getTokenConfig } from "utils/ajax";
-import { userSyncConflictMsg } from "config/messages";
+import { userSyncConflictMsg } from "constants/messages";
 
 // ------------------------ signIn ------------------------------
 
@@ -97,17 +97,22 @@ export const signOut = () => (dispatch) => {
 	localStorage.clear();
 };
 
-// // ----------------------- closeAccount ----------------------------
+// ----------------------- deleteAccount ----------------------------
 
-// // Remove all user data from db
-// export const closeAccount = (formData) => (dispatch, getState) => {
-// 	dispatch(clearError());
-// 	const token = getTokenConfig(getState);
-// 	dispatch(removeRemoteLog(token));
-// 	dispatch(removeRemoteProgramsList(token));
-// 	dispatch(removeAllRemotePrivatePrograms(token));
-// 	axios
-// 		.post("api/auth/delete", JSON.stringify(formData), token)
-// 		.then(() => dispatch(logout()))
-// 		.catch((err) => dispatch(getError(err, "CLOSE_ACCOUNT_FAIL")));
-// };
+// Remove all user data from db
+export const deleteAccount = (formData) => (dispatch, getState) => {
+	// dispatch(clearError());
+	console.log(formData);
+	const token = getTokenConfig(getState());
+	dispatch($.deleteStart());
+	axios
+		.post("/api/auth/delete", JSON.stringify(formData), token)
+		.then(() => {
+			dispatch($.deleteSuccess());
+			dispatch(signOut());
+		})
+		.catch((err) => {
+			dispatch($.deleteFail());
+			dispatch(setError(err));
+		});
+};

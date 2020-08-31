@@ -19,7 +19,7 @@ const getUserData = (savedUser) => {
 	return { dateModified, dateRegistered, email, type, role };
 };
 
-// ------------------- Sing-up -------------------
+// ------------------- Sign-up -------------------
 
 // @access: public
 
@@ -55,7 +55,7 @@ router.post("/sign-up", async (req, res) => {
 	}
 });
 
-// --------------------- Sing-in ---------------------
+// --------------------- Sign-in ---------------------
 
 // @access: public
 
@@ -128,29 +128,30 @@ router.post("/update", auth, async (req, res) => {
 	}
 });
 
-// ---------------- Remove user ----------------
+// ---------------- Delete user ----------------
 
-// router.post("/delete", auth, async (req, res) => {
-// 	try {
-// 		const { password } = req.body;
-// 		if (!password) throw Error("Missing credentials");
+router.post("/delete", auth, async (req, res) => {
+	try {
+		const { password } = req.body;
+		if (!password) throw Error("Missing credentials");
 
-// 		const { userId } = req;
-// 		const user = await User.findById(userId);
-// 		if (!user) throw Error("User does not exist");
+		const { userId } = req;
+		const user = await User.findById(userId);
+		if (!user) throw Error("User does not exist");
 
-// 		const isMatch = await bcrypt.compare(password, user.password);
-// 		if (!isMatch)
-// 			return res
-// 				.status(403)
-// 				.json({ id: "WRONG_PASSWORD", msg: "Invalid credentials" });
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch)
+			return res.status(403).json({
+				id: "WRONG_PASSWORD",
+				msg: "Invalid credentials",
+			});
 
-// 		await User.findByIdAndRemove(userId);
-// 		res.status(200).send();
-// 	} catch (e) {
-// 		res.status(400).json({ note: e.message });
-// 	}
-// });
+		await User.findByIdAndRemove(userId);
+		res.status(200).send();
+	} catch (e) {
+		res.status(400).json({ note: e.message });
+	}
+});
 
 // ----------------------------------------------------------------
 

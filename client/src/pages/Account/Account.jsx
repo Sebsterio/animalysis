@@ -1,7 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { Auth, Main } from "./components";
-import { mainModes, authModes } from "./Account-modes";
+import { mainModes, authModes, subroutes } from "./Account-constants";
+import { getInputDataFromForm } from "utils/form";
 
 /*********************************
  * Handle auth state,
@@ -19,46 +20,40 @@ const AccountPage = ({
 	signIn,
 	signUp,
 	signOut,
+	closeAccount,
 }) => {
 	// ---------------------- Handlers ----------------------
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const {
-			email: { value: email },
-			password: { value: password },
-			firstName,
-		} = e.target;
-		const data = { email, password, firstName: firstName && firstName.value };
-		// if (firstName) data.firstName = firstName.value;
+		const inputNames = ["email", "password", "firstName"];
+		const data = getInputDataFromForm(e.target, ...inputNames);
 		if (mode === authModes.signIn) return signIn(data);
 		if (mode === authModes.signUp) return signUp(data);
+		if (mode === mainModes.close) return closeAccount(data);
 	};
 
 	// ------------------ Routing & Render ------------------
 
 	const { mode } = match.params;
 
-	const mainModesIsMatched = Object.values(mainModes).includes(mode);
-	const authModesIsMatched = Object.values(authModes).includes(mode);
-
-	const accountPageUrl = `/account`;
-	const singInPageUrl = `/account/${authModes.signIn}`;
+	const mainModeIsMatched = Object.values(mainModes).includes(mode);
+	const authModeIsMatched = Object.values(authModes).includes(mode);
 
 	if (isAuthenticated) {
 		// After auth success, redirect to Home
-		if (authModesIsMatched) return <Redirect to="/" />;
+		if (authModeIsMatched) return <Redirect to="/" />;
 		// Ensure URL param is valid
-		if (mode && !mainModesIsMatched) return <Redirect to={accountPageUrl} />;
+		if (mode && !mainModeIsMatched) return <Redirect to={subroutes.account} />;
 		// Render Account page
-		return <Main signOut={signOut} />;
+		return <Main {...{ mode, mainModeIsMatched, signOut, handleSubmit }} />;
 	}
 	// Not authenticated
 	else {
 		// Ensure URL param is present and valid
-		if (!mode || !authModesIsMatched) return <Redirect to={singInPageUrl} />;
+		if (!mode || !authModeIsMatched) return <Redirect to={subroutes.singIn} />;
 		// Render Auth form
-		return <Auth mode={mode} submit={handleSubmit} />;
+		return <Auth {...{ mode, handleSubmit }} />;
 	}
 };
 

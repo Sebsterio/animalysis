@@ -58,13 +58,16 @@ const userReducer = (state = INITIAL_STATE, action) => {
 		// --- Update ---
 
 		case $.UPDATE_START:
+		case $.DELETE_START:
 			return {
 				...state,
 				isUpdating: true,
 			};
 
 		case $.UPDATE_SUCCESS:
+		case $.DELETE_SUCCESS:
 		case $.UPDATE_FAIL:
+		case $.DELETE_FAIL:
 			return {
 				...state,
 				isUpdating: false,
