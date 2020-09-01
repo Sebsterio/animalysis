@@ -11,13 +11,13 @@ export const setError = (actionData) => {
 		// Native or custom
 		message: note || message,
 		// Custom props
-		feedback: { target, msg },
+		payload: { target, msg },
 		// Entire Error object for quick inspection
 		error: actionData,
 	};
 };
 
 export const CLEAR_ERROR = "error/CLEAR_ERROR";
-export const clearError = () => {
-	return { type: CLEAR_ERROR };
+export const clearError = (note) => {
+	return { type: CLEAR_ERROR, note };
 };

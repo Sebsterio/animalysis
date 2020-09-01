@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as $ from "./user-actions";
 import { getIsSignedIn, getDateModified } from "./user-selectors";
-import { setError } from "redux/error/error-actions";
+import { error } from "redux/error/error-operations";
 import { modifyProfile } from "redux/profile/profile-actions";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
@@ -18,7 +18,7 @@ export const signIn = (formData) => (dispatch) => {
 		.then((res) => dispatch($.signInSuccess(res.data)))
 		.catch((err) => {
 			dispatch($.signInFail());
-			dispatch(setError(err));
+			dispatch(error(err));
 		});
 };
 
@@ -40,7 +40,7 @@ export const signUp = (formData) => (dispatch) => {
 		})
 		.catch((err) => {
 			dispatch($.signUpFail());
-			dispatch(setError(err));
+			dispatch(error(err));
 		});
 };
 
@@ -64,7 +64,7 @@ export const syncUser = () => (dispatch, getState) => {
 		})
 		.catch((err) => {
 			dispatch($.syncFail());
-			dispatch(setError(err));
+			dispatch(error(err));
 		});
 };
 
@@ -81,7 +81,7 @@ export const updateUser = (formData) => (dispatch, getState) => {
 		.then((res) => dispatch($.updateSuccess(res.data)))
 		.catch((err) => {
 			dispatch($.updateFail());
-			dispatch(setError(err));
+			dispatch(error(err));
 		});
 };
 
@@ -107,6 +107,6 @@ export const deleteUser = (formData) => (dispatch, getState) => {
 		})
 		.catch((err) => {
 			dispatch($.deleteFail());
-			dispatch(setError(err));
+			dispatch(error(err));
 		});
 };

@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const errorReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case $.SET_ERROR: {
-			const { msg, target } = action.feedback;
+			const { msg, target } = action.payload;
 			return { msg, target };
 		}
 
