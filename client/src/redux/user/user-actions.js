@@ -1,48 +1,48 @@
 // ---------------- Local state ---------------
 
 export const MODIFY = "user/MODIFY";
-export const modifyUser = (data) => ({
+export const modify = (data) => ({
 	type: MODIFY,
 	payload: data,
 });
 
 export const CLEAR = "user/CLEAR";
-export const clearUser = () => ({
+export const clear = () => ({
 	type: CLEAR,
 });
 
 // ---------------- Sync status ---------------
 
-// Sign in
+// Create
 
-export const SIGN_IN_START = "user/SIGN_IN_START";
-export const signInStart = () => ({
-	type: SIGN_IN_START,
+export const CREATE_START = "user/CREATE_START";
+export const createStart = () => ({
+	type: CREATE_START,
 });
-export const SIGN_IN_SUCCESS = "user/SIGN_IN_SUCCESS";
-export const signInSuccess = (data) => ({
-	type: SIGN_IN_SUCCESS,
+export const CREATE_SUCCESS = "user/CREATE_SUCCESS";
+export const createSuccess = (data) => ({
+	type: CREATE_SUCCESS,
 	payload: data,
 });
-export const SIGN_IN_FAIL = "user/SIGN_IN_FAIL";
-export const signInFail = () => ({
-	type: SIGN_IN_FAIL,
+export const CREATE_FAIL = "user/CREATE_FAIL";
+export const createFail = () => ({
+	type: CREATE_FAIL,
 });
 
-// Sign up
+// Fetch
 
-export const SIGN_UP_START = "user/SIGN_UP_START";
-export const signUpStart = () => ({
-	type: SIGN_UP_START,
+export const FETCH_START = "user/FETCH_START";
+export const fetchStart = () => ({
+	type: FETCH_START,
 });
-export const SIGN_UP_SUCCESS = "user/SIGN_UP_SUCCESS";
-export const signUpSuccess = (data) => ({
-	type: SIGN_UP_SUCCESS,
+export const FETCH_SUCCESS = "user/FETCH_SUCCESS";
+export const fetchSuccess = (data) => ({
+	type: FETCH_SUCCESS,
 	payload: data,
 });
-export const SIGN_UP_FAIL = "user/SIGN_UP_FAIL";
-export const signUpFail = () => ({
-	type: SIGN_UP_FAIL,
+export const FETCH_FAIL = "user/FETCH_FAIL";
+export const fetchFail = () => ({
+	type: FETCH_FAIL,
 });
 
 // Sync -- on app load

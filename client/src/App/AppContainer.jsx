@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { getIsLoading, getIsAuthenticated } from "redux/user/user-selectors";
-import { syncUser } from "redux/user/user-operations";
+import { syncData } from "redux/session/session-operations";
 
 import { App } from "./App";
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	syncUser: () => dispatch(syncUser()),
+	syncData: () => dispatch(syncData()),
 });
 
 const AppContainer = (props) => <App {...props} />;

@@ -15,7 +15,7 @@ import { routes } from "routes";
  * Trigger user sync
  *******************************/
 
-export const App = ({ loading, authenticated, syncUser }) => {
+export const App = ({ loading, authenticated, syncData }) => {
 	const c = useStyles();
 
 	// TEMP
@@ -28,8 +28,8 @@ export const App = ({ loading, authenticated, syncUser }) => {
 	}, []);
 
 	useEffect(() => {
-		syncUser();
-	}, [syncUser]);
+		syncData();
+	}, [syncData]);
 
 	// Create Routes from routes array
 	const mainRoutes = routes.map((route) => {

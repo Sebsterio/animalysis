@@ -1,12 +1,14 @@
 import * as $ from "./user-actions";
 
 const INITIAL_STATE = {
+	// Sync status
 	isLoading: false,
 	isUpdating: false,
-	isAuthenticated: false,
-	email: "",
+	// Data
 	token: "", // JWT
+	email: "",
 	type: "", // clinic | pet-owner | superuser | demo
+	// Meta
 	dateModified: undefined, // NOTE: dont' use null
 };
 
@@ -28,8 +30,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
 		// Sync, Sing-in, Sing-up
 
 		case $.SYNC_START:
-		case $.SIGN_IN_START:
-		case $.SIGN_UP_START:
+		case $.FETCH_START:
+		case $.CREATE_START:
 			return {
 				...state,
 				isLoading: true,
@@ -43,21 +45,20 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			};
 
 		case $.SYNC_SUCCESS:
-		case $.SIGN_IN_SUCCESS:
-		case $.SIGN_UP_SUCCESS:
+		case $.FETCH_SUCCESS:
+		case $.CREATE_SUCCESS:
 			return {
 				...state,
 				isLoading: false,
-				isAuthenticated: true,
 				...action.payload,
 			};
 
-		case $.SIGN_IN_FAIL:
-		case $.SIGN_UP_FAIL:
+		case $.FETCH_FAIL:
+		case $.CREATE_FAIL:
 			return {
 				...state,
 				isLoading: false,
-				isAuthenticated: false,
+				token: null,
 			};
 
 		case $.SYNC_FAIL:

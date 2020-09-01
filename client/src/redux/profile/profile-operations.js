@@ -6,7 +6,6 @@ import { getTokenConfig } from "utils/ajax";
 // ------------------------ createProfile ------------------------------
 
 export const createProfile = (formData) => (dispatch, getState) => {
-	console.log({ formData });
 	const endpoint = "/api/profile/create";
 	const data = JSON.stringify(formData);
 	const config = getTokenConfig(getState());
@@ -22,12 +21,29 @@ export const createProfile = (formData) => (dispatch, getState) => {
 		});
 };
 
+// -------------------------- updateProfile ------------------------------
+
+// POST profile data to db
+export const updateProfile = (formData) => (dispatch, getState) => {
+	const endpoint = "/api/profile/update";
+	const data = JSON.stringify(formData);
+	const config = getTokenConfig(getState());
+	dispatch($.updateStart());
+	axios
+		.post(endpoint, data, config)
+		.then((res) => dispatch($.updateSuccess(res.data)))
+		.catch((err) => {
+			dispatch($.updateFail());
+			dispatch(error(err));
+		});
+};
+
 // // --------------------------- syncUser ------------------------------
 
 // // GET user data if newer than local
 // // If older, resolve conflict
 // export const syncUser = () => (dispatch, getState) => {
-// 	const signedIn = getIsSignedIn(getState());
+// 	const signedIn = getIsAuthenticated(getState());
 // 	if (!signedIn) return;
 
 // 	const endpoint = "/api/auth";
@@ -48,31 +64,6 @@ export const createProfile = (formData) => (dispatch, getState) => {
 // 			dispatch($.syncFail());
 // 			dispatch(error(err));
 // 		});
-// };
-
-// // -------------------------- updateUser ------------------------------
-
-// // POST user data to db
-// export const updateUser = (formData) => (dispatch, getState) => {
-// 	const endpoint = "/api/auth/update";
-// 	const data = JSON.stringify(formData);
-// 	const config = getTokenConfig(getState());
-// 	dispatch($.updateStart());
-// 	axios
-// 		.post(endpoint, data, config)
-// 		.then((res) => dispatch($.updateSuccess(res.data)))
-// 		.catch((err) => {
-// 			dispatch($.updateFail());
-// 			dispatch(error(err));
-// 		});
-// };
-
-// // --------------------------- signOut --------------------------------
-
-// // Clear store and persistor;
-// export const signOut = () => (dispatch) => {
-// 	dispatch($.clearUser());
-// 	localStorage.clear();
 // };
 
 // -------------------------- deleteProfile ------------------------------

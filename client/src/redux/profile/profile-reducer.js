@@ -1,6 +1,10 @@
 import * as $ from "./profile-actions";
 
 const INITIAL_STATE = {
+	// Sync status
+	isLoading: false,
+	isUpdating: false,
+	// Data
 	firstName: "",
 	surname: "",
 	phone: "",
@@ -30,7 +34,7 @@ const profileReducer = (state = INITIAL_STATE, action) => {
 
 		// ------------ Sync status ------------
 
-		// Sync, Sing-in, Sing-up
+		// Create
 
 		case $.CREATE_START:
 			return {
@@ -53,22 +57,27 @@ const profileReducer = (state = INITIAL_STATE, action) => {
 
 		// Update, delete
 
-		// case $.UPDATE_START:
-		// case $.DELETE_START:
-		// 	return {
-		// 		...state,
-		// 		isUpdating: true,
-		// 	};
+		case $.UPDATE_START:
+		case $.DELETE_START:
+			return {
+				...state,
+				isUpdating: true,
+			};
 
-		// case $.UPDATE_SUCCESS:
-		// case $.DELETE_SUCCESS:
-		// case $.UPDATE_FAIL:
-		// case $.DELETE_FAIL:
-		// 	return {
-		// 		...state,
-		// 		isUpdating: false,
-		// 		...action.payload,
-		// 	};
+		case $.UPDATE_SUCCESS:
+			return {
+				...state,
+				isUpdating: false,
+				...action.payload,
+			};
+
+		case $.DELETE_SUCCESS:
+		case $.UPDATE_FAIL:
+		case $.DELETE_FAIL:
+			return {
+				...state,
+				isUpdating: false,
+			};
 
 		// ---------------
 

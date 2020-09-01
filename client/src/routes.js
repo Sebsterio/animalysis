@@ -6,7 +6,7 @@ import { Report } from "pages/Report";
 import { Account } from "pages/Account";
 import { Summary } from "pages/Summary";
 import { ClinicForm } from "pages/ClinicForm";
-import { UserForm } from "pages/UserForm";
+import { ProfileForm } from "pages/ProfileForm";
 import { SurveyEditor } from "pages/SurveyEditor";
 
 // Aux
@@ -48,7 +48,7 @@ export const routes = [
 	{
 		path: "/profile",
 		title: "My Profile",
-		component: UserForm,
+		component: ProfileForm,
 		exact,
 		inNav,
 	},

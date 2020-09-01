@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
 import { Nav, Form, isFormFilled } from "components";
 
-import { formFields } from "./UserForm-formData";
+import { formFields } from "./ProfileForm-formData";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -18,23 +18,23 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const UserForm = ({ history, currentUser, updateUser }) => {
+export const ProfileForm = ({ history, currentProfile, update }) => {
 	const c = useStyles();
 
-	const [user, setUser] = useState({ ...currentUser });
+	const [profile, setProfile] = useState({ ...currentProfile });
 
 	const closeForm = () => history.push("/");
 
 	const submitForm = () => {
-		updateUser(user);
+		update(profile);
 		closeForm();
 	};
 
-	const canSubmit = () => isFormFilled(formFields, user);
+	const canSubmit = () => isFormFilled(formFields, profile);
 
 	return (
 		<Container maxWidth="xs" className={c.page}>
-			<Form state={user} setState={setUser} fields={formFields} />
+			<Form state={profile} setState={setProfile} fields={formFields} />
 			<div className={c.footer}>
 				<Nav
 					textLeft="Cancel"

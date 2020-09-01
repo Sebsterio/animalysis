@@ -1,13 +1,13 @@
 // ---------------- Local state ---------------
 
 export const MODIFY = "profile/MODIFY";
-export const modifyProfile = (data) => ({
+export const modify = (data) => ({
 	type: MODIFY,
 	payload: data,
 });
 
 export const CLEAR = "profile/CLEAR";
-export const clearProfile = () => ({
+export const clear = () => ({
 	type: CLEAR,
 });
 
@@ -32,6 +32,22 @@ export const createSuccess = (data) => ({
 export const CREATE_FAIL = "profile/CREATE_FAIL";
 export const createFail = () => ({
 	type: CREATE_FAIL,
+});
+
+// Update (POST)
+
+export const UPDATE_START = "profile/UPDATE_START";
+export const updateStart = () => ({
+	type: UPDATE_START,
+});
+export const UPDATE_SUCCESS = "profile/UPDATE_SUCCESS";
+export const updateSuccess = (data) => ({
+	type: UPDATE_SUCCESS,
+	payload: data,
+});
+export const UPDATE_FAIL = "profile/UPDATE_FAIL";
+export const updateFail = () => ({
+	type: UPDATE_FAIL,
 });
 
 // Delete

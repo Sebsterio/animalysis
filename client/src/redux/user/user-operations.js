@@ -1,74 +1,60 @@
 import axios from "axios";
 import * as $ from "./user-actions";
-import { getIsSignedIn, getDateModified } from "./user-selectors";
+import { getDateModified } from "./user-selectors";
 import { error } from "redux/error/error-operations";
-import { modifyProfile } from "redux/profile/profile-actions";
-import { createProfile, deleteProfile } from "redux/profile/profile-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
-// ------------------------ signIn ------------------------------
-
-// Exchange password for token
-export const signIn = (formData) => (dispatch) => {
-	const endpoint = "/api/auth/sign-in";
-	const data = JSON.stringify(formData);
-	const config = getConfig();
-	dispatch($.signInStart());
-	axios
-		.post(endpoint, data, config)
-		.then((res) => dispatch($.signInSuccess(res.data)))
-		.catch((err) => {
-			dispatch($.signInFail());
-			dispatch(error(err));
-		});
-};
-
-// ------------------------ signUp ------------------------------
+// ---------------------- createUser -----------------------------
 
 // Create new User and get token
-// Create Profile
-export const signUp = (formData) => (dispatch) => {
+export const createUser = (formData) => async (dispatch) => {
 	const endpoint = "/api/auth/sign-up";
 	const data = JSON.stringify(formData);
 	const config = getConfig();
-	dispatch($.signUpStart());
-	axios
+	dispatch($.createStart());
+	return axios
 		.post(endpoint, data, config)
-		.then((res) => {
-			const { firstName } = formData;
-			dispatch($.signUpSuccess(res.data));
-			dispatch(modifyProfile({ firstName }));
-			dispatch(createProfile({ firstName }));
-		})
+		.then((res) => dispatch($.createSuccess(res.data)))
 		.catch((err) => {
-			dispatch($.signUpFail());
+			dispatch($.createFail());
 			dispatch(error(err));
 		});
 };
 
-// --------------------------- syncUser ------------------------------
+// ----------------------- fetchUser -----------------------------
+
+// Exchange password for token and updated user data
+export const fetchUser = (formData) => async (dispatch) => {
+	const endpoint = "/api/auth/sign-in";
+	const data = JSON.stringify(formData);
+	const config = getConfig();
+	dispatch($.fetchStart());
+	return axios
+		.post(endpoint, data, config)
+		.then((res) => dispatch($.fetchSuccess(res.data)))
+		.catch((err) => {
+			dispatch($.fetchFail());
+			dispatch(error(err));
+		});
+};
+
+// ------------------------- syncUser ----------------------------
 
 // GET user data if newer than local
-// If older, resolve conflict
-export const syncUser = () => (dispatch, getState) => {
-	const signedIn = getIsSignedIn(getState());
-	if (!signedIn) return;
-
+export const syncUser = () => async (dispatch, getState) => {
 	const endpoint = "/api/auth";
 	const dateModified = getDateModified(getState());
 	const data = JSON.stringify({ dateModified });
 	const config = getTokenConfig(getState());
 	dispatch($.syncStart());
-	axios
+	return axios
 		.post(endpoint, data, config)
 		.then((res) => {
 			if (res.status === 201) return dispatch($.upToDate());
-			if (res.status === 200) return dispatch($.syncSuccess(res.data));
-			// on 200 also return profile, clinic, pets
+			return dispatch($.syncSuccess(res.data));
 		})
 		.catch((err) => {
-			// on conflict, post profile, clinic, pets, user (dateModified update only)
-			// no  confirm
+			// 409 impossible as all changes pass through db
 			dispatch($.syncFail());
 			dispatch(error(err));
 		});
@@ -91,33 +77,15 @@ export const updateUser = (formData) => (dispatch, getState) => {
 		});
 };
 
-// --------------------------- signOut --------------------------------
-
-// Clear store and persistor;
-export const signOut = () => (dispatch) => {
-	dispatch($.clearUser());
-	localStorage.clear();
-};
-
 // -------------------------- deleteUser ------------------------------
 
 // DELETE user from db
 export const deleteUser = (formData) => async (dispatch, getState) => {
 	const token = getTokenConfig(getState());
-
-	// Freeze UI
 	dispatch($.deleteStart());
-
-	// Delete user-related doc
-	await Promise.all([dispatch(deleteProfile())]);
-
-	// Delete user doc
-	axios
+	return axios
 		.post("/api/auth/delete", JSON.stringify(formData), token)
-		.then(async () => {
-			dispatch($.deleteSuccess());
-			dispatch(signOut());
-		})
+		.then(async () => dispatch($.deleteSuccess()))
 		.catch((err) => {
 			dispatch($.deleteFail());
 			dispatch(error(err));
