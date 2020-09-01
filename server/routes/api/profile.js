@@ -32,30 +32,24 @@ router.post("/create", auth, async (req, res) => {
 	}
 });
 
-// ------------------ Sync user -----------------
+// ------------------ Fetch profile -----------------
 
-// router.post("/", auth, async (req, res) => {
-// 	try {
-// 		const { userId, body } = req;
+router.post("/", auth, async (req, res) => {
+	try {
+		const { userId, body } = req;
+		const profile = await Profile.findOne({ userId });
+		if (!profile) return res.status(404).json("Profile doesn't exists");
 
-// 		// Validate
-// 		const user = await User.findById(userId).select("-password");
-// 		if (!user) return res.status(404).json("User doesn't exist" );
+		// Compare local and remote versions and determine response
+		const dateLocal = new Date(body.dateModified).getTime();
+		const dateRemote = new Date(profile.dateModified).getTime();
 
-// 		// Record action (non-blocking; for analytics only)
-// 		user.dateSynced = new Date();
-// 		user.save();
-
-// 		// Compare local and remote versions and determine response
-// 		const dateLocal = new Date(body.dateModified).getTime();
-// 		const dateRemote = new Date(user.dateModified).getTime();
-
-// 		if (dateLocal == dateRemote) return res.status(201).send();
-// 		return res.status(200).json(getFilteredUserData(user));
-// 	} catch (e) {
-// 		res.status(400).json(e.message);
-// 	}
-// });
+		if (dateLocal == dateRemote) return res.status(201).send();
+		return res.status(200).json(filterProfile(profile));
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
 
 // ----------------- Update profile ----------------
 // acces: token

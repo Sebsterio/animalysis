@@ -48,6 +48,7 @@ router.post("/sign-up", async (req, res) => {
 });
 
 // --------------------- Sign-in ---------------------
+// access: password
 
 router.post("/sign-in", async (req, res) => {
 	try {
@@ -83,6 +84,7 @@ router.post("/sign-in", async (req, res) => {
 });
 
 // ------------------ Sync user -----------------
+// access: token
 
 router.post("/", auth, async (req, res) => {
 	try {

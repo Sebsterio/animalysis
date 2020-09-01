@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as $ from "./profile-actions";
+import { getDateUpdated } from "./profile-selectors";
 import { error } from "redux/error/error-operations";
 import { getTokenConfig } from "utils/ajax";
 
@@ -39,33 +40,26 @@ export const updateProfile = (formData) => (dispatch, getState) => {
 		});
 };
 
-// // --------------------------- syncUser ------------------------------
+// // --------------------------- fetchProfile ------------------------------
 
-// // GET user data if newer than local
-// // If older, resolve conflict
-// export const syncUser = () => (dispatch, getState) => {
-// 	const signedIn = getIsAuthenticated(getState());
-// 	if (!signedIn) return;
-
-// 	const endpoint = "/api/auth";
-// 	const dateModified = getDateModified(getState());
-// 	const data = JSON.stringify({ dateModified });
-// 	const config = getTokenConfig(getState());
-// 	dispatch($.syncStart());
-// 	axios
-// 		.post(endpoint, data, config)
-// 		.then((res) => {
-// 			if (res.status === 201) return dispatch($.upToDate());
-// 			if (res.status === 200) return dispatch($.syncSuccess(res.data));
-// 			// on 200 also return profile, clinic, pets
-// 		})
-// 		.catch((err) => {
-// 			// on conflict, post profile, clinic, pets, user (dateModified update only)
-// 			// no  confirm
-// 			dispatch($.syncFail());
-// 			dispatch(error(err));
-// 		});
-// };
+// GET profile data if newer than local
+export const fetchProfile = () => (dispatch, getState) => {
+	const endpoint = "/api/profile";
+	const dateUpdated = getDateUpdated(getState());
+	const data = JSON.stringify({ dateUpdated });
+	const config = getTokenConfig(getState());
+	dispatch($.fetchStart());
+	axios
+		.post(endpoint, data, config)
+		.then((res) => {
+			if (res.status === 201) return dispatch($.upToDate());
+			if (res.status === 200) return dispatch($.fetchSuccess(res.data));
+		})
+		.catch((err) => {
+			dispatch($.fetchFail());
+			dispatch(error(err));
+		});
+};
 
 // -------------------------- deleteProfile ------------------------------
 

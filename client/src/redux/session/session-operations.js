@@ -10,7 +10,11 @@ import {
 
 // Profile
 import * as profileActions from "redux/profile/profile-actions";
-import { createProfile, deleteProfile } from "redux/profile/profile-operations";
+import {
+	createProfile,
+	fetchProfile,
+	deleteProfile,
+} from "redux/profile/profile-operations";
 
 // ---------------------------- syncData --------------------------------
 
@@ -19,10 +23,8 @@ export const syncData = () => async (dispatch, getState) => {
 	const signedIn = getIsAuthenticated(getState());
 	if (!signedIn) return;
 
-	// single request? with dateModified of each store
-
 	await dispatch(syncUser());
-	// sync profile etc.
+	dispatch(fetchProfile());
 };
 
 // ---------------------------- signUp ----------------------------------
@@ -32,7 +34,7 @@ export const syncData = () => async (dispatch, getState) => {
 export const signUp = (formData) => async (dispatch) => {
 	await dispatch(createUser(formData));
 	const { firstName } = formData;
-	dispatch(profileActions.modify({ firstName }));
+	if (firstName) dispatch(profileActions.modify({ firstName }));
 	dispatch(createProfile({ firstName }));
 };
 
@@ -42,7 +44,7 @@ export const signUp = (formData) => async (dispatch) => {
 // Then, fetch all data
 export const signIn = (formData) => async (dispatch) => {
 	await dispatch(fetchUser(formData));
-	// fetch profile etc.
+	dispatch(fetchProfile());
 };
 
 // -------------------------- closeAccount ------------------------------

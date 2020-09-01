@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import {
 	getName,
 	getShouldShowProfileReminder,
+	getIsLoading,
 } from "redux/profile/profile-selectors";
 import { dismissProfileReminder } from "redux/profile/profile-actions";
 
@@ -23,6 +24,7 @@ import { Head } from "./Head";
 
 const mapStateToProps = (state) => ({
 	username: getName(state),
+	profileLoading: getIsLoading(state),
 	surveyIsLoaded: getIsSurveyLoaded(state),
 	clinicReminderOn: getShouldShowClinicReminder(state),
 	profileReminderOn: getShouldShowProfileReminder(state),

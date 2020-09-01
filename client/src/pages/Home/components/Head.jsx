@@ -23,6 +23,7 @@ export const Head = ({
 	// store
 	username,
 	surveyIsLoaded,
+	profileLoading,
 	clinicReminderOn,
 	profileReminderOn,
 	// dispatch
@@ -46,6 +47,10 @@ export const Head = ({
 		e.preventDefault();
 		clearSurvey();
 	};
+
+	const welcomeMessage = profileLoading
+		? " "
+		: `Welcome, ${username || "Guest"}`;
 
 	return (
 		<div className={c.container}>
@@ -106,7 +111,7 @@ export const Head = ({
 			<Typography
 				variant="h4"
 				align="center"
-				children={`Welcome, ${username || "Guest"}`}
+				children={welcomeMessage}
 				className={c.greeting}
 			/>
 		</div>

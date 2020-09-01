@@ -51,7 +51,7 @@ export const syncUser = () => async (dispatch, getState) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			if (res.status === 201) return dispatch($.upToDate());
-			return dispatch($.syncSuccess(res.data));
+			dispatch($.syncSuccess(res.data));
 		})
 		.catch((err) => {
 			// 409 impossible as all changes pass through db

@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 	surname: "",
 	phone: "",
 	// Meta
-	dateModified: undefined,
+	dateUpdated: undefined,
 };
 
 const profileReducer = (state = INITIAL_STATE, action) => {
@@ -37,15 +37,17 @@ const profileReducer = (state = INITIAL_STATE, action) => {
 
 		// ------------ Sync status ------------
 
-		// Create
+		// Create, fetch
 
 		case $.CREATE_START:
+		case $.FETCH_START:
 			return {
 				...state,
 				isLoading: true,
 			};
 
 		case $.CREATE_SUCCESS:
+		case $.FETCH_SUCCESS:
 			return {
 				...state,
 				isLoading: false,
@@ -53,6 +55,8 @@ const profileReducer = (state = INITIAL_STATE, action) => {
 			};
 
 		case $.CREATE_FAIL:
+		case $.FETCH_FAIL:
+		case $.UP_TO_DATE:
 			return {
 				...state,
 				isLoading: false,
@@ -71,11 +75,11 @@ const profileReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isUpdating: false,
-				...action.payload,
+				dateUpdated: action.payload,
 			};
 
-		case $.DELETE_SUCCESS:
 		case $.UPDATE_FAIL:
+		case $.DELETE_SUCCESS:
 		case $.DELETE_FAIL:
 			return {
 				...state,

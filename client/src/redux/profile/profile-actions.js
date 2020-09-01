@@ -50,6 +50,26 @@ export const updateFail = () => ({
 	type: UPDATE_FAIL,
 });
 
+// Fetch
+
+export const FETCH_START = "profile/FETCH_START";
+export const fetchStart = () => ({
+	type: FETCH_START,
+});
+export const FETCH_SUCCESS = "profile/FETCH_SUCCESS";
+export const fetchSuccess = (data) => ({
+	type: FETCH_SUCCESS,
+	payload: data,
+});
+export const FETCH_FAIL = "profile/FETCH_FAIL";
+export const fetchFail = () => ({
+	type: FETCH_FAIL,
+});
+export const UP_TO_DATE = "profile/UP_TO_DATE";
+export const upToDate = () => ({
+	type: UP_TO_DATE,
+});
+
 // Delete
 
 export const DELETE_START = "profile/DELETE_START";
