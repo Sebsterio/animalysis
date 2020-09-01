@@ -13,7 +13,7 @@ import errorReducer from "redux/error/error-reducer";
 const persistConfig = {
 	key: "root",
 	storage,
-	// whitelist: [],
+	blacklist: ["error"],
 };
 
 // const surveyPersistConfig = {
