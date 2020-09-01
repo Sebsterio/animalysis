@@ -24,9 +24,10 @@ const getFilteredUserData = (savedUser) => {
 
 router.post("/sign-up", async (req, res) => {
 	const { email, password } = req.body;
+
+	// Validate
 	if (!email || !password)
 		return res.status(400).json({ note: "Missing fields" });
-
 	const user = await User.findOne({ email });
 	if (user)
 		return res.status(403).json({
@@ -35,18 +36,23 @@ router.post("/sign-up", async (req, res) => {
 		});
 
 	try {
+		// Get encrypted password
 		const salt = await bcrypt.genSalt(10);
 		if (!salt) throw Error("Error with bcrypt");
 		const hash = await bcrypt.hash(password, salt);
 		if (!hash) throw Error("Error hashing the password");
 
+		// Create user
 		const dateRegistered = new Date();
 		const type = "client";
 		const newUser = new User({ email, password: hash, dateRegistered, type });
 		const savedUser = await newUser.save();
 		if (!savedUser) throw Error("Error saving the user");
 
+		// Generate token
 		const token = jwt.sign({ userId: savedUser.id }, process.env.JWT_SECRET);
+		if (!token) throw Error("Couldn't sign the token");
+
 		res.status(200).json({ token, ...getFilteredUserData(savedUser) });
 	} catch (e) {
 		res.status(500).json({ note: e.message });
@@ -58,15 +64,16 @@ router.post("/sign-up", async (req, res) => {
 router.post("/sign-in", async (req, res) => {
 	try {
 		const { email, password } = req.body;
-		if (!email || !password) throw Error("Missing credentials");
 
+		// Validate
+		if (!email || !password)
+			return res.status(400).json({ note: "Missing credentials" });
 		const user = await User.findOne({ email });
 		if (!user)
 			return res.status(403).json({
 				target: "email",
 				msg: "There's no such user",
 			});
-
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch)
 			return res.status(403).json({
@@ -74,12 +81,17 @@ router.post("/sign-in", async (req, res) => {
 				msg: "Invalid credentials",
 			});
 
+		// Generate new token
 		const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 		if (!token) throw Error("Couldn't sign the token");
 
+		// Record action (non-blocking; for analytics only)
+		user.dateSynced = new Date();
+		user.save();
+
 		res.status(200).json({ token, ...getFilteredUserData(user) });
 	} catch (e) {
-		res.status(400).json({ note: e.message });
+		res.status(500).json({ note: e.message });
 	}
 });
 
@@ -88,11 +100,19 @@ router.post("/sign-in", async (req, res) => {
 router.post("/", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
+
+		// Validate
 		const user = await User.findById(userId).select("-password");
 		if (!user) return res.status(404).json({ note: "User doesn't exist" });
 
+		// Record action (non-blocking; for analytics only)
+		user.dateSynced = new Date();
+		user.save();
+
+		// Compare local and remote versions and determine response
 		const dateLocal = new Date(body.dateModified).getTime();
 		const dateRemote = new Date(user.dateModified).getTime();
+
 		if (dateLocal == dateRemote) return res.status(201).send();
 		return res.status(200).json(getFilteredUserData(user));
 	} catch (e) {
@@ -156,18 +176,19 @@ router.post("/update", auth, async (req, res) => {
 router.post("/delete", auth, async (req, res) => {
 	try {
 		const { password } = req.body;
-		if (!password) throw Error("Missing credentials");
 
+		// Validate
+		if (!password) throw Error("Missing credentials");
 		const { userId } = req;
 		const user = await User.findById(userId);
 		if (!user) throw Error("User does not exist");
-
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch)
 			return res
 				.status(403)
 				.json({ target: "password", msg: "Invalid credentials" });
 
+		// Execute and respond
 		await User.findByIdAndRemove(userId);
 		res.status(200).send();
 	} catch (e) {

@@ -16,10 +16,12 @@ const UserSchema = new Schema({
 	type: String, // client  | vet | superuser | demo
 	isAdmin: Boolean, // if type = vet
 	dateRegistered: {
+		// for finding stale documents
 		type: Date,
 		required: true,
 	},
-	dateModified: Date,
+	dateModified: Date, // for sync
+	dateSynced: Date, // for finding stale documents
 });
 
 const User = mongoose.model("user", UserSchema);

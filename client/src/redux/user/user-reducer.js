@@ -7,6 +7,7 @@ const INITIAL_STATE = {
 	email: "",
 	token: "", // JWT
 	type: "", // clinic | pet-owner | superuser | demo
+	dateModified: undefined, // NOTE: dont' use null
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {

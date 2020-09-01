@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"author": "Sebastian Rosloniec <sebastian.rosloniec@gmail.com>",
 	"private": true,
-	"proxy": "https://vet-check.herokuapp.com/",
+	"proxy": "http://localhost:5000/",
 	"secure": false,
 	"scripts": {
 		"start": "react-scripts start",

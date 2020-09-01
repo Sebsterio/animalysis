@@ -20,7 +20,7 @@ export const Form = withError(({ mode, updating, handleSubmit, isError }) => {
 				</>
 			),
 			btnText: "Update",
-			btnTextOngoing: "Updating",
+			btnTextOngoing: "Updating...",
 			btnTextDone: "Done!",
 		},
 		[mainModes.close]: {
@@ -32,7 +32,7 @@ export const Form = withError(({ mode, updating, handleSubmit, isError }) => {
 			),
 			body: <PasswordInput />,
 			btnText: "Close account",
-			btnTextOngoing: "Closing",
+			btnTextOngoing: "Closing...",
 			btnTextDone: "Done!",
 			btnColor: "secondary",
 			btnVariant: "contained",
