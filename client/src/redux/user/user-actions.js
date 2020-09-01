@@ -1,4 +1,4 @@
-// Base
+// ---------------- Local state ---------------
 
 export const MODIFY = "user/MODIFY";
 export const modifyUser = (data) => ({
@@ -10,6 +10,8 @@ export const CLEAR = "user/CLEAR";
 export const clearUser = () => ({
 	type: CLEAR,
 });
+
+// ---------------- Sync status ---------------
 
 // Sign in
 

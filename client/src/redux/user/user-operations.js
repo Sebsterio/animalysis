@@ -3,6 +3,7 @@ import * as $ from "./user-actions";
 import { getIsSignedIn, getDateModified } from "./user-selectors";
 import { error } from "redux/error/error-operations";
 import { modifyProfile } from "redux/profile/profile-actions";
+import { createProfile } from "redux/profile/profile-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
 // ------------------------ signIn ------------------------------
@@ -24,7 +25,8 @@ export const signIn = (formData) => (dispatch) => {
 
 // ------------------------ signUp ------------------------------
 
-// Create new user and get token
+// Create new User and get token
+// Create Profile
 export const signUp = (formData) => (dispatch) => {
 	const endpoint = "/api/auth/sign-up";
 	const data = JSON.stringify(formData);
@@ -33,10 +35,10 @@ export const signUp = (formData) => (dispatch) => {
 	axios
 		.post(endpoint, data, config)
 		.then((res) => {
+			const { firstName } = formData;
 			dispatch($.signUpSuccess(res.data));
-			dispatch(modifyProfile({ name: formData.firstName }));
-			// TODO: get profile data from res after creating profile doc in db (?)
-			// same for pets and clinic stores (?)
+			dispatch(modifyProfile({ firstName }));
+			dispatch(createProfile({ firstName }));
 		})
 		.catch((err) => {
 			dispatch($.signUpFail());
@@ -49,7 +51,8 @@ export const signUp = (formData) => (dispatch) => {
 // GET user data if newer than local
 // If older, resolve conflict
 export const syncUser = () => (dispatch, getState) => {
-	if (!getIsSignedIn(getState())) return;
+	const signedIn = getIsSignedIn(getState());
+	if (!signedIn) return;
 
 	const endpoint = "/api/auth";
 	const dateModified = getDateModified(getState());
@@ -61,8 +64,11 @@ export const syncUser = () => (dispatch, getState) => {
 		.then((res) => {
 			if (res.status === 201) return dispatch($.upToDate());
 			if (res.status === 200) return dispatch($.syncSuccess(res.data));
+			// on 200 also return profile, clinic, pets
 		})
 		.catch((err) => {
+			// on conflict, post profile, clinic, pets, user (dateModified update only)
+			// no  confirm
 			dispatch($.syncFail());
 			dispatch(error(err));
 		});

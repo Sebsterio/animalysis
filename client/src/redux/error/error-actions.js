@@ -2,17 +2,18 @@ export const SET_ERROR = "error/SET_ERROR";
 export const setError = (actionData) => {
 	const { response, message } = actionData;
 	const { data, status, statusText } = response || {};
-	const { note, msg, target } = data || {};
+	const { msg, target } = data || {};
+
 	return {
 		type: SET_ERROR,
-		// Native Error props
+		// for UI feedback
+		payload: {
+			msg: msg || data || message,
+			target,
+		},
+		// For quick inspection
 		status,
 		statusText,
-		// Native or custom
-		message: note || message,
-		// Custom props
-		payload: { target, msg },
-		// Entire Error object for quick inspection
 		error: actionData,
 	};
 };

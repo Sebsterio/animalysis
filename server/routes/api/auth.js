@@ -1,24 +1,13 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
 const auth = require("../../middleware/auth");
 const User = require("../../models/user");
+const utils = require("./auth-utils");
+
+const { filterUserForExport } = utils;
 
 const router = express.Router();
-
-/*****************************************************************************
- * Error json
- *  note: developer feedback (e.g. message from `throw Error(_message_)`)
- * 	msg:  displayed to user; custom-set
- *  target: determines msg location in UI; custom-set
- *****************************************************************************/
-
-// Filter savedUser props for export
-const getFilteredUserData = (savedUser) => {
-	const { dateModified, email, type } = savedUser;
-	return { dateModified, email, type };
-};
 
 // ------------------- Sign-up -------------------
 
@@ -26,8 +15,7 @@ router.post("/sign-up", async (req, res) => {
 	const { email, password } = req.body;
 
 	// Validate
-	if (!email || !password)
-		return res.status(400).json({ note: "Missing fields" });
+	if (!email || !password) return res.status(400).json("Missing fields");
 	const user = await User.findOne({ email });
 	if (user)
 		return res.status(403).json({
@@ -53,9 +41,9 @@ router.post("/sign-up", async (req, res) => {
 		const token = jwt.sign({ userId: savedUser.id }, process.env.JWT_SECRET);
 		if (!token) throw Error("Couldn't sign the token");
 
-		res.status(200).json({ token, ...getFilteredUserData(savedUser) });
+		res.status(200).json({ token, ...filterUserForExport(savedUser) });
 	} catch (e) {
-		res.status(500).json({ note: e.message });
+		res.status(500).json(e.message);
 	}
 });
 
@@ -66,8 +54,7 @@ router.post("/sign-in", async (req, res) => {
 		const { email, password } = req.body;
 
 		// Validate
-		if (!email || !password)
-			return res.status(400).json({ note: "Missing credentials" });
+		if (!email || !password) return res.status(400).json("Missing credentials");
 		const user = await User.findOne({ email });
 		if (!user)
 			return res.status(403).json({
@@ -89,9 +76,9 @@ router.post("/sign-in", async (req, res) => {
 		user.dateSynced = new Date();
 		user.save();
 
-		res.status(200).json({ token, ...getFilteredUserData(user) });
+		res.status(200).json({ token, ...filterUserForExport(user) });
 	} catch (e) {
-		res.status(500).json({ note: e.message });
+		res.status(500).json(e.message);
 	}
 });
 
@@ -103,7 +90,7 @@ router.post("/", auth, async (req, res) => {
 
 		// Validate
 		const user = await User.findById(userId).select("-password");
-		if (!user) return res.status(404).json({ note: "User doesn't exist" });
+		if (!user) return res.status(404).json("User doesn't exist");
 
 		// Record action (non-blocking; for analytics only)
 		user.dateSynced = new Date();
@@ -114,9 +101,9 @@ router.post("/", auth, async (req, res) => {
 		const dateRemote = new Date(user.dateModified).getTime();
 
 		if (dateLocal == dateRemote) return res.status(201).send();
-		return res.status(200).json(getFilteredUserData(user));
+		return res.status(200).json(filterUserForExport(user));
 	} catch (e) {
-		res.status(400).json({ note: e.message });
+		res.status(400).json(e.message);
 	}
 });
 
@@ -131,7 +118,7 @@ router.post("/update", auth, async (req, res) => {
 		// Validate credentials
 		if (!password) throw Error("Missing credentials");
 		const user = await User.findById(userId);
-		if (!user) return res.status(404).json({ note: "User doesn't exist" });
+		if (!user) return res.status(404).json("User doesn't exist");
 		const passwordsMatch = await bcrypt.compare(password, user.password);
 		if (!passwordsMatch)
 			return res.status(403).json({
@@ -165,9 +152,9 @@ router.post("/update", auth, async (req, res) => {
 		user.dateModified = new Date();
 		await user.save();
 
-		return res.status(200).json(getFilteredUserData(user));
+		return res.status(200).json(filterUserForExport(user));
 	} catch (e) {
-		res.status(400).json({ note: e.message });
+		res.status(400).json(e.message);
 	}
 });
 
@@ -192,7 +179,7 @@ router.post("/delete", auth, async (req, res) => {
 		await User.findByIdAndRemove(userId);
 		res.status(200).send();
 	} catch (e) {
-		res.status(400).json({ note: e.message });
+		res.status(400).json(e.message);
 	}
 });
 

@@ -1,9 +1,9 @@
 import * as $ from "./error-actions";
 
+// TODO: make it an array to store multiple errors
 const INITIAL_STATE = {
 	msg: "", // displayed to user
 	target: "", // determines msg location in UI
-	// email | newEmail | password
 };
 
 const errorReducer = (state = INITIAL_STATE, action) => {

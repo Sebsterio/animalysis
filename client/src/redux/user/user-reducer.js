@@ -21,9 +21,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			};
 
 		case $.CLEAR:
-			return {
-				...INITIAL_STATE,
-			};
+			return { ...INITIAL_STATE };
 
 		// ------------ Sync status ------------
 
@@ -67,7 +65,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				...INITIAL_STATE,
 			};
 
-		// Update
+		// Update, delete
 
 		case $.UPDATE_START:
 		case $.DELETE_START:

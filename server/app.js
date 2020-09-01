@@ -6,6 +6,7 @@ const cors = require("cors");
 const compression = require("compression");
 
 const authRoutes = require("./routes/api/auth");
+const profileRoutes = require("./routes/api/profile");
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ mongoose
 // --------------- Routing ---------------
 
 app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {
