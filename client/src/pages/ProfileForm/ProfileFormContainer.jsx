@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getProfile } from "redux/profile/profile-selectors";
+import { getData } from "redux/profile/profile-selectors";
 import { updateProfile } from "redux/profile/profile-operations";
 
 import { ProfileForm } from "./ProfileForm";
 
 const mapStateToProps = (state) => ({
-	currentProfile: getProfile(state),
+	currentProfile: getData(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

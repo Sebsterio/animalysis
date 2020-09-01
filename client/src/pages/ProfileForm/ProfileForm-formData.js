@@ -2,8 +2,7 @@
 const req = true;
 
 export const formFields = [
-	["text", "name"],
+	["text", "firstName"],
 	["text", "surname"],
-	["email", "email"],
 	["tel", "phone", { req, label: "Telephone" }],
 ];

@@ -4,12 +4,15 @@ const INITIAL_STATE = {
 	// Sync status
 	isLoading: false,
 	isUpdating: false,
+	// UI status
+	reminderDismissed: false,
 	// Data
+	// (email in user-reducer)
 	firstName: "",
 	surname: "",
 	phone: "",
-	reminderDismissed: false,
-	// email in user-reducer
+	// Meta
+	dateModified: undefined,
 };
 
 const profileReducer = (state = INITIAL_STATE, action) => {

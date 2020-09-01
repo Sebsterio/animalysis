@@ -28,6 +28,7 @@ export const updateProfile = (formData) => (dispatch, getState) => {
 	const endpoint = "/api/profile/update";
 	const data = JSON.stringify(formData);
 	const config = getTokenConfig(getState());
+	dispatch($.modify(formData));
 	dispatch($.updateStart());
 	axios
 		.post(endpoint, data, config)

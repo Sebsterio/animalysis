@@ -40,7 +40,7 @@ router.post("/create", auth, async (req, res) => {
 
 // 		// Validate
 // 		const user = await User.findById(userId).select("-password");
-// 		if (!user) return res.status(404).json({ note: "User doesn't exist" });
+// 		if (!user) return res.status(404).json("User doesn't exist" );
 
 // 		// Record action (non-blocking; for analytics only)
 // 		user.dateSynced = new Date();
@@ -53,39 +53,29 @@ router.post("/create", auth, async (req, res) => {
 // 		if (dateLocal == dateRemote) return res.status(201).send();
 // 		return res.status(200).json(getFilteredUserData(user));
 // 	} catch (e) {
-// 		res.status(400).json({ note: e.message });
+// 		res.status(400).json(e.message);
 // 	}
 // });
 
-// ----------------- Update user ----------------
-// acces: token & password
+// ----------------- Update profile ----------------
+// acces: token
 
-// router.post("/update", auth, async (req, res) => {
-// 	try {
-// 		const { userId, body } = req;
-// 		const { password, newEmail, newPassword, type } = body;
+router.post("/update", auth, async (req, res) => {
+	try {
+		const { userId, body } = req;
+		const submittedData = filterProfile(body);
+		if (isEmpty(submittedData)) return res.status(400).json("No data");
 
-// 		// Validate credentials
-// 		if (!password) throw Error("Missing credentials");
-// 		const user = await User.findById(userId);
-// 		if (!user) return res.status(404).json({ note: "User doesn't exist" });
-// 		const passwordsMatch = await bcrypt.compare(password, user.password);
-// 		if (!passwordsMatch)
-// 			return res.status(403).json({
-// 				target: "password",
-// 				msg: "Invalid credentials",
-// 			});
+		const dateUpdated = new Date();
+		const newData = { ...submittedData, dateUpdated };
+		const profile = await Profile.findOneAndUpdate({ userId }, newData);
+		if (!profile) return res.status(404).json("Profile doesn't exists");
 
-// 		// Update rest and save
-// 		if (type && type !== "superuser") user.type = type;
-// 		user.dateModified = new Date();
-// 		await user.save();
-
-// 		return res.status(200).json(getFilteredUserData(user));
-// 	} catch (e) {
-// 		res.status(400).json({ note: e.message });
-// 	}
-// });
+		return res.status(200).json(dateUpdated);
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
 
 // ---------------- Delete profile ----------------
 

@@ -19,6 +19,8 @@ export const syncData = () => async (dispatch, getState) => {
 	const signedIn = getIsAuthenticated(getState());
 	if (!signedIn) return;
 
+	// single request? with dateModified of each store
+
 	await dispatch(syncUser());
 	// sync profile etc.
 };

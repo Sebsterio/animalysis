@@ -4,16 +4,22 @@ import { getHasReports } from "redux/pets/pets-selectors";
 
 export const getProfile = (state) => state.profile;
 
+// For ProfileForm
+export const getData = (state) => {
+	const { firstName, surname, phone } = getProfile(state);
+	return { firstName, surname, phone };
+};
+
 export const getName = (state) => getProfile(state).firstName;
 
 export const getPhone = (state) => getProfile(state).phone;
 
 export const getHasPhone = (state) => !!getPhone(state);
 
-export const getUserReminderIsDismissed = (state) =>
+export const getProfileReminderIsDismissed = (state) =>
 	getProfile(state).reminderDismissed;
 
 export const getShouldShowProfileReminder = (state) =>
 	getHasReports(state) &&
 	!getHasPhone(state) &&
-	!getUserReminderIsDismissed(state);
+	!getProfileReminderIsDismissed(state);

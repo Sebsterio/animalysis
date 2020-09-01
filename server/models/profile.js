@@ -11,6 +11,7 @@ const ProfileSchema = new Schema({
 	firstName: String,
 	surname: String,
 	phone: String,
+	dateUpdated: Date,
 });
 
 const Profile = mongoose.model("Profile", ProfileSchema);

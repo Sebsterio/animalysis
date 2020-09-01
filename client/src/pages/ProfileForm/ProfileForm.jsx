@@ -26,6 +26,7 @@ export const ProfileForm = ({ history, currentProfile, update }) => {
 	const closeForm = () => history.push("/");
 
 	const submitForm = () => {
+		console.log({ profile });
 		update(profile);
 		closeForm();
 	};
