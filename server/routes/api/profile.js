@@ -87,30 +87,18 @@ router.post("/create", auth, async (req, res) => {
 // 	}
 // });
 
-// ---------------- Delete user ----------------
+// ---------------- Delete profile ----------------
 
-// router.post("/delete", auth, async (req, res) => {
-// 	try {
-// 		const { password } = req.body;
-
-// 		// Validate
-// 		if (!password) throw Error("Missing credentials");
-// 		const { userId } = req;
-// 		const user = await User.findById(userId);
-// 		if (!user) throw Error("User does not exist");
-// 		const isMatch = await bcrypt.compare(password, user.password);
-// 		if (!isMatch)
-// 			return res
-// 				.status(403)
-// 				.json({ target: "password", msg: "Invalid credentials" });
-
-// 		// Execute and respond
-// 		await User.findByIdAndRemove(userId);
-// 		res.status(200).send();
-// 	} catch (e) {
-// 		res.status(400).json({ note: e.message });
-// 	}
-// });
+router.delete("/", auth, async (req, res) => {
+	try {
+		const { userId } = req;
+		const profile = await Profile.findOneAndRemove({ userId });
+		if (!profile) throw Error("Profile doesn't exist");
+		res.status(200).send();
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
 
 // ----------------------------------------------------------------
 

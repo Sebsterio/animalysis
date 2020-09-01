@@ -3,7 +3,7 @@ import * as $ from "./user-actions";
 import { getIsSignedIn, getDateModified } from "./user-selectors";
 import { error } from "redux/error/error-operations";
 import { modifyProfile } from "redux/profile/profile-actions";
-import { createProfile } from "redux/profile/profile-operations";
+import { createProfile, deleteProfile } from "redux/profile/profile-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
 // ------------------------ signIn ------------------------------
@@ -102,12 +102,19 @@ export const signOut = () => (dispatch) => {
 // -------------------------- deleteUser ------------------------------
 
 // DELETE user from db
-export const deleteUser = (formData) => (dispatch, getState) => {
+export const deleteUser = (formData) => async (dispatch, getState) => {
 	const token = getTokenConfig(getState());
+
+	// Freeze UI
 	dispatch($.deleteStart());
+
+	// Delete user-related doc
+	await Promise.all([dispatch(deleteProfile())]);
+
+	// Delete user doc
 	axios
 		.post("/api/auth/delete", JSON.stringify(formData), token)
-		.then(() => {
+		.then(async () => {
 			dispatch($.deleteSuccess());
 			dispatch(signOut());
 		})

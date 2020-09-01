@@ -21,15 +21,30 @@ export const dismissProfileReminder = () => ({
 // Create
 
 export const CREATE_START = "profile/CREATE_START";
-export const createProfileStart = () => ({
+export const createStart = () => ({
 	type: CREATE_START,
 });
 export const CREATE_SUCCESS = "profile/CREATE_SUCCESS";
-export const createProfileSuccess = (data) => ({
+export const createSuccess = (data) => ({
 	type: CREATE_SUCCESS,
 	payload: data,
 });
 export const CREATE_FAIL = "profile/CREATE_FAIL";
-export const createProfileFail = () => ({
+export const createFail = () => ({
 	type: CREATE_FAIL,
+});
+
+// Delete
+
+export const DELETE_START = "profile/DELETE_START";
+export const deleteStart = () => ({
+	type: DELETE_START,
+});
+export const DELETE_SUCCESS = "profile/DELETE_SUCCESS";
+export const deleteSuccess = () => ({
+	type: DELETE_SUCCESS,
+});
+export const DELETE_FAIL = "profile/DELETE_FAIL";
+export const deleteFail = () => ({
+	type: DELETE_FAIL,
 });

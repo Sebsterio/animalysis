@@ -10,14 +10,14 @@ export const createProfile = (formData) => (dispatch, getState) => {
 	const endpoint = "/api/profile/create";
 	const data = JSON.stringify(formData);
 	const config = getTokenConfig(getState());
-	dispatch($.createProfileStart());
+	dispatch($.createStart());
 	axios
 		.post(endpoint, data, config)
 		.then((res) => {
-			dispatch($.createProfileSuccess(res.data));
+			dispatch($.createSuccess(res.data));
 		})
 		.catch((err) => {
-			dispatch($.createProfileFail());
+			dispatch($.createFail());
 			dispatch(error(err));
 		});
 };
@@ -75,20 +75,17 @@ export const createProfile = (formData) => (dispatch, getState) => {
 // 	localStorage.clear();
 // };
 
-// // -------------------------- deleteUser ------------------------------
+// -------------------------- deleteProfile ------------------------------
 
-// // DELETE user from db
-// export const deleteUser = (formData) => (dispatch, getState) => {
-// 	const token = getTokenConfig(getState());
-// 	dispatch($.deleteStart());
-// 	axios
-// 		.post("/api/auth/delete", JSON.stringify(formData), token)
-// 		.then(() => {
-// 			dispatch($.deleteSuccess());
-// 			dispatch(signOut());
-// 		})
-// 		.catch((err) => {
-// 			dispatch($.deleteFail());
-// 			dispatch(error(err));
-// 		});
-// };
+// DELETE profile from db
+export const deleteProfile = () => async (dispatch, getState) => {
+	const token = getTokenConfig(getState());
+	dispatch($.deleteStart());
+	return axios
+		.delete("/api/profile", token)
+		.then(() => dispatch($.deleteSuccess()))
+		.catch((err) => {
+			dispatch($.deleteFail());
+			dispatch(error(err));
+		});
+};

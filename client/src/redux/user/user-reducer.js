@@ -75,13 +75,18 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			};
 
 		case $.UPDATE_SUCCESS:
+			return {
+				...state,
+				isUpdating: false,
+				...action.payload,
+			};
+
 		case $.DELETE_SUCCESS:
 		case $.UPDATE_FAIL:
 		case $.DELETE_FAIL:
 			return {
 				...state,
 				isUpdating: false,
-				...action.payload,
 			};
 
 		// ---------------

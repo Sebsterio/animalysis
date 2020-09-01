@@ -81,9 +81,8 @@ export const updateSuccess = (data) => ({
 	payload: data,
 });
 export const UPDATE_FAIL = "user/UPDATE_FAIL";
-export const updateFail = (data) => ({
+export const updateFail = () => ({
 	type: UPDATE_FAIL,
-	payload: data,
 });
 
 // Delete
@@ -93,12 +92,10 @@ export const deleteStart = () => ({
 	type: DELETE_START,
 });
 export const DELETE_SUCCESS = "user/DELETE_SUCCESS";
-export const deleteSuccess = (data) => ({
+export const deleteSuccess = () => ({
 	type: DELETE_SUCCESS,
-	payload: data,
 });
 export const DELETE_FAIL = "user/DELETE_FAIL";
-export const deleteFail = (data) => ({
+export const deleteFail = () => ({
 	type: DELETE_FAIL,
-	payload: data,
 });
