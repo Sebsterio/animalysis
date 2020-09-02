@@ -1,12 +1,14 @@
-import { Home } from "pages/Home";
-import { Pet } from "pages/Pet";
-import { PetForm } from "pages/PetForm";
-import { Survey } from "pages/Survey";
-import { Report } from "pages/Report";
-import { Account } from "pages/Account";
-import { Summary } from "pages/Summary";
-import { ClinicForm } from "pages/ClinicForm";
-import { ProfileForm } from "pages/ProfileForm";
+import {
+	Home,
+	Pet,
+	PetForm,
+	Survey,
+	Report,
+	Account,
+	Summary,
+	ClinicForm,
+	ProfileForm,
+} from "pages";
 
 // Aux
 const exact = true;
@@ -14,12 +16,11 @@ const inNav = true;
 
 export const clientRoutes = [
 	{
-		path: "/", //       URL
-		title: "Home", //   Appers in header and as NavLink
-		// linkText: "", // overrides "title" in NavLink
-		component: Home, // To render in App > Route
-		exact, //           Router Switch match
-		inNav, //           Is listed in Nav Menu
+		path: "/",
+		title: "Home",
+		component: Home,
+		exact,
+		inNav,
 	},
 	// --- Pet profile ---
 	{

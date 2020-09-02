@@ -1,8 +1,10 @@
-import { Home } from "pages/Home";
-import { Survey } from "pages/Survey";
-import { Account } from "pages/Account";
-import { ProfileForm } from "pages/ProfileForm";
-import { SurveyEditor } from "pages/SurveyEditor";
+import {
+	VetDashboard,
+	VetSurvey,
+	Account,
+	ProfileForm,
+	SurveyEditor,
+} from "pages";
 
 // Aux
 const exact = true;
@@ -10,12 +12,11 @@ const inNav = true;
 
 export const vetRoutes = [
 	{
-		path: "/", //       URL
-		title: "Home", //   Appers in header and as NavLink
-		// linkText: "", // overrides "title" in NavLink
-		component: Home, // To render in App > Route
-		exact, //           Router Switch match
-		inNav, //           Is listed in Nav Menu
+		path: "/",
+		title: "Home",
+		component: VetDashboard,
+		exact,
+		inNav,
 	},
 	// --- Profile form ---
 	{
@@ -53,7 +54,8 @@ export const vetRoutes = [
 	{
 		path: "/survey/view",
 		title: "Survey Preview",
-		component: Survey,
+		component: VetSurvey,
 		exact,
+		inNav,
 	},
 ];

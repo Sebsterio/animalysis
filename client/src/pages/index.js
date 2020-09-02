@@ -7,3 +7,6 @@ export * from "./Report";
 export * from "./Summary";
 export * from "./Survey";
 export * from "./ProfileForm";
+export * from "./VetDashboard";
+export * from "./SurveyEditor";
+export * from "./VetSurvey";
