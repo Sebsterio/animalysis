@@ -15,11 +15,10 @@ import CloseIcon from "@material-ui/icons/Close";
 import PetsIcon from "@material-ui/icons/Pets";
 
 import { useStyles } from "./Navbar-styles";
-import { routes } from "routes";
 
 // ----------------------------------------------------------------
 
-export const Navbar = () => {
+export const Navbar = ({ routes }) => {
 	const c = useStyles();
 
 	const titles = routes.map(({ path, title, exact }) => (

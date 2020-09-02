@@ -1,7 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getIsLoading, getIsAuthenticated } from "redux/user/user-selectors";
+import {
+	getIsLoading,
+	getIsAuthenticated,
+	getIsVet,
+} from "redux/user/user-selectors";
 import { syncData } from "redux/session/session-operations";
 
 import { App } from "./App";
@@ -9,6 +13,7 @@ import { App } from "./App";
 const mapStateToProps = (state) => ({
 	loading: getIsLoading(state),
 	authenticated: getIsAuthenticated(state),
+	isVet: getIsVet(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

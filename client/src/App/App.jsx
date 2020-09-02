@@ -6,7 +6,7 @@ import { Spinner } from "components";
 import { Account } from "pages";
 
 import { useStyles } from "./App-styles";
-import { routes } from "routes";
+import { clientRoutes, vetRoutes } from "routes";
 
 /*******************************
  * App layout
@@ -15,7 +15,7 @@ import { routes } from "routes";
  * Trigger user sync
  *******************************/
 
-export const App = ({ loading, authenticated, syncData }) => {
+export const App = ({ loading, authenticated, isVet, syncData }) => {
 	const c = useStyles();
 
 	// TEMP
@@ -31,7 +31,8 @@ export const App = ({ loading, authenticated, syncData }) => {
 		syncData();
 	}, [syncData]);
 
-	// Create Routes from routes array
+	// Create user-relevant Routes from routes array
+	const routes = isVet ? vetRoutes : clientRoutes;
 	const mainRoutes = routes.map((route) => {
 		const { path, component, exact } = route;
 		return <Route exact={exact} path={path} component={component} key={path} />;
@@ -50,7 +51,7 @@ export const App = ({ loading, authenticated, syncData }) => {
 		<div className={c.app}>
 			{authenticated && (
 				<header className={c.header}>
-					<Navbar />
+					<Navbar routes={routes} />
 				</header>
 			)}
 			<main className={c.main}>

@@ -7,14 +7,12 @@ import { Account } from "pages/Account";
 import { Summary } from "pages/Summary";
 import { ClinicForm } from "pages/ClinicForm";
 import { ProfileForm } from "pages/ProfileForm";
-import { SurveyEditor } from "pages/SurveyEditor";
 
 // Aux
 const exact = true;
 const inNav = true;
-const inAdminNav = true;
 
-export const routes = [
+export const clientRoutes = [
 	{
 		path: "/", //       URL
 		title: "Home", //   Appers in header and as NavLink
@@ -22,7 +20,6 @@ export const routes = [
 		component: Home, // To render in App > Route
 		exact, //           Router Switch match
 		inNav, //           Is listed in Nav Menu
-		// inAdminNav //    Is listed in Nav Menu for admin users
 	},
 	// --- Pet profile ---
 	{
@@ -48,6 +45,7 @@ export const routes = [
 	{
 		path: "/profile",
 		title: "My Profile",
+		linkText: "Profile",
 		component: ProfileForm,
 		exact,
 		inNav,
@@ -56,6 +54,7 @@ export const routes = [
 	{
 		path: "/my-clinic",
 		title: "My Clinic",
+		linkText: "Clinic",
 		component: ClinicForm,
 		exact,
 		inNav,
@@ -96,6 +95,7 @@ export const routes = [
 	{
 		path: "/account",
 		title: "My Account",
+		linkText: "Account",
 		component: Account,
 		exact,
 		inNav,
@@ -103,17 +103,8 @@ export const routes = [
 	{
 		path: "/account/:mode",
 		title: "My Account",
+		linkText: "Account",
 		component: Account,
 		exact,
-	},
-
-	// ===================== Admin =================
-
-	{
-		path: "/admin/survey",
-		title: "Survey Editor",
-		component: SurveyEditor,
-		exact,
-		inAdminNav,
 	},
 ];
