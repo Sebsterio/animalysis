@@ -5,7 +5,7 @@ import { Container } from "@material-ui/core";
 import { Nav, Form, isFormFilled } from "components";
 import { useValueWithTimeout } from "hooks";
 
-import { formFields } from "./VetClinicForm-formData";
+import getFormFields from "./VetClinicForm-formData";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -31,10 +31,16 @@ export const VetClinicForm = ({
 	create,
 	// withError
 	isError,
+	emailError,
+	errorMessage,
 }) => {
 	const c = useStyles();
 
 	const [clinic, setClinic] = useState({ ...currentData });
+
+	const formFields = getFormFields({
+		emailError: emailError ? errorMessage : false,
+	});
 
 	const canSubmit = isFormFilled(formFields, clinic);
 
