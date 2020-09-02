@@ -19,11 +19,15 @@ const INITIAL_STATE = {
 
 const clinicReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case $.MODIFY_CLINIC: {
+		case $.MODIFY: {
 			return {
 				...state,
 				...action.payload,
 			};
+		}
+
+		case $.CLEAR: {
+			return { ...INITIAL_STATE };
 		}
 
 		case $.DISMISS_REMINDER: {

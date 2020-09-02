@@ -1,6 +1,12 @@
-export const MODIFY_CLINIC = "clinic/MODIFY_CLINIC";
+export const MODIFY = "clinic/MODIFY";
 export const modifyClinic = (data) => ({
-	type: MODIFY_CLINIC,
+	type: MODIFY,
+	payload: data,
+});
+
+export const CLEAR = "clinic/CLEAR";
+export const clear = (data) => ({
+	type: CLEAR,
 	payload: data,
 });
 

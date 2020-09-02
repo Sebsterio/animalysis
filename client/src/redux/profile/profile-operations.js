@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as $ from "./profile-actions";
 import { getDateUpdated } from "./profile-selectors";
+import { modifyClinic } from "redux/clinic/clinic-actions";
 import { error } from "redux/error/error-operations";
 import { getTokenConfig } from "utils/ajax";
 
@@ -33,7 +34,9 @@ export const updateProfile = (formData) => (dispatch, getState) => {
 	dispatch($.updateStart());
 	axios
 		.post(endpoint, data, config)
-		.then((res) => dispatch($.updateSuccess(res.data)))
+		.then((res) => {
+			dispatch($.updateSuccess(res.data));
+		})
 		.catch((err) => {
 			dispatch($.updateFail());
 			dispatch(error(err));
@@ -53,7 +56,9 @@ export const fetchProfile = () => (dispatch, getState) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			if (res.status === 201) return dispatch($.upToDate());
-			if (res.status === 200) return dispatch($.fetchSuccess(res.data));
+			dispatch($.fetchSuccess(res.data));
+			const { clinicInfo } = res.data;
+			if (clinicInfo) dispatch(modifyClinic(clinicInfo));
 		})
 		.catch((err) => {
 			dispatch($.fetchFail());
