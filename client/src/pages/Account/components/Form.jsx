@@ -4,7 +4,7 @@ import { Button, Typography } from "@material-ui/core";
 import { Stack } from "components";
 import { useStyles } from "../Account-styles";
 import { mainModes } from "../Account-constants";
-import { EmailInput, PasswordInput } from "./index";
+import { EmailInput, PasswordInput, TypeInput } from "./index";
 import { useValueWithTimeout } from "hooks";
 
 export const Form = withError(({ mode, updating, handleSubmit, isError }) => {
@@ -16,6 +16,7 @@ export const Form = withError(({ mode, updating, handleSubmit, isError }) => {
 				<>
 					<EmailInput label="New email" isNew />
 					<PasswordInput label="New password" isNew />
+					<TypeInput />
 					<PasswordInput label="Current password" />
 				</>
 			),

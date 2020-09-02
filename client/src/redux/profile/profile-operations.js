@@ -34,9 +34,7 @@ export const updateProfile = (formData) => (dispatch, getState) => {
 	dispatch($.updateStart());
 	axios
 		.post(endpoint, data, config)
-		.then((res) => {
-			dispatch($.updateSuccess(res.data));
-		})
+		.then((res) => dispatch($.updateSuccess(res.data)))
 		.catch((err) => {
 			dispatch($.updateFail());
 			dispatch(error(err));

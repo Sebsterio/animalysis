@@ -32,15 +32,12 @@ const AccountPage = ({
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		clearError()
-		const inputNames = ["email", "password", "newEmail", "newPassword", "firstName"];
+		const inputNames = ["email", "password", "newEmail", "newPassword", "firstName", 'type'];
 		const data = getTruthyInputDataFromForm(e.target, ...inputNames);
 		if (mode === authModes.signIn) return signIn(data);
 		if (mode === authModes.signUp) return signUp(data);
 		if (mode === mainModes.close) return close(data);
-		if (mode === mainModes.edit) {
-			const { newEmail, newPassword } = data;
-			if (!!newEmail || !!newPassword) return update(data);
-		}
+		if (mode === mainModes.edit) return update(data);
 	};
 
 	const goBack = () => {
