@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as $ from "./profile-actions";
 import { getDateUpdated } from "./profile-selectors";
-import { setClinic } from "redux/clinic/clinic-actions";
 import { error } from "redux/error/error-operations";
 import { getTokenConfig } from "utils/ajax";
 
@@ -41,23 +40,23 @@ export const updateProfile = (formData) => (dispatch, getState) => {
 		});
 };
 
-// // --------------------------- fetchProfile ------------------------------
+// --------------------------- fetchProfile ------------------------------
 
 // GET profile data if newer than local
-// If user is not vet, set clinic data from profile-clinic
-export const fetchProfile = (isVet) => (dispatch, getState) => {
+// If user has a clinic linked to profile, fetch it
+// Else, if user is not vet, set clinic data from profile-clinic
+export const fetchProfile = () => async (dispatch, getState) => {
 	const endpoint = "/api/profile";
 	const dateUpdated = getDateUpdated(getState());
 	const data = JSON.stringify({ dateUpdated });
 	const config = getTokenConfig(getState());
 	dispatch($.fetchStart());
-	axios
+	return axios
 		.post(endpoint, data, config)
 		.then((res) => {
-			if (res.status === 201) return dispatch($.upToDate());
-			dispatch($.fetchSuccess(res.data));
-			const { clinicInfo } = res.data;
-			if (clinicInfo && !isVet) dispatch(setClinic(clinicInfo));
+			if (res.status === 201) dispatch($.upToDate());
+			else dispatch($.fetchSuccess(res.data));
+			return res; // pass clinicInfo/clinicId back to session-ops
 		})
 		.catch((err) => {
 			dispatch($.fetchFail());

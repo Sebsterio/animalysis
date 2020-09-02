@@ -1,5 +1,5 @@
 // User
-import { getIsAuthenticated, getIsVet } from "redux/user/user-selectors";
+import { getIsAuthenticated } from "redux/user/user-selectors";
 import * as userActions from "redux/user/user-actions";
 import {
 	syncUser,
@@ -16,15 +16,25 @@ import {
 	deleteProfile,
 } from "redux/profile/profile-operations";
 
+// Clinic
+import { syncClinicUsingProfileData } from "redux/clinic/clinic-operations";
+
 // Survey
 // import * as surveyDataActions from "redux/survey-data/survey-data-actions";
 import { fetchSurvey } from "redux/survey-data/survey-data-operations";
 
 /*********************************************
  *
- * Coordinates operations across other stores
+ * Coordinates operations across reducers
  *
  *********************************************/
+
+// AUX. Runs on sync and sing-in
+const fetchAllData = () => async (dispatch) => {
+	const profileRes = await dispatch(fetchProfile());
+	dispatch(syncClinicUsingProfileData(profileRes));
+	dispatch(fetchSurvey());
+};
 
 // ---------------------------- syncData --------------------------------
 
@@ -32,11 +42,8 @@ import { fetchSurvey } from "redux/survey-data/survey-data-operations";
 export const syncData = () => async (dispatch, getState) => {
 	const signedIn = getIsAuthenticated(getState());
 	if (!signedIn) return;
-
 	await dispatch(syncUser());
-	const isVet = getIsVet(getState()); // get updated state
-	dispatch(fetchProfile(isVet));
-	dispatch(fetchSurvey());
+	dispatch(fetchAllData());
 };
 
 // ---------------------------- signUp ----------------------------------
@@ -56,9 +63,7 @@ export const signUp = (formData) => async (dispatch) => {
 // Then, fetch all data
 export const signIn = (formData) => async (dispatch, getState) => {
 	await dispatch(fetchUser(formData));
-	const isVet = getIsVet(getState()); // get updated state
-	dispatch(fetchProfile(isVet));
-	dispatch(fetchSurvey());
+	dispatch(fetchAllData());
 };
 
 // -------------------------- closeAccount ------------------------------

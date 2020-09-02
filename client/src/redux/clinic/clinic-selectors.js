@@ -17,3 +17,7 @@ export const getFormData = (state) => {
 export const getIsRegistered = (state) => !!getClinic(state).id;
 
 export const getIsUpdating = (state) => getClinic(state).isUpdating;
+
+export const getDateModified = (state) => getClinic(state).dateModified;
+
+export const getClinicId = (state) => getClinic(state).id;

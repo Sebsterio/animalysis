@@ -4,6 +4,7 @@ const { makeObjectWithoutUndefinedProps } = utils;
 const filterClinic = (profile) => {
 	const {
 		id,
+		clinicId,
 		name,
 		address,
 		email,
@@ -14,6 +15,7 @@ const filterClinic = (profile) => {
 	} = profile;
 	return makeObjectWithoutUndefinedProps({
 		id,
+		clinicId,
 		name,
 		address,
 		email,
