@@ -43,8 +43,9 @@ export const updateProfile = (formData) => (dispatch, getState) => {
 
 // // --------------------------- fetchProfile ------------------------------
 
-// GET profile & profile-clinic data if newer than local
-export const fetchProfile = () => (dispatch, getState) => {
+// GET profile data if newer than local
+// If user is not vet, set clinic data from profile-clinic
+export const fetchProfile = (isVet) => (dispatch, getState) => {
 	const endpoint = "/api/profile";
 	const dateUpdated = getDateUpdated(getState());
 	const data = JSON.stringify({ dateUpdated });
@@ -56,7 +57,7 @@ export const fetchProfile = () => (dispatch, getState) => {
 			if (res.status === 201) return dispatch($.upToDate());
 			dispatch($.fetchSuccess(res.data));
 			const { clinicInfo } = res.data;
-			if (clinicInfo) dispatch(setClinic(clinicInfo));
+			if (clinicInfo && !isVet) dispatch(setClinic(clinicInfo));
 		})
 		.catch((err) => {
 			dispatch($.fetchFail());

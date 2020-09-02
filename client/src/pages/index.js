@@ -10,3 +10,4 @@ export * from "./ProfileForm";
 export * from "./VetDashboard";
 export * from "./SurveyEditor";
 export * from "./VetSurvey";
+export * from "./VetClinicForm";

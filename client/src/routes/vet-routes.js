@@ -4,6 +4,7 @@ import {
 	Account,
 	ProfileForm,
 	SurveyEditor,
+	VetClinicForm,
 } from "pages";
 
 // Aux
@@ -13,8 +14,17 @@ const inNav = true;
 export const vetRoutes = [
 	{
 		path: "/",
-		title: "Home",
+		title: "Dashboard",
 		component: VetDashboard,
+		exact,
+		inNav,
+	},
+	// --- Clinic form ---
+	{
+		path: "/my-organisation",
+		title: "My Organisation",
+		linkText: "Organisation",
+		component: VetClinicForm,
 		exact,
 		inNav,
 	},

@@ -7,6 +7,7 @@ const compression = require("compression");
 
 const authRoutes = require("./routes/api/auth");
 const profileRoutes = require("./routes/api/profile");
+const clinicRoutes = require("./routes/api/clinic");
 const surveyRoutes = require("./routes/api/survey");
 
 dotenv.config();
@@ -46,6 +47,7 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/clinic", clinicRoutes);
 app.use("/api/survey", surveyRoutes);
 
 // Serve static assets in production

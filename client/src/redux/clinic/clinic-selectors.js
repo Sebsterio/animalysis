@@ -13,3 +13,7 @@ export const getFormData = (state) => {
 	const { name, address, email, phone } = getClinic(state);
 	return { name, address, email, phone };
 };
+
+export const getIsRegistered = (state) => !!getClinic(state).id;
+
+export const getIsUpdating = (state) => getClinic(state).isUpdating;

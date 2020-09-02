@@ -1,6 +1,13 @@
 import * as $ from "./clinic-actions";
 
 const INITIAL_STATE = {
+	// Sync status
+	isLoading: false,
+	isUpdating: false,
+	// Meta
+	dateModified: undefined,
+	modifiedBy: "",
+	// Data
 	id: null,
 	name: "",
 	address: "",
@@ -19,6 +26,8 @@ const INITIAL_STATE = {
 
 const clinicReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		// ------------ Local state ------------
+
 		case $.SET: {
 			return { ...action.payload };
 		}
@@ -40,6 +49,57 @@ const clinicReducer = (state = INITIAL_STATE, action) => {
 				reminderDismissed: true,
 			};
 		}
+
+		// ------------ Sync status ------------
+
+		// Create, fetch
+
+		case $.CREATE_START:
+		case $.FETCH_START:
+			return {
+				...state,
+				isLoading: true,
+			};
+
+		case $.CREATE_SUCCESS:
+		case $.FETCH_SUCCESS:
+			return {
+				...state,
+				isLoading: false,
+				...action.payload,
+			};
+
+		case $.CREATE_FAIL:
+		case $.FETCH_FAIL:
+		case $.UP_TO_DATE:
+			return {
+				...state,
+				isLoading: false,
+			};
+
+		// Update, delete
+
+		case $.UPDATE_START:
+		case $.DELETE_START:
+			return {
+				...state,
+				isUpdating: true,
+			};
+
+		case $.UPDATE_SUCCESS:
+			return {
+				...state,
+				isUpdating: false,
+				...action.payload,
+			};
+
+		case $.UPDATE_FAIL:
+		case $.DELETE_SUCCESS:
+		case $.DELETE_FAIL:
+			return {
+				...state,
+				isUpdating: false,
+			};
 
 		default:
 			return state;

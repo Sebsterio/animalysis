@@ -1,5 +1,5 @@
 // User
-import { getIsAuthenticated } from "redux/user/user-selectors";
+import { getIsAuthenticated, getIsVet } from "redux/user/user-selectors";
 import * as userActions from "redux/user/user-actions";
 import {
 	syncUser,
@@ -34,7 +34,8 @@ export const syncData = () => async (dispatch, getState) => {
 	if (!signedIn) return;
 
 	await dispatch(syncUser());
-	dispatch(fetchProfile());
+	const isVet = getIsVet(getState()); // get updated state
+	dispatch(fetchProfile(isVet));
 	dispatch(fetchSurvey());
 };
 
@@ -53,9 +54,10 @@ export const signUp = (formData) => async (dispatch) => {
 
 // Exchange password for token
 // Then, fetch all data
-export const signIn = (formData) => async (dispatch) => {
+export const signIn = (formData) => async (dispatch, getState) => {
 	await dispatch(fetchUser(formData));
-	dispatch(fetchProfile());
+	const isVet = getIsVet(getState()); // get updated state
+	dispatch(fetchProfile(isVet));
 	dispatch(fetchSurvey());
 };
 
