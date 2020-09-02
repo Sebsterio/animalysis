@@ -31,7 +31,7 @@ const surveyDataReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				publishing: false,
-				datePublished: new Date(),
+				...action.payload,
 			};
 		}
 		case $.PUBLISH_FAIL: {
