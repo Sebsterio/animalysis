@@ -26,6 +26,7 @@ export const createOrganisation = (formData) => (dispatch, getState) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			dispatch($.createSuccess(res.data));
+			dispatch(updateProfile({ clinicId: res.data.id }));
 		})
 		.catch((err) => {
 			dispatch($.createFail());

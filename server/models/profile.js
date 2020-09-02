@@ -17,10 +17,10 @@ const ProfileSchema = new Schema({
 		email: String,
 		phone: String,
 	},
-	// clinicId: {
-	// 	type: mongoose.Schema.Types.ObjectId,
-	// 	ref: "Clinic",
-	// },
+	clinicId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Clinic",
+	},
 	dateUpdated: Date, // for sync
 });
 
