@@ -5,6 +5,7 @@ export const INITIAL_STATE = {
 	publishedBy: '',       // user email
 	// Sync status
 	publishing: false,
+	loading: false,
 	// Data
 	primerQueue: ["_sectionName_"], // prepended to mainQueue if reporting a problem (i.e. (not in routine health check))
 	mainQueue: ["_sectionName_"],

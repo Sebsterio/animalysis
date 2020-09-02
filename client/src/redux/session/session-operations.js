@@ -16,6 +16,16 @@ import {
 	deleteProfile,
 } from "redux/profile/profile-operations";
 
+// Survey
+import * as surveyDataActions from "redux/survey-data/survey-data-actions";
+import { fetchSurvey } from "redux/survey-data/survey-data-operations";
+
+/*********************************************
+ *
+ * Coordinates operations across other stores
+ *
+ *********************************************/
+
 // ---------------------------- syncData --------------------------------
 
 // On app load, check all docs for updates
@@ -25,6 +35,7 @@ export const syncData = () => async (dispatch, getState) => {
 
 	await dispatch(syncUser());
 	dispatch(fetchProfile());
+	dispatch(fetchSurvey());
 };
 
 // ---------------------------- signUp ----------------------------------
@@ -38,13 +49,14 @@ export const signUp = (formData) => async (dispatch) => {
 	dispatch(createProfile({ firstName }));
 };
 
-// ------------------------ signIn ------------------------------
+// ---------------------------- signIn ----------------------------------
 
 // Exchange password for token
 // Then, fetch all data
 export const signIn = (formData) => async (dispatch) => {
 	await dispatch(fetchUser(formData));
 	dispatch(fetchProfile());
+	dispatch(fetchSurvey());
 };
 
 // -------------------------- closeAccount ------------------------------
@@ -64,5 +76,6 @@ export const closeAccount = (formData) => async (dispatch) => {
 export const signOut = () => (dispatch) => {
 	dispatch(userActions.clear());
 	dispatch(profileActions.clear());
+	dispatch(surveyDataActions.clear());
 	localStorage.clear();
 };

@@ -7,9 +7,10 @@ const SurveySchema = new Schema({
 	// 	type: mongoose.Schema.Types.ObjectId,
 	// 	ref: "Clinic",
 	// },
-	isDefault: Boolean,
+	isDefault: Boolean, // false = clinic-specific survey
+	dateFetched: Date, // for finding stale documents
 	datePublished: Date,
-	publishedBy: String,
+	publishedBy: String, // user email
 	data: String, // json
 });
 

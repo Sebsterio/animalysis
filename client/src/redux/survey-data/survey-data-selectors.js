@@ -1,14 +1,10 @@
 export const getSurveyData = (state) => state.surveyData;
 
 export const getSurveyDataForExport = (state) => {
-	const {
-		datePublished,
-		primerQueue,
-		mainQueue,
-		optionalQueue,
-		sections,
-	} = getSurveyData(state);
+	const data = getSurveyData(state);
+	const { primerQueue, mainQueue, optionalQueue, sections } = data;
 	const toStringify = { primerQueue, mainQueue, optionalQueue, sections };
-	const data = JSON.stringify(toStringify);
-	return { data, datePublished };
+	return JSON.stringify(toStringify);
 };
+
+export const getDatePublished = (state) => getSurveyData(state).datePublished;

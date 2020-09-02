@@ -10,7 +10,7 @@ const router = express.Router();
 
 // ------------------- Publish survey -------------------
 
-router.post("/", auth, async (req, res) => {
+router.post("/publish", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
 		const submittedData = filterSurvey(body);
@@ -51,44 +51,27 @@ router.post("/", auth, async (req, res) => {
 	}
 });
 
-// // ----------------- Update survey ----------------
-// // acces: token
-
-// router.post("/update", auth, async (req, res) => {
-// 	try {
-// 		const { userId, body } = req;
-// 		const submittedData = filterSurvey(body);
-// 		if (isEmpty(submittedData)) return res.status(400).json("No data");
-
-// 		const dateUpdated = new Date();
-// 		const newData = { ...submittedData, dateUpdated };
-// 		const survey = await Survey.findOneAndUpdate({ userId }, newData);
-// 		if (!survey) return res.status(404).json("Survey doesn't exists");
-
-// 		return res.status(200).json(dateUpdated);
-// 	} catch (e) {
-// 		res.status(400).json(e.message);
-// 	}
-// });
-
 // // ------------------ Fetch survey -----------------
 
-// router.post("/", auth, async (req, res) => {
-// 	try {
-// 		const { userId, body } = req;
-// 		const survey = await Survey.findOne({ userId });
-// 		if (!survey) return res.status(404).json("Survey doesn't exists");
+router.post("/", auth, async (req, res) => {
+	try {
+		const { /* userId, */ body } = req;
+		const submittedData = filterSurvey(body);
 
-// 		// Compare local and remote versions and determine response
-// 		const dateLocal = new Date(body.dateModified).getTime();
-// 		const dateRemote = new Date(survey.dateModified).getTime();
+		const query = { isDefault: true };
+		const dateFetched = new Date();
+		const survey = await Survey.findOneAndUpdate(query, { dateFetched });
 
-// 		if (dateLocal == dateRemote) return res.status(201).send();
-// 		return res.status(200).json(filterSurvey(survey));
-// 	} catch (e) {
-// 		res.status(400).json(e.message);
-// 	}
-// });
+		// Compare local and remote versions and determine response
+		const dateLocal = new Date(submittedData.datePublished).getTime();
+		const dateRemote = new Date(survey.datePublished).getTime();
+
+		if (dateLocal == dateRemote) return res.status(201).send();
+		return res.status(200).json(filterSurvey(survey));
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
 
 // // ---------------- Delete survey ----------------
 
