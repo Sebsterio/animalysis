@@ -32,7 +32,7 @@ router.post("/sign-up", async (req, res) => {
 
 		// Create user
 		const dateRegistered = new Date();
-		const type = "client";
+		const type = "client"; // TODO: get from organizations' members lists
 		const newUser = new User({ email, password: hash, dateRegistered, type });
 		const savedUser = await newUser.save();
 		if (!savedUser) throw Error("Error saving the user");

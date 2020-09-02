@@ -64,14 +64,8 @@ const AccountPage = ({
 		// Render Account page
 		return (
 			<Main
-				{...{
-					mode,
-					mainModeIsMatched,
-					updating,
-					signOut,
-					handleSubmit,
-					goBack,
-				}}
+				{...{ mode, mainModeIsMatched, updating }}
+				{...{ handleSubmit, signOut, goBack }}
 			/>
 		);
 	}

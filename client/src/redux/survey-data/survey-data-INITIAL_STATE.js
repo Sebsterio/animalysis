@@ -1,7 +1,7 @@
 export const INITIAL_STATE = {
 	// Meta
-	dateModified: null,
-	datePublished: null,
+	dateModified: undefined,
+	datePublished: undefined,
 	publishedBy: '',       // user email
 	// Sync status
 	publishing: false,

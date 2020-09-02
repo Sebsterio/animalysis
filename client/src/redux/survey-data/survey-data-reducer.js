@@ -1,9 +1,8 @@
-// import { INITIAL_STATE } from "./survey-data-INITIAL_STATE";
-import { surveyData } from "./temp-survey-data";
+// import { surveyData } from "./temp-survey-data";
+// const INITIAL_STATE = surveyData;
 
+import { INITIAL_STATE } from "./survey-data-INITIAL_STATE";
 import * as $ from "./survey-data-actions";
-
-const INITIAL_STATE = surveyData;
 
 const surveyDataReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
@@ -12,12 +11,12 @@ const surveyDataReducer = (state = INITIAL_STATE, action) => {
 		case $.SET_SURVEY_DATA: {
 			const { sections, queues } = action.payload;
 			return {
-				// replace state (dont' spread current state)
-				sections,
+				...state,
+				dateModified: new Date(),
 				primerQueue: [...queues.primerQueue.list],
 				mainQueue: [...queues.mainQueue.list],
 				optionalQueue: [...queues.optionalQueue.list],
-				dateModified: new Date(),
+				sections,
 			};
 		}
 

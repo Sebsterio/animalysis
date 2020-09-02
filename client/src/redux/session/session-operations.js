@@ -17,7 +17,7 @@ import {
 } from "redux/profile/profile-operations";
 
 // Survey
-import * as surveyDataActions from "redux/survey-data/survey-data-actions";
+// import * as surveyDataActions from "redux/survey-data/survey-data-actions";
 import { fetchSurvey } from "redux/survey-data/survey-data-operations";
 
 /*********************************************
@@ -76,6 +76,5 @@ export const closeAccount = (formData) => async (dispatch) => {
 export const signOut = () => (dispatch) => {
 	dispatch(userActions.clear());
 	dispatch(profileActions.clear());
-	dispatch(surveyDataActions.clear());
-	localStorage.clear();
+	// Dont'clear surveyData (?)
 };
