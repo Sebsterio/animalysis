@@ -41,9 +41,10 @@ router.post("/", auth, async (req, res) => {
 		if (!profile) return res.status(404).json("Profile doesn't exists");
 
 		// Compare local and remote versions and determine response
-		const dateLocal = new Date(body.dateModified).getTime();
-		const dateRemote = new Date(profile.dateModified).getTime();
+		const dateLocal = new Date(body.dateUpdated).getTime();
+		const dateRemote = new Date(profile.dateUpdated).getTime();
 
+		console.log({ dateLocal, dateRemote });
 		if (dateLocal == dateRemote) return res.status(201).send();
 		return res.status(200).json(filterProfile(profile));
 	} catch (e) {

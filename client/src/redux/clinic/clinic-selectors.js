@@ -7,3 +7,9 @@ export const getClinicReminderIsDismissed = (state) =>
 
 export const getShouldShowClinicReminder = (state) =>
 	!getIsClinicSet(state) && !getClinicReminderIsDismissed(state);
+
+// For ClinicForm
+export const getFormData = (state) => {
+	const { name, address, email, phone } = getClinic(state);
+	return { name, address, email, phone };
+};

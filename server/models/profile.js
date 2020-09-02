@@ -21,7 +21,7 @@ const ProfileSchema = new Schema({
 	// 	type: mongoose.Schema.Types.ObjectId,
 	// 	ref: "Clinic",
 	// },
-	dateUpdated: Date,
+	dateUpdated: Date, // for sync
 });
 
 const Profile = mongoose.model("Profile", ProfileSchema);

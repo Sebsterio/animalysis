@@ -19,6 +19,10 @@ const INITIAL_STATE = {
 
 const clinicReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case $.SET: {
+			return { ...action.payload };
+		}
+
 		case $.MODIFY: {
 			return {
 				...state,

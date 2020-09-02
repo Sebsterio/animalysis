@@ -5,7 +5,7 @@ import { getHasReports } from "redux/pets/pets-selectors";
 export const getProfile = (state) => state.profile;
 
 // For ProfileForm
-export const getData = (state) => {
+export const getFormData = (state) => {
 	const { firstName, surname, phone } = getProfile(state);
 	return { firstName, surname, phone };
 };

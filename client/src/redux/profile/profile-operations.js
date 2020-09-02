@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as $ from "./profile-actions";
 import { getDateUpdated } from "./profile-selectors";
-import { modifyClinic } from "redux/clinic/clinic-actions";
+import { setClinic } from "redux/clinic/clinic-actions";
 import { error } from "redux/error/error-operations";
 import { getTokenConfig } from "utils/ajax";
 
@@ -45,7 +45,7 @@ export const updateProfile = (formData) => (dispatch, getState) => {
 
 // // --------------------------- fetchProfile ------------------------------
 
-// GET profile data if newer than local
+// GET profile & profile-clinic data if newer than local
 export const fetchProfile = () => (dispatch, getState) => {
 	const endpoint = "/api/profile";
 	const dateUpdated = getDateUpdated(getState());
@@ -58,7 +58,7 @@ export const fetchProfile = () => (dispatch, getState) => {
 			if (res.status === 201) return dispatch($.upToDate());
 			dispatch($.fetchSuccess(res.data));
 			const { clinicInfo } = res.data;
-			if (clinicInfo) dispatch(modifyClinic(clinicInfo));
+			if (clinicInfo) dispatch(setClinic(clinicInfo));
 		})
 		.catch((err) => {
 			dispatch($.fetchFail());
