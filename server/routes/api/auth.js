@@ -12,10 +12,12 @@ const router = express.Router();
 // ------------------- Sign-up -------------------
 
 router.post("/sign-up", async (req, res) => {
-	const { email, password } = req.body;
+	const { email, password, type } = req.body;
 
 	// Validate
 	if (!email || !password) return res.status(400).json("Missing fields");
+	if (type === "superuser")
+		return res.status(403).json("Registering as superuser is not allowed");
 	const user = await User.findOne({ email });
 	if (user)
 		return res.status(403).json({
@@ -32,7 +34,6 @@ router.post("/sign-up", async (req, res) => {
 
 		// Create user
 		const dateRegistered = new Date();
-		const type = "client"; // TODO: get from organizations' members lists
 		const newUser = new User({ email, password: hash, dateRegistered, type });
 		const savedUser = await newUser.save();
 		if (!savedUser) throw Error("Error saving the user");

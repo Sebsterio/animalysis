@@ -10,7 +10,13 @@ import {
 	Button,
 	Link,
 } from "@material-ui/core";
-import { ProfileInfo, EmailInput, PasswordInput, Terms } from "./index";
+import {
+	ProfileInfo,
+	EmailInput,
+	PasswordInput,
+	Terms,
+	TypeInput,
+} from "./index";
 import { Copyright } from "components";
 
 // Other
@@ -32,6 +38,7 @@ export const Auth = ({ mode, handleSubmit }) => {
 			btnText: "Sign Up",
 			linkText: "Already have an account? Sign in",
 			terms: Terms,
+			typeInput: <TypeInput defaultVal="client" />,
 			profileInfo: ProfileInfo,
 			linkHref: authModes.signIn,
 		},
@@ -59,6 +66,7 @@ export const Auth = ({ mode, handleSubmit }) => {
 						{modesData[mode].profileInfo || null}
 						<EmailInput />
 						<PasswordInput />
+						{modesData[mode].typeInput || null}
 						{modesData[mode].terms || null}
 					</Grid>
 
