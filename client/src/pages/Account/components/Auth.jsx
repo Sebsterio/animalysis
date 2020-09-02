@@ -25,7 +25,7 @@ export const Auth = ({ mode, handleSubmit }) => {
 	const modesData = {
 		[authModes.signIn]: {
 			btnText: "Sign In",
-			linkText: "Don't have an account? Sing up",
+			linkText: "Don't have an account? Sign up",
 			linkHref: authModes.signUp,
 		},
 		[authModes.signUp]: {
