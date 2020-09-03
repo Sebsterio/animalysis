@@ -29,7 +29,7 @@ import { fetchSurvey } from "redux/survey-data/survey-data-operations";
  *
  *********************************************/
 
-// AUX. Runs on sync and sing-in
+// AUX. Runs on sync and sign-in
 const fetchAllData = () => async (dispatch) => {
 	const res = await dispatch(fetchProfile());
 	dispatch(syncClinic(res));

@@ -50,30 +50,21 @@ export const createOrganisation = (formData) => (dispatch, getState) => {
 
 // -------------------------- updateOrganisation ------------------------------
 
+// POST clinic data to db
 export const updateOrganisation = (formData) => (dispatch, getState) => {
+	const endpoint = "/api/clinic/update";
+	const data = JSON.stringify(formData);
+	const config = getTokenConfig(getState());
 	dispatch($.modifyClinic(formData));
-
 	dispatch($.updateStart());
-	setTimeout(() => {
-		dispatch($.updateSuccess(/* res.data */));
-	}, 1000);
+	axios
+		.post(endpoint, data, config)
+		.then((res) => dispatch($.updateSuccess(res.data)))
+		.catch((err) => {
+			dispatch($.updateFail());
+			dispatch(error(err));
+		});
 };
-
-// // POST profile data to db
-// export const updateProfile = (formData) => (dispatch, getState) => {
-// 	const endpoint = "/api/profile/update";
-// 	const data = JSON.stringify(formData);
-// 	const config = getTokenConfig(getState());
-// 	dispatch($.modify(formData));
-// 	dispatch($.updateStart());
-// 	axios
-// 		.post(endpoint, data, config)
-// 		.then((res) => dispatch($.updateSuccess(res.data)))
-// 		.catch((err) => {
-// 			dispatch($.updateFail());
-// 			dispatch(error(err));
-// 		});
-// };
 
 // --------------------------- fetchOrganisation ------------------------------
 

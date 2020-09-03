@@ -66,7 +66,7 @@ router.post("/update", auth, async (req, res) => {
 		const profile = await Profile.findOneAndUpdate({ userId }, newData);
 		if (!profile) return res.status(404).json("Profile doesn't exists");
 
-		return res.status(200).json(dateUpdated);
+		return res.status(200).json({ dateUpdated });
 	} catch (e) {
 		res.status(400).json(e.message);
 	}

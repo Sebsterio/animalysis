@@ -60,11 +60,36 @@ router.post("/", auth, async (req, res) => {
 		// Compare local and remote versions to determine response
 		const dateLocal = new Date(dateModified).getTime();
 		const dateRemote = new Date(clinic.dateModified).getTime();
-		const datesAreEqual =
-			dateLocal === dateRemote || (!dateLocal && !dateRemote);
 
-		if (datesAreEqual) return res.status(201).send();
+		if (dateLocal === dateRemote) return res.status(201).send();
 		return res.status(200).json(filterClinic(clinic));
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
+
+// ----------------- Update clinic ----------------
+// acces: token
+
+router.post("/update", auth, async (req, res) => {
+	try {
+		const { userId, body } = req;
+		const submittedData = filterClinic(body);
+		const { clinicId } = submittedData;
+
+		// Validate
+		const clinic = await Clinic.findById(clinicId);
+		if (!clinic) return res.status(404).json("Clinic doesn't exists");
+		const isMember = clinic.members.some((member) => (member.userId = userId));
+		if (!isMember) return res.status(403).json("User is not a clinic member");
+
+		// Update
+		const dateModified = new Date();
+		const update = { ...submittedData, dateModified };
+		const res = await clinic.updateOne(update); // no save()
+		if (!res.nModified) throw Error("Error updating survey");
+
+		return res.status(200).json({ dateModified });
 	} catch (e) {
 		res.status(400).json(e.message);
 	}

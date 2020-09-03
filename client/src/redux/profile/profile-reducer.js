@@ -75,7 +75,7 @@ const profileReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isUpdating: false,
-				dateUpdated: action.payload,
+				...action.payload, // dateUpdated
 			};
 
 		case $.UPDATE_FAIL:
