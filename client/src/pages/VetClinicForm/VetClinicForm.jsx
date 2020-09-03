@@ -13,6 +13,7 @@ import { Members } from "./components";
 import { useValueWithTimeout } from "hooks";
 
 import getFormFields from "./VetClinicForm-formData";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -61,8 +62,15 @@ export const VetClinicForm = ({
 	const { members } = currentData;
 	const user = members ? members.find((m) => m.email === userEmail) : null;
 	const userRole = user ? user.role : null;
-	const isOwner = registered && userRole === "owner";
-	const isAdmin = registered && (userRole === "owner" || userRole === "admin");
+	const isOwner = registered ? userRole === "owner" : true;
+	const isAdmin = registered
+		? userRole === "owner" || userRole === "admin"
+		: true;
+
+	// keep state updated with store
+	useEffect(() => {
+		setClinic({ ...currentData });
+	}, [currentData]);
 
 	// ------------------------- Handlers ----------------------------
 
