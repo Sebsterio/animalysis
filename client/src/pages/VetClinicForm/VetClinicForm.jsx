@@ -103,7 +103,7 @@ export const VetClinicForm = ({
 						<Typography variant="h5">Members</Typography>
 					</AccordionSummary>
 					<AccordionDetails className={c.accordionDetails}>
-						<Members />
+						<Members {...{ clinic, setClinic }} />
 					</AccordionDetails>
 				</Accordion>
 
