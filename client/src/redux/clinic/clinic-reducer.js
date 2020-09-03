@@ -29,7 +29,10 @@ const clinicReducer = (state = INITIAL_STATE, action) => {
 		// ------------ Local state ------------
 
 		case $.SET: {
-			return { ...action.payload };
+			return {
+				...INITIAL_STATE,
+				...action.payload,
+			};
 		}
 
 		case $.MODIFY: {

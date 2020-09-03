@@ -27,3 +27,5 @@ export const getShouldShowProfileReminder = (state) =>
 export const getDateUpdated = (state) => getProfile(state).dateUpdated;
 
 export const getIsLoading = (state) => getProfile(state).isLoading;
+
+export const getClinicInfo = (state) => getProfile(state).clinicInfo;

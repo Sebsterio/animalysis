@@ -2,6 +2,7 @@ import axios from "axios";
 import * as $ from "./clinic-actions";
 import { getDateModified, getClinicId } from "./clinic-selectors";
 import { updateProfile } from "redux/profile/profile-operations";
+import { getClinicInfo } from "redux/profile/profile-selectors";
 import { error } from "redux/error/error-operations";
 import { getTokenConfig } from "utils/ajax";
 
@@ -11,6 +12,13 @@ import { getTokenConfig } from "utils/ajax";
 export const updateClinic = (formData) => (dispatch) => {
 	dispatch($.modifyClinic(formData));
 	dispatch(updateProfile({ clinicInfo: formData }));
+};
+
+// Remove clinicId from profile and set profile clinicInfo in clinic store
+export const leaveClinic = () => (dispatch, getState) => {
+	const clinicInfo = getClinicInfo(getState());
+	dispatch(updateProfile({ clinicId: null }));
+	dispatch($.setClinic(clinicInfo));
 };
 
 // =============================== All ======================================
@@ -28,6 +36,14 @@ export const syncClinic = (profileRes) => (dispatch, getState) => {
 };
 
 // =============================== Vet ======================================
+
+// ------------------------ leaveOrganisation ------------------------------
+
+// Remove clinicId from profile and clear clinic store
+export const leaveOrganisation = () => (dispatch, getState) => {
+	dispatch(updateProfile({ clinicId: null }));
+	dispatch($.clear());
+};
 
 // ------------------------ createOrganisation ------------------------------
 

@@ -11,6 +11,7 @@ import {
 	createOrganisation,
 	updateOrganisation,
 	deleteOrganisation,
+	leaveOrganisation,
 } from "redux/clinic/clinic-operations";
 import { getEmail } from "redux/user/user-selectors";
 
@@ -27,6 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
 	create: (data) => dispatch(createOrganisation(data)),
 	update: (data) => dispatch(updateOrganisation(data)),
 	deleteClinic: (data) => dispatch(deleteOrganisation(data)),
+	leaveClinic: () => dispatch(leaveOrganisation()),
 });
 
 const VetClinicFormContainer = (props) => <VetClinicForm {...props} />;

@@ -43,6 +43,7 @@ export const VetClinicForm = ({
 	update,
 	create,
 	deleteClinic,
+	leaveClinic,
 	// withError
 	isError,
 	emailError,
@@ -83,6 +84,15 @@ export const VetClinicForm = ({
 
 	const handleConfirmDelete = () => {
 		deleteClinic();
+		history.push("/");
+	};
+
+	const handleLeaveClinic = () => {
+		const confirmed = window.confirm(
+			"Are you sure you want to leave the organisation?"
+		);
+		if (!confirmed) return;
+		leaveClinic();
 		history.push("/");
 	};
 
@@ -134,6 +144,12 @@ export const VetClinicForm = ({
 						<Typography variant="h5">Manage</Typography>
 					</AccordionSummary>
 					<AccordionDetails className={c.accordionDetails}>
+						<Button
+							children="Leave Organisation"
+							onClick={handleLeaveClinic}
+							variant="outlined"
+							fullWidth
+						/>
 						<Button
 							children="Delete Organisation"
 							onClick={openDialog}
