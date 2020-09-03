@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withError } from "HOC";
 
 import {
-	getFormData,
+	getVetFormData,
 	getIsRegistered,
 	getIsUpdating,
 } from "redux/clinic/clinic-selectors";
@@ -16,7 +16,7 @@ import {
 import { VetClinicForm } from "./VetClinicForm";
 
 const mapStateToProps = (state) => ({
-	currentData: getFormData(state),
+	currentData: getVetFormData(state),
 	registered: getIsRegistered(state),
 	updating: getIsUpdating(state),
 });

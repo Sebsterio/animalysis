@@ -45,6 +45,7 @@ export const VetClinicForm = ({
 	isError,
 	emailError,
 	errorMessage,
+	clearError,
 }) => {
 	const c = useStyles();
 
@@ -59,7 +60,10 @@ export const VetClinicForm = ({
 
 	const closeForm = () => history.push("/");
 
-	const submitForm = () => (registered ? update(clinic) : create(clinic));
+	const submitForm = () => {
+		clearError();
+		registered ? update(clinic) : create(clinic);
+	};
 
 	const handleConfirmDelete = () => {
 		deleteClinic();
@@ -88,7 +92,7 @@ export const VetClinicForm = ({
 		<Container maxWidth="xs" className={c.page}>
 			<div>
 				{/* Contact */}
-				<Accordion>
+				<Accordion defaultExpanded={!registered}>
 					<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 						<Typography variant="h5">Contact</Typography>
 					</AccordionSummary>
@@ -98,7 +102,7 @@ export const VetClinicForm = ({
 				</Accordion>
 
 				{/* Members */}
-				<Accordion>
+				<Accordion disabled={!registered}>
 					<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 						<Typography variant="h5">Members</Typography>
 					</AccordionSummary>
@@ -108,7 +112,7 @@ export const VetClinicForm = ({
 				</Accordion>
 
 				{/* Manage */}
-				<Accordion>
+				<Accordion disabled={!registered}>
 					<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 						<Typography variant="h5">Manage</Typography>
 					</AccordionSummary>

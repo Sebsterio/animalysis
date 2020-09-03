@@ -1,6 +1,7 @@
 const express = require("express");
 const auth = require("../../middleware/auth");
 const Clinic = require("../../models/clinic");
+const User = require("../../models/user");
 const clinicUtils = require("./clinic-utils");
 
 const { filterClinic } = clinicUtils;
@@ -28,10 +29,14 @@ router.post("/create", auth, async (req, res) => {
 				msg: "Clinic already exists",
 			});
 
-		// Create clinic
+		// Add owner if not already added (manually)
+		const user = await User.findById(userId);
 		let { members } = submittedData;
-		if (!members || !members.length) members = [];
-		members.push({ userId, role: "owner" });
+		if (!members) members = [];
+		if (!members.length || !members.some((m) => m.email === user.email))
+			members.unshift({ email: user.email, role: "owner" });
+
+		// Create clinic
 		const dateRegistered = new Date();
 		const data = { members, dateRegistered, ...submittedData };
 		const newClinic = new Clinic(data);
@@ -55,7 +60,8 @@ router.post("/", auth, async (req, res) => {
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
 
-		const isMember = clinic.members.some((m) => m.userId.equals(userId));
+		const user = await User.findById(userId);
+		const isMember = clinic.members.some((m) => m.email === user.email);
 		if (!isMember) return res.status(403).json("User is not a clinic member");
 
 		// Compare local and remote versions to determine response
@@ -76,19 +82,28 @@ router.post("/update", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
 		const submittedData = filterClinic(body);
-		const { clinicId } = submittedData;
+		const { clinicId, email } = submittedData;
 
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
-		const isMember = clinic.members.some((m) => m.userId.equals(userId));
+		const user = await User.findById(userId);
+		const isMember = clinic.members.some((m) => m.email === user.email);
 		if (!isMember) return res.status(403).json("User is not a clinic member");
+		if (email && email !== clinic.email) {
+			const duplicate = await Clinic.findOne({ email });
+			if (duplicate)
+				return res.status(403).json({
+					target: "email",
+					msg: "Already registered",
+				});
+		}
 
 		// Update
 		const dateModified = new Date();
 		const update = { ...submittedData, dateModified };
-		const res = await clinic.updateOne(update); // no save()
-		if (!res.nModified) throw Error("Error updating survey");
+		const resp = await clinic.updateOne(update); // no save()
+		if (!resp.nModified) throw Error("Error updating survey");
 
 		return res.status(200).json({ dateModified });
 	} catch (e) {
@@ -107,9 +122,9 @@ router.post("/delete", auth, async (req, res) => {
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
-		const isOwner = clinic.members.some(
-			(m) => m.userId.equals(userId) && m.role === "owner"
-		);
+		const user = await User.findById(userId);
+		const getIsOwner = (m) => m.email === user.email && m.role === "owner";
+		const isOwner = clinic.members.some(getIsOwner);
 		if (!isOwner) return res.status(403).json("User is not a clinic owner");
 
 		const deletedClinic = await Clinic.findByIdAndDelete(clinicId);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -15,6 +16,17 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		gridGap: theme.spacing(2),
 	},
+	member: {
+		padding: theme.spacing(2),
+		display: "flex",
+		flexFlow: "row nowrap",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	role: {
+		color: theme.palette.grey[500],
+		textTransform: "capitalize",
+	},
 	footer: {
 		display: "grid",
 		gridAutoFlow: "column",
@@ -26,16 +38,15 @@ export const Members = ({ clinic, setClinic }) => {
 	const c = useStyles();
 
 	const currentMembers = clinic.members || [];
-	const [members, setMembers] = useState([...currentMembers]);
+
+	console.log({ clinic });
+
 	const [newMember, setNewMember] = useState(null);
 
 	// ------------------------ Handlers ---------------------------
 
 	const openNewMemberForm = () =>
-		setNewMember({
-			email: "",
-			role: "assistant",
-		});
+		setNewMember({ email: "", role: "assistant" });
 
 	const closeNewMemberForm = () => setNewMember(null);
 
@@ -45,7 +56,7 @@ export const Members = ({ clinic, setClinic }) => {
 	};
 
 	const addMember = () => {
-		setMembers([...members, newMember]);
+		setClinic({ ...clinic, members: [...currentMembers, newMember] });
 		closeNewMemberForm();
 	};
 
@@ -53,13 +64,30 @@ export const Members = ({ clinic, setClinic }) => {
 
 	const addingMember = !!newMember;
 
-	const emailInputValid =
-		addingMember && newMember.email && !!newMember.email.match(/\w+@\w+[.]\w+/);
+	const isEmailFormatValid = (email) => !!email.match(/\w+@\w+[.]\w+/);
+
+	const isEmailDuplicate = (email) =>
+		currentMembers.some((member) => member.email === email);
+
+	const isEmailInputValid = () => {
+		const { email } = newMember;
+		if (!email) return false;
+		return isEmailFormatValid(email) && !isEmailDuplicate(email);
+	};
 
 	// ------------------------- View ------------------------------
 
 	return (
 		<Stack>
+			{/* Members List */}
+			{currentMembers.map(({ email, role }) => (
+				<Paper className={c.member} key={email}>
+					<Typography className={c.role} children={role} />
+					<Typography children={email} />
+					<div>{/* delete button icon */}</div>
+				</Paper>
+			))}
+
 			{/* New Member Form */}
 			{addingMember && (
 				<div className={c.form}>
@@ -76,6 +104,12 @@ export const Members = ({ clinic, setClinic }) => {
 						value={newMember.email}
 						inputProps={{ id: "member-email" }}
 						onChange={editNewMember}
+						error={isEmailDuplicate(newMember.email)}
+						helperText={
+							isEmailDuplicate(newMember.email)
+								? "Member already exists."
+								: undefined
+						}
 					/>
 
 					{/* Type */}
@@ -110,7 +144,7 @@ export const Members = ({ clinic, setClinic }) => {
 						<Button
 							children={"Add"}
 							onClick={addMember}
-							disabled={!emailInputValid}
+							disabled={!isEmailInputValid}
 							variant="outlined"
 							fullWidth
 						/>

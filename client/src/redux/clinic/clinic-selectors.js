@@ -13,6 +13,11 @@ export const getFormData = (state) => {
 	const { name, address, email, phone } = getClinic(state);
 	return { name, address, email, phone };
 };
+// For VetClinicForm
+export const getVetFormData = (state) => {
+	const { name, address, email, phone, members } = getClinic(state);
+	return { name, address, email, phone, members };
+};
 
 export const getIsRegistered = (state) => !!getClinic(state).id;
 

@@ -9,10 +9,7 @@ const ClinicSchema = new Schema({
 	phone: String,
 	members: [
 		{
-			userId: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "User",
-			},
+			email: String,
 			role: String,
 		},
 	],

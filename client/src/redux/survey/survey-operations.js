@@ -137,7 +137,6 @@ export const handleGoForward = (history) => (dispatch, getState) => {
 export const handleGoBack = (history) => (dispatch, getState) => {
 	dispatch(goBack(history)); // must run first
 	const currentAnswer = getCurrentAnswerData(getState());
-	console.log(currentAnswer);
 	arrayify(currentAnswer).forEach((answer) => {
 		const { followUp } = answer;
 		if (followUp) dispatch(removeFollowUpsFromQueue({ followUp }));

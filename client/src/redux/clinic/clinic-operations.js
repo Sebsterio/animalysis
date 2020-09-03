@@ -8,7 +8,7 @@ import { getTokenConfig } from "utils/ajax";
 // ============================ Pet owner ===================================
 
 // Update user profile clinic section
-export const updateClinic = (formData) => (dispatch, getState) => {
+export const updateClinic = (formData) => (dispatch) => {
 	dispatch($.modifyClinic(formData));
 	dispatch(updateProfile({ clinicInfo: formData }));
 };
@@ -54,7 +54,8 @@ export const createOrganisation = (formData) => (dispatch, getState) => {
 // POST clinic data to db
 export const updateOrganisation = (formData) => (dispatch, getState) => {
 	const endpoint = "/api/clinic/update";
-	const data = JSON.stringify(formData);
+	const clinicId = getClinicId(getState());
+	const data = JSON.stringify({ ...formData, clinicId });
 	const config = getTokenConfig(getState());
 	dispatch($.modifyClinic(formData));
 	dispatch($.updateStart());

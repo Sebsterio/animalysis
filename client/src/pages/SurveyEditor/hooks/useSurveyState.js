@@ -151,7 +151,6 @@ export const useSurveyState = (initialData) => {
 	};
 
 	const deleteQuestion = ({ sectionName, questionId }) => {
-		console.log({ sectionName, questionId });
 		const selector = (question) => question.id === questionId;
 		modifySectionQuestions(sectionName, (questions) =>
 			makeArrayWithRemovedItems(questions, null, selector)

@@ -44,7 +44,6 @@ router.post("/", auth, async (req, res) => {
 		const dateLocal = new Date(body.dateUpdated).getTime();
 		const dateRemote = new Date(profile.dateUpdated).getTime();
 
-		console.log({ dateLocal, dateRemote });
 		if (dateLocal == dateRemote) return res.status(201).send();
 		return res.status(200).json(filterProfile(profile));
 	} catch (e) {

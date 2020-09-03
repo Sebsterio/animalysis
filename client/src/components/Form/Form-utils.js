@@ -10,6 +10,6 @@ export const isFormFilled = (fields, state) =>
 		if (!config) return false;
 		const { req, derrived, fields } = config;
 		if (type === "group") return !isFormFilled(fields, state);
-		if (req && !derrived) return state[name] === undefined;
+		if (req && !derrived) return !state[name] && state[name] !== 0;
 		return false;
 	});
