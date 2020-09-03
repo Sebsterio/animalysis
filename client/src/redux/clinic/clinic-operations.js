@@ -57,7 +57,7 @@ export const updateOrganisation = (formData) => (dispatch, getState) => {
 	const clinicId = getClinicId(getState());
 	const data = JSON.stringify({ ...formData, clinicId });
 	const config = getTokenConfig(getState());
-	dispatch($.modifyClinic(formData));
+	// dispatch($.modifyClinic(formData));
 	dispatch($.updateStart());
 	axios
 		.post(endpoint, data, config)

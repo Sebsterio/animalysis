@@ -82,7 +82,7 @@ router.post("/update", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
 		const submittedData = filterClinic(body);
-		const { clinicId, email } = submittedData;
+		const { clinicId, email, members } = submittedData;
 
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
@@ -92,7 +92,7 @@ router.post("/update", auth, async (req, res) => {
 		const isAuthorized = clinic.members.some(
 			(m) => m.email === user.email && ["owner", "admin"].includes(m.role)
 		);
-		if (!isAuthorized) return res.status(403).json("User is not authorized");
+		if (!isAuthorized) return res.status(401).json("User is not authorized");
 
 		if (email && email !== clinic.email) {
 			const duplicate = await Clinic.findOne({ email });
@@ -102,6 +102,9 @@ router.post("/update", auth, async (req, res) => {
 					msg: "Already registered",
 				});
 		}
+
+		if (!members.length)
+			return res.status(403).json({"Removing the last member is not allowed");
 
 		// Update
 		const dateModified = new Date();

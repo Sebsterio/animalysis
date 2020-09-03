@@ -62,7 +62,7 @@ export const Members = ({ clinic, setClinic, isAdmin }) => {
 	};
 
 	const handleDeleteClick = (email) => {
-		const confirmed = window.confirm("Delete user?");
+		const confirmed = window.confirm("Delete member?");
 		if (confirmed) {
 			const selector = (member) => member.email === email;
 			setClinic({
