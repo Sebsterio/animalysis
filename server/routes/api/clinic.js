@@ -54,7 +54,8 @@ router.post("/", auth, async (req, res) => {
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
-		const isMember = clinic.members.some((member) => (member.userId = userId));
+
+		const isMember = clinic.members.some((m) => m.userId.equals(userId));
 		if (!isMember) return res.status(403).json("User is not a clinic member");
 
 		// Compare local and remote versions to determine response
@@ -80,7 +81,7 @@ router.post("/update", auth, async (req, res) => {
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
-		const isMember = clinic.members.some((member) => (member.userId = userId));
+		const isMember = clinic.members.some((m) => m.userId.equals(userId));
 		if (!isMember) return res.status(403).json("User is not a clinic member");
 
 		// Update
@@ -90,6 +91,30 @@ router.post("/update", auth, async (req, res) => {
 		if (!res.nModified) throw Error("Error updating survey");
 
 		return res.status(200).json({ dateModified });
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
+
+// ---------------- Delete clinic ----------------
+
+router.post("/delete", auth, async (req, res) => {
+	try {
+		const { userId, body } = req;
+		const submittedData = filterClinic(body);
+		const { clinicId } = submittedData;
+
+		// Validate
+		const clinic = await Clinic.findById(clinicId);
+		if (!clinic) return res.status(404).json("Clinic doesn't exists");
+		const isOwner = clinic.members.some(
+			(m) => m.userId.equals(userId) && m.role === "owner"
+		);
+		if (!isOwner) return res.status(403).json("User is not a clinic owner");
+
+		const deletedClinic = await Clinic.findByIdAndDelete(clinicId);
+		if (!deletedClinic) throw Error("Error deleting clinic");
+		res.status(200).send();
 	} catch (e) {
 		res.status(400).json(e.message);
 	}

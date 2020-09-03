@@ -20,7 +20,8 @@ export const updateClinic = (formData) => (dispatch, getState) => {
 // Else save clinic-data fetched from profile
 // prettier-ignore
 export const syncClinic = (profileRes) => (dispatch, getState) => {
-	let { clinicInfo, clinicId } = profileRes.data;
+	let clinicInfo, clinicId
+	if (profileRes) ({ clinicInfo, clinicId } = profileRes.data);
 	if (!clinicId) clinicId = getClinicId(getState());
 	if (clinicId) dispatch(fetchOrganisation(clinicId));
 	else if (clinicInfo) dispatch($.setClinic(clinicInfo));
@@ -83,6 +84,26 @@ export const fetchOrganisation = (clinicId) => (dispatch, getState) => {
 		})
 		.catch((err) => {
 			dispatch($.fetchFail());
+			dispatch(error(err));
+		});
+};
+
+// -------------------------- deleteOrganisation ------------------------------
+
+// DELETE profile from db
+export const deleteOrganisation = () => async (dispatch, getState) => {
+	const config = getTokenConfig(getState());
+	const clinicId = getClinicId(getState());
+	const data = JSON.stringify({ clinicId });
+	dispatch($.deleteStart());
+	return axios
+		.post("/api/clinic/delete", data, config)
+		.then(() => {
+			dispatch($.deleteSuccess());
+			dispatch($.clear());
+		})
+		.catch((err) => {
+			dispatch($.deleteFail());
 			dispatch(error(err));
 		});
 };

@@ -10,6 +10,7 @@ import {
 import {
 	createOrganisation,
 	updateOrganisation,
+	deleteOrganisation,
 } from "redux/clinic/clinic-operations";
 
 import { VetClinicForm } from "./VetClinicForm";
@@ -23,6 +24,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	create: (data) => dispatch(createOrganisation(data)),
 	update: (data) => dispatch(updateOrganisation(data)),
+	deleteClinic: (data) => dispatch(deleteOrganisation(data)),
 });
 
 const VetClinicFormContainer = (props) => <VetClinicForm {...props} />;

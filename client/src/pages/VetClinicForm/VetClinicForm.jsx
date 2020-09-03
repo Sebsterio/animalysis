@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Container } from "@material-ui/core";
-import { Nav, Form, isFormFilled } from "components";
+import { Nav, Form, isFormFilled, ConfirmDialog } from "components";
 import { useValueWithTimeout } from "hooks";
 
 import getFormFields from "./VetClinicForm-formData";
@@ -29,6 +29,7 @@ export const VetClinicForm = ({
 	// dispatch
 	update,
 	create,
+	deleteClinic,
 	// withError
 	isError,
 	emailError,
@@ -38,11 +39,10 @@ export const VetClinicForm = ({
 
 	const [clinic, setClinic] = useState({ ...currentData });
 
-	const formFields = getFormFields({
-		emailError: emailError ? errorMessage : false,
-	});
-
-	const canSubmit = isFormFilled(formFields, clinic);
+	// Confirmation dialog
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const openDialog = () => setDialogOpen(true);
+	const closeDialog = () => setDialogOpen(false);
 
 	// ------------------------- Handlers ----------------------------
 
@@ -50,7 +50,22 @@ export const VetClinicForm = ({
 
 	const submitForm = () => (registered ? update(clinic) : create(clinic));
 
+	const handleConfirmDelete = () => {
+		deleteClinic();
+		history.push("/");
+	};
+
+	// ------------------------- Selectors ---------------------------
+
+	const canSubmit = () => isFormFilled(formFields, clinic);
+
 	// --------------------------- View ------------------------------
+
+	const formFields = getFormFields({
+		emailError: emailError ? errorMessage : false,
+		deleteClinic: openDialog, // -> handleConfirmDelete()
+		registered,
+	});
 
 	const defaultButtonText = registered ? "Update" : "Register";
 	const dynamicButtonText = useValueWithTimeout({
@@ -63,13 +78,23 @@ export const VetClinicForm = ({
 	return (
 		<Container maxWidth="xs" className={c.page}>
 			<Form state={clinic} setState={setClinic} fields={formFields} />
+
+			<ConfirmDialog
+				title="Caution!"
+				text="This will permanently delete your organization from the database. Do you want to proceed?"
+				buttonColor={["primary", "secondary"]}
+				isOpen={dialogOpen}
+				close={closeDialog}
+				confirm={handleConfirmDelete}
+			/>
+
 			<div className={c.footer}>
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={closeForm}
 					textRight={isError ? defaultButtonText : dynamicButtonText}
 					onClickRight={submitForm}
-					disabledRight={!canSubmit}
+					disabledRight={!canSubmit()}
 					noArrows
 				/>
 			</div>
