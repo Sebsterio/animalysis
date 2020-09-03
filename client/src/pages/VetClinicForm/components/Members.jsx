@@ -37,7 +37,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Members = ({ clinic, setClinic, isAdmin }) => {
+export const Members = ({
+	clinic,
+	setClinic,
+	isAdmin,
+	isAllowedToDeleteMember,
+}) => {
 	const c = useStyles();
 
 	const currentMembers = clinic.members || [];
@@ -100,7 +105,7 @@ export const Members = ({ clinic, setClinic, isAdmin }) => {
 						aria-label="Remove user"
 						children={<CloseIcon />}
 						onClick={() => handleDeleteClick(email)}
-						disabled={!isAdmin}
+						disabled={!isAllowedToDeleteMember(email, role)}
 						size="small"
 					/>
 				</Paper>

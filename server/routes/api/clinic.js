@@ -109,6 +109,8 @@ router.post("/update", auth, async (req, res) => {
 				msg: "Removing the last member is not allowed",
 			});
 
+		// TODO: prevent members from deleting owners (except self)
+
 		// Update
 		const dateModified = new Date();
 		const update = { ...submittedData, dateModified };

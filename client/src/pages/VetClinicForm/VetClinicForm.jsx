@@ -71,6 +71,17 @@ export const VetClinicForm = ({
 		? userRole === "owner" || userRole === "admin"
 		: true;
 
+	// Owner can be removed only by themselves
+	// Admins can be removed by owners
+	// Assistants can be removed by admins
+	const isAllowedToDeleteMember = (email, role) => {
+		if (email === userEmail) return true;
+		if (role === "owner") return false;
+		if (!isAdmin) return false;
+		if (role === "admin" && !isOwner) return false;
+		return true;
+	};
+
 	// keep state updated with store
 	useEffect(() => {
 		setClinic({ ...currentData });
@@ -147,7 +158,9 @@ export const VetClinicForm = ({
 								<Typography variant="h5">Members</Typography>
 							</AccordionSummary>
 							<AccordionDetails className={c.accordionDetails}>
-								<Members {...{ clinic, setClinic, isAdmin }} />
+								<Members
+									{...{ clinic, setClinic, isAdmin, isAllowedToDeleteMember }}
+								/>
 							</AccordionDetails>
 						</Accordion>
 
