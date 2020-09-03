@@ -41,6 +41,7 @@ export const Members = ({
 	clinic,
 	setClinic,
 	isAdmin,
+	isOwner,
 	isAllowedToDeleteMember,
 }) => {
 	const c = useStyles();
@@ -147,7 +148,7 @@ export const Members = ({
 						onChange={editNewMember}
 						helperText={roleDescriptions[newMember.role]}
 					>
-						<MenuItem value="owner">Owner</MenuItem>
+						{isOwner && <MenuItem value="owner">Owner</MenuItem>}
 						<MenuItem value="admin">Admin</MenuItem>
 						<MenuItem value="assistant">Assistant</MenuItem>
 					</TextField>

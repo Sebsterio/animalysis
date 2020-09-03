@@ -159,7 +159,13 @@ export const VetClinicForm = ({
 							</AccordionSummary>
 							<AccordionDetails className={c.accordionDetails}>
 								<Members
-									{...{ clinic, setClinic, isAdmin, isAllowedToDeleteMember }}
+									{...{
+										clinic,
+										setClinic,
+										isOwner,
+										isAdmin,
+										isAllowedToDeleteMember,
+									}}
 								/>
 							</AccordionDetails>
 						</Accordion>
