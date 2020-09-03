@@ -104,7 +104,10 @@ router.post("/update", auth, async (req, res) => {
 		}
 
 		if (!members.length)
-			return res.status(403).json({"Removing the last member is not allowed");
+			return res.status(403).json({
+				target: "generic",
+				msg: "Removing the last member is not allowed",
+			});
 
 		// Update
 		const dateModified = new Date();

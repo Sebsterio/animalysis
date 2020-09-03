@@ -10,4 +10,6 @@ export const getIsNewEmailError = (state) => getTarget(state) === "newEmail";
 
 export const getIsPasswordError = (state) => getTarget(state) === "password";
 
+export const getIsGenericError = (state) => getTarget(state) === "generic";
+
 export const getErrorMessage = (state) => getError(state).msg;

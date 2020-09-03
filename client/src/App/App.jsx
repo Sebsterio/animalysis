@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { Navbar } from "./components";
+import { Navbar, ErrorAlert } from "./components";
 import { Spinner } from "components";
 import { Account } from "pages";
 
@@ -54,6 +54,7 @@ export const App = ({ loading, authenticated, isVet, syncData }) => {
 					<Navbar routes={routes} />
 				</header>
 			)}
+			<ErrorAlert />
 			<main className={c.main}>
 				<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
 			</main>
