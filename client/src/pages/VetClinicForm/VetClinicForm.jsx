@@ -37,6 +37,7 @@ export const VetClinicForm = ({
 	currentData,
 	registered,
 	updating,
+	userEmail,
 	// dispatch
 	update,
 	create,
@@ -56,6 +57,13 @@ export const VetClinicForm = ({
 	const openDialog = () => setDialogOpen(true);
 	const closeDialog = () => setDialogOpen(false);
 
+	// User authorization
+	const { members } = currentData;
+	const user = members ? members.find((m) => m.email === userEmail) : null;
+	const userRole = user ? user.role : null;
+	const isOwner = registered && userRole === "owner";
+	const isAdmin = registered && (userRole === "owner" || userRole === "admin");
+
 	// ------------------------- Handlers ----------------------------
 
 	const closeForm = () => history.push("/");
@@ -72,12 +80,13 @@ export const VetClinicForm = ({
 
 	// ------------------------- Selectors ---------------------------
 
-	const canSubmit = () => isFormFilled(formFields, clinic);
+	const canSubmit = () => isAdmin && isFormFilled(formFields, clinic);
 
 	// --------------------------- View ------------------------------
 
 	const formFields = getFormFields({
 		emailError: emailError ? errorMessage : false,
+		isAdmin,
 	});
 
 	const defaultButtonText = registered ? "Update" : "Register";
@@ -107,7 +116,7 @@ export const VetClinicForm = ({
 						<Typography variant="h5">Members</Typography>
 					</AccordionSummary>
 					<AccordionDetails className={c.accordionDetails}>
-						<Members {...{ clinic, setClinic }} />
+						<Members {...{ clinic, setClinic, isAdmin }} />
 					</AccordionDetails>
 				</Accordion>
 
@@ -120,6 +129,7 @@ export const VetClinicForm = ({
 						<Button
 							children="Delete Organisation"
 							onClick={openDialog}
+							disabled={!isOwner}
 							variant="outlined"
 							color="secondary"
 							fullWidth

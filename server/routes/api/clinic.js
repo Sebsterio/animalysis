@@ -87,9 +87,13 @@ router.post("/update", auth, async (req, res) => {
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
+
 		const user = await User.findById(userId);
-		const isMember = clinic.members.some((m) => m.email === user.email);
-		if (!isMember) return res.status(403).json("User is not a clinic member");
+		const isAuthorized = clinic.members.some(
+			(m) => m.email === user.email && ["owner", "admin"].includes(m.role)
+		);
+		if (!isAuthorized) return res.status(403).json("User is not authorized");
+
 		if (email && email !== clinic.email) {
 			const duplicate = await Clinic.findOne({ email });
 			if (duplicate)

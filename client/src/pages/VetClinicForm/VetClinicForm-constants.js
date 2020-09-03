@@ -1,5 +1,6 @@
 export const roleDescriptions = {
-	owner: "Has full access, including deleting organisation.",
-	admin: "Can edit contact details and survey, manage members.",
+	owner:
+		"Full access, including removing other owners and deleting organisation.",
+	admin: "Manages clinic's members, contact details, and survey.",
 	assistant: "Can view reports and client contact details",
 };

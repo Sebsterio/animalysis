@@ -12,6 +12,7 @@ import {
 	updateOrganisation,
 	deleteOrganisation,
 } from "redux/clinic/clinic-operations";
+import { getEmail } from "redux/user/user-selectors";
 
 import { VetClinicForm } from "./VetClinicForm";
 
@@ -19,6 +20,7 @@ const mapStateToProps = (state) => ({
 	currentData: getVetFormData(state),
 	registered: getIsRegistered(state),
 	updating: getIsUpdating(state),
+	userEmail: getEmail(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -5,8 +5,11 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import { Stack } from "components";
 import { roleDescriptions } from "../VetClinicForm-constants";
+import { makeArrayWithRemovedItems } from "utils/array";
 
 const useStyles = makeStyles((theme) => ({
 	form: {
@@ -34,12 +37,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Members = ({ clinic, setClinic }) => {
+export const Members = ({ clinic, setClinic, isAdmin }) => {
 	const c = useStyles();
 
 	const currentMembers = clinic.members || [];
-
-	console.log({ clinic });
 
 	const [newMember, setNewMember] = useState(null);
 
@@ -58,6 +59,17 @@ export const Members = ({ clinic, setClinic }) => {
 	const addMember = () => {
 		setClinic({ ...clinic, members: [...currentMembers, newMember] });
 		closeNewMemberForm();
+	};
+
+	const handleDeleteClick = (email) => {
+		const confirmed = window.confirm("Delete user?");
+		if (confirmed) {
+			const selector = (member) => member.email === email;
+			setClinic({
+				...clinic,
+				members: makeArrayWithRemovedItems(currentMembers, null, selector),
+			});
+		}
 	};
 
 	// ----------------------- Selectors ---------------------------
@@ -84,7 +96,13 @@ export const Members = ({ clinic, setClinic }) => {
 				<Paper className={c.member} key={email}>
 					<Typography className={c.role} children={role} />
 					<Typography children={email} />
-					<div>{/* delete button icon */}</div>
+					<IconButton
+						aria-label="Remove user"
+						children={<CloseIcon />}
+						onClick={() => handleDeleteClick(email)}
+						disabled={!isAdmin}
+						size="small"
+					/>
 				</Paper>
 			))}
 
@@ -153,6 +171,7 @@ export const Members = ({ clinic, setClinic }) => {
 					<Button
 						children="New member"
 						onClick={openNewMemberForm}
+						disabled={!isAdmin}
 						variant="outlined"
 						fullWidth
 					/>

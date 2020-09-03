@@ -54,10 +54,12 @@ export const Form = ({ fields, state, setState, layout }) => {
 
 				const { label, options, req, err, fields, layout, multiline } = config;
 				const { min = 0, max = null, handler, color, variant } = config;
+				const { disabled } = config;
 
 				const baseProps = {
 					key: name,
 					variant: variant || "outlined",
+					disabled: disabled || false,
 				};
 
 				const inputProps = {
