@@ -17,6 +17,7 @@ import {
 } from "redux/profile/profile-operations";
 
 // Clinic
+import * as clinicActions from "redux/clinic/clinic-actions";
 import { syncClinic } from "redux/clinic/clinic-operations";
 
 // Survey
@@ -83,5 +84,5 @@ export const closeAccount = (formData) => async (dispatch) => {
 export const signOut = () => (dispatch) => {
 	dispatch(userActions.clear());
 	dispatch(profileActions.clear());
-	// Dont'clear surveyData (?)
+	dispatch(clinicActions.clear());
 };

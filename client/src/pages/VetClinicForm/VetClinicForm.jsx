@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Container } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Nav, Form, isFormFilled, ConfirmDialog } from "components";
+import { Members } from "./components";
 import { useValueWithTimeout } from "hooks";
 
 import getFormFields from "./VetClinicForm-formData";
@@ -16,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	footer: {
 		marginTop: theme.spacing(4),
+	},
+	accordionDetails: {
+		padding: theme.spacing(1, 2, 3),
+		flexFlow: "column nowrap",
 	},
 }));
 
@@ -63,8 +74,6 @@ export const VetClinicForm = ({
 
 	const formFields = getFormFields({
 		emailError: emailError ? errorMessage : false,
-		deleteClinic: openDialog, // -> handleConfirmDelete()
-		registered,
 	});
 
 	const defaultButtonText = registered ? "Update" : "Register";
@@ -77,16 +86,52 @@ export const VetClinicForm = ({
 
 	return (
 		<Container maxWidth="xs" className={c.page}>
-			<Form state={clinic} setState={setClinic} fields={formFields} />
+			<div>
+				{/* Contact */}
+				<Accordion>
+					<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+						<Typography variant="h5">Contact</Typography>
+					</AccordionSummary>
+					<AccordionDetails className={c.accordionDetails}>
+						<Form state={clinic} setState={setClinic} fields={formFields} />
+					</AccordionDetails>
+				</Accordion>
 
-			<ConfirmDialog
-				title="Caution!"
-				text="This will permanently delete your organization from the database. Do you want to proceed?"
-				buttonColor={["primary", "secondary"]}
-				isOpen={dialogOpen}
-				close={closeDialog}
-				confirm={handleConfirmDelete}
-			/>
+				{/* Members */}
+				<Accordion>
+					<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+						<Typography variant="h5">Members</Typography>
+					</AccordionSummary>
+					<AccordionDetails className={c.accordionDetails}>
+						<Members />
+					</AccordionDetails>
+				</Accordion>
+
+				{/* Manage */}
+				<Accordion>
+					<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+						<Typography variant="h5">Manage</Typography>
+					</AccordionSummary>
+					<AccordionDetails className={c.accordionDetails}>
+						<Button
+							children="Delete Organisation"
+							onClick={openDialog}
+							variant="outlined"
+							color="secondary"
+							fullWidth
+						/>
+					</AccordionDetails>
+				</Accordion>
+
+				<ConfirmDialog
+					title="Caution!"
+					text="This will permanently delete your organization from the database. Do you want to proceed?"
+					buttonColor={["primary", "secondary"]}
+					isOpen={dialogOpen}
+					close={closeDialog}
+					confirm={handleConfirmDelete}
+				/>
+			</div>
 
 			<div className={c.footer}>
 				<Nav
