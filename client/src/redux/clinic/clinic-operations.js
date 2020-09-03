@@ -13,6 +13,19 @@ export const updateClinic = (formData) => (dispatch, getState) => {
 	dispatch(updateProfile({ clinicInfo: formData }));
 };
 
+// =============================== All ======================================
+
+// Handle data fetched from profile
+// If user's clinic is registered (id exists), sync it
+// Else save clinic-data fetched from profile
+// prettier-ignore
+export const syncClinic = (profileRes) => (dispatch, getState) => {
+	let { clinicInfo, clinicId } = profileRes.data;
+	if (!clinicId) clinicId = getClinicId(getState());
+	if (clinicId) dispatch(fetchOrganisation(clinicId));
+	else if (clinicInfo) dispatch($.setClinic(clinicInfo));
+};
+
 // =============================== Vet ======================================
 
 // ------------------------ createOrganisation ------------------------------
@@ -27,7 +40,7 @@ export const createOrganisation = (formData) => (dispatch, getState) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			dispatch($.createSuccess(res.data));
-			dispatch(updateProfile({ clinicId: res.data.id }));
+			dispatch(updateProfile({ clinicId: res.data.id, clinicInfo: {} }));
 		})
 		.catch((err) => {
 			dispatch($.createFail());
@@ -81,17 +94,4 @@ export const fetchOrganisation = (clinicId) => (dispatch, getState) => {
 			dispatch($.fetchFail());
 			dispatch(error(err));
 		});
-};
-
-// --------------------------- handleProfileData ------------------------------
-
-// Handle data fetched from profile
-// If user's clinic is registered (id exists), sync it
-// Else save clinic-data fetched from profile
-// prettier-ignore
-export const syncClinicUsingProfileData = (profileRes) => (dispatch, getState) => {
-	let { clinicInfo, clinicId } = profileRes.data;
-	if (!clinicId) clinicId = getClinicId(getState());
-	if (clinicId) dispatch(fetchOrganisation(clinicId));
-	else if (clinicInfo) dispatch($.setClinic(clinicInfo));
 };

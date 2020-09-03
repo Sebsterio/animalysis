@@ -7,6 +7,11 @@ const { filterClinic } = clinicUtils;
 
 const router = express.Router();
 
+/*****************************************************************
+ * This is Clinic as in organization with members;
+ * Clinic as the addresse of client's reports is stored on Profile
+ *****************************************************************/
+
 // ------------------- Create clinic -------------------
 
 router.post("/create", auth, async (req, res) => {

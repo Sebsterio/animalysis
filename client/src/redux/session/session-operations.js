@@ -17,7 +17,7 @@ import {
 } from "redux/profile/profile-operations";
 
 // Clinic
-import { syncClinicUsingProfileData } from "redux/clinic/clinic-operations";
+import { syncClinic } from "redux/clinic/clinic-operations";
 
 // Survey
 // import * as surveyDataActions from "redux/survey-data/survey-data-actions";
@@ -31,8 +31,8 @@ import { fetchSurvey } from "redux/survey-data/survey-data-operations";
 
 // AUX. Runs on sync and sing-in
 const fetchAllData = () => async (dispatch) => {
-	const profileRes = await dispatch(fetchProfile());
-	dispatch(syncClinicUsingProfileData(profileRes));
+	const res = await dispatch(fetchProfile());
+	dispatch(syncClinic(res));
 	dispatch(fetchSurvey());
 };
 
