@@ -1,4 +1,5 @@
 import React from "react";
+import { LinkBlock } from "components";
 import { Survey } from "pages/Survey";
 
 export const VetSurvey = ({
@@ -9,5 +10,10 @@ export const VetSurvey = ({
 	// input mock pet info (persisted)
 	// mock pet problem report button
 	// mock pet routine check button
-	return <Survey history={history} />;
+	return (
+		<div>
+			<LinkBlock to="/survey/edit" text="End preview" />
+			<Survey history={history} />
+		</div>
+	);
 };

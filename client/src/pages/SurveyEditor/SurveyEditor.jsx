@@ -5,7 +5,7 @@ import Popover from "@material-ui/core/Popover";
 import Backdrop from "@material-ui/core/Backdrop";
 
 import { Queue, Instructions } from "./components";
-import { Nav } from "components";
+import { Nav, LinkBlock } from "components";
 
 import { useStyles } from "./SurveyEditor-styles";
 import { useSurveyState, usePopover } from "./hooks";
@@ -86,6 +86,12 @@ export const SurveyEditor = ({
 
 	return (
 		<div className={c.page}>
+			{!hasChanged ? (
+				<LinkBlock to="/survey/view" text="Preview survey" />
+			) : (
+				<div></div>
+			)}
+
 			{/* ------------ Body ------------ */}
 			<div>
 				{Object.entries(queues).map(([queueName, queueProps]) => (
