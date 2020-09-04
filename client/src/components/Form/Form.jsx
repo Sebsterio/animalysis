@@ -54,7 +54,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 
 				const { label, options, req, err, fields, layout, multiline } = config;
 				const { min = 0, max = null, handler, color, variant } = config;
-				const { disabled } = config;
+				const { disabled, helperText } = config;
 
 				const baseProps = {
 					key: name,
@@ -66,6 +66,7 @@ export const Form = ({ fields, state, setState, layout }) => {
 					...baseProps,
 					name,
 					type,
+					helperText,
 					label: err || label || name,
 					error: !!err,
 					required: !!req,
