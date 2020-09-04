@@ -15,7 +15,14 @@ import { clientRoutes, vetRoutes } from "routes";
  * Trigger user sync
  *******************************/
 
-export const App = ({ loading, authenticated, isVet, syncData }) => {
+export const App = ({
+	loading,
+	authenticated,
+	isVet,
+	syncData,
+	isError,
+	clearError,
+}) => {
 	const c = useStyles();
 
 	// TEMP
@@ -30,6 +37,9 @@ export const App = ({ loading, authenticated, isVet, syncData }) => {
 	useEffect(() => {
 		syncData();
 	}, [syncData]);
+
+	// Clear error on all clicks (if there's error)
+	const handleMainClick = () => (isError ? clearError() : null);
 
 	// Create user-relevant Routes from routes array
 	const routes = isVet ? vetRoutes : clientRoutes;
@@ -57,7 +67,7 @@ export const App = ({ loading, authenticated, isVet, syncData }) => {
 			<div className={c.item}>
 				<ErrorAlert />
 			</div>
-			<main className={c.main}>
+			<main className={c.main} onClick={handleMainClick}>
 				<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
 			</main>
 		</div>

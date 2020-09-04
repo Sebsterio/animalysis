@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { withError } from "HOC";
 
 import { getIsVet } from "redux/user/user-selectors";
 import { getClinicId } from "redux/profile/profile-selectors";
@@ -30,4 +29,4 @@ const ClinicSearchContainer = (props) => <ClinicSearch {...props} />;
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withError(ClinicSearchContainer));
+)(ClinicSearchContainer);
