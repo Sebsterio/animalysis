@@ -3,10 +3,12 @@ import { connect } from "react-redux";
 import { setSurveyData } from "redux/survey-data/survey-data-actions";
 import { publishSurvey } from "redux/survey-data/survey-data-operations";
 import { clearSurvey } from "redux/survey/survey-actions";
+import { getIsAdmin } from "redux/clinic/clinic-selectors";
 import { SurveyEditor } from "./SurveyEditor";
 
 const mapStateToProps = (state) => ({
 	data: state.surveyData,
+	isAdmin: getIsAdmin(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

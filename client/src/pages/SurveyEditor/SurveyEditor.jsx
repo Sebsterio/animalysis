@@ -24,6 +24,7 @@ import { useValueWithTimeout } from "hooks";
 export const SurveyEditor = ({
 	history,
 	data,
+	isAdmin,
 	updateStore,
 	updateDatabase,
 	clearPreview,
@@ -53,7 +54,7 @@ export const SurveyEditor = ({
 
 	// --- Handlers ---
 
-	const goBack = () => history.push("/admin");
+	const goBack = () => history.push("/");
 
 	const save = () => {
 		clearPreview();
@@ -99,7 +100,7 @@ export const SurveyEditor = ({
 				{Object.entries(queues).map(([queueName, queueProps]) => (
 					<Queue
 						key={queueName}
-						{...{ queueName, queueProps, selectors }}
+						{...{ queueName, queueProps, selectors, isAdmin }}
 						operations={{ ...operations, showPopover }}
 					/>
 				))}

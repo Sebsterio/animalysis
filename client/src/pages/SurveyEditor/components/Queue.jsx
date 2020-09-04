@@ -21,6 +21,7 @@ export const Queue = ({
 	queueProps: { label, list, info },
 	selectors,
 	operations,
+	isAdmin,
 }) => {
 	const {
 		addSectionToQueue,
@@ -60,6 +61,7 @@ export const Queue = ({
 	return (
 		<Accordion
 			key={label}
+			disabled={!isAdmin}
 			className={c.accordion}
 			TransitionProps={{ unmountOnExit: true }}
 		>
