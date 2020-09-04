@@ -10,6 +10,7 @@ const filterClinic = (profile) => {
 		address,
 		email,
 		phone,
+		phone2,
 		logo,
 		verified,
 		members,
@@ -23,6 +24,7 @@ const filterClinic = (profile) => {
 		address,
 		email,
 		phone,
+		phone2,
 		logo,
 		verified,
 		members,
@@ -33,7 +35,17 @@ const filterClinic = (profile) => {
 
 // Make clinic with non-undefined props for pet-owners
 const filterClientClinic = (profile) => {
-	const { id, clinicId, name, address, email, phone, logo, verified } = profile;
+	const {
+		id,
+		clinicId,
+		name,
+		address,
+		email,
+		phone,
+		phone2,
+		logo,
+		verified,
+	} = profile;
 	return makeObjectWithoutUndefinedProps({
 		id,
 		clinicId,
@@ -41,6 +53,7 @@ const filterClientClinic = (profile) => {
 		address,
 		email,
 		phone,
+		phone2,
 		logo,
 		verified,
 	});

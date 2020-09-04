@@ -56,7 +56,8 @@ export const ClinicSnippet = ({
 	address,
 	email,
 	phone,
-	logo = "asdf",
+	phone2,
+	logo,
 	verified,
 	isCurrent,
 	handleClick,
@@ -64,7 +65,7 @@ export const ClinicSnippet = ({
 	const c = useStyles({ isCurrent, hasLogo: !!logo });
 
 	return (
-		<Paper key={id} className={c.container} onClick={handleClick}>
+		<Paper className={c.container} onClick={handleClick}>
 			{logo && (
 				<div className={c.logo}>
 					<Avatar alt={name + " logo"} src={logo} />
@@ -83,6 +84,7 @@ export const ClinicSnippet = ({
 					<div>
 						<Typography>{email}</Typography>
 						<Typography>{phone}</Typography>
+						{phone2 && <Typography>{phone2}</Typography>}
 					</div>
 					<div>
 						{address.split(",").map((part) => (

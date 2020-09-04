@@ -55,6 +55,8 @@ export const VetClinicForm = ({
 }) => {
 	const c = useStyles();
 
+	console.log(currentData);
+
 	const [clinic, setClinic] = useState({ ...currentData });
 
 	// Confirmation dialog

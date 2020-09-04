@@ -10,13 +10,13 @@ export const getShouldShowClinicReminder = (state) =>
 
 // For ClinicForm
 export const getFormData = (state) => {
-	const { name, address, email, phone } = getClinic(state);
-	return { name, address, email, phone };
+	const { name, address, email, phone, phone2 } = getClinic(state);
+	return { name, address, email, phone, phone2 };
 };
 // For VetClinicForm
 export const getVetFormData = (state) => {
-	const { name, address, email, phone, members } = getClinic(state);
-	return { name, address, email, phone, members };
+	const { name, address, email, phone, phone2, members } = getClinic(state);
+	return { name, address, email, phone, phone2, members };
 };
 
 export const getIsRegistered = (state) => !!getClinic(state).id;

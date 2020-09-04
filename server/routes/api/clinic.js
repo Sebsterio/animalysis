@@ -106,6 +106,8 @@ router.post("/update", auth, async (req, res) => {
 		const submittedData = filterClinic(body);
 		const { clinicId, email, members } = submittedData;
 
+		console.log({ submittedData });
+
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");

@@ -13,6 +13,7 @@ const INITIAL_STATE = {
 	address: "",
 	email: "",
 	phone: "",
+	phone2: "",
 	// pet-owner-mode only
 	reminderDismissed: false,
 	// vet-mode only

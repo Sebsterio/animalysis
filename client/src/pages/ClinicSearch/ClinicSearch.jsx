@@ -96,6 +96,7 @@ export const ClinicSearch = ({
 					{hasResults &&
 						results.map((result) => (
 							<ClinicSnippet
+								key={result.id}
 								{...result}
 								isCurrent={isCurrent(result.id)}
 								handleClick={selectClinic}
