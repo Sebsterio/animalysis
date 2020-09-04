@@ -19,6 +19,13 @@ const ClinicSchema = new Schema({
 	modifiedBy: String, // email (?)
 });
 
+ClinicSchema.index({
+	name: "text",
+	email: "text",
+	address: "text",
+	phone: "text",
+});
+
 const Clinic = mongoose.model("Clinic", ClinicSchema);
 
 module.exports = Clinic;

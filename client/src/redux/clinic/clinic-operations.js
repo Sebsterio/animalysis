@@ -4,7 +4,7 @@ import { getDateModified, getClinicId } from "./clinic-selectors";
 import { updateProfile } from "redux/profile/profile-operations";
 import { getClinicInfo } from "redux/profile/profile-selectors";
 import { error } from "redux/error/error-operations";
-import { getTokenConfig } from "utils/ajax";
+import { getConfig, getTokenConfig } from "utils/ajax";
 
 // ============================ Pet owner ===================================
 
@@ -33,6 +33,17 @@ export const syncClinic = (profileRes) => (dispatch, getState) => {
 	if (!clinicId) clinicId = getClinicId(getState());
 	if (clinicId) dispatch(fetchOrganisation(clinicId));
 	else if (clinicInfo) dispatch($.setClinic(clinicInfo));
+};
+
+// POST search query and get a list of clinics
+export const fetchClinics = (queryData) => async (dispatch, getState) => {
+	const endpoint = "/api/clinic/search";
+	const data = JSON.stringify(queryData);
+	const config = getConfig(getState());
+	return axios
+		.post(endpoint, data, config)
+		.then((res) => res.data)
+		.catch((err) => dispatch(error(err)));
 };
 
 // =============================== Vet ======================================

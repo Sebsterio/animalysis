@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 import Link from "@material-ui/core/Link";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Page, Nav } from "components";
 
@@ -19,10 +18,13 @@ export const ClinicSearch = ({
 	history,
 	// store
 	clinicId,
+	// dispatch
+	fetchClinics,
 }) => {
 	const c = useStyles();
 
 	const [query, setQuery] = useState("");
+	const [results, setResults] = useState([]);
 
 	// ------------------------- Handlers ----------------------------
 
@@ -30,9 +32,18 @@ export const ClinicSearch = ({
 
 	const handleInput = (e) => setQuery(e.target.value);
 
-	const search = (e) => {
+	const search = async (e) => {
 		e.preventDefault();
-		console.log("sdfsldfjlsdfsdfsdlf");
+		const res = await fetchClinics({ query });
+		console.log({ res });
+		if (res) setResults([...res]);
+	};
+
+	const loadMore = async (e) => {
+		e.preventDefault();
+		const res = await fetchClinics({ query, skip: results.length });
+		console.log({ res });
+		if (res) setResults([...results, ...res]);
 	};
 
 	// --------------------------- View ------------------------------

@@ -4,7 +4,7 @@ const Clinic = require("../../models/clinic");
 const User = require("../../models/user");
 const clinicUtils = require("./clinic-utils");
 
-const { filterClinic } = clinicUtils;
+const { filterClinic, filterClientClinic } = clinicUtils;
 
 const router = express.Router();
 
@@ -50,6 +50,7 @@ router.post("/create", auth, async (req, res) => {
 });
 
 // ------------------ Fetch clinic -----------------
+// acces: token
 
 router.post("/", auth, async (req, res) => {
 	try {
@@ -70,6 +71,28 @@ router.post("/", auth, async (req, res) => {
 
 		if (dateLocal === dateRemote) return res.status(201).send();
 		return res.status(200).json(filterClinic(clinic));
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
+
+// ------------------ Search clinics -----------------
+// acces: public
+
+router.post("/search", async (req, res) => {
+	try {
+		const { query, skip = 0, limit = 10 } = req.body;
+
+		const clinics = await Clinic.find(
+			query ? { $text: { $search: query } } : null
+		)
+			.skip(skip)
+			.limit(limit);
+
+		if (!clinics.length) return res.status(404).json("No results");
+
+		const filteredClinics = clinics.map((clinic) => filterClientClinic(clinic));
+		return res.status(200).json(filteredClinics);
 	} catch (e) {
 		res.status(400).json(e.message);
 	}
@@ -109,7 +132,7 @@ router.post("/update", auth, async (req, res) => {
 				msg: "Removing the last member is not allowed",
 			});
 
-		// TODO: prevent members from deleting owners (except self)
+		// TODO: on add/remove members, check if authorized
 
 		// Update
 		const dateModified = new Date();
