@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme) => ({
 		justifyContent: "stretch",
 		alignItems: "stretch",
 	},
-	header: {
+	item: {
 		position: "relative",
 		flex: "0 0 auto",
 	},

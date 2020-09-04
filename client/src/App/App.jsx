@@ -50,11 +50,13 @@ export const App = ({ loading, authenticated, isVet, syncData }) => {
 	return (
 		<div className={c.app}>
 			{authenticated && (
-				<header className={c.header}>
+				<header className={c.item}>
 					<Navbar routes={routes} />
 				</header>
 			)}
-			<ErrorAlert />
+			<div className={c.item}>
+				<ErrorAlert />
+			</div>
 			<main className={c.main}>
 				<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
 			</main>
