@@ -5,7 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
-	link: {
+	container: {
 		display: "block",
 		textAlign: "right",
 	},
@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
 export const LinkBlock = ({ text, to }) => {
 	const c = useStyles();
 	return (
-		<Link className={c.link} component={RouterLink} to={to} children={text} />
+		<div className={c.container}>
+			<Link component={RouterLink} to={to} children={text} />
+		</div>
 	);
 };

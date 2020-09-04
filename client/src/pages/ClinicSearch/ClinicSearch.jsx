@@ -25,6 +25,10 @@ export const ClinicSearch = ({
 	const hasResults = !!results.length;
 	const canFetchMore = hasResults && !fetchedAll && !loading;
 
+	const helperText = !query.length
+		? "Search by name, email, telephone, or address"
+		: null;
+
 	const fetch = async (e, data, callback) => {
 		e.preventDefault();
 		setLoading(true);
@@ -86,6 +90,7 @@ export const ClinicSearch = ({
 							onChange={handleInput}
 							variant="outlined"
 							disabled={loading}
+							helperText={helperText}
 						/>
 					</form>
 

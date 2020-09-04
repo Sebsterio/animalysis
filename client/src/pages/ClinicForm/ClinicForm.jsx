@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Typography from "@material-ui/core/Typography";
 import { Page, Nav, Form, isFormFilled, LinkBlock } from "components";
 import { ClinicDetails } from "./components";
 import { formFields } from "./ClinicForm-formData";
@@ -33,16 +34,14 @@ export const ClinicForm = ({
 				clinicRegistered ? (
 					<ClinicDetails {...currentClinic} />
 				) : (
-					<>
-						<Form state={clinic} setState={setClinic} fields={formFields} />
-					</>
+					<Form state={clinic} setState={setClinic} fields={formFields} />
 				)
 			}
 			footer={
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={closeForm}
-					textRight={clinicRegistered ? "Edit" : "Save"}
+					textRight={clinicRegistered ? "Customize" : "Save"}
 					onClickRight={clinicRegistered ? leaveClinic : submitForm}
 					disabledRight={clinicRegistered ? false : !canSubmit()}
 					noArrows
