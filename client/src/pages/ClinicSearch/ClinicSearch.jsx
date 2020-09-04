@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Page, Stack, Nav, LinkBlock } from "components";
 import { ClinicSnippet } from "./components";
+import { clearError } from "redux/error/error-actions";
 
 export const ClinicSearch = ({
 	// router
@@ -14,6 +15,10 @@ export const ClinicSearch = ({
 	clinicId,
 	// dispatch
 	fetchClinics,
+	joinClinic,
+	joinOrganisation,
+	// withError
+	clearError,
 }) => {
 	const [query, setQuery] = useState("");
 	const [results, setResults] = useState([]);
@@ -49,8 +54,11 @@ export const ClinicSearch = ({
 			setResults([...results, ...res])
 		);
 
-	const selectClinic = () => {
-		console.log("click");
+	const handleSnippetClick = (data) => {
+		clearError();
+		if (isVet) return joinOrganisation({ history, data });
+		joinClinic({ data });
+		history.push("/my-clinic");
 	};
 
 	// ------------------------- Selectors ---------------------------
@@ -89,9 +97,9 @@ export const ClinicSearch = ({
 						results.map((result) => (
 							<ClinicSnippet
 								key={result.id}
-								{...result}
+								clinicData={result}
 								isCurrent={isCurrent(result.id)}
-								handleClick={selectClinic}
+								handleClick={handleSnippetClick}
 							/>
 						))}
 

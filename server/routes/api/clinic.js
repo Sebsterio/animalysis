@@ -63,7 +63,11 @@ router.post("/", auth, async (req, res) => {
 
 		const user = await User.findById(userId);
 		const isMember = clinic.members.some((m) => m.email === user.email);
-		if (!isMember) return res.status(403).json("User is not a clinic member");
+		if (!isMember)
+			return res.status(403).json({
+				target: "generic",
+				msg: "You're not a member of this organisation.",
+			});
 
 		// Compare local and remote versions to determine response
 		const dateLocal = new Date(dateModified).getTime();
@@ -105,8 +109,6 @@ router.post("/update", auth, async (req, res) => {
 		const { userId, body } = req;
 		const submittedData = filterClinic(body);
 		const { clinicId, email, members } = submittedData;
-
-		console.log({ submittedData });
 
 		// Validate
 		const clinic = await Clinic.findById(clinicId);

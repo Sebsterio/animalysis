@@ -2,9 +2,7 @@
 const req = true;
 const multiline = true;
 
-export default ({ emailError, isAdmin }) => {
-	const disabled = !isAdmin;
-
+export default ({ emailError, disabled }) => {
 	const formFields = [
 		["text", "name", { req, label: "Clinic name", disabled }],
 		["email", "email", { req, err: emailError, disabled }],

@@ -61,10 +61,9 @@ export const VetClinicForm = ({
 	const { members } = currentData;
 	const user = members ? members.find((m) => m.email === userEmail) : null;
 	const userRole = user ? user.role : null;
-	const isOwner = registered ? userRole === "owner" : true;
-	const isAdmin = registered
-		? userRole === "owner" || userRole === "admin"
-		: true;
+	const isMember = !!user;
+	const isOwner = userRole === "owner";
+	const isAdmin = userRole === "owner" || userRole === "admin";
 
 	// Owner can be removed only by themselves
 	// Admins can be removed by owners
@@ -107,13 +106,14 @@ export const VetClinicForm = ({
 
 	// ------------------------- Selectors ---------------------------
 
-	const canSubmit = () => isAdmin && isFormFilled(formFields, clinic);
+	const canSubmit = () =>
+		isFormFilled(formFields, clinic) && (!registered || isAdmin);
 
 	// --------------------------- View ------------------------------
 
 	const formFields = getFormFields({
 		emailError: emailError ? errorMessage : false,
-		isAdmin,
+		disabled: registered && !isAdmin,
 	});
 
 	const defaultButtonText = registered ? "Update" : "Register";
@@ -164,7 +164,7 @@ export const VetClinicForm = ({
 						</Accordion>
 
 						{/* Manage */}
-						<Accordion disabled={!registered}>
+						<Accordion disabled={!registered || !isMember}>
 							<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 								<Typography variant="h5">Manage</Typography>
 							</AccordionSummary>

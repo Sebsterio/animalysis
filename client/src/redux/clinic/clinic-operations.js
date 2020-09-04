@@ -21,6 +21,13 @@ export const leaveClinic = () => (dispatch, getState) => {
 	dispatch($.setClinic(clinicInfo));
 };
 
+// Link a registered clinic to profile
+export const joinClinic = ({ data }) => (dispatch) => {
+	const clinicId = data.id;
+	dispatch(updateProfile({ clinicId }));
+	dispatch($.setClinic(data));
+};
+
 // =============================== All ======================================
 
 // Handle data fetched from profile
@@ -56,6 +63,16 @@ export const leaveOrganisation = () => (dispatch, getState) => {
 	dispatch($.clear());
 };
 
+// ------------------------ joinOrganisation ------------------------------
+
+// Attempt to fetch clinic data
+export const joinOrganisation = ({ history, data }) => async (dispatch) => {
+	const clinicId = data.id;
+	dispatch(updateProfile({ clinicId }));
+	const res = await dispatch(fetchOrganisation(clinicId));
+	if (!!res) history.push("/my-clinic");
+};
+
 // ------------------------ createOrganisation ------------------------------
 
 export const createOrganisation = (formData) => (dispatch, getState) => {
@@ -84,7 +101,7 @@ export const updateOrganisation = (formData) => (dispatch, getState) => {
 	const clinicId = getClinicId(getState());
 	const data = JSON.stringify({ ...formData, clinicId });
 	const config = getTokenConfig(getState());
-	// dispatch($.modifyClinic(formData));
+	dispatch($.modifyClinic(formData));
 	dispatch($.updateStart());
 	axios
 		.post(endpoint, data, config)
@@ -98,20 +115,22 @@ export const updateOrganisation = (formData) => (dispatch, getState) => {
 // --------------------------- fetchOrganisation ------------------------------
 
 // GET clinic data if newer than local
-export const fetchOrganisation = (clinicId) => (dispatch, getState) => {
+export const fetchOrganisation = (clinicId) => async (dispatch, getState) => {
 	const endpoint = "/api/clinic";
 	const dateModified = getDateModified(getState());
 	const data = JSON.stringify({ dateModified, clinicId });
 	const config = getTokenConfig(getState());
 	dispatch($.fetchStart());
-	axios
+	return axios
 		.post(endpoint, data, config)
 		.then((res) => {
-			if (res.status === 201) return dispatch($.upToDate());
-			dispatch($.fetchSuccess(res.data));
+			if (res.status === 201) dispatch($.upToDate());
+			else dispatch($.fetchSuccess(res.data));
+			return res;
 		})
 		.catch((err) => {
 			dispatch($.fetchFail());
+			dispatch($.clear());
 			dispatch(error(err));
 		});
 };
