@@ -42,12 +42,14 @@ export const VetSurvey = ({
 
 	// -------------------------- Handlers --------------------------
 
+	const updatePet = () => modifyPet({ id: pet.id, data: pet });
+
 	const handleRoutineCheckClick = () => {
-		modifyPet({ id: pet.id, data: pet });
+		updatePet();
 		startRoutineCheck(pet, history);
 	};
 	const handleProblemReportClick = () => {
-		modifyPet({ id: pet.id, data: pet });
+		updatePet();
 		startProblemReport(pet, history);
 	};
 

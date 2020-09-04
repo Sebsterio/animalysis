@@ -6,6 +6,10 @@ import {
 	getVetFormData,
 	getIsRegistered,
 	getIsUpdating,
+	getIsMember,
+	getIsAdmin,
+	getIsOwner,
+	getIsAllowedToDeleteMember,
 } from "redux/clinic/clinic-selectors";
 import {
 	createOrganisation,
@@ -23,6 +27,11 @@ const mapStateToProps = (state) => ({
 	updating: getIsUpdating(state),
 	userEmail: getEmail(state),
 	superuser: getIsSuperuser(state),
+	isMember: getIsMember(state),
+	isOwner: getIsAdmin(state),
+	isAdmin: getIsOwner(state),
+	isAllowedToDeleteMember: (email, role) =>
+		getIsAllowedToDeleteMember(state, email, role),
 });
 
 const mapDispatchToProps = (dispatch) => ({
