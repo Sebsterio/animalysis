@@ -8,3 +8,4 @@ export * from "./FileInput";
 export * from "./ConfirmDialog";
 export * from "./Spinner";
 export * from "./Stack";
+export * from "./LinkBlock";

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Accordion from "@material-ui/core/Accordion";
@@ -16,6 +14,7 @@ import {
 	isFormFilled,
 	ConfirmDialog,
 	Stack,
+	LinkBlock,
 } from "components";
 import { Members } from "./components";
 import { useValueWithTimeout } from "hooks";
@@ -24,10 +23,6 @@ import getFormFields from "./VetClinicForm-formData";
 import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
-	link: {
-		display: "block",
-		textAlign: "right",
-	},
 	accordionDetails: {
 		padding: theme.spacing(1, 2, 3),
 		flexFlow: "column nowrap",
@@ -54,8 +49,6 @@ export const VetClinicForm = ({
 	clearError,
 }) => {
 	const c = useStyles();
-
-	console.log(currentData);
 
 	const [clinic, setClinic] = useState({ ...currentData });
 
@@ -135,11 +128,9 @@ export const VetClinicForm = ({
 		<>
 			<Page
 				header={
-					<Link
-						className={c.link}
-						component={RouterLink}
+					<LinkBlock
 						to="/clinic-search"
-						children="Join an organisation"
+						text={registered ? "Search organisations" : "Join an organisation"}
 					/>
 				}
 				main={

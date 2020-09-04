@@ -1,30 +1,20 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { Page, Stack, Nav } from "components";
+import { Page, Stack, Nav, LinkBlock } from "components";
 import { ClinicSnippet } from "./components";
-
-const useStyles = makeStyles((theme) => ({
-	link: {
-		display: "block",
-		textAlign: "right",
-	},
-}));
 
 export const ClinicSearch = ({
 	// router
 	history,
 	// store
+	isVet,
+	hasClinic,
 	clinicId,
 	// dispatch
 	fetchClinics,
 }) => {
-	const c = useStyles();
-
 	const [query, setQuery] = useState("");
 	const [results, setResults] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -69,16 +59,18 @@ export const ClinicSearch = ({
 
 	// --------------------------- View ------------------------------
 
+	const linkText = isVet
+		? hasClinic
+			? "My organisation"
+			: "Register an organisation"
+		: // If not vet
+		hasClinic
+		? "My clinic"
+		: "Custom clinic";
+
 	return (
 		<Page
-			header={
-				<Link
-					className={c.link}
-					component={RouterLink}
-					to="/my-clinic"
-					children="Register an organisation"
-				/>
-			}
+			header={<LinkBlock to="/my-clinic" text={linkText} />}
 			main={
 				<Stack>
 					<form onSubmit={search}>

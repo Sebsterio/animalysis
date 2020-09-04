@@ -28,7 +28,7 @@ export const vetRoutes = [
 		component: VetClinicForm,
 		exact,
 	},
-	// --- Clinic form ---
+	// --- Clinic search ---
 	{
 		path: "/clinic-search",
 		title: "Find Organisation",

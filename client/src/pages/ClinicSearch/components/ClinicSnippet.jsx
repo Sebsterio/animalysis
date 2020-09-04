@@ -87,8 +87,8 @@ export const ClinicSnippet = ({
 						{phone2 && <Typography>{phone2}</Typography>}
 					</div>
 					<div>
-						{address.split(",").map((part) => (
-							<Typography key={part}>{part}</Typography>
+						{address.split(",").map((part, i) => (
+							<Typography key={i}>{part}</Typography>
 						))}
 					</div>
 				</div>

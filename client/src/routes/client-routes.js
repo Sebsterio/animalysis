@@ -7,6 +7,7 @@ import {
 	Account,
 	Summary,
 	ClinicForm,
+	ClinicSearch,
 	ProfileForm,
 } from "pages";
 
@@ -59,6 +60,13 @@ export const clientRoutes = [
 		component: ClinicForm,
 		exact,
 		inNav,
+	},
+	// --- Clinic search ---
+	{
+		path: "/clinic-search",
+		title: "Find Clinic",
+		component: ClinicSearch,
+		exact,
 	},
 	// --- Analysis ---
 	{

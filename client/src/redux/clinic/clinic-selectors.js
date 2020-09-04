@@ -19,10 +19,10 @@ export const getVetFormData = (state) => {
 	return { name, address, email, phone, phone2, members };
 };
 
-export const getIsRegistered = (state) => !!getClinic(state).id;
-
 export const getIsUpdating = (state) => getClinic(state).isUpdating;
 
 export const getDateModified = (state) => getClinic(state).dateModified;
 
 export const getClinicId = (state) => getClinic(state).id;
+
+export const getIsRegistered = (state) => !!getClinicId(state);
