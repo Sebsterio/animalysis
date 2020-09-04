@@ -83,7 +83,7 @@ router.post("/", auth, async (req, res) => {
 // Empty query: fetch all (excluding skipped and limited)
 router.post("/search", async (req, res) => {
 	try {
-		const { query, skip = 0, limit = 2 } = req.body;
+		const { query, skip = 0, limit = 10 } = req.body;
 
 		const dbQuery = query ? { $text: { $search: query } } : null;
 		const clinics = await Clinic.find(dbQuery).skip(skip).limit(limit);

@@ -3,22 +3,15 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Page, Stack, Nav } from "components";
+import { ClinicSnippet } from "./components";
 
 const useStyles = makeStyles((theme) => ({
 	link: {
 		display: "block",
 		textAlign: "right",
-	},
-	result: {
-		padding: theme.spacing(2),
-		display: "grid",
-		gridTemplateColumns: "1fr 1fr",
-		gridGap: theme.spacing(2),
 	},
 }));
 
@@ -38,7 +31,7 @@ export const ClinicSearch = ({
 	const [fetchedAll, setFetchedAll] = useState(false);
 
 	const hasResults = !!results.length;
-	const canFetchMore = hasResults && !fetchedAll;
+	const canFetchMore = hasResults && !fetchedAll && !loading;
 
 	const fetch = async (e, data, callback) => {
 		e.preventDefault();
@@ -66,12 +59,15 @@ export const ClinicSearch = ({
 			setResults([...results, ...res])
 		);
 
-	// --------------------------- View ------------------------------
+	const selectClinic = () => {
+		console.log("click");
+	};
 
-	const formatAddress = (address) =>
-		address
-			.split(",")
-			.map((part) => <Typography key={part}>{part}</Typography>);
+	// ------------------------- Selectors ---------------------------
+
+	const isCurrent = (id) => id === clinicId;
+
+	// --------------------------- View ------------------------------
 
 	return (
 		<Page
@@ -98,24 +94,17 @@ export const ClinicSearch = ({
 					</form>
 
 					{hasResults &&
-						results.map(({ id, name, address, email, phone, logo }) => (
-							<Paper className={c.result} key={id}>
-								<div>
-									<Typography>{name}</Typography>
-									<Typography>{email}</Typography>
-									<Typography>{phone}</Typography>
-								</div>
-								<div>{formatAddress(address)}</div>
-							</Paper>
+						results.map((result) => (
+							<ClinicSnippet
+								{...result}
+								isCurrent={isCurrent(result.id)}
+								handleClick={selectClinic}
+							/>
 						))}
 
 					{(hasResults || loading) && (
-						<Button onClick={loadMore} disabled={!canFetchMore || loading}>
-							{!canFetchMore
-								? "All loaded"
-								: loading
-								? "Loading..."
-								: "Load more"}
+						<Button onClick={loadMore} disabled={!canFetchMore}>
+							{fetchedAll ? "All loaded" : loading ? "Loading..." : "Load more"}
 						</Button>
 					)}
 				</Stack>
