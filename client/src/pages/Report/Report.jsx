@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 	dialogContent: { padding: theme.spacing(3) },
 }));
 
-const Report = ({ history, match, getReport, getPet }) => {
+const Report = ({ history, match, getReport, getPet, isVet }) => {
 	const c = useStyles();
 
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -37,7 +37,8 @@ const Report = ({ history, match, getReport, getPet }) => {
 	const pet = getPet(petId);
 	const dialogText = summaryData[alert].textMain(pet);
 
-	const closePage = () => history.push("/pet/" + pet.name);
+	const closePage = () =>
+		history.push(isVet ? "/survey/edit" : "/pet/" + pet.name);
 
 	return (
 		<Container maxWidth="xs" className={c.page}>

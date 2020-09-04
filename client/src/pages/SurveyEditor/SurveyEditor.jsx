@@ -26,6 +26,7 @@ export const SurveyEditor = ({
 	data,
 	updateStore,
 	updateDatabase,
+	clearPreview,
 }) => {
 	const c = useStyles();
 
@@ -55,6 +56,7 @@ export const SurveyEditor = ({
 	const goBack = () => history.push("/admin");
 
 	const save = () => {
+		clearPreview();
 		updateStore({ queues, sections });
 		resetHasChanged();
 	};

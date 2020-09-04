@@ -6,6 +6,7 @@ import {
 	getPackedHistory,
 	getPackedHistoryAndQueue,
 } from "redux/survey/survey-selectors";
+import { getIsVet } from "redux/user/user-selectors";
 
 import { Section } from "./Section";
 
@@ -13,6 +14,7 @@ const mapStateToProps = (state) => ({
 	sectionTitle: getCurrentSectionTitle(state),
 	historySections: getPackedHistory(state),
 	historyAndQueueSections: getPackedHistoryAndQueue(state),
+	isVet: getIsVet(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({});

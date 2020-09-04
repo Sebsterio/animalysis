@@ -1,11 +1,14 @@
 import {
 	VetDashboard,
 	VetSurvey,
+	SurveyEditor,
+	Survey,
+	Summary,
 	Account,
 	ProfileForm,
-	SurveyEditor,
 	VetClinicForm,
 	ClinicSearch,
+	Report,
 } from "pages";
 
 // Aux
@@ -42,6 +45,36 @@ export const vetRoutes = [
 		path: "/survey/view",
 		title: "Survey Preview",
 		component: VetSurvey,
+		exact,
+	},
+	{
+		path: "/analysis",
+		title: "Survey Preview",
+		component: Survey,
+		exact,
+	},
+	{
+		path: "/analysis/summary",
+		title: "Analysis Summary",
+		component: Summary,
+		exact,
+	},
+	{
+		path: "/analysis/alert",
+		title: "Alert",
+		component: Summary,
+		exact,
+	},
+	{
+		path: "/report",
+		title: "Report",
+		component: Report,
+		exact,
+	},
+	{
+		path: "/report/:id",
+		title: "Report",
+		component: Report,
 		exact,
 	},
 

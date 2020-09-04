@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography, MobileStepper } from "@material-ui/core";
+import { LinkBlock } from "components";
 
 // ---------------------------------------------------------------
 
@@ -14,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Section = ({
+	isVet,
 	sectionTitle,
 	historySections,
 	historyAndQueueSections,
@@ -22,6 +24,7 @@ export const Section = ({
 
 	return (
 		<Box className={c.container}>
+			{isVet && <LinkBlock to="/survey/edit" text="End preview" />}
 			<Box mb={1}>
 				<MobileStepper
 					variant="dots"

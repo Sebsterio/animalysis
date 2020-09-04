@@ -7,35 +7,33 @@ import {
 import { makeModifiedPet } from "./pets-utils";
 import shortid from "shortid";
 
-// import Benny from "assets/benny.jpg";
-
 const INITIAL_STATE = {
 	dateSynced: null,
 	list: [
-		{
-			id: "123412341234",
-			name: "Benny",
-			species: "canine",
-			sex: "male",
-			breed: "Dalmatian",
-			birthYear: 2010,
-			birthMonth: 7,
-			weight: 0,
-			microchip: 0,
-			// imageUrl: Benny,
-			reports: [
-				// {
-				//  id: '',
-				//  petId: ''
-				//  date: null,
-				//  title: '',
-				// 	problemList: [],
-				// 	alert: 0,
-				// 	dateSynced: null, // syncs on ReportPage mount
-				//  syncing: false
-				// };
-			],
-		},
+		// {
+		// 	id: "123412341234",
+		// 	name: "Benny",
+		// 	species: "canine",
+		// 	sex: "male",
+		// 	breed: "Dalmatian",
+		// 	birthYear: 2010,
+		// 	birthMonth: 7,
+		// 	weight: 0,
+		// 	microchip: 0,
+		// 	// imageUrl: Benny,
+		// 	reports: [
+		// 		// {
+		// 		//  id: '',
+		// 		//  petId: ''
+		// 		//  date: null,
+		// 		//  title: '',
+		// 		// 	problemList: [],
+		// 		// 	alert: 0,
+		// 		// 	dateSynced: null, // syncs on ReportPage mount
+		// 		//  syncing: false
+		// 		// };
+		// 	],
+		// },
 	],
 };
 

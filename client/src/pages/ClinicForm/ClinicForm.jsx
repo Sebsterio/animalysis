@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Typography from "@material-ui/core/Typography";
 import { Page, Nav, Form, isFormFilled, LinkBlock } from "components";
 import { ClinicDetails } from "./components";
 import { formFields } from "./ClinicForm-formData";
