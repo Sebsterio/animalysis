@@ -79,15 +79,14 @@ router.post("/", auth, async (req, res) => {
 // ------------------ Search clinics -----------------
 // acces: public
 
+// Match any search terms; case insensitive
+// Empty query: fetch all (excluding skipped and limited)
 router.post("/search", async (req, res) => {
 	try {
-		const { query, skip = 0, limit = 10 } = req.body;
+		const { query, skip = 0, limit = 2 } = req.body;
 
-		const clinics = await Clinic.find(
-			query ? { $text: { $search: query } } : null
-		)
-			.skip(skip)
-			.limit(limit);
+		const dbQuery = query ? { $text: { $search: query } } : null;
+		const clinics = await Clinic.find(dbQuery).skip(skip).limit(limit);
 
 		if (!clinics.length) return res.status(404).json("No results");
 
