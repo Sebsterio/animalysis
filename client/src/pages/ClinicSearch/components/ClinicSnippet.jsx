@@ -13,22 +13,16 @@ const useStyles = makeStyles((theme) => {
 			display: "block",
 			textAlign: "right",
 		},
-		container: ({ isCurrent, hasLogo }) => {
-			let styles = {
-				padding: theme.spacing(2),
-				cursor: "pointer",
-			};
-			const logoStyles = hasLogo
-				? {
-						display: "grid",
-						gridTemplateColumns: "auto 1fr",
-						gridGap: theme.spacing(2),
-				  }
-				: {};
-			const currentStyles = isCurrent
-				? { background: "rgb(211, 234, 255)" }
-				: {};
-			return { ...styles, ...logoStyles, ...currentStyles };
+		container: ({ isCurrent, hasLogo, clickable }) => {
+			let styles = { padding: theme.spacing(2) };
+			if (hasLogo) {
+				styles.display = "grid";
+				styles.gridTemplateColumns = "auto 1fr";
+				styles.gridGap = theme.spacing(2);
+			}
+			if (clickable) styles.cursor = "pointer";
+			if (isCurrent) styles.background = "rgb(211, 234, 255)";
+			return styles;
 		},
 		logo: {
 			alignSelf: "center",
@@ -52,10 +46,13 @@ const useStyles = makeStyles((theme) => {
 
 export const ClinicSnippet = ({ clinicData, isCurrent, handleClick }) => {
 	const { name, address, email, phone, phone2, logo, verified } = clinicData;
-	const c = useStyles({ isCurrent, hasLogo: !!logo });
+	const c = useStyles({ isCurrent, hasLogo: !!logo, clickable: !!handleClick });
 
 	return (
-		<Paper className={c.container} onClick={() => handleClick(clinicData)}>
+		<Paper
+			className={c.container}
+			onClick={handleClick ? () => handleClick(clinicData) : null}
+		>
 			{logo && (
 				<div className={c.logo}>
 					<Avatar alt={name + " logo"} src={logo} />

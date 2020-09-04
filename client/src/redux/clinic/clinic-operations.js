@@ -3,6 +3,7 @@ import * as $ from "./clinic-actions";
 import { getDateModified, getClinicId } from "./clinic-selectors";
 import { updateProfile } from "redux/profile/profile-operations";
 import { getClinicInfo } from "redux/profile/profile-selectors";
+import { getIsVet } from "redux/user/user-selectors";
 import { error } from "redux/error/error-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
@@ -30,6 +31,17 @@ export const joinClinic = ({ data }) => (dispatch) => {
 
 // =============================== All ======================================
 
+// POST search query and get a list of clinics
+export const fetchClinics = (queryData) => async (dispatch, getState) => {
+	const endpoint = "/api/clinic/search";
+	const data = JSON.stringify(queryData);
+	const config = getConfig(getState());
+	return axios
+		.post(endpoint, data, config)
+		.then((res) => res.data)
+		.catch((err) => dispatch(error(err)));
+};
+
 // Handle data fetched from profile
 // If user's clinic is registered (id exists), sync it
 // Else save clinic-data fetched from profile
@@ -42,15 +54,26 @@ export const syncClinic = (profileRes) => (dispatch, getState) => {
 	else if (clinicInfo) dispatch($.setClinic(clinicInfo));
 };
 
-// POST search query and get a list of clinics
-export const fetchClinics = (queryData) => async (dispatch, getState) => {
-	const endpoint = "/api/clinic/search";
-	const data = JSON.stringify(queryData);
-	const config = getConfig(getState());
+// GET clinic data if newer than local
+export const fetchOrganisation = (clinicId) => async (dispatch, getState) => {
+	const endpoint = "/api/clinic";
+	const dateModified = getDateModified(getState());
+	const isVet = getIsVet(getState());
+	const data = JSON.stringify({ dateModified, clinicId, isVet });
+	const config = getTokenConfig(getState());
+	dispatch($.fetchStart());
 	return axios
 		.post(endpoint, data, config)
-		.then((res) => res.data)
-		.catch((err) => dispatch(error(err)));
+		.then((res) => {
+			if (res.status === 201) dispatch($.upToDate());
+			else dispatch($.fetchSuccess(res.data));
+			return res; // used in ClinicSearch to determine if vet is member
+		})
+		.catch((err) => {
+			dispatch($.fetchFail());
+			dispatch($.clear());
+			dispatch(error(err));
+		});
 };
 
 // =============================== Vet ======================================
@@ -108,29 +131,6 @@ export const updateOrganisation = (formData) => (dispatch, getState) => {
 		.then((res) => dispatch($.updateSuccess(res.data)))
 		.catch((err) => {
 			dispatch($.updateFail());
-			dispatch(error(err));
-		});
-};
-
-// --------------------------- fetchOrganisation ------------------------------
-
-// GET clinic data if newer than local
-export const fetchOrganisation = (clinicId) => async (dispatch, getState) => {
-	const endpoint = "/api/clinic";
-	const dateModified = getDateModified(getState());
-	const data = JSON.stringify({ dateModified, clinicId });
-	const config = getTokenConfig(getState());
-	dispatch($.fetchStart());
-	return axios
-		.post(endpoint, data, config)
-		.then((res) => {
-			if (res.status === 201) dispatch($.upToDate());
-			else dispatch($.fetchSuccess(res.data));
-			return res;
-		})
-		.catch((err) => {
-			dispatch($.fetchFail());
-			dispatch($.clear());
 			dispatch(error(err));
 		});
 };

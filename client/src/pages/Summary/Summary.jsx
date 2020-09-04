@@ -46,7 +46,6 @@ const Summary = ({
 					variant={alertLevel ? "contained" : "outlined"}
 					color="primary"
 					children="Call Clinic"
-					className={c.callButton}
 					onClick={callClinic}
 				/>
 			</Container>

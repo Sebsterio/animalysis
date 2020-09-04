@@ -55,26 +55,30 @@ router.post("/create", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
+		const { isVet } = body;
 		const { dateModified, clinicId } = filterClinic(body);
 
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
-
-		const user = await User.findById(userId);
-		const isMember = clinic.members.some((m) => m.email === user.email);
-		if (!isMember)
-			return res.status(403).json({
-				target: "generic",
-				msg: "You're not a member of this organisation.",
-			});
+		if (isVet) {
+			const user = await User.findById(userId);
+			const isMember = clinic.members.some((m) => m.email === user.email);
+			if (!isMember)
+				return res.status(403).json({
+					target: "generic",
+					msg: "You're not a member of this organisation.",
+				});
+		}
 
 		// Compare local and remote versions to determine response
 		const dateLocal = new Date(dateModified).getTime();
 		const dateRemote = new Date(clinic.dateModified).getTime();
 
 		if (dateLocal === dateRemote) return res.status(201).send();
-		return res.status(200).json(filterClinic(clinic));
+
+		const data = isVet ? filterClinic(clinic) : filterClientClinic(clinic);
+		return res.status(200).json(data);
 	} catch (e) {
 		res.status(400).json(e.message);
 	}

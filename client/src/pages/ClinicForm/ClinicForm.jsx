@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { Page, Nav, Form, isFormFilled, LinkBlock } from "components";
+import { ClinicDetails } from "./components";
 import { formFields } from "./ClinicForm-formData";
 
-export const ClinicForm = ({ history, currentClinic, updateClinic }) => {
+export const ClinicForm = ({
+	history,
+	currentClinic,
+	clinicRegistered,
+	updateClinic,
+	leaveClinic,
+}) => {
 	const [clinic, setClinic] = useState({ ...currentClinic });
 
 	const closeForm = () => history.push("/");
@@ -16,15 +23,28 @@ export const ClinicForm = ({ history, currentClinic, updateClinic }) => {
 
 	return (
 		<Page
-			header={<LinkBlock to="/clinic-search" text="Find a clinic" />}
-			main={<Form state={clinic} setState={setClinic} fields={formFields} />}
+			header={
+				<LinkBlock
+					to="/clinic-search"
+					text={clinicRegistered ? "Change clinic" : "Find a clinic"}
+				/>
+			}
+			main={
+				clinicRegistered ? (
+					<ClinicDetails {...currentClinic} />
+				) : (
+					<>
+						<Form state={clinic} setState={setClinic} fields={formFields} />
+					</>
+				)
+			}
 			footer={
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={closeForm}
-					textRight="Save"
-					onClickRight={submitForm}
-					disabledRight={!canSubmit()}
+					textRight={clinicRegistered ? "Edit" : "Save"}
+					onClickRight={clinicRegistered ? leaveClinic : submitForm}
+					disabledRight={clinicRegistered ? false : !canSubmit()}
 					noArrows
 				/>
 			}
