@@ -119,10 +119,12 @@ router.post("/update", auth, async (req, res) => {
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
 
 		const user = await User.findById(userId);
+		const isSuperuser = user.type === "superuser";
 		const isAuthorized = clinic.members.some(
 			(m) => m.email === user.email && ["owner", "admin"].includes(m.role)
 		);
-		if (!isAuthorized) return res.status(401).json("User is not authorized");
+		if (!isAuthorized && !isSuperuser)
+			return res.status(401).json("User is not authorized");
 
 		if (email && email !== clinic.email) {
 			const duplicate = await Clinic.findOne({ email });
@@ -165,9 +167,11 @@ router.post("/delete", auth, async (req, res) => {
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
 		const user = await User.findById(userId);
+		const isSuperuser = user.type === "superuser";
 		const getIsOwner = (m) => m.email === user.email && m.role === "owner";
 		const isOwner = clinic.members.some(getIsOwner);
-		if (!isOwner) return res.status(403).json("User is not a clinic owner");
+		if (!isOwner && !isSuperuser)
+			return res.status(403).json("User is not a clinic owner");
 
 		const deletedClinic = await Clinic.findByIdAndDelete(clinicId);
 		if (!deletedClinic) throw Error("Error deleting clinic");

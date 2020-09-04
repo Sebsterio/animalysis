@@ -37,6 +37,7 @@ export const VetClinicForm = ({
 	registered,
 	updating,
 	userEmail,
+	superuser,
 	// dispatch
 	update,
 	create,
@@ -61,15 +62,15 @@ export const VetClinicForm = ({
 	const { members } = currentData;
 	const user = members ? members.find((m) => m.email === userEmail) : null;
 	const userRole = user ? user.role : null;
-	const isMember = !!user;
-	const isOwner = userRole === "owner";
-	const isAdmin = userRole === "owner" || userRole === "admin";
+	const isMember = !!user || superuser;
+	const isOwner = userRole === "owner" || superuser;
+	const isAdmin = userRole === "owner" || userRole === "admin" || superuser;
 
 	// Owner can be removed only by themselves
 	// Admins can be removed by owners
 	// Assistants can be removed by admins
 	const isAllowedToDeleteMember = (email, role) => {
-		if (email === userEmail) return true;
+		if (email === userEmail || superuser) return true;
 		if (role === "owner") return false;
 		if (!isAdmin) return false;
 		if (role === "admin" && !isOwner) return false;

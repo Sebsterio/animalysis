@@ -17,4 +17,6 @@ export const getIsVet = (state) => {
 	return type === "vet" || type === "superuser";
 };
 
+export const getIsSuperuser = (state) => getType(state) === "superuser";
+
 export const getEmail = (state) => getUser(state).email;
