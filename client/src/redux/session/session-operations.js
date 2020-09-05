@@ -20,7 +20,13 @@ import {
 import * as clinicActions from "redux/clinic/clinic-actions";
 import { syncClinic } from "redux/clinic/clinic-operations";
 
+// Pets
+import * as petsActions from "redux/pets/pets-actions";
+
 // Survey
+import * as surveyActions from "redux/survey/survey-actions";
+
+// Survey-data
 // import * as surveyDataActions from "redux/survey-data/survey-data-actions";
 import { fetchSurvey } from "redux/survey-data/survey-data-operations";
 
@@ -62,7 +68,7 @@ export const signUp = (formData) => async (dispatch) => {
 
 // Exchange password for token
 // Then, fetch all data
-export const signIn = (formData) => async (dispatch, getState) => {
+export const signIn = (formData) => async (dispatch) => {
 	await dispatch(fetchUser(formData));
 	dispatch(fetchAllData());
 };
@@ -76,6 +82,7 @@ export const closeAccount = (formData) => async (dispatch) => {
 		dispatch(deleteProfile()),
 	]);
 	dispatch(signOut());
+	localStorage.clear();
 };
 
 // ---------------------------- signOut ---------------------------------
@@ -85,4 +92,6 @@ export const signOut = () => (dispatch) => {
 	dispatch(userActions.clear());
 	dispatch(profileActions.clear());
 	dispatch(clinicActions.clear());
+	dispatch(petsActions.clear());
+	dispatch(surveyActions.clear());
 };

@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as $ from "./user-actions";
 import { getDateModified } from "./user-selectors";
+import { signOut } from "redux/session/session-operations";
 import { error } from "redux/error/error-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
@@ -70,7 +71,10 @@ export const updateUser = (formData) => (dispatch, getState) => {
 	dispatch($.updateStart());
 	axios
 		.post(endpoint, data, config)
-		.then((res) => dispatch($.updateSuccess(res.data)))
+		.then((res) => {
+			dispatch($.updateSuccess(res.data));
+			dispatch(signOut());
+		})
 		.catch((err) => {
 			dispatch($.updateFail());
 			dispatch(error(err));

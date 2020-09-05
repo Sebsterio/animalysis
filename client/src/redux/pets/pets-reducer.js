@@ -39,6 +39,10 @@ const INITIAL_STATE = {
 
 const reportsReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case $.CLEAR: {
+			return { ...INITIAL_STATE };
+		}
+
 		// ------------------------ Pet -------------------------
 
 		case $.ADD_PET: {

@@ -54,7 +54,7 @@ export const startProblemReport = (pet, history) => (dispatch, getState) => {
 // Initialize survey store & set first question
 const initSurvey = (data, history) => (dispatch, getState) => {
 	const { petId, sections, mainQueue, optionalQueue, alert, title } = data;
-	dispatch($.clearSurvey());
+	dispatch($.clear());
 	dispatch($.setPetId(petId));
 	dispatch($.setSurveyData(sections));
 	dispatch($.setQueue(getUnpackedQueue(getState(), mainQueue))); // after data
@@ -81,7 +81,7 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 export const endSurvey = (history) => (dispatch) => {
 	const reportId = shortid.generate();
 	dispatch(generateReport({ reportId }));
-	dispatch($.clearSurvey());
+	dispatch($.clear());
 	history.replace(`/report/${reportId}`);
 };
 

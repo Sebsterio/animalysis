@@ -1,3 +1,8 @@
+export const CLEAR = "pets/CLEAR";
+export const clear = () => ({
+	type: CLEAR,
+});
+
 // ------------------ Pet --------------------
 
 export const ADD_PET = "pets/ADD_PET";

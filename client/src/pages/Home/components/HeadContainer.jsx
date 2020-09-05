@@ -15,7 +15,7 @@ import { dismissClinicReminder } from "redux/clinic/clinic-actions";
 
 // Survey redux
 import { getIsSurveyLoaded } from "redux/survey/survey-selectors";
-import { clearSurvey } from "redux/survey/survey-actions";
+import { clear } from "redux/survey/survey-actions";
 
 // Child component
 import { Head } from "./Head";
@@ -31,7 +31,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	clearSurvey: () => dispatch(clearSurvey()),
+	clearSurvey: () => dispatch(clear()),
 	dismissClinicReminder: () => dispatch(dismissClinicReminder()),
 	dismissProfileReminder: () => dispatch(dismissProfileReminder()),
 });

@@ -191,7 +191,7 @@ const surveyReducer = (state = INITIAL_STATE, action) => {
 
 		// ---------------------------
 
-		case $.CLEAR_SURVEY: {
+		case $.CLEAR: {
 			return {
 				...INITIAL_STATE,
 			};
