@@ -37,7 +37,8 @@ const AccountPage = ({
 		if (mode === authModes.signIn) return signIn(data);
 		if (mode === authModes.signUp) return signUp(data);
 		if (mode === mainModes.close) return close(data);
-		if (mode === mainModes.edit) return update(data);
+		const {email, password, type} = mainModes
+		if ( [email, password, type].includes(mode)) return update(data);
 	};
 
 	const goBack = () => {

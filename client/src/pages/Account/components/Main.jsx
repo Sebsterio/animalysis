@@ -13,8 +13,9 @@ export const Main = ({
 }) => {
 	const menu = (
 		<>
-			<MenuButton children="Edit details" to={subroutes.edit} />
-			<MenuButton children="Register as vet" to={"/register-clinic"} disabled />
+			<MenuButton children="Change email" to={subroutes.email} />
+			<MenuButton children="Change password" to={subroutes.password} />
+			<MenuButton children="Account type" to={subroutes.type} />
 			<MenuButton children="Close account" to={subroutes.close} />
 			<MenuButton children="Sign out" onClick={signOut} />
 		</>

@@ -4,7 +4,9 @@ export const authModes = {
 };
 
 export const mainModes = {
-	edit: "edit",
+	email: "email",
+	password: "password",
+	type: "type",
 	close: "close",
 };
 
@@ -16,6 +18,8 @@ export const modes = {
 export const subroutes = {
 	account: "/account",
 	singIn: "/account/" + authModes.signIn,
+	email: "/account/" + mainModes.email,
+	password: "/account/" + mainModes.password,
+	type: "/account/" + mainModes.type,
 	close: "/account/" + mainModes.close,
-	edit: "/account/" + mainModes.edit,
 };

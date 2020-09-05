@@ -54,7 +54,7 @@ export const getIsOwner = (state) => getUserRole(state) === "owner";
 
 // Owner can be removed only by themselves
 // Admins can be removed by owners
-// Assistants can be removed by admins
+// Assistants can be removed by owners and admins
 export const getIsAllowedToDeleteMember = (state, email, role) => {
 	const userEmail = getEmail(state);
 	const superuser = getIsSuperuser(state);

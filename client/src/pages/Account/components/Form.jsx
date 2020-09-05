@@ -11,30 +11,28 @@ export const Form = withError(({ mode, updating, handleSubmit, isError }) => {
 	const c = useStyles();
 
 	const modesData = {
-		[mainModes.edit]: {
-			body: (
-				<>
-					<EmailInput label="New email" isNew />
-					<PasswordInput label="New password" isNew />
-					<TypeInput />
-					<PasswordInput label="Current password" />
-				</>
-			),
-			btnText: "Update",
-			btnTextOngoing: "Updating...",
-			btnTextDone: "Done!",
+		[mainModes.email]: {
+			line1: <EmailInput label="New email" isNew />,
+			line2: <PasswordInput />,
+		},
+		[mainModes.password]: {
+			line1: <PasswordInput label="Current password" />,
+			line2: <PasswordInput label="New password" isNew />,
+		},
+		[mainModes.type]: {
+			line1: <TypeInput />,
+			line2: <PasswordInput />,
 		},
 		[mainModes.close]: {
-			heading: (
+			line1: (
 				<Typography>
 					Caution! You're about to permanently delete your account. This process
 					is irreversible.
 				</Typography>
 			),
-			body: <PasswordInput />,
+			line2: <PasswordInput />,
 			btnText: "Close account",
 			btnTextOngoing: "Closing...",
-			btnTextDone: "Done!",
 			btnColor: "secondary",
 			btnVariant: "contained",
 		},
@@ -42,16 +40,16 @@ export const Form = withError(({ mode, updating, handleSubmit, isError }) => {
 
 	const buttonText = useValueWithTimeout({
 		isOngoing: updating,
-		valueDefault: modesData[mode].btnText,
-		valueOngoing: modesData[mode].btnTextOngoing,
-		valueDone: modesData[mode].btnTextDone,
+		valueDefault: modesData[mode].btnText || "Update",
+		valueOngoing: modesData[mode].btnTextOngoing || "Updating...",
+		valueDone: modesData[mode].btnTextDone || "Done!",
 	});
 
 	return (
 		<form className={c.form} onSubmit={handleSubmit}>
 			<Stack>
-				{modesData[mode].heading || null}
-				{modesData[mode].body || null}
+				{modesData[mode].line1 || null}
+				{modesData[mode].line2 || null}
 				<Button
 					fullWidth
 					type="submit"
