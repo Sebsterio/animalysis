@@ -1,1 +1,1 @@
-export * from "./VetDashboard";
+export { default as VetDashboard } from "./VetDashboardContainer";

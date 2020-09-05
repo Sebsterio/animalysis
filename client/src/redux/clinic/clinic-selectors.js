@@ -35,7 +35,7 @@ const getMembers = (state) => getClinic(state).members;
 
 // ================== Authorization ===================
 
-const getUserRole = (state) => {
+export const getUserRole = (state) => {
 	if (getIsSuperuser(state)) return "owner";
 	const userEmail = getEmail(state);
 	const members = getMembers(state);
