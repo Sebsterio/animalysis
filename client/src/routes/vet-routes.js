@@ -25,18 +25,17 @@ export const vetRoutes = [
 	},
 	// --- Clinic ---
 	{
-		path: "/clinic-search",
-		title: "Find Organisation",
-		linkText: "Organisation",
-		component: ClinicSearch,
-		exact,
-		inNav,
-	},
-	{
 		path: "/my-clinic",
 		title: "My Organisation",
 		linkText: "Organisation",
 		component: VetClinicForm,
+		exact,
+		inNav,
+	},
+	{
+		path: "/clinic-search",
+		title: "Find Organisation",
+		component: ClinicSearch,
 		exact,
 	},
 	// --- Survey ---

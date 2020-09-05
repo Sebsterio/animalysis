@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const User = require("../../models/user");
-const utils = require("./auth-utils");
+const utils = require("./user-utils");
 
 const { filterUserForExport } = utils;
 

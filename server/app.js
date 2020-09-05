@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const compression = require("compression");
 
-const authRoutes = require("./routes/api/auth");
+const userRoutes = require("./routes/api/user");
 const profileRoutes = require("./routes/api/profile");
 const clinicRoutes = require("./routes/api/clinic");
 const surveyRoutes = require("./routes/api/survey");
@@ -45,7 +45,7 @@ mongoose
 
 // --------------- Routing ---------------
 
-app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/clinic", clinicRoutes);
 app.use("/api/survey", surveyRoutes);
