@@ -7,6 +7,7 @@ export const Main = ({
 	mode,
 	mainModeIsMatched: isSubroute,
 	updating,
+	superuser,
 	signOut,
 	handleSubmit,
 	goBack,
@@ -15,7 +16,11 @@ export const Main = ({
 		<>
 			<MenuButton children="Change email" to={subroutes.email} />
 			<MenuButton children="Change password" to={subroutes.password} />
-			<MenuButton children="Account type" to={subroutes.type} />
+			<MenuButton
+				children="Account type"
+				to={subroutes.type}
+				disabled={superuser}
+			/>
 			<MenuButton children="Close account" to={subroutes.close} />
 			<MenuButton children="Sign out" onClick={signOut} />
 		</>

@@ -1,7 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getIsAuthenticated, getIsUpdating } from "redux/user/user-selectors";
+import {
+	getIsAuthenticated,
+	getIsUpdating,
+	getIsSuperuser,
+} from "redux/user/user-selectors";
 import { updateUser } from "redux/user/user-operations";
 import {
 	signIn,
@@ -16,6 +20,7 @@ import Account from "./Account";
 const mapStateToProps = (state) => ({
 	authenticated: getIsAuthenticated(state),
 	updating: getIsUpdating(state),
+	superuser: getIsSuperuser(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
