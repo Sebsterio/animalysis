@@ -66,9 +66,15 @@ const clinicReducer = (state = INITIAL_STATE, action) => {
 			};
 
 		case $.CREATE_SUCCESS:
-		case $.FETCH_SUCCESS:
 			return {
 				...state,
+				isLoading: false,
+				...action.payload,
+			};
+
+		case $.FETCH_SUCCESS:
+			return {
+				...INITIAL_STATE,
 				isLoading: false,
 				...action.payload,
 			};

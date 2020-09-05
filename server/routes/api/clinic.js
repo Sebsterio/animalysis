@@ -63,8 +63,9 @@ router.post("/", auth, async (req, res) => {
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
 		if (isVet) {
 			const user = await User.findById(userId);
+			const isSuperuser = user.type === "superuser";
 			const isMember = clinic.members.some((m) => m.email === user.email);
-			if (!isMember)
+			if (!isMember && !isSuperuser)
 				return res.status(403).json({
 					target: "generic",
 					msg: "You're not a member of this organisation.",
@@ -112,7 +113,7 @@ router.post("/update", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
 		const submittedData = filterClinic(body);
-		const { clinicId, email, members } = submittedData;
+		const { clinicId, email, members, verified } = submittedData;
 
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
@@ -125,6 +126,9 @@ router.post("/update", auth, async (req, res) => {
 		);
 		if (!isAuthorized && !isSuperuser)
 			return res.status(401).json("User is not authorized");
+
+		if (verified !== clinic.verified && !isSuperuser)
+			return res.status(401).json("Only superuser can change verified status");
 
 		if (email && email !== clinic.email) {
 			const duplicate = await Clinic.findOne({ email });

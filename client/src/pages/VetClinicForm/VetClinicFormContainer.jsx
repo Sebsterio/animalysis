@@ -16,6 +16,7 @@ import {
 	updateOrganisation,
 	deleteOrganisation,
 	leaveOrganisation,
+	verifyOrganisation,
 } from "redux/clinic/clinic-operations";
 import { getEmail, getIsSuperuser } from "redux/user/user-selectors";
 
@@ -26,7 +27,7 @@ const mapStateToProps = (state) => ({
 	registered: getIsRegistered(state),
 	updating: getIsUpdating(state),
 	userEmail: getEmail(state),
-	superuser: getIsSuperuser(state),
+	isSuperuser: getIsSuperuser(state),
 	isMember: getIsMember(state),
 	isOwner: getIsAdmin(state),
 	isAdmin: getIsOwner(state),

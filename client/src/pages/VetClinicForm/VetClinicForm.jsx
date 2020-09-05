@@ -7,6 +7,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Alert } from "@material-ui/lab";
 import {
 	Page,
 	Nav,
@@ -37,8 +38,9 @@ export const VetClinicForm = ({
 	registered,
 	updating,
 	isMember,
-	isOwner,
 	isAdmin,
+	isOwner,
+	isSuperuser,
 	isAllowedToDeleteMember,
 	// dispatch
 	update,
@@ -52,6 +54,8 @@ export const VetClinicForm = ({
 	clearError,
 }) => {
 	const c = useStyles();
+
+	const { verified } = currentData;
 
 	const [clinic, setClinic] = useState({ ...currentData });
 
@@ -87,6 +91,8 @@ export const VetClinicForm = ({
 		leaveClinic();
 		history.push("/");
 	};
+
+	const toggleVerified = () => update({ verified: !verified });
 
 	// ------------------------- Selectors ---------------------------
 
@@ -154,6 +160,21 @@ export const VetClinicForm = ({
 							</AccordionSummary>
 							<AccordionDetails className={c.accordionDetails}>
 								<Stack>
+									<Alert
+										severity={verified ? "success" : "warning"}
+										children={
+											verified ? "Clinic Verified" : "Verification pending"
+										}
+									/>
+									{isSuperuser && (
+										<Button
+											children={verified ? "SU Unverify" : "SU Verify"}
+											onClick={toggleVerified}
+											variant="contained"
+											color={verified ? "secondary" : "primary"}
+											fullWidth
+										/>
+									)}
 									<Button
 										children="Leave Organisation"
 										onClick={handleLeaveClinic}
