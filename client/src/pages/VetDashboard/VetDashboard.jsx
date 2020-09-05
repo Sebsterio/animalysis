@@ -49,6 +49,7 @@ export const VetDashboard = ({
 			}
 			main={
 				hasClinic ? (
+					// User is a member of a clinic
 					<>
 						<div className={c.row}>
 							{logo && (
@@ -62,6 +63,7 @@ export const VetDashboard = ({
 						<Typography>- Load old reports link</Typography>
 					</>
 				) : (
+					// User is not a member of any clinic
 					<div className={c.denseStack}>
 						<Button
 							variant="outlined"

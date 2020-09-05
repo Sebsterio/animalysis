@@ -5,6 +5,7 @@ import {
 	getIsLoading,
 	getIsAuthenticated,
 	getIsVet,
+	getIsSuperuser,
 } from "redux/user/user-selectors";
 import { syncData } from "redux/session/session-operations";
 import { clearError } from "redux/error/error-actions";
@@ -16,6 +17,7 @@ const mapStateToProps = (state) => ({
 	loading: getIsLoading(state),
 	authenticated: getIsAuthenticated(state),
 	isVet: getIsVet(state),
+	isSuperuser: getIsSuperuser(state),
 	isError: getIsError(state),
 });
 

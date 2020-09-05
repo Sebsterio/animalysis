@@ -23,7 +23,7 @@ export const vetRoutes = [
 		exact,
 		inNav,
 	},
-	// --- Clinic search ---
+	// --- Clinic ---
 	{
 		path: "/clinic-search",
 		title: "Find Organisation",
@@ -31,6 +31,13 @@ export const vetRoutes = [
 		component: ClinicSearch,
 		exact,
 		inNav,
+	},
+	{
+		path: "/my-clinic",
+		title: "My Organisation",
+		linkText: "Organisation",
+		component: VetClinicForm,
+		exact,
 	},
 	// --- Survey ---
 	{
@@ -78,7 +85,7 @@ export const vetRoutes = [
 		exact,
 	},
 
-	// --- Profile form ---
+	// --- Profile ---
 	{
 		path: "/profile",
 		title: "My Profile",
@@ -101,14 +108,6 @@ export const vetRoutes = [
 		title: "My Account",
 		linkText: "Account",
 		component: Account,
-		exact,
-	},
-	// --- Clinic form ---
-	{
-		path: "/my-clinic",
-		title: "My Organisation",
-		linkText: "Organisation",
-		component: VetClinicForm,
 		exact,
 	},
 ];

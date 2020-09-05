@@ -18,7 +18,7 @@ import { useStyles } from "./Navbar-styles";
 
 // ----------------------------------------------------------------
 
-export const Navbar = ({ routes }) => {
+export const Navbar = ({ routes, isSuperuser }) => {
 	const c = useStyles();
 
 	const titles = routes.map(({ path, title, exact }) => (
@@ -30,7 +30,7 @@ export const Navbar = ({ routes }) => {
 
 	return (
 		<div>
-			<AppBar position="static">
+			<AppBar position="static" color={isSuperuser ? "secondary" : "primary"}>
 				{/* <AppBar position="fixed" className={c.appBar}> */}
 				<Toolbar className={c.toolbar}>
 					<IconButton

@@ -19,6 +19,7 @@ export const App = ({
 	loading,
 	authenticated,
 	isVet,
+	isSuperuser,
 	syncData,
 	isError,
 	clearError,
@@ -61,7 +62,7 @@ export const App = ({
 		<div className={c.app}>
 			{authenticated && (
 				<header className={c.item}>
-					<Navbar routes={routes} />
+					<Navbar {...{ routes, isSuperuser }} />
 				</header>
 			)}
 			<div className={c.item}>
