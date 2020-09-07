@@ -1,7 +1,9 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const auth = require("../../middleware/auth");
 const Survey = require("../../models/survey");
 const User = require("../../models/user");
+const Clinic = require("../../models/clinic");
 const surveyUtils = require("./survey-utils");
 
 const { filterSurvey } = surveyUtils;
@@ -16,23 +18,28 @@ const router = express.Router();
 router.post("/publish", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
+		const { surveyData, datePublished, clinicId } = body;
 
-		// Determine survey owner
 		const user = await User.findById(userId).select("-password");
 		if (!user) return res.status(404).json("User doesn't exist");
+		const { type, email } = user;
+		const isSuperuser = type === "superuser";
 
-		// const isSuperuser = user.type === 'superuser'
-		// let query;
-		// if (isSuperuser) query = { isDefault: true }
-		// else {
-		// const {clinicId} = Clinic.findOne({members: [[contains userId]]})
-		// query = { clinicId }
-		// }
-		const query = { isDefault: true };
-		const { surveyData: data } = body;
-		const addedData = { datePublished: new Date(), publishedBy: user.email };
-		const update = { data, ...addedData };
+		// Determine which survey to fetch
+		let query;
+		if (isSuperuser) query = { isDefault: true };
+		else {
+			const clinic = await Clinic.findById(clinicId);
+			if (!clinic) throw Error("Clinic doesn't exist");
+			const isAuthorized = clinic.members.some(
+				(m) => m.email === email && ["owner", "admin"].includes(m.role)
+			);
+			if (!isAuthorized) throw Error("User is not authorized to edit survey");
+			query = { clinicId };
+		}
 
+		const addedData = { datePublished: new Date(), publishedBy: email };
+		const update = { data: surveyData, ...addedData };
 		const foundSurvey = await Survey.findOne(query);
 
 		// EITHER create survey
@@ -61,10 +68,12 @@ router.post("/publish", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
 	try {
 		const { body } = req;
-		const { datePublished } = body;
+		const { datePublished, clinicId } = body;
 
-		// Find survey (currently default survey only)
-		const query = { isDefault: true };
+		// Determine which survey to fetch
+		let query = clinicId ? { clinicId } : { isDefault: true };
+
+		// Find survey
 		const dateFetched = new Date();
 		const survey = await Survey.findOneAndUpdate(query, { dateFetched });
 

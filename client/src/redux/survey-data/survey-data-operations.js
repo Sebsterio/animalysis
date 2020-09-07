@@ -4,17 +4,20 @@ import {
 	getSurveyDataForExport,
 	getDatePublished,
 } from "./survey-data-selectors";
+import { getClinicId } from "redux/clinic/clinic-selectors";
 import { error } from "redux/error/error-operations";
 import { getTokenConfig } from "utils/ajax";
 
 // ------------------------- publishSurvey -------------------------------
 
 export const publishSurvey = () => (dispatch, getState) => {
+	const state = getState();
 	const endpoint = "/api/survey/publish";
-	const datePublished = getDatePublished(getState());
-	const surveyData = getSurveyDataForExport(getState()); // comes stringified
-	const data = JSON.stringify({ surveyData, datePublished });
-	const config = getTokenConfig(getState());
+	const clinicId = getClinicId(state);
+	const datePublished = getDatePublished(state);
+	const surveyData = getSurveyDataForExport(state); // comes stringified
+	const data = JSON.stringify({ surveyData, datePublished, clinicId });
+	const config = getTokenConfig(state);
 	dispatch($.publishStart());
 	axios
 		.post(endpoint, data, config)
@@ -28,10 +31,12 @@ export const publishSurvey = () => (dispatch, getState) => {
 // -------------------------- syncSurvey --------------------------------
 
 export const syncSurvey = () => (dispatch, getState) => {
+	const state = getState();
 	const endpoint = "/api/survey/";
-	const datePublished = getDatePublished(getState());
-	const data = JSON.stringify({ datePublished });
-	const config = getTokenConfig(getState());
+	const clinicId = getClinicId(state);
+	const datePublished = getDatePublished(state);
+	const data = JSON.stringify({ datePublished, clinicId });
+	const config = getTokenConfig(state);
 	dispatch($.fetchStart());
 	axios
 		.post(endpoint, data, config)

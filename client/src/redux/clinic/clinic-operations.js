@@ -3,6 +3,7 @@ import * as $ from "./clinic-actions";
 import { getClinicId } from "./clinic-selectors";
 import { updateUser } from "redux/user/user-operations";
 import { getIsVet } from "redux/user/user-selectors";
+import { syncSurvey } from "redux/survey-data/survey-data-operations";
 import { error } from "redux/error/error-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
@@ -44,7 +45,8 @@ export const joinClinic = ({ history, data }) => async (dispatch, getState) => {
 		const res = await dispatch(fetchOrganisation(clinicId));
 		if (!res) return;
 	} else dispatch($.set(data));
-	dispatch(updateUser({ clinicId, clinicInfo: {} }));
+	await dispatch(updateUser({ clinicId, clinicInfo: {} }));
+	dispatch(syncSurvey()); // after updateUser (response sets clinicId)
 	history.push("/my-clinic");
 };
 

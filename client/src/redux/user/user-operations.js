@@ -104,12 +104,12 @@ export const syncData = () => (dispatch, getState) => {
 
 // POST user data to db
 // Set dateModified in user store
-export const updateUser = (formData) => (dispatch, getState) => {
+export const updateUser = (formData) => async (dispatch, getState) => {
 	const endpoint = "/api/user/update";
 	const data = JSON.stringify(formData);
 	const config = getTokenConfig(getState());
 	dispatch($.updateStart());
-	axios
+	return axios
 		.post(endpoint, data, config)
 		.then((res) => dispatch($.updateSuccess(res.data)))
 		.catch((err) => {
