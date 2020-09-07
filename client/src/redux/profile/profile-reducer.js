@@ -18,6 +18,14 @@ const INITIAL_STATE = {
 const profileReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		// ------------ Local state ------------
+
+		case $.SET: {
+			return {
+				...INITIAL_STATE,
+				...action.payload,
+			};
+		}
+
 		case $.MODIFY: {
 			return {
 				...state,

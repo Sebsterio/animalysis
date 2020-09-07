@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { getFormData, getIsRegistered } from "redux/clinic/clinic-selectors";
-import { updateClinic, leaveClinic } from "redux/clinic/clinic-operations";
+import { updateClinicInfo, leaveClinic } from "redux/clinic/clinic-operations";
 
 import { ClinicForm } from "./ClinicForm";
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	updateClinic: (data) => dispatch(updateClinic(data)),
+	updateClinicInfo: (data) => dispatch(updateClinicInfo(data)),
 	leaveClinic: (data) => dispatch(leaveClinic(data)),
 });
 

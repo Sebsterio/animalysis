@@ -2,14 +2,14 @@
 
 // replaces state
 export const SET = "clinic/SET";
-export const setClinic = (data) => ({
+export const set = (data) => ({
 	type: SET,
 	payload: data,
 });
 
 // spreads old state
 export const MODIFY = "clinic/MODIFY";
-export const modifyClinic = (data) => ({
+export const modify = (data) => ({
 	type: MODIFY,
 	payload: data,
 });

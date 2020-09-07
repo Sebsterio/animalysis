@@ -41,8 +41,8 @@ router.post("/publish", auth, async (req, res) => {
 
 		// OR update survey
 		else {
-			const res = await foundSurvey.updateOne(update); // secretly called on Model; no save()
-			if (!res.nModified) throw Error("Error updating survey");
+			const updateRes = await foundSurvey.updateOne(update); // secretly called on Model; no save()
+			if (!updateRes.nModified) throw Error("Error updating survey");
 		}
 
 		res.status(200).json(filterSurvey(addedData));

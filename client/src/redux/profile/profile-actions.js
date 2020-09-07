@@ -1,5 +1,11 @@
 // ---------------- Local state ---------------
 
+export const SET = "profile/SET";
+export const set = (data) => ({
+	type: SET,
+	payload: data,
+});
+
 export const MODIFY = "profile/MODIFY";
 export const modify = (data) => ({
 	type: MODIFY,

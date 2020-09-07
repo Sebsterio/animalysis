@@ -56,17 +56,17 @@ export const clientRoutes = [
 	{
 		path: "/my-clinic",
 		title: "My Clinic",
+		linkText: "Clinic",
 		component: ClinicForm,
 		exact,
+		inNav,
 	},
 	// --- Clinic search ---
 	{
 		path: "/clinic-search",
 		title: "Find Clinic",
-		linkText: "Clinic",
 		component: ClinicSearch,
 		exact,
-		inNav,
 	},
 	// --- Analysis ---
 	{

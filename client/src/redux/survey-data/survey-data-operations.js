@@ -25,9 +25,9 @@ export const publishSurvey = () => (dispatch, getState) => {
 		});
 };
 
-// -------------------------- fetchSurvey --------------------------------
+// -------------------------- syncSurvey --------------------------------
 
-export const fetchSurvey = () => (dispatch, getState) => {
+export const syncSurvey = () => (dispatch, getState) => {
 	const endpoint = "/api/survey/";
 	const datePublished = getDatePublished(getState());
 	const data = JSON.stringify({ datePublished });

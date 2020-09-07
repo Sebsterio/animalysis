@@ -8,19 +8,6 @@ const ProfileSchema = new Schema({
 		ref: "User",
 		required: true,
 	},
-	firstName: String,
-	surname: String,
-	phone: String,
-	clinicInfo: {
-		name: String,
-		address: String,
-		email: String,
-		phone: String,
-	},
-	clinicId: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Clinic",
-	},
 	dateUpdated: Date, // for sync
 });
 

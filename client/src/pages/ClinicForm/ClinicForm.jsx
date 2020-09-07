@@ -7,7 +7,7 @@ export const ClinicForm = ({
 	history,
 	currentClinic,
 	clinicRegistered,
-	updateClinic,
+	updateClinicInfo,
 	leaveClinic,
 }) => {
 	const [clinic, setClinic] = useState({ ...currentClinic });
@@ -15,7 +15,7 @@ export const ClinicForm = ({
 	const closeForm = () => history.push("/");
 
 	const submitForm = () => {
-		updateClinic(clinic);
+		updateClinicInfo(clinic);
 		closeForm();
 	};
 

@@ -12,7 +12,7 @@ import {
 	signUp,
 	signOut,
 	closeAccount,
-} from "redux/session/session-operations";
+} from "redux/user/user-operations";
 import { clearError } from "redux/error/error-actions";
 
 import Account from "./Account";

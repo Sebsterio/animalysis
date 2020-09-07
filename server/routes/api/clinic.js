@@ -10,7 +10,7 @@ const router = express.Router();
 
 /*****************************************************************
  * This is Clinic as in organization with members;
- * Clinic as the addresse of client's reports is stored on Profile
+ * Clinic as the addresse of client's reports is stored on User
  *****************************************************************/
 
 // ------------------- Create clinic -------------------
@@ -50,35 +50,27 @@ router.post("/create", auth, async (req, res) => {
 });
 
 // ------------------ Fetch clinic -----------------
-// acces: token
+// Acces: token, member/superuser
+// Returns: full clinic data
 
 router.post("/", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
-		const { isVet } = body;
-		const { dateModified, clinicId } = filterClinic(body);
+		const { clinicId } = body;
 
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
 		if (!clinic) return res.status(404).json("Clinic doesn't exists");
-		if (isVet) {
-			const user = await User.findById(userId);
-			const isSuperuser = user.type === "superuser";
-			const isMember = clinic.members.some((m) => m.email === user.email);
-			if (!isMember && !isSuperuser)
-				return res.status(403).json({
-					target: "generic",
-					msg: "You're not a member of this organisation.",
-				});
-		}
+		const user = await User.findById(userId);
+		const isSuperuser = user.type === "superuser";
+		const isMember = clinic.members.some((m) => m.email === user.email);
+		if (!isMember && !isSuperuser)
+			return res.status(403).json({
+				target: "generic",
+				msg: "You're not a member of this organisation.",
+			});
 
-		// Compare local and remote versions to determine response
-		const dateLocal = new Date(dateModified).getTime();
-		const dateRemote = new Date(clinic.dateModified).getTime();
-
-		if (dateLocal === dateRemote) return res.status(201).send();
-
-		const data = isVet ? filterClinic(clinic) : filterClientClinic(clinic);
+		const data = filterClinic(clinic);
 		return res.status(200).json(data);
 	} catch (e) {
 		res.status(400).json(e.message);
@@ -112,8 +104,7 @@ router.post("/search", async (req, res) => {
 router.post("/update", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
-		const submittedData = filterClinic(body);
-		const { clinicId, email, members, verified } = submittedData;
+		const { clinicId, email, members, verified } = body;
 
 		// Validate
 		const clinic = await Clinic.findById(clinicId);
@@ -149,7 +140,7 @@ router.post("/update", auth, async (req, res) => {
 
 		// Update
 		const dateModified = new Date();
-		const update = { ...submittedData, dateModified };
+		const update = { ...filterClinic(body), dateModified };
 		const resp = await clinic.updateOne(update); // no save()
 		if (!resp.nModified) throw Error("Error updating survey");
 

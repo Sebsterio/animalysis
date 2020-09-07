@@ -7,7 +7,7 @@ import {
 	getIsVet,
 	getIsSuperuser,
 } from "redux/user/user-selectors";
-import { syncData } from "redux/session/session-operations";
+import { syncData } from "redux/user/user-operations";
 import { clearError } from "redux/error/error-actions";
 import { getIsError } from "redux/error/error-selectors";
 

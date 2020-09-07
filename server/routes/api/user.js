@@ -3,29 +3,34 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const User = require("../../models/user");
+const Clinic = require("../../models/clinic");
 const utils = require("./user-utils");
+const clinicUtils = require("./clinic-utils");
 
-const { filterUserForExport } = utils;
+const { filterUserReq, filterUserRes } = utils;
+const { filterClientClinic } = clinicUtils;
 
 const router = express.Router();
 
 // ------------------- Sign-up -------------------
+// Access: email & password
+// Returns: user doc + token
 
 router.post("/sign-up", async (req, res) => {
-	const { email, password, type } = req.body;
-
-	// Validate
-	if (!email || !password) return res.status(400).json("Missing fields");
-	if (type === "superuser")
-		return res.status(403).json("Registering as superuser is not allowed");
-	const user = await User.findOne({ email });
-	if (user)
-		return res.status(403).json({
-			target: "email",
-			msg: "User already exists",
-		});
-
 	try {
+		const { email, password, type, firstName } = req.body;
+
+		// Validate
+		if (!email || !password) return res.status(400).json("Missing fields");
+		if (type === "superuser")
+			return res.status(403).json("Registering as superuser is not allowed");
+		const foundUser = await User.findOne({ email });
+		if (foundUser)
+			return res.status(403).json({
+				target: "email",
+				msg: "User already exists",
+			});
+
 		// Get encrypted password
 		const salt = await bcrypt.genSalt(10);
 		if (!salt) throw Error("Error with bcrypt");
@@ -34,22 +39,24 @@ router.post("/sign-up", async (req, res) => {
 
 		// Create user
 		const dateRegistered = new Date();
-		const newUser = new User({ email, password: hash, dateRegistered, type });
-		const savedUser = await newUser.save();
+		const profile = { firstName };
+		const saveData = { email, password: hash, dateRegistered, type, profile };
+		const savedUser = await new User(saveData).save();
 		if (!savedUser) throw Error("Error saving the user");
 
 		// Generate token
 		const token = jwt.sign({ userId: savedUser.id }, process.env.JWT_SECRET);
 		if (!token) throw Error("Couldn't sign the token");
 
-		res.status(200).json({ token, ...filterUserForExport(savedUser) });
+		res.status(200).json({ token, ...filterUserRes(savedUser) });
 	} catch (e) {
 		res.status(500).json(e.message);
 	}
 });
 
 // --------------------- Sign-in ---------------------
-// access: password
+// Access: email & password
+// Returns: user + token, profile, clinics, pets
 
 router.post("/sign-in", async (req, res) => {
 	try {
@@ -74,18 +81,34 @@ router.post("/sign-in", async (req, res) => {
 		const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
 		if (!token) throw Error("Couldn't sign the token");
 
+		// Get clinic data
+		const { clinicInfo, clinicId } = user;
+		let clinic = clinicInfo;
+		if (clinicId) {
+			const foundClinic = await Clinic.findById(user.clinicId);
+			if (!foundClinic) user.clinicId = null;
+			else clinic = foundClinic;
+		}
+
 		// Record action (non-blocking; for analytics only)
 		user.dateSynced = new Date();
 		user.save();
 
-		res.status(200).json({ token, ...filterUserForExport(user) });
+		// Send response
+		const resData = {
+			token,
+			...filterUserRes(user), // includes profile
+			clinic: filterClientClinic(clinic), // = clinicInfo || clinicId_data
+		};
+		return res.status(200).json(resData);
 	} catch (e) {
 		res.status(500).json(e.message);
 	}
 });
 
 // ------------------ Sync user -----------------
-// access: token
+// Access: token
+// Returns: user, profile, clinics, pets
 
 router.post("/", auth, async (req, res) => {
 	try {
@@ -102,66 +125,97 @@ router.post("/", auth, async (req, res) => {
 		// Compare local and remote versions and determine response
 		const dateLocal = new Date(body.dateModified).getTime();
 		const dateRemote = new Date(user.dateModified).getTime();
-
 		if (dateLocal == dateRemote) return res.status(201).send();
-		return res.status(200).json(filterUserForExport(user));
+
+		// Get clinic data
+		const { clinicInfo, clinicId } = user;
+		let clinic = clinicInfo;
+		if (clinicId) {
+			const foundClinic = await Clinic.findById(user.clinicId);
+			if (foundClinic) clinic = foundClinic;
+		}
+
+		// Send response
+		const resData = {
+			...filterUserRes(user), // includes profile
+			clinic: filterClientClinic(clinic), // = clinicInfo || clinicId_data
+		};
+		return res.status(200).json(resData);
 	} catch (e) {
 		res.status(400).json(e.message);
 	}
 });
 
 // ----------------- Update user ----------------
-// acces: token & password
+// Access: token (all upated) & password (sensitive updates)
+// Returns: filtered user doc
 
 router.post("/update", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
 		const { password, newEmail, newPassword, type } = body;
 
-		// Validate credentials
-		if (!password) throw Error("Missing credentials");
+		// Validaate token
 		const user = await User.findById(userId);
 		if (!user) return res.status(404).json("User doesn't exist");
-		const passwordsMatch = await bcrypt.compare(password, user.password);
-		if (!passwordsMatch)
-			return res.status(403).json({
-				target: "password",
-				msg: "Invalid credentials",
-			});
 
-		// Update email
-		let { email } = user;
-		if (newEmail && newEmail !== email) {
+		// Validate password for sensitive updates
+		if (newEmail || newPassword || type) {
+			if (!password) throw Error("Missing credentials");
+			const passwordsMatch = await bcrypt.compare(password, user.password);
+			if (!passwordsMatch)
+				return res.status(403).json({
+					target: "password",
+					msg: "Invalid credentials",
+				});
+		}
+
+		// Prepare update
+		const dateModified = new Date();
+		const update = { ...filterUserReq(body), dateModified };
+
+		// Validate type
+		if (type) {
+			if (type === "superuser")
+				throw Error("Setting superuser type is not allowed");
+			update.type = type;
+		}
+
+		// Validate newEmail
+		if (newEmail && newEmail !== user.email) {
 			const foundUser = await User.findOne({ email: newEmail });
 			if (foundUser)
 				return res.status(403).json({
 					target: "newEmail",
 					msg: "User already exists",
 				});
-			user.email = newEmail;
+			update.email = newEmail;
 		}
 
-		// Update password
+		// Hash newPassword
 		if (newPassword) {
 			const salt = await bcrypt.genSalt(10);
 			if (!salt) throw Error("Error with bcrypt");
 			const hash = await bcrypt.hash(newPassword, salt);
 			if (!hash) throw Error("Error hashing the password");
-			user.password = hash;
+			update.password = hash;
 		}
 
-		// Update rest and save
-		if (type && type !== "superuser") user.type = type;
-		user.dateModified = new Date();
-		await user.save();
+		// Execute update
+		const config = { new: true };
+		const updatedUser = await User.findByIdAndUpdate(userId, update, config);
+		if (!updatedUser) throw Error("Error updating user");
 
-		return res.status(200).json(filterUserForExport(user));
+		// Send response
+		return res.status(200).json(filterUserRes(updatedUser));
 	} catch (e) {
 		res.status(400).json(e.message);
 	}
 });
 
 // ---------------- Delete user ----------------
+// Access: token & password
+// Returns: 200
 
 router.post("/delete", auth, async (req, res) => {
 	try {

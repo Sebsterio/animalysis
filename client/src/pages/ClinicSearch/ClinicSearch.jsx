@@ -15,7 +15,6 @@ export const ClinicSearch = ({
 	// dispatch
 	fetchClinics,
 	joinClinic,
-	joinOrganisation,
 }) => {
 	const [query, setQuery] = useState("");
 	const [results, setResults] = useState([]);
@@ -56,9 +55,7 @@ export const ClinicSearch = ({
 		);
 
 	const handleSnippetClick = (data) => {
-		if (isVet) return joinOrganisation({ history, data });
-		joinClinic({ data });
-		history.push("/my-clinic");
+		joinClinic({ history, data });
 	};
 
 	// ------------------------- Selectors ---------------------------

@@ -1,4 +1,5 @@
 import * as $ from "./user-actions";
+import { filterUserRes } from "./user-utils";
 
 const INITIAL_STATE = {
 	// Sync status
@@ -48,9 +49,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
 		case $.FETCH_SUCCESS:
 		case $.CREATE_SUCCESS:
 			return {
-				...state,
+				...state, // don't overwrite because token persists
 				isLoading: false,
-				...action.payload,
+				...filterUserRes(action.payload),
 			};
 
 		case $.FETCH_FAIL:
