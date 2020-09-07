@@ -8,6 +8,10 @@ export const useStyles = makeStyles((theme) => ({
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
 	},
+	header: {
+		display: "flex",
+		justifyContent: "space-between",
+	},
 	footer: {
 		marginTop: theme.spacing(3),
 	},

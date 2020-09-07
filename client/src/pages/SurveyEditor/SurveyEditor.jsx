@@ -31,16 +31,16 @@ export const SurveyEditor = ({
 }) => {
 	const c = useStyles();
 
-	const { publishing } = data;
+	const { publishing, datePublished, publishedBy } = data;
 
-	// --- Popover ---
+	// ------------------------ Popover -------------------------
 
 	const [
 		{ isOpen, anchorEl, infoText },
 		{ showPopover, hidePopover },
 	] = usePopover();
 
-	// --- Survey state
+	// ---------------------- Survey state ----------------------
 
 	const [selectors, operations] = useSurveyState(data);
 
@@ -52,7 +52,7 @@ export const SurveyEditor = ({
 	const hasChanged = getHasChanged();
 	const isPublished = getIsPublished();
 
-	// --- Handlers ---
+	// ------------------------ Handlers ------------------------
 
 	const goBack = () => history.push("/");
 
@@ -68,7 +68,7 @@ export const SurveyEditor = ({
 		resetIsPublished();
 	};
 
-	// --- View ---
+	// -------------------------- View --------------------------
 
 	const publishButtonText = useValueWithTimeout({
 		isOngoing: publishing,
@@ -83,15 +83,24 @@ export const SurveyEditor = ({
 		valueDone: "Done!",
 	});
 
+	const datePublishedStr = new Date(datePublished).toDateString();
+
 	return (
 		<div className={c.page}>
-			{!hasChanged ? (
-				<LinkBlock to="/survey/view" text="Preview survey" />
-			) : (
-				<div></div>
-			)}
-
 			{/* ------------ Body ------------ */}
+
+			<div className={c.header}>
+				<div>
+					<Typography variant="body2">
+						<b>Published:</b> {datePublishedStr}
+					</Typography>
+					<Typography variant="body2">
+						<b>By:</b> {publishedBy}
+					</Typography>
+				</div>
+				{!hasChanged && <LinkBlock to="/survey/view" text="Preview survey" />}
+			</div>
+
 			<div>
 				{Object.entries(queues).map(([queueName, queueProps]) => (
 					<Queue
