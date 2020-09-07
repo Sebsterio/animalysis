@@ -1,7 +1,5 @@
 import * as $ from "./survey-data-actions";
 import { INITIAL_STATE } from "./survey-data-INITIAL_STATE";
-// import { surveyData } from "./temp-survey-data";
-// const INITIAL_STATE = surveyData;
 
 const surveyDataReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
@@ -54,10 +52,15 @@ const surveyDataReducer = (state = INITIAL_STATE, action) => {
 			};
 		}
 		case $.FETCH_SUCCESS: {
+			const { data, datePublished, publishedBy } = action.payload;
+			const parsedData = JSON.parse(data);
+			console.log({ parsedData });
 			return {
 				...state,
 				loading: false,
-				...action.payload,
+				datePublished,
+				publishedBy,
+				...parsedData,
 			};
 		}
 		case $.FETCH_FAIL:

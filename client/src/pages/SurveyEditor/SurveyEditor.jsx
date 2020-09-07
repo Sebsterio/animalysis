@@ -63,13 +63,9 @@ export const SurveyEditor = ({
 	};
 
 	const publish = () => {
+		save();
 		updateDatabase();
 		resetIsPublished();
-	};
-
-	const handlePublishClick = () => {
-		save();
-		publish();
 	};
 
 	// --- View ---
@@ -113,7 +109,7 @@ export const SurveyEditor = ({
 					textLeft="Cancel"
 					onClickLeft={goBack}
 					textMiddle={publishButtonText}
-					onClickMiddle={handlePublishClick}
+					onClickMiddle={publish}
 					disabledMiddle={publishing || isPublished}
 					textRight={saveButtonText}
 					onClickRight={save}

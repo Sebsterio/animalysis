@@ -9,11 +9,13 @@ const { filterSurvey } = surveyUtils;
 const router = express.Router();
 
 // ------------------- Publish survey -------------------
+// access:
+// 	default survey - superuser
+//	custom survey - clinic admin/owner
 
 router.post("/publish", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
-		const submittedData = filterSurvey(body);
 
 		// Determine survey owner
 		const user = await User.findById(userId).select("-password");
@@ -27,8 +29,9 @@ router.post("/publish", auth, async (req, res) => {
 		// query = { clinicId }
 		// }
 		const query = { isDefault: true };
+		const { surveyData: data } = body;
 		const addedData = { datePublished: new Date(), publishedBy: user.email };
-		const update = { ...submittedData, ...addedData };
+		const update = { data, ...addedData };
 
 		const foundSurvey = await Survey.findOne(query);
 
@@ -41,7 +44,7 @@ router.post("/publish", auth, async (req, res) => {
 
 		// OR update survey
 		else {
-			const updateRes = await foundSurvey.updateOne(update); // secretly called on Model; no save()
+			const updateRes = await foundSurvey.updateOne(update); // no save()
 			if (!updateRes.nModified) throw Error("Error updating survey");
 		}
 
@@ -51,19 +54,22 @@ router.post("/publish", auth, async (req, res) => {
 	}
 });
 
-// // ------------------ Fetch survey -----------------
+// ------------------ Sync survey -----------------
+// Access: public
+// Returns: survey or 201
 
 router.post("/", auth, async (req, res) => {
 	try {
-		const { /* userId, */ body } = req;
-		const submittedData = filterSurvey(body);
+		const { body } = req;
+		const { datePublished } = body;
 
+		// Find survey (currently default survey only)
 		const query = { isDefault: true };
 		const dateFetched = new Date();
 		const survey = await Survey.findOneAndUpdate(query, { dateFetched });
 
 		// Compare local and remote versions and determine response
-		const dateLocal = new Date(submittedData.datePublished).getTime();
+		const dateLocal = new Date(datePublished).getTime();
 		const dateRemote = new Date(survey.datePublished).getTime();
 
 		if (dateLocal == dateRemote) return res.status(201).send();
@@ -72,19 +78,6 @@ router.post("/", auth, async (req, res) => {
 		res.status(400).json(e.message);
 	}
 });
-
-// // ---------------- Delete survey ----------------
-
-// router.delete("/", auth, async (req, res) => {
-// 	try {
-// 		const { userId } = req;
-// 		const survey = await Survey.findOneAndRemove({ userId });
-// 		if (!survey) throw Error("Survey doesn't exist");
-// 		res.status(200).send();
-// 	} catch (e) {
-// 		res.status(400).json(e.message);
-// 	}
-// });
 
 // ----------------------------------------------------------------
 

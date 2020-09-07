@@ -12,7 +12,7 @@ import { getTokenConfig } from "utils/ajax";
 export const publishSurvey = () => (dispatch, getState) => {
 	const endpoint = "/api/survey/publish";
 	const datePublished = getDatePublished(getState());
-	const surveyData = getSurveyDataForExport(getState());
+	const surveyData = getSurveyDataForExport(getState()); // comes stringified
 	const data = JSON.stringify({ surveyData, datePublished });
 	const config = getTokenConfig(getState());
 	dispatch($.publishStart());

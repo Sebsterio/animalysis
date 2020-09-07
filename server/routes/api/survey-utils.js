@@ -1,14 +1,10 @@
 const utils = require("../../utils");
-const { makeObjectWithoutUndefinedProps } = utils;
+const { makeObjectWithSelectedProps, makeObjectWithoutUndefinedProps } = utils;
 
-const filterSurvey = (profile) => {
-	const { data, dateModified, datePublished, publishedBy } = profile;
-	return makeObjectWithoutUndefinedProps({
-		data,
-		dateModified,
-		datePublished,
-		publishedBy,
-	});
+const filterSurvey = (survey) => {
+	const allowedProps = ["data", "dateModified", "datePublished", "publishedBy"];
+	const filteredUser = makeObjectWithSelectedProps(survey, allowedProps);
+	return makeObjectWithoutUndefinedProps(filteredUser);
 };
 
 module.exports = { filterSurvey };

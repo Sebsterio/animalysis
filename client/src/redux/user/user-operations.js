@@ -29,6 +29,7 @@ export const signUp = (formData) => async (dispatch) => {
 		.then((res) => {
 			dispatch($.createSuccess(res.data));
 			dispatch(profileActions.modify({ firstName }));
+			dispatch(syncSurvey());
 		})
 		.catch((err) => {
 			dispatch($.createFail());
