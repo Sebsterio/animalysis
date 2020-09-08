@@ -43,6 +43,12 @@ export const addReportToPet = (data) => ({
 	payload: data,
 });
 
+export const MODIFY_REPORT = "pets/MODIFY_REPORT";
+export const modifyReport = (data) => ({
+	type: MODIFY_REPORT,
+	payload: data,
+});
+
 // ---------------- Sync status ---------------
 
 // Add
@@ -88,4 +94,22 @@ export const deleteSuccess = () => ({
 export const DELETE_FAIL = "pets/DELETE_FAIL";
 export const deleteFail = () => ({
 	type: DELETE_FAIL,
+});
+
+// Send report
+
+export const SEND_REPORT_START = "pets/SEND_REPORT_START";
+export const sendReportStart = (data) => ({
+	type: SEND_REPORT_START,
+	payload: data,
+});
+export const SEND_REPORT_SUCCESS = "pets/SEND_REPORT_SUCCESS";
+export const sendReportSuccess = (data) => ({
+	type: SEND_REPORT_SUCCESS,
+	payload: data,
+});
+export const SEND_REPORT_FAIL = "pets/SEND_REPORT_FAIL";
+export const sendReportFail = (data) => ({
+	type: SEND_REPORT_FAIL,
+	payload: data,
 });

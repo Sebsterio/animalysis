@@ -54,7 +54,6 @@ const surveyDataReducer = (state = INITIAL_STATE, action) => {
 		case $.FETCH_SUCCESS: {
 			const { data, datePublished, publishedBy } = action.payload;
 			const parsedData = JSON.parse(data);
-			console.log({ parsedData });
 			return {
 				...state,
 				loading: false,

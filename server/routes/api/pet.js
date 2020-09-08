@@ -1,10 +1,12 @@
 const express = require("express");
+const ObjectId = require("mongoose").Types.ObjectId;
 const auth = require("../../middleware/auth");
 const User = require("../../models/user");
 const Pet = require("../../models/pet");
+const Report = require("../../models/report");
 const utils = require("./pet-utils");
 
-const { filterPet } = utils;
+const { filterPet, filterReport } = utils;
 
 const router = express.Router();
 
@@ -40,6 +42,7 @@ router.post("/create", auth, async (req, res) => {
 		res.status(500).json(e.message);
 	}
 });
+
 // ------------------- Update pet -------------------
 // Access: token
 // Returns: dateModified
@@ -68,6 +71,42 @@ router.post("/update", auth, async (req, res) => {
 		res.status(500).json(e.message);
 	}
 });
+
+// ------------------- Add report -------------------
+// Access: token
+// Returns: dateUpdated (pet)
+
+router.post("/report", auth, async (req, res) => {
+	try {
+		const { userId, body } = req;
+		const { id, petId } = body;
+
+		// Validate
+		const user = await User.findById(userId).select("-password");
+		if (!user) return res.status(404).json("User doesn't exist");
+		const pet = await Pet.findById(petId);
+		if (!pet) return res.status(404).json("Pet doesn't exist");
+
+		// Create report
+		const docData = { _id: id, ...filterReport(body) };
+		const report = await new Report(docData).save();
+		if (!report) throw Error("Error creating report");
+
+		// Update pet reportIds & dateModified
+		const { reportIds } = pet;
+		const dateUpdated = new Date();
+		if (!reportIds) pet.reportIds = [];
+		pet.reportIds.push(id);
+		pet.dateUpdated = dateUpdated;
+		pet.save();
+
+		// Send response
+		res.status(200).json({ dateUpdated });
+	} catch (e) {
+		res.status(500).json(e.message);
+	}
+});
+
 // ------------------- Delete pet -------------------
 // Access: token
 // Returns: dateModified

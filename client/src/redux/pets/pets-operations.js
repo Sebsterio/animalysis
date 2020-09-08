@@ -63,6 +63,31 @@ export const modifyPet = (data) => (dispatch, getState) => {
 		});
 };
 
+// ------------------------ addReportToPet ----------------------------
+
+// Add report to store and go to path report/:id
+// POST report and add id to pet doc
+// Update dateUpdated in pet redux
+export const addReportToPet = (data) => (dispatch, getState) => {
+	const { petId, id } = data;
+	const endpoint = "/api/pet/report";
+	const reqData = JSON.stringify(data);
+	const config = getTokenConfig(getState());
+	dispatch($.addReportToPet(data));
+	dispatch($.sendReportStart({ id, petId }));
+	axios
+		.post(endpoint, reqData, config)
+		.then((res) => {
+			const { dateUpdated } = res.data;
+			dispatch($.sendReportSuccess({ id, petId }));
+			dispatch($.modifyPet({ id, formData: { dateUpdated } }));
+		})
+		.catch((err) => {
+			dispatch($.sendReportFail({ id, petId }));
+			dispatch(error(err));
+		});
+};
+
 // ------------------------ deletePet ----------------------------
 
 // DELETE pet from db

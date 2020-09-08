@@ -3,6 +3,7 @@ const { makeObjectWithSelectedProps, makeObjectWithoutUndefinedProps } = utils;
 
 const filterPet = (pet) => {
 	const allowedProps = [
+		"id",
 		"name",
 		"species",
 		"sex",
@@ -18,4 +19,16 @@ const filterPet = (pet) => {
 	return makeObjectWithoutUndefinedProps(filteredPet);
 };
 
-module.exports = { filterPet };
+const filterReport = (report) => {
+	const allowedProps = [
+		"petId",
+		"dateCreated",
+		"title",
+		"alert",
+		"problemList",
+	];
+	const filteredPet = makeObjectWithSelectedProps(report, allowedProps);
+	return makeObjectWithoutUndefinedProps(filteredPet);
+};
+
+module.exports = { filterPet, filterReport };

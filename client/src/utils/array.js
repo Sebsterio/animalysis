@@ -17,13 +17,13 @@ export const arrayify = (element) => {
 // ----------------------- Makers -------------------------
 
 // PUSH item(s)
-export const makeArrayWithPushedItems = (arr, items) => [
+export const makeArrayWithPushedItems = (arr = [], items) => [
 	...arr,
 	...arrayify(items),
 ];
 
 // PUSH item(s) if not already present and are unique
-export const makeArrayWithAddedUniqueItems = (array, items) => {
+export const makeArrayWithAddedUniqueItems = (array = [], items) => {
 	const newArr = [...array];
 	arrayify(items).forEach((item) => {
 		if (!newArr.includes(item)) newArr.push(item);
@@ -32,20 +32,20 @@ export const makeArrayWithAddedUniqueItems = (array, items) => {
 };
 
 // UNSHIFT item(s)
-export const makeArrayWithUnshiftedItems = (arr, items) => [
+export const makeArrayWithUnshiftedItems = (arr = [], items) => [
 	...arrayify(items),
 	...arr,
 ];
 
 // POP item
-export const makeArrayWithPoppedItem = (arr) => {
+export const makeArrayWithPoppedItem = (arr = []) => {
 	const newArr = [...arr];
 	newArr.pop();
 	return newArr;
 };
 
 // SHIFT item
-export const makeArrayWithShiftedItem = (arr) => {
+export const makeArrayWithShiftedItem = (arr = []) => {
 	const newArr = [...arr];
 	newArr.shift();
 	return newArr;
@@ -53,14 +53,14 @@ export const makeArrayWithShiftedItem = (arr) => {
 
 // REMOVE item(s)
 export const makeArrayWithRemovedItems = (
-	array,
+	array = [],
 	item,
 	selector = (curItem) => curItem === item
 ) => array.filter((curItem) => !selector(curItem));
 
 // REPLACE item
 export const makeArrayWithReplacedItem = (
-	arr,
+	arr = [],
 	oldItem, // item or selector function
 	newItem // item or modifier function
 ) => {
@@ -72,7 +72,7 @@ export const makeArrayWithReplacedItem = (
 
 // MODIFY array item - supports negative index (counted form end)
 export const makeArrayWithModifiedItems = (
-	arr,
+	arr = [],
 	index,
 	modifier,
 	selector = (_item, i) => i === index
@@ -83,7 +83,7 @@ export const makeArrayWithModifiedItems = (
 
 // MOVE array item (change index within array)
 export const makeArrayWithMovedItem = (
-	array,
+	array = [],
 	item,
 	steps,
 	selector = (curItem) => curItem === item
@@ -97,7 +97,7 @@ export const makeArrayWithMovedItem = (
 
 // INJECT items(s) after last array item that matched any target
 export const makeArrayWithItemsInjectedAfterTargets = ({
-	array,
+	array = [],
 	newItems, // item(s) to inject after all targets
 	targets, // array item(s) after which to inject newItems
 	// custom matcher of array items against target

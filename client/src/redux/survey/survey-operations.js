@@ -19,7 +19,7 @@ import {
 	getPetId,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
-import { addReportToPet } from "redux/pets/pets-actions";
+import { addReportToPet } from "redux/pets/pets-operations";
 import { getPersonalizedSurveyData } from "./survey-utils";
 import { arrayify } from "utils/array";
 
@@ -91,7 +91,7 @@ const generateReport = ({ reportId }) => (dispatch, getState) => {
 		addReportToPet({
 			id: reportId,
 			petId: getPetId(state),
-			date: new Date(),
+			dateCreated: new Date(),
 			title: getTitle(state),
 			alert: getMaxAlertFromHistory(state),
 			problemList: getProblemListFromHistory(state),

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const ProfileSchema = new Schema({
+const PetSchema = new Schema({
 	userId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
@@ -17,16 +17,11 @@ const ProfileSchema = new Schema({
 	weight: Number,
 	microchip: Number,
 	imageUrl: String,
-	reportIds: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Report",
-		},
-	],
+	reportIds: [String], // yup
 	dateCreated: Date,
 	dateUpdated: Date, // for reports sync
 });
 
-const Profile = mongoose.model("Pet", ProfileSchema);
+const Pet = mongoose.model("Pet", PetSchema);
 
-module.exports = Profile;
+module.exports = Pet;

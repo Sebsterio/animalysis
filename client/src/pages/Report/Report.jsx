@@ -33,7 +33,7 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 	if (!id) return <Redirect to="/not-found" />;
 
 	const report = getReport(id);
-	const { petId, date, title, alert, problemList } = report;
+	const { petId, dateCreated, title, alert, problemList } = report;
 	const pet = getPet(petId);
 	const dialogText = summaryData[alert].textMain(pet);
 
@@ -58,7 +58,7 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 						variant="body1"
 						color="textSecondary"
 						align="center"
-						children={getDateString(date)}
+						children={getDateString(dateCreated)}
 					/>
 				</div>
 

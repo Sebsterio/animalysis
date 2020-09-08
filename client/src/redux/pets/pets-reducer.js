@@ -4,7 +4,7 @@ import {
 	makeArrayWithPushedItems,
 	makeArrayWithRemovedItems,
 } from "utils/array";
-import { makeModifiedPet } from "./pets-utils";
+import { makeModifiedPet, makeStateWithModifiedPetReport } from "./pets-utils";
 
 const INITIAL_STATE = {
 	updating: false,
@@ -26,12 +26,12 @@ const INITIAL_STATE = {
 		// 		// {
 		// 		//  id: '',
 		// 		//  petId: ''
-		// 		//  date: null,
+		// 		//  dateCreated: null,
 		// 		//  title: '',
 		// 		// 	problemList: [],
 		// 		// 	alert: 0,
-		// 		// 	dateSynced: null, // syncs on ReportPage mount
 		// 		//  syncing: false
+		//		//	sent: false
 		// 		// };
 		// 	],
 		// },
@@ -54,13 +54,8 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		// ------------------------ Pet -------------------------
 
 		case $.ADD_PET: {
-			const newPet = {
-				...action.payload, // id comes from db
-				// id: shortid.generate(),
-				reports: [],
-			};
 			return makeState(state, "list", (list) =>
-				makeArrayWithPushedItems(list, newPet)
+				makeArrayWithPushedItems(list, action.payload)
 			);
 		}
 
@@ -89,13 +84,14 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 			const { petId } = action.payload;
 			return makeModifiedPet(state, petId, (pet) =>
 				makeState(pet, "reports", (reports) =>
-					makeArrayWithPushedItems(reports, {
-						...action.payload,
-						syncing: false,
-						dateSynced: null,
-					})
+					makeArrayWithPushedItems(reports, { ...action.payload })
 				)
 			);
+		}
+
+		case $.MODIFY_REPORT: {
+			const { id, petId, data } = action.payload;
+			return makeStateWithModifiedPetReport(state, id, petId, data);
 		}
 
 		// ------------ Sync status ------------
@@ -132,6 +128,21 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				deleting: false,
 			};
+
+		// Send report
+
+		case $.SEND_REPORT_START: {
+			const { id, petId } = action.payload;
+			const data = { sending: true };
+			return makeStateWithModifiedPetReport(state, id, petId, data);
+		}
+
+		case $.SEND_REPORT_SUCCESS:
+		case $.SEND_REPORT_FAIL: {
+			const { id, petId } = action.payload;
+			const data = { sending: false, sent: true };
+			return makeStateWithModifiedPetReport(state, id, petId, data);
+		}
 
 		default:
 			return state;
