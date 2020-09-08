@@ -78,8 +78,7 @@ export const PetForm = ({
 	};
 
 	const handleDelete = () => {
-		deletePet({ id: pet.id });
-		history.push("/");
+		deletePet({ id: pet.id, history });
 	};
 
 	// Add side-effects to form onChange handler

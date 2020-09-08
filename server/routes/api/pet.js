@@ -68,6 +68,33 @@ router.post("/update", auth, async (req, res) => {
 		res.status(500).json(e.message);
 	}
 });
+// ------------------- Delete pet -------------------
+// Access: token
+// Returns: dateModified
+
+router.delete("/:id", auth, async (req, res) => {
+	try {
+		const { userId, params } = req;
+		const { id } = params;
+
+		// Validate
+		const user = await User.findById(userId).select("-password");
+		if (!user) return res.status(404).json("User doesn't exist");
+
+		const petRes = await Pet.findByIdAndRemove(id);
+		if (!petRes) return res.status(404).json("Pet doesn't exist");
+
+		// Update user dateModified
+		const dateModified = new Date();
+		user.dateModified = dateModified;
+		user.save(); // no async
+
+		// Send response
+		res.status(200).json({ dateModified });
+	} catch (e) {
+		res.status(500).json(e.message);
+	}
+});
 
 // ----------------------------------------------------------------
 

@@ -13,6 +13,9 @@ export const addDemoPet = () => (dispatch) => dispatch($.addPet(demoPet));
 
 // ------------------------- addPet -----------------------------
 
+// POST pet to db
+// add petId and update dateModified to user (server & redux)
+// go to Pet page
 export const addPet = ({ formData, history }) => (dispatch, getState) => {
 	const endpoint = "/api/pet/create";
 	const data = JSON.stringify(formData);
@@ -35,6 +38,9 @@ export const addPet = ({ formData, history }) => (dispatch, getState) => {
 
 // ------------------------ modifyPet ----------------------------
 
+// POST pet to db
+// update dateModified of user (server & redux)
+// go to Pet page
 export const modifyPet = (data) => (dispatch, getState) => {
 	const { id, formData, history } = data;
 	const endpoint = "/api/pet/update";
@@ -59,9 +65,28 @@ export const modifyPet = (data) => (dispatch, getState) => {
 
 // ------------------------ deletePet ----------------------------
 
-export const deletePet = (data) => (dispatch, getState) => {
-	const { id } = data;
-	dispatch($.deletePet({ id }));
-	const surveyPetId = getPetId(getState());
-	if (surveyPetId === id) dispatch(clearSurvey());
+// DELETE pet from db
+// remove petId from user and update dateModified (server & redux)
+// clear survey if it was initialized for the deleted pet
+// go to Home
+export const deletePet = ({ id, history }) => (dispatch, getState) => {
+	const endpoint = `/api/pet/${id}`;
+	console.log(endpoint);
+	const config = getTokenConfig(getState());
+	dispatch($.deleteStart());
+	axios
+		.delete(endpoint, config)
+		.then((res) => {
+			const { dateModified } = res.data;
+			dispatch($.deleteSuccess());
+			dispatch($.deletePet({ id }));
+			dispatch(modifyUser({ dateModified }));
+			const surveyPetId = getPetId(getState());
+			if (surveyPetId === id) dispatch(clearSurvey());
+			history.push("/");
+		})
+		.catch((err) => {
+			dispatch($.deleteFail());
+			dispatch(error(err));
+		});
 };
