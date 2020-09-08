@@ -18,9 +18,9 @@ import {
 
 /*******************************************************
  * Routing:
- * /edit-pet/real-pet -- init form with pet data
- * /edit-pet/typo     -- redirect to /not-found
- * /add-pet           -- init empty form
+ * /edit-pet/real-pet-name  -- init form with pet data
+ * /edit-pet/typo           -- redirect to /not-found
+ * /add-pet                 -- init empty form
  ********************************************************/
 
 const useStyles = makeStyles((theme) => ({
@@ -73,9 +73,8 @@ export const PetForm = ({
 	};
 
 	const submitForm = () => {
-		if (!matchedPet) addPet(pet);
-		else modifyPet({ id: matchedPet.id, data: pet });
-		history.push("/pet/" + pet.name);
+		if (!matchedPet) addPet({ formData: pet, history });
+		else modifyPet({ id: matchedPet.id, formData: pet, history });
 	};
 
 	const handleDelete = () => {

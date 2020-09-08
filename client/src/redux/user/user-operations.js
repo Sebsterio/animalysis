@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import * as $ from "./user-actions";
 import * as profileActions from "redux/profile/profile-actions";
 import * as userActions from "redux/user/user-actions";
@@ -42,6 +43,7 @@ export const signUp = (formData) => async (dispatch) => {
 
 // Exchange credentials for token
 // Set (replace) received data in user, profile, clinic, pets store
+// Vet: fetch entire clinic doc
 // Sync survey
 export const signIn = (formData) => (dispatch) => {
 	const endpoint = "/api/user/sign-in";

@@ -5,10 +5,9 @@ import {
 	makeArrayWithRemovedItems,
 } from "utils/array";
 import { makeModifiedPet } from "./pets-utils";
-import shortid from "shortid";
 
 const INITIAL_STATE = {
-	dateSynced: null,
+	updating: false,
 	list: [
 		// {
 		// 	id: "123412341234",
@@ -20,7 +19,8 @@ const INITIAL_STATE = {
 		// 	birthMonth: 7,
 		// 	weight: 0,
 		// 	microchip: 0,
-		// 	// imageUrl: Benny,
+		// 	imageUrl: Benny,
+		//	dateUpdated: null,
 		// 	reports: [
 		// 		// {
 		// 		//  id: '',
@@ -47,8 +47,8 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.ADD_PET: {
 			const newPet = {
-				...action.payload,
-				id: shortid.generate(),
+				...action.payload, // id comes from db
+				// id: shortid.generate(),
 				reports: [],
 			};
 			return makeState(state, "list", (list) =>
@@ -57,8 +57,8 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		}
 
 		case $.MODIFY_PET: {
-			const { id, data } = action.payload;
-			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...data }));
+			const { id, formData } = action.payload;
+			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...formData }));
 		}
 
 		case $.DELETE_PET: {
@@ -89,6 +89,27 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 				)
 			);
 		}
+
+		// ------------ Sync status ------------
+
+		case $.ADD_START:
+		case $.UPDATE_START:
+		case $.DELETE_START:
+			return {
+				...state,
+				updating: true,
+			};
+
+		case $.ADD_SUCCESS:
+		case $.UPDATE_SUCCESS:
+		case $.DELETE_SUCCESS:
+		case $.ADD_FAIL:
+		case $.UPDATE_FAIL:
+		case $.DELETE_FAIL:
+			return {
+				...state,
+				updating: false,
+			};
 
 		default:
 			return state;

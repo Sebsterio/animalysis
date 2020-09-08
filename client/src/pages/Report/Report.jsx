@@ -37,6 +37,7 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 	const pet = getPet(petId);
 	const dialogText = summaryData[alert].textMain(pet);
 
+	// Vet: end preview; Client: back to pet's page
 	const closePage = () =>
 		history.push(isVet ? "/survey/edit" : "/pet/" + pet.name);
 
