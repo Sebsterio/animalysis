@@ -8,6 +8,7 @@ import { makeModifiedPet } from "./pets-utils";
 
 const INITIAL_STATE = {
 	updating: false,
+	deleting: false, // unused
 	list: [
 		// {
 		// 	id: "123412341234",
@@ -39,6 +40,13 @@ const INITIAL_STATE = {
 
 const reportsReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case $.SET_LIST: {
+			return {
+				...state,
+				list: [...action.payload],
+			};
+		}
+
 		case $.CLEAR: {
 			return { ...INITIAL_STATE };
 		}
@@ -92,9 +100,10 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		// ------------ Sync status ------------
 
+		// Add, Update
+
 		case $.ADD_START:
 		case $.UPDATE_START:
-		case $.DELETE_START:
 			return {
 				...state,
 				updating: true,
@@ -102,13 +111,26 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.ADD_SUCCESS:
 		case $.UPDATE_SUCCESS:
-		case $.DELETE_SUCCESS:
 		case $.ADD_FAIL:
 		case $.UPDATE_FAIL:
-		case $.DELETE_FAIL:
 			return {
 				...state,
 				updating: false,
+			};
+
+		// Delete
+
+		case $.DELETE_START:
+			return {
+				...state,
+				deleting: true,
+			};
+
+		case $.DELETE_SUCCESS:
+		case $.DELETE_FAIL:
+			return {
+				...state,
+				deleting: false,
 			};
 
 		default:

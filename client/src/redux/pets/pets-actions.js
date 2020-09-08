@@ -1,3 +1,9 @@
+export const SET_LIST = "pets/SET_LIST";
+export const setList = (data) => ({
+	type: SET_LIST,
+	payload: data,
+});
+
 export const CLEAR = "pets/CLEAR";
 export const clear = () => ({
 	type: CLEAR,

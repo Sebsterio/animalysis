@@ -71,7 +71,6 @@ export const modifyPet = (data) => (dispatch, getState) => {
 // go to Home
 export const deletePet = ({ id, history }) => (dispatch, getState) => {
 	const endpoint = `/api/pet/${id}`;
-	console.log(endpoint);
 	const config = getTokenConfig(getState());
 	dispatch($.deleteStart());
 	axios

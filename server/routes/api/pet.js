@@ -4,7 +4,7 @@ const User = require("../../models/user");
 const Pet = require("../../models/pet");
 const utils = require("./pet-utils");
 
-const { filterPetReq, filterPetRes } = utils;
+const { filterPet } = utils;
 
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.post("/create", auth, async (req, res) => {
 		// Create Pet doc
 		const dateCreated = new Date();
 		const reportIds = [];
-		const formData = filterPetReq(body);
+		const formData = filterPet(body);
 		const saveData = { ...formData, userId, reportIds, dateCreated };
 		const savedPet = await new Pet(saveData).save();
 		if (!savedPet) throw Error("Error saving the pet");
@@ -54,7 +54,7 @@ router.post("/update", auth, async (req, res) => {
 		if (!user) return res.status(404).json("User doesn't exist");
 
 		const dateUpdated = new Date();
-		const update = { ...filterPetReq(formData), dateUpdated };
+		const update = { ...filterPet(formData), dateUpdated };
 		const pet = await Pet.findByIdAndUpdate(id, update);
 		if (!pet) return res.status(404).json("Pet doesn't exist");
 

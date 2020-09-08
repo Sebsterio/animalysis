@@ -4,13 +4,18 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const User = require("../../models/user");
 const Clinic = require("../../models/clinic");
+const Pet = require("../../models/pet");
 const utils = require("./user-utils");
 const clinicUtils = require("./clinic-utils");
+const petUtils = require("./pet-utils");
 
 const { filterUserReq, filterUserRes } = utils;
 const { filterClientClinic } = clinicUtils;
+const { filterPetReq, filterPet } = petUtils;
 
 const router = express.Router();
+
+// TODO: extract repeated code
 
 // ------------------- Sign-up -------------------
 // Access: email & password
@@ -90,6 +95,14 @@ router.post("/sign-in", async (req, res) => {
 			else clinic = foundClinic;
 		}
 
+		// Get pets
+		let pets;
+		const { petIds } = user;
+		if (petIds.length) {
+			pets = await Pet.find({ userId: user.id });
+			pets = pets.map((pet) => filterPet(pet));
+		}
+
 		// Record action (non-blocking; for analytics only)
 		user.dateSynced = new Date();
 		user.save();
@@ -99,6 +112,7 @@ router.post("/sign-in", async (req, res) => {
 			token,
 			...filterUserRes(user), // includes profile
 			clinic: filterClientClinic(clinic), // = clinicInfo || clinicId_data
+			pets,
 		};
 		return res.status(200).json(resData);
 	} catch (e) {
@@ -135,10 +149,19 @@ router.post("/", auth, async (req, res) => {
 			if (foundClinic) clinic = foundClinic;
 		}
 
+		// Get pets
+		let pets;
+		const { petIds } = user;
+		if (petIds.length) {
+			pets = await Pet.find({ userId: user.id });
+			pets = pets.map((pet) => filterPet(pet));
+		}
+
 		// Send response
 		const resData = {
 			...filterUserRes(user), // includes profile
 			clinic: filterClientClinic(clinic), // = clinicInfo || clinicId_data
+			pets,
 		};
 		return res.status(200).json(resData);
 	} catch (e) {

@@ -53,13 +53,13 @@ export const signIn = (formData) => (dispatch) => {
 	axios
 		.post(endpoint, data, config)
 		.then((res) => {
-			const { type, profile, clinic } = res.data;
+			const { type, profile, clinic, pets } = res.data;
 			dispatch($.fetchSuccess(res.data));
 			dispatch(profileActions.set(profile));
 			if (["vet", "superuser"].includes(type))
 				dispatch(fetchOrganisation(clinic.id));
 			else dispatch(clinicActions.set(clinic));
-			// TODO: set pets
+			dispatch(petsActions.setList(pets));
 			dispatch(syncSurvey());
 		})
 		.catch((err) => {
@@ -86,13 +86,13 @@ export const syncData = () => (dispatch, getState) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			if (res.status === 201) return dispatch($.upToDate());
-			const { type, profile, clinic } = res.data;
+			const { type, profile, clinic, pets } = res.data;
 			dispatch($.fetchSuccess(res.data));
 			dispatch(profileActions.set(profile));
 			if (["vet", "superuser"].includes(type))
 				dispatch(fetchOrganisation(clinic.id));
 			else dispatch(clinicActions.set(clinic));
-			// TODO: set pets
+			dispatch(petsActions.setList(pets));
 			dispatch(syncSurvey());
 		})
 		.catch((err) => {

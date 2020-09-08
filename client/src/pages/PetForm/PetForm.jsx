@@ -42,6 +42,7 @@ export const PetForm = ({
 	// store
 	getPet,
 	isNameUnique,
+	updating,
 	// dispatch
 	addPet,
 	modifyPet,
@@ -142,7 +143,7 @@ export const PetForm = ({
 				<Nav
 					textLeft="Cancel"
 					onClickLeft={closeForm}
-					textRight="Save"
+					textRight={updating ? "Saving..." : "Save"}
 					onClickRight={submitForm}
 					disabledRight={!canSubmit()}
 					noArrows

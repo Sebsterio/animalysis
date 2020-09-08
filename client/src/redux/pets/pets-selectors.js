@@ -2,6 +2,9 @@ export const getAllPets = (state) => state.pets.list;
 
 export const getIsPetsListEmpty = (state) => !getAllPets(state).length;
 
+export const getIsUpdating = (state) => state.pets.updating;
+export const getIsDeleting = (state) => state.pets.deleting;
+
 // ------------ single pet --------------
 
 export const getPetById = (state, id) =>
@@ -22,7 +25,10 @@ export const isNameUnique = (state, name) =>
 // -------------- reports ----------------
 
 export const getAllPetReports = (state) =>
-	getAllPets(state).reduce((acc, pet) => [...acc, ...pet.reports], []);
+	getAllPets(state).reduce(
+		(acc, pet) => (pet.reports ? [...acc, ...pet.reports] : acc),
+		[]
+	);
 
 export const getHasReports = (state) => !!getAllPetReports(state).length;
 
