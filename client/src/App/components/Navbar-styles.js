@@ -19,6 +19,7 @@ export const useStyles = makeStyles((theme) => ({
 		width: "100vw",
 		[theme.breakpoints.up("sm")]: {
 			width: "auto",
+			padding: theme.spacing(0, 6),
 		},
 		display: "flex",
 		flexFlow: "column nowrap",

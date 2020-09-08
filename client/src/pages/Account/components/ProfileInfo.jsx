@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 
 export const ProfileInfo = (
 	<>
-		<Grid item xs={12} sm={6}>
+		<Grid item xs={12}>
 			<TextField
 				fullWidth
 				required
