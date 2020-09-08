@@ -21,18 +21,18 @@ const INITIAL_STATE = {
 		// 	weight: 0,
 		// 	microchip: 0,
 		// 	imageUrl: Benny,
-		//	dateUpdated: null,
+		// 	dateUpdated: null,
 		// 	reports: [
-		// 		// {
-		// 		//  id: '',
-		// 		//  petId: ''
-		// 		//  dateCreated: null,
-		// 		//  title: '',
-		// 		// 	problemList: [],
-		// 		// 	alert: 0,
-		// 		//  syncing: false
-		//		//	sent: false
-		// 		// };
+		// 		{
+		// 			id: "",
+		// 			petId: "",
+		// 			dateCreated: null,
+		// 			title: "",
+		// 			problemList: [],
+		// 			alert: 0,
+		// 			sending: false,
+		// 			sent: false,
+		// 		},
 		// 	],
 		// },
 	],
@@ -137,10 +137,15 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 			return makeStateWithModifiedPetReport(state, id, petId, data);
 		}
 
-		case $.SEND_REPORT_SUCCESS:
-		case $.SEND_REPORT_FAIL: {
+		case $.SEND_REPORT_SUCCESS: {
 			const { id, petId } = action.payload;
 			const data = { sending: false, sent: true };
+			return makeStateWithModifiedPetReport(state, id, petId, data);
+		}
+
+		case $.SEND_REPORT_FAIL: {
+			const { id, petId } = action.payload;
+			const data = { sending: false, sent: false };
 			return makeStateWithModifiedPetReport(state, id, petId, data);
 		}
 

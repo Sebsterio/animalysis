@@ -34,12 +34,15 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 
 	const report = getReport(id);
 	const { petId, dateCreated, title, alert, problemList } = report;
+	const { sent, sending } = report;
 	const pet = getPet(petId);
 	const dialogText = summaryData[alert].textMain(pet);
 
 	// Vet: end preview; Client: back to pet's page
 	const closePage = () =>
 		history.push(isVet ? "/survey/edit" : "/pet/" + pet.name);
+
+	const sentStatus = sending ? "Sending" : sent ? "Sent" : "Not sent";
 
 	return (
 		<Container maxWidth="xs" className={c.page}>
@@ -59,6 +62,13 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 						color="textSecondary"
 						align="center"
 						children={getDateString(dateCreated)}
+					/>
+					<Typography
+						component="h3"
+						variant="body1"
+						color="textSecondary"
+						align="center"
+						children={sentStatus}
 					/>
 				</div>
 
