@@ -23,6 +23,8 @@ export const makeStateWithModifiedPetReport = (state, id, petId, data) => {
 	);
 };
 
+export const getPetById = (id, pets) => pets.find((pet) => pet.id === id);
+
 // Add default image if missing
 export const convertPet = (pet) => {
 	let { imageUrl, species } = pet;
@@ -31,3 +33,9 @@ export const convertPet = (pet) => {
 };
 
 export const convertPets = (pets) => pets.map(convertPet);
+
+export const simplifyReports = (reports) =>
+	reports.map((report) => {
+		const { id, dateUpdated } = report;
+		return { id, dateUpdated };
+	});

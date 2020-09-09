@@ -4,6 +4,12 @@ export const setList = (data) => ({
 	payload: data,
 });
 
+export const MODIFY_LIST = "pets/MODIFY_LIST";
+export const modifyList = (data) => ({
+	type: MODIFY_LIST,
+	payload: data,
+});
+
 export const CLEAR = "pets/CLEAR";
 export const clear = () => ({
 	type: CLEAR,

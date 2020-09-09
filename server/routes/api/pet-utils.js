@@ -23,6 +23,7 @@ const filterReport = (report) => {
 	const allowedProps = [
 		"petId",
 		"dateCreated",
+		"dateUpdated",
 		"title",
 		"alert",
 		"problemList",

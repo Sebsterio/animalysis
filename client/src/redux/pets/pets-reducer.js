@@ -5,7 +5,11 @@ import {
 	makeArrayWithRemovedItems,
 	makeSortedArray,
 } from "utils/array";
-import { makeModifiedPet, makeStateWithModifiedPetReport } from "./pets-utils";
+import {
+	makeModifiedPet,
+	makeStateWithModifiedPetReport,
+	getPetById,
+} from "./pets-utils";
 
 const INITIAL_STATE = {
 	updating: false,
@@ -44,6 +48,13 @@ const INITIAL_STATE = {
 
 const reportsReducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case $.CLEAR: {
+			return { ...INITIAL_STATE };
+		}
+
+		// ----------------------- List -------------------------
+
+		// Overwrite
 		case $.SET_LIST: {
 			return {
 				...state,
@@ -51,8 +62,18 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 			};
 		}
 
-		case $.CLEAR: {
-			return { ...INITIAL_STATE };
+		// Spread new props in each pet
+		// Add missing pets; remove excess pets
+		case $.MODIFY_LIST: {
+			const newPets = action.payload;
+			return {
+				...state,
+				list: newPets.map((pet) => {
+					const oldPet = getPetById(pet.id, state.list);
+					if (!oldPet) return pet;
+					return { ...oldPet, ...pet };
+				}),
+			};
 		}
 
 		// ------------------------ Pet -------------------------
@@ -86,14 +107,14 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.SORT_REPORTS: {
 			const petId = action.payload;
-			const sortFunction = (cur, next) => {
+			const byDateCreated_descending = (cur, next) => {
 				const dateCur = new Date(cur.dateCreated).getTime();
 				const dateNext = new Date(next.dateCreated).getTime();
 				return dateNext - dateCur;
 			};
 			return makeModifiedPet(state, petId, (pet) =>
 				makeState(pet, "reports", (reports) =>
-					makeSortedArray(reports, sortFunction)
+					makeSortedArray(reports, byDateCreated_descending)
 				)
 			);
 		}

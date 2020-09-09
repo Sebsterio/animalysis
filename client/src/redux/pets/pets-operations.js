@@ -1,6 +1,7 @@
 import axios from "axios";
-import * as $ from "redux/pets/pets-actions";
-import { getPetById, getAllPets } from "redux/pets/pets-selectors";
+import * as $ from "./pets-actions";
+import { getPetById, getAllPets } from "./pets-selectors";
+import { simplifyReports } from "./pets-utils";
 import { getPetId } from "redux/survey/survey-selectors";
 import { clear as clearSurvey } from "redux/survey/survey-actions";
 import { modify as modifyUser } from "redux/user/user-actions";
@@ -66,8 +67,8 @@ export const modifyPet = (data) => (dispatch, getState) => {
 
 // ------------------------ addReportToPet ----------------------------
 
-// Add report to store and go to path report/:id
-// POST report and add id to pet doc
+// Add report to store (then go to Report page)
+// POST report and add id to pet doc (sync status shows on Report page)
 export const addReportToPet = (data) => (dispatch, getState) => {
 	const { petId, id } = data;
 	const endpoint = "/api/pet/report";
@@ -85,24 +86,24 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 };
 // ---------------- syncReports & syncAllReports -------------------
 
-// Fetch reports that are newer than local or not present locally
+// Fetch reports not present locally or updated more recently
 export const syncReports = (petId) => (dispatch, getState) => {
 	const endpoint = "/api/pet/sync";
 	const pet = getPetById(getState(), petId);
-	let { reports } = pet;
-	if (!reports) reports = [];
-	else reports = reports.map((rep) => [rep.id, rep.dateModified]);
+	const reports = pet.reports ? simplifyReports(pet.reports) : [];
 	const reqData = JSON.stringify({ petId, reports });
 	const config = getTokenConfig(getState());
 	dispatch($.syncStart(petId));
 	axios
 		.post(endpoint, reqData, config)
 		.then((res) => {
-			const { reports } = res.data;
 			dispatch($.syncSuccess(petId));
-			reports.forEach(({ isNew, data }) =>
-				dispatch(isNew ? $.addReportToPet(data) : $.modifyReport(data))
-			);
+			const { diffs } = res.data;
+			if (!diffs.length) return;
+			diffs.forEach(({ isNew, data }) => {
+				if (isNew) dispatch($.addReportToPet(data));
+				else dispatch($.modifyReport(data));
+			});
 			dispatch($.sortReports(petId));
 		})
 		.catch((err) => {

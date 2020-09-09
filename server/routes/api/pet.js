@@ -123,17 +123,25 @@ router.post("/sync", auth, async (req, res) => {
 
 		// Get pet reports and determine diffs
 		const remoteReports = await Report.find({ petId: pet.id });
-		const reports = [];
-		remoteReports.forEach((remote) => {
-			const local = localReports.find((rep) => rep.id === remote.id);
-			if (local && local.dateUpdated === remote.dateUpdated) return;
-			const data = { ...filterReport(remote._doc), id: remote._doc._id };
-			const isNew = !local ? true : false;
-			reports.push({ data, isNew });
-		});
+		const diffs = [];
+		remoteReports
+			.map((report) => report.toObject()) // else get props with remote._doc.prop
+			.forEach((remote) => {
+				const local = localReports.find((rep) => rep.id === remote._id);
+				if (local) {
+					if (!local.dateUpdated && !remote.dateUpdated) return;
+					const dateLocal = new Date(local.dateUpdated).getTime();
+					const dateRemote = new Date(remote.dateUpdated).getTime();
+					if (dateLocal == dateRemote) return;
+				}
+				// dateUpdated changed so add remote to diffs
+				const data = { ...filterReport(remote), id: remote._id };
+				const isNew = !local ? true : false;
+				diffs.push({ data, isNew });
+			});
 
 		// Send response
-		res.status(200).json({ reports });
+		res.status(200).json({ diffs });
 	} catch (e) {
 		res.status(500).json(e.message);
 	}

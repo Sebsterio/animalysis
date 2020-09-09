@@ -73,8 +73,8 @@ export const signIn = (formData) => (dispatch) => {
 // -------------------- syncData -----------------------
 
 // GET user data if newer than local
-// Set (replace) received data in user, profile, clinic, pets store
-// Sync survey
+// Add received data in user, profile, clinic, pets store
+// Sync pet reports and survey
 export const syncData = () => (dispatch, getState) => {
 	const signedIn = getIsAuthenticated(getState());
 	if (!signedIn) return;
@@ -82,20 +82,22 @@ export const syncData = () => (dispatch, getState) => {
 	const endpoint = "/api/user";
 	const dateModified = getDateModified(getState());
 	const data = JSON.stringify({ dateModified });
-	console.log({ data });
 	const config = getTokenConfig(getState());
 	dispatch($.syncStart());
 	axios
 		.post(endpoint, data, config)
 		.then((res) => {
-			if (res.status === 201) return dispatch($.upToDate());
-			const { type, profile, clinic, pets } = res.data;
-			dispatch($.fetchSuccess(res.data));
-			dispatch(profileActions.set(profile));
-			if (["vet", "superuser"].includes(type))
-				dispatch(fetchOrganisation(clinic.id));
-			else dispatch(clinicActions.set(clinic));
-			dispatch(petsActions.setList(pets));
+			if (res.status === 201) {
+				dispatch($.upToDate());
+			} else {
+				const { type, profile, clinic, pets } = res.data;
+				dispatch($.fetchSuccess(res.data));
+				dispatch(profileActions.set(profile));
+				if (["vet", "superuser"].includes(type))
+					dispatch(fetchOrganisation(clinic.id));
+				else dispatch(clinicActions.set(clinic));
+				dispatch(petsActions.modifyList(pets));
+			}
 			dispatch(syncAllReports());
 			dispatch(syncSurvey());
 		})
