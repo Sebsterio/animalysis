@@ -105,6 +105,7 @@ export const syncReports = (petId) => (dispatch, getState) => {
 			const { diffs } = res.data;
 			if (!diffs.length) return;
 			diffs.forEach(({ isNew, data }) => {
+				data = { ...data, sent: true };
 				if (isNew) dispatch($.addReportToPet(data));
 				else dispatch($.modifyReport(data));
 			});
