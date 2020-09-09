@@ -10,13 +10,14 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: ({ alignLeft }) => (alignLeft ? "stretch" : "space-evenly"),
 		alignItems: "center",
 	},
-	alertFrame: ({ color, backgroundColor, clickHandler }) => ({
+	alertFrame: ({ color, backgroundColor, clickHandler, small, alignLeft }) => ({
 		border: `2px solid ${color}`,
 		background: backgroundColor,
-		minWidth: "8em",
+		minWidth: small ? "6em" : "8em",
 		justifyContent: "center",
-		margin: "auto",
+		margin: alignLeft ? "auto" : 0,
 		cursor: clickHandler ? "pointer" : null,
+		padding: small ? 0 : undefined,
 	}),
 	alertText: {
 		margin: 0,
@@ -24,15 +25,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Alert = ({ level, alignLeft, clickHandler }) => {
+export const Alert = ({ level, alignLeft, clickHandler, small }) => {
 	const data = alertData[level];
-	const c = useStyles({ ...data, alignLeft, clickHandler });
+	const c = useStyles({ ...data, alignLeft, clickHandler, small });
 
 	const { urgency } = data;
 
 	return (
 		<div className={c.container}>
-			<Typography children="Urgency Level" variant="h5" />
+			<Typography children="Urgency Level" variant={small ? "h6" : "h5"} />
 			<AlertFrame
 				className={c.alertFrame}
 				icon={false}

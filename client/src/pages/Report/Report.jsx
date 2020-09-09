@@ -23,7 +23,6 @@ const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
 
 	const report = getReport(id);
 	const { petId, dateCreated, title, alert, problemList } = report;
-	const { sent, sending } = report;
 	const pet = getPet(petId);
 	const dialogText = summaryData[alert].textMain(pet);
 
@@ -33,8 +32,6 @@ const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
 		deletePet({ id: "demo-pet" });
 		history.push("/survey/edit");
 	};
-
-	const sentStatus = sending ? "Sending" : sent ? "Sent" : "Not sent";
 
 	return (
 		<>
@@ -56,17 +53,15 @@ const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
 								align="center"
 								children={getDateString(dateCreated)}
 							/>
-							<Typography
-								component="h3"
-								variant="body1"
-								color="textSecondary"
-								align="center"
-								children={sentStatus}
-							/>
 						</div>
-						<Alert level={alert} alignLeft clickHandler={openDialog} />
+						<Alert level={alert} clickHandler={openDialog} small alignLeft />
 
-						{!!problemList.length && <ProblemList data={problemList} />}
+						{!!problemList.length && (
+							<div className={c.section}>
+								<Typography variant="h6" children="Issues" gutterBottom />
+								<ProblemList data={problemList} />
+							</div>
+						)}
 					</>
 				}
 				footer={

@@ -151,8 +151,8 @@ router.post("/", auth, async (req, res) => {
 
 		// Get pets
 		let pets;
-		const { petIds } = user;
-		if (petIds.length) {
+		const { petIds, type } = user;
+		if (type === "client" && petIds.length) {
 			pets = await Pet.find({ userId: user.id });
 			pets = pets.map((pet) => filterPet(pet));
 		}

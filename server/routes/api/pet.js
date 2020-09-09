@@ -116,8 +116,6 @@ router.post("/sync", auth, async (req, res) => {
 		const { petId, reports: localReports } = body;
 
 		// Validate
-		const user = await User.findById(userId).select("-password");
-		if (!user) return res.status(404).json("User doesn't exist");
 		const pet = await Pet.findById(petId);
 		if (!pet) return res.status(404).json("Pet doesn't exist");
 
