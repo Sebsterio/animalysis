@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	dialogContent: { padding: theme.spacing(3) },
 }));
 
-const Report = ({ history, match, getReport, getPet, isVet }) => {
+const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
 	const c = useStyles();
 
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -28,8 +28,11 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 	const dialogText = summaryData[alert].textMain(pet);
 
 	// Vet: end preview; Client: back to pet's page
-	const closePage = () =>
-		history.push(isVet ? "/survey/edit" : "/pet/" + pet.name);
+	const closePage = () => {
+		if (!isVet) return history.push("/pet/" + pet.name);
+		deletePet({ id: "demo-pet" });
+		history.push("/survey/edit");
+	};
 
 	const sentStatus = sending ? "Sending" : sent ? "Sent" : "Not sent";
 

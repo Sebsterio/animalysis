@@ -5,6 +5,7 @@ import { simplifyReports } from "./pets-utils";
 import { getPetId } from "redux/survey/survey-selectors";
 import { clear as clearSurvey } from "redux/survey/survey-actions";
 import { modify as modifyUser } from "redux/user/user-actions";
+import { getIsVet } from "redux/user/user-selectors";
 import { error } from "redux/error/error-operations";
 import { getTokenConfig } from "utils/ajax";
 import { demoPet } from "./demoPet";
@@ -68,13 +69,16 @@ export const modifyPet = (data) => (dispatch, getState) => {
 // ------------------------ addReportToPet ----------------------------
 
 // Add report to store (then go to Report page)
-// POST report and add id to pet doc (sync status shows on Report page)
+// Client: POST report and add id to pet doc (sync status shows on Report page)
 export const addReportToPet = (data) => (dispatch, getState) => {
+	const isVet = getIsVet(getState());
+	dispatch($.addReportToPet(data));
+	if (isVet) return;
+
 	const { petId, id } = data;
 	const endpoint = "/api/pet/report";
 	const reqData = JSON.stringify(data);
 	const config = getTokenConfig(getState());
-	dispatch($.addReportToPet(data));
 	dispatch($.sendReportStart({ id, petId }));
 	axios
 		.post(endpoint, reqData, config)

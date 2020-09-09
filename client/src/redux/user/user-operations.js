@@ -8,10 +8,10 @@ import * as petsActions from "redux/pets/pets-actions";
 import * as surveyActions from "redux/survey/survey-actions";
 // import * as surveyDataActions from "redux/survey-data/survey-data-actions";
 
+import { getDateModified, getIsAuthenticated } from "./user-selectors";
 import { fetchOrganisation } from "redux/clinic/clinic-operations";
 import { syncAllReports } from "redux/pets/pets-operations";
 import { syncSurvey } from "redux/survey-data/survey-data-operations";
-import { getDateModified, getIsAuthenticated } from "./user-selectors";
 import { error } from "redux/error/error-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
 
@@ -76,13 +76,14 @@ export const signIn = (formData) => (dispatch) => {
 // Add received data in user, profile, clinic, pets store
 // Sync pet reports and survey
 export const syncData = () => (dispatch, getState) => {
-	const signedIn = getIsAuthenticated(getState());
+	const state = getState();
+	const signedIn = getIsAuthenticated(state);
 	if (!signedIn) return;
 
 	const endpoint = "/api/user";
-	const dateModified = getDateModified(getState());
+	const dateModified = getDateModified(state);
 	const data = JSON.stringify({ dateModified });
-	const config = getTokenConfig(getState());
+	const config = getTokenConfig(state);
 	dispatch($.syncStart());
 	axios
 		.post(endpoint, data, config)
@@ -112,6 +113,7 @@ export const syncData = () => (dispatch, getState) => {
 
 // POST user data to db
 // Set dateModified in user store
+// If changed user type, reset all stores
 export const updateUser = (formData) => async (dispatch, getState) => {
 	const endpoint = "/api/user/update";
 	const data = JSON.stringify(formData);
@@ -119,7 +121,10 @@ export const updateUser = (formData) => async (dispatch, getState) => {
 	dispatch($.updateStart());
 	return axios
 		.post(endpoint, data, config)
-		.then((res) => dispatch($.updateSuccess(res.data)))
+		.then((res) => {
+			dispatch($.updateSuccess(res.data));
+			if (!!formData.type) dispatch(syncData());
+		})
 		.catch((err) => {
 			dispatch($.updateFail());
 			dispatch(error(err));

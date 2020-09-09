@@ -63,7 +63,9 @@ router.post("/publish", auth, async (req, res) => {
 
 // ------------------ Sync survey -----------------
 // Access: public
-// Returns: survey or 201
+// Returns: clinic survey OR default survey OR 201
+
+const isDefault = true; // AUX
 
 router.post("/", auth, async (req, res) => {
 	try {
@@ -71,11 +73,13 @@ router.post("/", auth, async (req, res) => {
 		const { datePublished, clinicId } = body;
 
 		// Determine which survey to fetch
-		let query = clinicId ? { clinicId } : { isDefault: true };
+		let query = clinicId ? { clinicId } : { isDefault };
 
 		// Find survey
 		const dateFetched = new Date();
-		const survey = await Survey.findOneAndUpdate(query, { dateFetched });
+		let survey = await Survey.findOneAndUpdate(query, { dateFetched });
+		if (!survey && !!clinicId)
+			survey = await Survey.findOneAndUpdate({ isDefault }, { dateFetched });
 
 		// Compare local and remote versions and determine response
 		const dateLocal = new Date(datePublished).getTime();

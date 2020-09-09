@@ -21,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export const VetSurvey = ({
 	history,
 	surveyIsLoaded,
-	currentPet,
-	noPets,
+	demoPet,
 	startProblemReport,
 	startRoutineCheck,
 	addDemoPet,
@@ -33,12 +32,9 @@ export const VetSurvey = ({
 	const [pet, setPet] = useState({});
 
 	useEffect(() => {
-		setPet({ ...currentPet });
-	}, [currentPet, setPet]);
-
-	useEffect(() => {
-		if (noPets) addDemoPet();
-	}, [noPets, addDemoPet]);
+		if (!demoPet) addDemoPet();
+		else setPet({ ...demoPet });
+	}, [demoPet, setPet, addDemoPet]);
 
 	// -------------------------- Handlers --------------------------
 

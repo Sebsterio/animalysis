@@ -1,7 +1,7 @@
 import Benny from "assets/benny.jpg";
 
 export const demoPet = {
-	id: "123412341234",
+	id: "demo-pet",
 	name: "Benny",
 	species: "canine",
 	sex: "male entire",

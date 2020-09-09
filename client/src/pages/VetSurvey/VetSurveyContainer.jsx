@@ -5,8 +5,8 @@ import {
 	startRoutineCheck,
 	startProblemReport,
 } from "redux/survey/survey-operations";
+import { getPetById } from "redux/pets/pets-selectors";
 import { getIsSurveyLoaded } from "redux/survey/survey-selectors";
-import { getFirstPet, getIsPetsListEmpty } from "redux/pets/pets-selectors";
 import { addDemoPet } from "redux/pets/pets-operations";
 import { modifyPet } from "redux/pets/pets-actions";
 
@@ -14,8 +14,7 @@ import { VetSurvey } from "./VetSurvey";
 
 const mapStateToProps = (state) => ({
 	surveyIsLoaded: getIsSurveyLoaded(state),
-	currentPet: getFirstPet(state),
-	noPets: getIsPetsListEmpty(state),
+	demoPet: getPetById(state, "demo-pet"),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
