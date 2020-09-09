@@ -113,3 +113,21 @@ export const sendReportFail = (data) => ({
 	type: SEND_REPORT_FAIL,
 	payload: data,
 });
+
+// Sync pet report
+
+export const SYNC_START = "pets/SYNC_START";
+export const syncStart = (data) => ({
+	type: SYNC_START,
+	payload: data,
+});
+export const SYNC_SUCCESS = "pets/SYNC_SUCCESS";
+export const syncSuccess = (data) => ({
+	type: SYNC_SUCCESS,
+	payload: data,
+});
+export const SYNC_FAIL = "pets/SYNC_FAIL";
+export const syncFail = (data) => ({
+	type: SYNC_FAIL,
+	payload: data,
+});

@@ -21,12 +21,15 @@ const INITIAL_STATE = {
 		// 	weight: 0,
 		// 	microchip: 0,
 		// 	imageUrl: Benny,
-		// 	dateUpdated: null,
+		// 	dateUpdated: undefined, // set on edit but currently unused
+		//  syncing: false,
+		//	synced: false,
 		// 	reports: [
 		// 		{
 		// 			id: "",
 		// 			petId: "",
-		// 			dateCreated: null,
+		// 			dateCreated: undefined,
+		//			dateUpdated: undefined,
 		// 			title: "",
 		// 			problemList: [],
 		// 			alert: 0,
@@ -90,7 +93,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		}
 
 		case $.MODIFY_REPORT: {
-			const { id, petId, data } = action.payload;
+			const { petId, id, data } = action.payload;
 			return makeStateWithModifiedPetReport(state, id, petId, data);
 		}
 
@@ -133,7 +136,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.SEND_REPORT_START: {
 			const { id, petId } = action.payload;
-			const data = { sending: true };
+			const data = { sending: true, sent: false };
 			return makeStateWithModifiedPetReport(state, id, petId, data);
 		}
 
@@ -147,6 +150,26 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 			const { id, petId } = action.payload;
 			const data = { sending: false, sent: false };
 			return makeStateWithModifiedPetReport(state, id, petId, data);
+		}
+
+		// Sync pet reports
+
+		case $.SYNC_START: {
+			const { petId: id } = action.payload;
+			const update = { syncing: true, synced: false };
+			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
+		}
+
+		case $.SYNC_SUCCESS: {
+			const { petId: id } = action.payload;
+			const update = { syncing: false, synced: true };
+			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
+		}
+
+		case $.SYNC_FAIL: {
+			const { petId: id } = action.payload;
+			const update = { syncing: false, synced: false };
+			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
 		}
 
 		default:

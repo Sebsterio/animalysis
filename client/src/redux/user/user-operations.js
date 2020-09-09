@@ -9,6 +9,7 @@ import * as surveyActions from "redux/survey/survey-actions";
 // import * as surveyDataActions from "redux/survey-data/survey-data-actions";
 
 import { fetchOrganisation } from "redux/clinic/clinic-operations";
+import { syncAllReports } from "redux/pets/pets-operations";
 import { syncSurvey } from "redux/survey-data/survey-data-operations";
 import { getDateModified, getIsAuthenticated } from "./user-selectors";
 import { error } from "redux/error/error-operations";
@@ -43,7 +44,7 @@ export const signUp = (formData) => async (dispatch) => {
 
 // Exchange credentials for token
 // Set (replace) received data in user, profile, clinic, pets store
-// Vet: fetch entire clinic doc
+// Vet: fetch full clinic doc
 // Sync survey
 export const signIn = (formData) => (dispatch) => {
 	const endpoint = "/api/user/sign-in";
@@ -60,6 +61,7 @@ export const signIn = (formData) => (dispatch) => {
 				dispatch(fetchOrganisation(clinic.id));
 			else dispatch(clinicActions.set(clinic));
 			dispatch(petsActions.setList(pets));
+			dispatch(syncAllReports());
 			dispatch(syncSurvey());
 		})
 		.catch((err) => {
@@ -80,6 +82,7 @@ export const syncData = () => (dispatch, getState) => {
 	const endpoint = "/api/user";
 	const dateModified = getDateModified(getState());
 	const data = JSON.stringify({ dateModified });
+	console.log({ data });
 	const config = getTokenConfig(getState());
 	dispatch($.syncStart());
 	axios
@@ -93,6 +96,7 @@ export const syncData = () => (dispatch, getState) => {
 				dispatch(fetchOrganisation(clinic.id));
 			else dispatch(clinicActions.set(clinic));
 			dispatch(petsActions.setList(pets));
+			dispatch(syncAllReports());
 			dispatch(syncSurvey());
 		})
 		.catch((err) => {

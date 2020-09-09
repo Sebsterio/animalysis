@@ -24,7 +24,7 @@ import { getPersonalizedSurveyData } from "./survey-utils";
 import { arrayify } from "utils/array";
 
 // TEMP
-export const callClinic = () => alert("CALL_CLINIC--STUB");
+export const callClinic = () => (dispatch) => alert("CALL_CLINIC--STUB");
 
 // --------------------- Initialization -------------------------
 

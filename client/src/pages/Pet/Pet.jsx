@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
@@ -30,13 +30,16 @@ export const Pet = ({
 	const { name } = match.params;
 	const pet = getPetByName(name);
 	if (!pet) return <Redirect to="/not-found" />;
+	const { id, syncing, synced } = pet;
 
 	const reports = getReports(pet).reverse();
+
+	const fallbackMsg = syncing ? "Syncing" : undefined;
 
 	return (
 		<Container maxWidth="xs" className={c.page}>
 			<PetSnippet {...{ history, pet }} />
-			<ReportsList {...{ history, reports }} />
+			<ReportsList {...{ history, reports, fallbackMsg }} />
 			<Footer {...{ history, pet }} />
 		</Container>
 	);

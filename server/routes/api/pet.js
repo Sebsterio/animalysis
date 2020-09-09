@@ -92,7 +92,7 @@ router.post("/report", auth, async (req, res) => {
 		const report = await new Report(docData).save();
 		if (!report) throw Error("Error creating report");
 
-		// Update pet reportIds & dateModified
+		// Update pet reportIds & dateUpdated
 		const { reportIds } = pet;
 		const dateUpdated = new Date();
 		if (!reportIds) pet.reportIds = [];
@@ -102,6 +102,39 @@ router.post("/report", auth, async (req, res) => {
 
 		// Send response
 		res.status(200).json({ dateUpdated });
+	} catch (e) {
+		res.status(500).json(e.message);
+	}
+});
+// ---------------- Sync pet reports ----------------
+// Access: token
+// Returns: array of reports that are different than local
+
+router.post("/sync", auth, async (req, res) => {
+	try {
+		const { userId, body } = req;
+		const { petId, reports: localReports } = body;
+
+		// Validate
+		const user = await User.findById(userId).select("-password");
+		if (!user) return res.status(404).json("User doesn't exist");
+		const pet = await Pet.findById(petId);
+		if (!pet) return res.status(404).json("Pet doesn't exist");
+
+		// Get pet reports and determine diffs
+		const remoteReports = await Report.find({ petId: pet.id });
+		const reports = [];
+		remoteReports.forEach((remote) => {
+			const local = localReports.find((rep) => rep.id === remote.id);
+			if (local && local.dateUpdated === remote.dateUpdated) return;
+			const data = filterReport(remote._doc);
+			const isNew = !local ? true : false;
+			const id = remote._doc._id;
+			reports.push({ ...data, isNew, id });
+		});
+
+		// Send response
+		res.status(200).json({ reports });
 	} catch (e) {
 		res.status(500).json(e.message);
 	}

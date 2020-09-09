@@ -13,6 +13,7 @@ const ReportSchema = new Schema({
 	problemList: [String],
 	alert: Number,
 	dateCreated: Date,
+	dateModified: Date,
 });
 
 const Report = mongoose.model("Report", ReportSchema);

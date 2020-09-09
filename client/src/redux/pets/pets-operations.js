@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as $ from "redux/pets/pets-actions";
+import { getPetById, getAllPets } from "redux/pets/pets-selectors";
 import { getPetId } from "redux/survey/survey-selectors";
 import { clear as clearSurvey } from "redux/survey/survey-actions";
 import { modify as modifyUser } from "redux/user/user-actions";
@@ -67,7 +68,6 @@ export const modifyPet = (data) => (dispatch, getState) => {
 
 // Add report to store and go to path report/:id
 // POST report and add id to pet doc
-// Update dateUpdated in pet redux
 export const addReportToPet = (data) => (dispatch, getState) => {
 	const { petId, id } = data;
 	const endpoint = "/api/pet/report";
@@ -77,15 +77,45 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 	dispatch($.sendReportStart({ id, petId }));
 	axios
 		.post(endpoint, reqData, config)
-		.then((res) => {
-			const { dateUpdated } = res.data;
-			dispatch($.sendReportSuccess({ id, petId }));
-			dispatch($.modifyPet({ id, formData: { dateUpdated } }));
-		})
+		.then(() => dispatch($.sendReportSuccess({ id, petId })))
 		.catch((err) => {
 			dispatch($.sendReportFail({ id, petId }));
 			dispatch(error(err));
 		});
+};
+// ---------------- syncReports & syncAllReports -------------------
+
+// Fetch reports that are newer than local or not present locally
+// prettier-ignore
+export const syncReports = (petId) => (dispatch, getState) => {
+	const endpoint = "/api/pet/sync";
+	const pet = getPetById(getState(), petId);
+	let {reports} = pet
+	if (!reports) reports = []
+	else reports = reports.map((rep) => [rep.id, rep.dateModified]) 
+	const reqData = JSON.stringify({petId, reports});
+	const config = getTokenConfig(getState());
+	dispatch($.syncStart(petId));
+	axios
+		.post(endpoint, reqData, config)
+		.then((res) => {
+			const { reports } = res.data;
+			dispatch($.syncSuccess(petId));
+			console.log({reports})
+			reports.forEach((report) =>	dispatch(report.isNew 
+				? $.addReportToPet(report)
+				: $.modifyReport(report)
+			));
+		})
+		.catch((err) => {
+			dispatch($.syncFail(petId));
+			dispatch(error(err));
+		});
+};
+
+export const syncAllReports = () => (dispatch, getState) => {
+	const pets = getAllPets(getState());
+	pets.forEach((pet) => (pet.id ? dispatch(syncReports(pet.id)) : null));
 };
 
 // ------------------------ deletePet ----------------------------
