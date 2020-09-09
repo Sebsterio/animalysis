@@ -101,11 +101,9 @@ export const syncReports = (petId) => (dispatch, getState) => {
 		.then((res) => {
 			const { reports } = res.data;
 			dispatch($.syncSuccess(petId));
-			console.log({reports})
-			reports.forEach((report) =>	dispatch(report.isNew 
-				? $.addReportToPet(report)
-				: $.modifyReport(report)
-			));
+			reports.forEach((report) =>	dispatch( report.isNew 
+				? $.addReportToPet(report) : $.modifyReport(report)));
+			dispatch($.sortReports(petId))
 		})
 		.catch((err) => {
 			dispatch($.syncFail(petId));

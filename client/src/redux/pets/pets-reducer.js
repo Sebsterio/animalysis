@@ -3,6 +3,7 @@ import { makeState } from "utils/state";
 import {
 	makeArrayWithPushedItems,
 	makeArrayWithRemovedItems,
+	makeSortedArray,
 } from "utils/array";
 import { makeModifiedPet, makeStateWithModifiedPetReport } from "./pets-utils";
 
@@ -83,6 +84,20 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 			);
 		}
 
+		case $.SORT_REPORTS: {
+			const petId = action.payload;
+			const sortFunction = (cur, next) => {
+				const dateCur = new Date(cur.dateCreated).getTime();
+				const dateNext = new Date(next.dateCreated).getTime();
+				return dateNext - dateCur;
+			};
+			return makeModifiedPet(state, petId, (pet) =>
+				makeState(pet, "reports", (reports) =>
+					makeSortedArray(reports, sortFunction)
+				)
+			);
+		}
+
 		case $.ADD_REPORT_TO_PET: {
 			const { petId } = action.payload;
 			return makeModifiedPet(state, petId, (pet) =>
@@ -155,19 +170,19 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		// Sync pet reports
 
 		case $.SYNC_START: {
-			const { petId: id } = action.payload;
+			const id = action.payload;
 			const update = { syncing: true, synced: false };
 			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
 		}
 
 		case $.SYNC_SUCCESS: {
-			const { petId: id } = action.payload;
+			const id = action.payload;
 			const update = { syncing: false, synced: true };
 			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
 		}
 
 		case $.SYNC_FAIL: {
-			const { petId: id } = action.payload;
+			const id = action.payload;
 			const update = { syncing: false, synced: false };
 			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
 		}

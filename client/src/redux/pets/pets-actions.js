@@ -37,6 +37,12 @@ export const setReports = (data) => ({
 	payload: data,
 });
 
+export const SORT_REPORTS = "pets/SORT_REPORTS";
+export const sortReports = (data) => ({
+	type: SORT_REPORTS,
+	payload: data,
+});
+
 export const ADD_REPORT_TO_PET = "pets/ADD_REPORT_TO_PET";
 export const addReportToPet = (data) => ({
 	type: ADD_REPORT_TO_PET,

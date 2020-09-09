@@ -115,3 +115,6 @@ export const makeArrayWithItemsInjectedAfterTargets = ({
 	newArr.splice(lastMatchedTargetIndex + 1, 0, ...arrayify(newItems));
 	return newArr;
 };
+
+export const makeSortedArray = (array = [], sortFunc) =>
+	[...array].sort(sortFunc);
