@@ -86,14 +86,13 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 // ---------------- syncReports & syncAllReports -------------------
 
 // Fetch reports that are newer than local or not present locally
-// prettier-ignore
 export const syncReports = (petId) => (dispatch, getState) => {
 	const endpoint = "/api/pet/sync";
 	const pet = getPetById(getState(), petId);
-	let {reports} = pet
-	if (!reports) reports = []
-	else reports = reports.map((rep) => [rep.id, rep.dateModified]) 
-	const reqData = JSON.stringify({petId, reports});
+	let { reports } = pet;
+	if (!reports) reports = [];
+	else reports = reports.map((rep) => [rep.id, rep.dateModified]);
+	const reqData = JSON.stringify({ petId, reports });
 	const config = getTokenConfig(getState());
 	dispatch($.syncStart(petId));
 	axios
@@ -101,9 +100,10 @@ export const syncReports = (petId) => (dispatch, getState) => {
 		.then((res) => {
 			const { reports } = res.data;
 			dispatch($.syncSuccess(petId));
-			reports.forEach((report) =>	dispatch( report.isNew 
-				? $.addReportToPet(report) : $.modifyReport(report)));
-			dispatch($.sortReports(petId))
+			reports.forEach(({ isNew, data }) =>
+				dispatch(isNew ? $.addReportToPet(data) : $.modifyReport(data))
+			);
+			dispatch($.sortReports(petId));
 		})
 		.catch((err) => {
 			dispatch($.syncFail(petId));

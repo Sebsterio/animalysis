@@ -1,4 +1,5 @@
 export * from "./Alert";
+export * from "./Alert-data";
 export * from "./Copyright";
 export * from "./Form";
 export * from "./Nav";

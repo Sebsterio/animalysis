@@ -30,16 +30,15 @@ export const Pet = ({
 	const { name } = match.params;
 	const pet = getPetByName(name);
 	if (!pet) return <Redirect to="/not-found" />;
-	const { id, syncing, synced } = pet;
 
 	const reports = getReports(pet).reverse();
 
-	const fallbackMsg = syncing ? "Syncing" : undefined;
+	console.log({ reports, reversed: reports.reverse() });
 
 	return (
 		<Page
 			header={<PetSnippet {...{ history, pet }} />}
-			main={<ReportsList {...{ history, reports, fallbackMsg }} />}
+			main={<ReportsList {...{ history, reports }} />}
 			footer={<Footer {...{ history, pet }} />}
 		/>
 	);

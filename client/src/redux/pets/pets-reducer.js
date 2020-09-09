@@ -1,7 +1,7 @@
 import * as $ from "./pets-actions";
 import { makeState } from "utils/state";
 import {
-	makeArrayWithPushedItems,
+	makeArrayWithUnshiftedItems,
 	makeArrayWithRemovedItems,
 	makeSortedArray,
 } from "utils/array";
@@ -59,7 +59,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.ADD_PET: {
 			return makeState(state, "list", (list) =>
-				makeArrayWithPushedItems(list, action.payload)
+				makeArrayWithUnshiftedItems(list, action.payload)
 			);
 		}
 
@@ -102,7 +102,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 			const { petId } = action.payload;
 			return makeModifiedPet(state, petId, (pet) =>
 				makeState(pet, "reports", (reports) =>
-					makeArrayWithPushedItems(reports, { ...action.payload })
+					makeArrayWithUnshiftedItems(reports, { ...action.payload })
 				)
 			);
 		}

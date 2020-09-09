@@ -127,10 +127,9 @@ router.post("/sync", auth, async (req, res) => {
 		remoteReports.forEach((remote) => {
 			const local = localReports.find((rep) => rep.id === remote.id);
 			if (local && local.dateUpdated === remote.dateUpdated) return;
-			const data = filterReport(remote._doc);
+			const data = { ...filterReport(remote._doc), id: remote._doc._id };
 			const isNew = !local ? true : false;
-			const id = remote._doc._id;
-			reports.push({ ...data, isNew, id });
+			reports.push({ data, isNew });
 		});
 
 		// Send response
