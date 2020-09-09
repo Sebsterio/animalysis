@@ -30,7 +30,7 @@ const AccountPage = ({
 	// ---------------------- Handlers ----------------------
 
 	// prettier-ignore
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		clearError()
 		const inputNames = ["email", "password", "newEmail", "newPassword", "firstName", 'type'];
@@ -39,7 +39,10 @@ const AccountPage = ({
 		if (mode === authModes.signUp) return signUp(data);
 		if (mode === mainModes.close) return close(data);
 		const {email, password, type} = mainModes
-		if ( [email, password, type].includes(mode)) return update(data);
+		if ( [email, password, type].includes(mode)) {
+			await update(data)
+			history.push('/')
+		};
 	};
 
 	const goBack = () => {
