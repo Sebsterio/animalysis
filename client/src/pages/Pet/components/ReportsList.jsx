@@ -38,9 +38,9 @@ export const ReportsList = ({ history, reports }) => {
 			<ButtonGroup
 				fullWidth
 				orientation="vertical"
-				children={reports.map(({ id, date, title, alert }) => (
+				children={reports.map(({ id, dateCreated, title, alert }) => (
 					<Button className={c.report} onClick={() => openReport(id)}>
-						<span className={c.date}>{getDateString(date)}</span>
+						<span className={c.date}>{getDateString(dateCreated)}</span>
 						<span className={c.title}>{title}</span>
 						<FiberManualRecordIcon style={getStyle(alert)} />
 					</Button>

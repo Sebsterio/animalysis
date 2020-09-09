@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
 import { ReportsList, Footer } from "./components";
-import { PetSnippet } from "components";
+import { Page, PetSnippet } from "components";
 
 const useStyles = makeStyles((theme) => ({
 	page: {
@@ -37,10 +37,10 @@ export const Pet = ({
 	const fallbackMsg = syncing ? "Syncing" : undefined;
 
 	return (
-		<Container maxWidth="xs" className={c.page}>
-			<PetSnippet {...{ history, pet }} />
-			<ReportsList {...{ history, reports, fallbackMsg }} />
-			<Footer {...{ history, pet }} />
-		</Container>
+		<Page
+			header={<PetSnippet {...{ history, pet }} />}
+			main={<ReportsList {...{ history, reports, fallbackMsg }} />}
+			footer={<Footer {...{ history, pet }} />}
+		/>
 	);
 };
