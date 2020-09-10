@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as $ from "./pets-actions";
-import { getPetById, getAllPets } from "./pets-selectors";
+import { getPetById, getAllPets, getReportById } from "./pets-selectors";
 import { simplifyReports, simplifyPets } from "./pets-utils";
 import { getPetId } from "redux/survey/survey-selectors";
 import { clear as clearSurvey } from "redux/survey/survey-actions";
@@ -113,7 +113,7 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 	if (isVet) return;
 
 	const { petId, id } = data;
-	const endpoint = "/api/pet/add-report";
+	const endpoint = "/api/report/add";
 	const reqData = JSON.stringify(data);
 	const config = getTokenConfig(getState());
 	dispatch($.sendReportStart({ id, petId }));
@@ -130,7 +130,7 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 
 // Fetch reports not present locally or updated more recently
 export const syncReports = (petId) => (dispatch, getState) => {
-	const endpoint = "/api/pet/sync-reports";
+	const endpoint = "/api/report/sync-all";
 	const pet = getPetById(getState(), petId);
 	const reports = pet.reports ? simplifyReports(pet.reports) : [];
 	const reqData = JSON.stringify({ petId, reports });
@@ -161,6 +161,26 @@ export const syncReports = (petId) => (dispatch, getState) => {
 export const syncAllReports = () => (dispatch, getState) => {
 	const pets = getAllPets(getState());
 	pets.forEach((pet) => (pet.id ? dispatch(syncReports(pet.id)) : null));
+};
+
+// ---------------------- modifyReport ---------------------------
+
+// POST an update to report; spread data + dateUpdated in store on success
+export const modifyReport = ({ id, update }) => (dispatch, getState) => {
+	const endpoint = "/api/report/update";
+	const reqData = JSON.stringify({ id, update });
+	const config = getTokenConfig(getState());
+	axios
+		.post(endpoint, reqData, config)
+		.then((res) => {
+			const { dateUpdated } = res.data;
+			const data = { ...update, dateUpdated };
+			const petId = getReportById(getState(), id).petId;
+			dispatch($.modifyReport({ id, petId, data }));
+		})
+		.catch((err) => {
+			dispatch(error(err));
+		});
 };
 
 // ------------------------ deletePet ----------------------------

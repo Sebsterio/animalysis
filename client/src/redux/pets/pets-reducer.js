@@ -43,6 +43,7 @@ const INITIAL_STATE = {
 		// 			alert: 0,
 		// 			sending: false,
 		// 			sent: false,
+		//      seen: false
 		// 		},
 		// 	],
 		// },

@@ -15,22 +15,10 @@ const filterPet = (pet) => {
 		"imageUrl",
 		"dateUpdated",
 		"clinicId",
+		"userId",
 	];
 	const filteredPet = makeObjectWithSelectedProps(pet, allowedProps);
 	return makeObjectWithoutUndefinedProps(filteredPet);
 };
 
-const filterReport = (report) => {
-	const allowedProps = [
-		"petId",
-		"dateCreated",
-		"dateUpdated",
-		"title",
-		"alert",
-		"problemList",
-	];
-	const filteredPet = makeObjectWithSelectedProps(report, allowedProps);
-	return makeObjectWithoutUndefinedProps(filteredPet);
-};
-
-module.exports = { filterPet, filterReport };
+module.exports = { filterPet };

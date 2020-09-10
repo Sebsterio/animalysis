@@ -4,14 +4,11 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const User = require("../../models/user");
 const Clinic = require("../../models/clinic");
-const Pet = require("../../models/pet");
 const utils = require("./user-utils");
 const clinicUtils = require("./clinic-utils");
-const petUtils = require("./pet-utils");
 
 const { filterUserReq, filterUserRes } = utils;
 const { filterClientClinic } = clinicUtils;
-const { filterPetReq, filterPet } = petUtils;
 
 const router = express.Router();
 

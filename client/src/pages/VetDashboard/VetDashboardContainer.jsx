@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 
 import { getName, getIsLoading } from "redux/profile/profile-selectors";
 import { getFormData, getIsRegistered } from "redux/clinic/clinic-selectors";
-import { getAllPetReports } from "redux/pets/pets-selectors";
+import { getAllUnseenReports } from "redux/pets/pets-selectors";
+import { modifyReport } from "redux/pets/pets-operations";
 
 import { VetDashboard } from "./VetDashboard";
 
@@ -14,10 +15,12 @@ const mapStateToProps = (state) => ({
 	profileLoading: getIsLoading(state),
 	clinic: getFormData(state),
 	hasClinic: getIsRegistered(state),
-	reports: getAllPetReports(state),
+	reports: getAllUnseenReports(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+	modifyReport: (data) => dispatch(modifyReport(data)),
+});
 
 const VetDashboardContainer = (props) => <VetDashboard {...props} />;
 

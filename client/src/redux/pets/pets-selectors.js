@@ -30,6 +30,9 @@ export const getAllPetReports = (state) =>
 		[]
 	);
 
+export const getAllUnseenReports = (state) =>
+	getAllPetReports(state).filter((report) => !report.dateSeen);
+
 export const getHasReports = (state) => !!getAllPetReports(state).length;
 
 export const getReportById = (state, id) => {

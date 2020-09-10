@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LIMIT = 7;
 
-export const ReportsList = ({ history, reports }) => {
+export const ReportsList = ({ history, reports, reportClickCallback }) => {
 	const [showAll, setShowAll] = useState(false);
 	const toggleShowAll = () => setShowAll(!showAll);
 
@@ -42,7 +42,10 @@ export const ReportsList = ({ history, reports }) => {
 			</Typography>
 		);
 
-	const openReport = (id) => history.push(`/report/${id}`);
+	const openReport = (id) => {
+		history.push(`/report/${id}`);
+		if (reportClickCallback) reportClickCallback(id);
+	};
 
 	const getStyle = (alert) => ({ color: alertData[alert].color });
 

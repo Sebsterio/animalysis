@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
 import { Page, ReportsList } from "components";
-import { ClinicSnippet } from "./components";
+// import { ClinicSnippet } from "./components";
 
 const useStyles = makeStyles((theme) => ({
 	greeting: { margin: theme.spacing(4, 0) },
@@ -16,9 +16,10 @@ export const VetDashboard = ({
 	history,
 	profileLoading,
 	username,
-	clinic,
+	// clinic,
 	hasClinic,
 	reports,
+	modifyReport,
 }) => {
 	const c = useStyles();
 
@@ -27,6 +28,11 @@ export const VetDashboard = ({
 	const handleJoinClinic = () => history.push("/clinic-search");
 
 	const handleRegisterClinic = () => history.push("/my-clinic");
+
+	const reportClickCallback = (id) =>
+		modifyReport({ id, update: { dateSeen: new Date() } });
+
+	console.log({ reports });
 
 	// -------------------------- View ---------------------------
 
@@ -43,16 +49,13 @@ export const VetDashboard = ({
 			main={
 				hasClinic ? (
 					// User is a member of a clinic
-					<>
-						<ClinicSnippet {...{ clinic }} />
-						<Typography variant="h6">New reports</Typography>
-						<ReportsList {...{ reports, history }} />
-						<Button
-							color="primary"
-							children="Search history"
-							onClick={() => {}}
-						/>
-					</>
+					reports.length && (
+						<>
+							{/* <ClinicSnippet {...{ clinic }} /> */}
+							<Typography variant="h6">New reports</Typography>
+							<ReportsList {...{ reports, history, reportClickCallback }} />
+						</>
+					)
 				) : (
 					// User is not a member of any clinic
 					<div className={c.denseStack}>
@@ -70,6 +73,17 @@ export const VetDashboard = ({
 							onClick={handleRegisterClinic}
 						/>
 					</div>
+				)
+			}
+			footer={
+				hasClinic && (
+					<Button
+						fullWidth
+						variant="contained"
+						color="primary"
+						children="Search history"
+						onClick={() => {}}
+					/>
 				)
 			}
 		/>

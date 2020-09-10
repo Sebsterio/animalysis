@@ -15,7 +15,7 @@ export const Pet = ({
 	const pet = getPetByName(name);
 	if (!pet) return <Redirect to="/not-found" />;
 
-	const reports = getReports(pet).reverse();
+	const reports = getReports(pet);
 
 	return (
 		<Page
