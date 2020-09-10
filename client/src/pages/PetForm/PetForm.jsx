@@ -73,9 +73,10 @@ export const PetForm = ({
 		else history.push("/pet/" + matchedPet.name);
 	};
 
-	const submitForm = () => {
-		if (!matchedPet) addPet({ formData: pet, history });
-		else modifyPet({ id: matchedPet.id, formData: pet, history });
+	const submitForm = async () => {
+		if (!matchedPet) await addPet({ formData: pet });
+		else await modifyPet({ id: matchedPet.id, formData: pet });
+		history.push("/pet/" + pet.name);
 	};
 
 	const handleDelete = () => {

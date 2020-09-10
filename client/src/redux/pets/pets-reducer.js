@@ -28,7 +28,7 @@ const INITIAL_STATE = {
 		// 	weight: 0,
 		// 	microchip: 0,
 		// 	imageUrl: Benny,
-		// 	dateUpdated: undefined, // set on edit but currently unused
+		// 	dateUpdated: undefined,
 		//  syncing: false,
 		//	synced: false,
 		// 	reports: [

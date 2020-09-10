@@ -19,19 +19,19 @@ export const addDemoPet = () => (dispatch) => dispatch($.addPet(demoPet));
 // POST pet to db
 // add petId and update dateModified to user (server & redux)
 // go to Pet page
-export const addPet = ({ formData, history }) => (dispatch, getState) => {
+export const addPet = ({ formData }) => async (dispatch, getState) => {
 	const endpoint = "/api/pet/create";
 	const data = JSON.stringify(formData);
 	const config = getTokenConfig(getState());
 	dispatch($.addStart());
-	axios
+	return axios
 		.post(endpoint, data, config)
 		.then((res) => {
 			const { id, dateCreated } = res.data;
 			dispatch($.addSuccess());
 			dispatch($.addPet({ ...formData, id }));
 			dispatch(modifyUser({ dateModified: dateCreated }));
-			history.push("/pet/" + formData.name);
+			return;
 		})
 		.catch((err) => {
 			dispatch($.addFail());
@@ -44,13 +44,13 @@ export const addPet = ({ formData, history }) => (dispatch, getState) => {
 // POST pet to db
 // update dateModified of user (server & redux)
 // go to Pet page
-export const modifyPet = (data) => (dispatch, getState) => {
-	const { id, formData, history } = data;
+export const modifyPet = (data) => async (dispatch, getState) => {
+	const { id, formData } = data;
 	const endpoint = "/api/pet/update";
 	const reqData = JSON.stringify({ id, formData });
 	const config = getTokenConfig(getState());
 	dispatch($.updateStart());
-	axios
+	return axios
 		.post(endpoint, reqData, config)
 		.then((res) => {
 			const { dateUpdated } = res.data;
@@ -58,7 +58,7 @@ export const modifyPet = (data) => (dispatch, getState) => {
 			dispatch($.updateSuccess());
 			dispatch($.modifyPet({ id, formData: newFormData }));
 			dispatch(modifyUser({ dateModified: dateUpdated }));
-			history.push("/pet/" + formData.name);
+			return;
 		})
 		.catch((err) => {
 			dispatch($.updateFail());

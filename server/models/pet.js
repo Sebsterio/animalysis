@@ -8,6 +8,10 @@ const PetSchema = new Schema({
 		ref: "User",
 		required: true,
 	},
+	clinicId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Clinic",
+	},
 	name: String,
 	species: String,
 	sex: String,
