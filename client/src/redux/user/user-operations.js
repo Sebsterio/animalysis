@@ -129,6 +129,21 @@ export const updateUser = (formData) => async (dispatch, getState) => {
 		});
 };
 
+// -------------------------- fetchUserById ------------------------------
+
+// GET user data
+export const fetchUserById = (id) => async (dispatch, getState) => {
+	const endpoint = "/api/user/" + id;
+	const config = getTokenConfig(getState());
+	return axios
+		.get(endpoint, config)
+		.then((res) => res)
+		.catch((err) => {
+			dispatch(error(err));
+			return false;
+		});
+};
+
 // -------------------------- deleteUser ------------------------------
 
 // Delete all user-related docs; Restart app

@@ -11,3 +11,4 @@ export * from "./Spinner";
 export * from "./Stack";
 export * from "./LinkBlock";
 export * from "./ReportsList";
+export * from "./Dictionary";

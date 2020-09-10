@@ -215,6 +215,29 @@ router.post("/update", auth, async (req, res) => {
 	}
 });
 
+// ---------------- Fetch user ----------------
+// Access: token (clinicId must match between callee and caller)
+// Returns: user doc
+
+router.get("/:id", auth, async (req, res) => {
+	try {
+		const { userId, params } = req;
+		const { id } = params;
+
+		const caller = await User.findById(userId);
+		const callee = await User.findById(id);
+		if (!callee) throw Error("User does not exist");
+
+		console.log({ caller: caller.clinicId, callee: callee.clinicId });
+		const clinicsMatch = callee.clinicId.equals(caller.clinicId);
+		if (!clinicsMatch) return res.status(401).json("ClinicId doesn't match");
+
+		res.status(200).json(filterUserRes(callee));
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
+
 // ---------------- Delete user ----------------
 // Access: token & password
 // Returns: 200
