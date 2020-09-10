@@ -3,6 +3,7 @@ import * as $ from "./clinic-actions";
 import { getClinicId } from "./clinic-selectors";
 import { updateUser } from "redux/user/user-operations";
 import { getIsVet } from "redux/user/user-selectors";
+import { modifyAllPets } from "redux/pets/pets-operations";
 import { syncSurvey } from "redux/survey-data/survey-data-operations";
 import { error } from "redux/error/error-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
@@ -13,8 +14,7 @@ import { getConfig, getTokenConfig } from "utils/ajax";
 // Update user clinicInfo prop
 export const updateClinicInfo = (formData) => (dispatch) => {
 	dispatch($.modify(formData));
-	const userFormData = { clinicInfo: formData };
-	dispatch(updateUser(userFormData));
+	dispatch(updateUser({ clinicInfo: formData }));
 };
 
 // ============================ All =============================
@@ -35,19 +35,22 @@ export const fetchClinics = (queryData) => async (dispatch, getState) => {
 // ------------------------ joinClinic ------------------------------
 
 // Link a registered clinic to profile
-// Pet-owner: set clinic details in store
-// Vet: Attempt to fetch full clinic data (must be member; error -> feedback)
-// Got /my-clinic
-export const joinClinic = ({ history, data }) => async (dispatch, getState) => {
+// Pet-owner: set clinic details in store; update all pets with clinicId
+// Vet: Attempt to fetch full clinic data (must be member; error -> UI feedback)
+export const joinClinic = (data) => async (dispatch, getState) => {
 	const isVet = getIsVet(getState());
 	const clinicId = data.id;
+	console.log({ clinicId });
 	if (isVet) {
 		const res = await dispatch(fetchOrganisation(clinicId));
-		if (!res) return;
-	} else dispatch($.set(data));
+		if (!res) return false;
+	} else {
+		dispatch($.set(data));
+		dispatch(modifyAllPets({ clinicId }));
+	}
 	await dispatch(updateUser({ clinicId, clinicInfo: {} }));
 	dispatch(syncSurvey()); // after updateUser (response sets clinicId)
-	history.push("/my-clinic");
+	return true; // -> go to /my-clinic
 };
 
 // ------------------------ leaveClinic ------------------------------

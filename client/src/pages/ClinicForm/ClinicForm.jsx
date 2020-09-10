@@ -19,6 +19,11 @@ export const ClinicForm = ({
 		closeForm();
 	};
 
+	const customizeClinic = () => {
+		leaveClinic();
+		updateClinicInfo(clinic);
+	};
+
 	const canSubmit = () => isFormFilled(formFields, clinic);
 
 	return (
@@ -41,7 +46,7 @@ export const ClinicForm = ({
 					textLeft="Cancel"
 					onClickLeft={closeForm}
 					textRight={clinicRegistered ? "Customize" : "Save"}
-					onClickRight={clinicRegistered ? leaveClinic : submitForm}
+					onClickRight={clinicRegistered ? customizeClinic : submitForm}
 					disabledRight={clinicRegistered ? false : !canSubmit()}
 					noArrows
 				/>

@@ -14,6 +14,7 @@ const filterPet = (pet) => {
 		"microchip",
 		"imageUrl",
 		"dateUpdated",
+		"clinicId",
 	];
 	const filteredPet = makeObjectWithSelectedProps(pet, allowedProps);
 	return makeObjectWithoutUndefinedProps(filteredPet);

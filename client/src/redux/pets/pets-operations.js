@@ -39,13 +39,12 @@ export const addPet = ({ formData }) => async (dispatch, getState) => {
 		});
 };
 
-// ------------------------ modifyPet ----------------------------
+// ----------------- modifyPet & modifyAllPets ---------------------
 
 // POST pet to db
 // update dateModified of user (server & redux)
 // go to Pet page
-export const modifyPet = (data) => async (dispatch, getState) => {
-	const { id, formData } = data;
+export const modifyPet = ({ id, formData }) => async (dispatch, getState) => {
 	const endpoint = "/api/pet/update";
 	const reqData = JSON.stringify({ id, formData });
 	const config = getTokenConfig(getState());
@@ -64,6 +63,11 @@ export const modifyPet = (data) => async (dispatch, getState) => {
 			dispatch($.updateFail());
 			dispatch(error(err));
 		});
+};
+
+export const modifyAllPets = (formData) => (dispatch, getState) => {
+	const pets = getAllPets(getState());
+	pets.forEach((pet) => dispatch(modifyPet({ id: pet.id, formData })));
 };
 
 // ----------------------- syncPets (vet) --------------------------

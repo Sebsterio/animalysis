@@ -54,8 +54,9 @@ export const ClinicSearch = ({
 			setResults([...results, ...res])
 		);
 
-	const handleSnippetClick = (data) => {
-		joinClinic({ history, data });
+	const handleSnippetClick = async (data) => {
+		const success = await joinClinic(data);
+		if (success) history.push("/my-clinic");
 	};
 
 	// ------------------------- Selectors ---------------------------
