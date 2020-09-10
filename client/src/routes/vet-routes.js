@@ -11,6 +11,7 @@ import {
 	Report,
 	Pet,
 	VetReports,
+	Profile,
 } from "pages";
 
 // Aux
@@ -126,6 +127,13 @@ export const vetRoutes = [
 		path: "/pet/:name",
 		title: "Pet Profile",
 		component: Pet,
+		exact,
+	},
+	// --- Pet Owner profile ---
+	{
+		path: "/client/:id",
+		title: "Client Profile",
+		component: Profile,
 		exact,
 	},
 ];

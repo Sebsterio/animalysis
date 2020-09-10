@@ -42,7 +42,7 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 		else history.goBack(); // can be either SurveyEditor or Dashboard
 	};
 
-	const contactOwner = () => history.push("/user/" + pet.userId);
+	const contactOwner = () => history.push("/client/" + pet.userId);
 
 	const viewPet = () => history.push("/pet/" + pet.id);
 
