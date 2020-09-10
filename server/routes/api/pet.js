@@ -72,11 +72,60 @@ router.post("/update", auth, async (req, res) => {
 	}
 });
 
+// ------------------- Sync pets -------------------
+// Access: token
+// Returns: diffs OR all pets
+
+router.post("/sync", auth, async (req, res) => {
+	try {
+		const { userId, body } = req;
+		const { pets: localPets } = body;
+
+		const user = await User.findById(userId).select("-password");
+		if (!user) return res.status(404).json("User doesn't exist");
+
+		// Get pets
+		const { petIds, type, clinicId } = user;
+		let pets =
+			type === "client" && !!petIds.length
+				? await Pet.find({ userId: user.id })
+				: type === "vet" && !!clinicId
+				? await Pet.find({ clinicId })
+				: [];
+		if (!pets.length) return res.status(404).json("No pets have been found");
+		pets = pets.map((pet) => ({ ...filterPet(pet.toObject()), id: pet._id }));
+
+		// Send all results if localPets not provided
+		if (!localPets.length) return res.status(200).json({ pets });
+
+		// Else, determine diffs
+		const diffs = [];
+		pets.forEach((remote) => {
+			const local = localPets.find((pet) => remote.id.equals(pet.id));
+			console.log({ remote, local });
+			if (local) {
+				if (!local.dateUpdated && !remote.dateUpdated) return;
+				const dateLocal = new Date(local.dateUpdated).getTime();
+				const dateRemote = new Date(remote.dateUpdated).getTime();
+				if (dateLocal == dateRemote) return;
+			}
+			// dateUpdated changed so add remote to diffs
+			diffs.push({ data: remote, isNew: !local ? true : false });
+		});
+
+		// Send response
+		if (!diffs.length) return res.status(201).send();
+		res.status(200).json({ diffs });
+	} catch (e) {
+		res.status(500).json(e.message);
+	}
+});
+
 // ------------------- Add report -------------------
 // Access: token
 // Returns: dateUpdated (pet)
 
-router.post("/report", auth, async (req, res) => {
+router.post("/add-report", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
 		const { id, petId } = body;
@@ -108,9 +157,9 @@ router.post("/report", auth, async (req, res) => {
 });
 // ---------------- Sync pet reports ----------------
 // Access: token
-// Returns: array of reports that are different than local
+// Returns: diffs
 
-router.post("/sync", auth, async (req, res) => {
+router.post("/sync-reports", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
 		const { petId, reports: localReports } = body;

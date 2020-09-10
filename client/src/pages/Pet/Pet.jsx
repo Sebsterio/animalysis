@@ -17,8 +17,6 @@ export const Pet = ({
 
 	const reports = getReports(pet).reverse();
 
-	console.log({ reports, reversed: reports.reverse() });
-
 	return (
 		<Page
 			header={<PetSnippet {...{ history, pet }} />}

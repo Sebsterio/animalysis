@@ -13,7 +13,9 @@ import {
 
 const INITIAL_STATE = {
 	updating: false,
-	deleting: false, // unused
+	deleting: false,
+	syncing: false,
+	synced: false,
 	list: [
 		// {
 		// 	id: "123412341234",
@@ -67,7 +69,6 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		// Add missing pets; remove excess pets
 		case $.MODIFY_LIST: {
 			const newPets = action.payload;
-			console.log({ newPets });
 			return {
 				...state,
 				list: newPets.map((pet) => {
@@ -137,7 +138,34 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		// ------------ Sync status ------------
 
-		// Add, Update
+		// Sync pets
+
+		case $.SYNC_START: {
+			return {
+				...state,
+				syncing: true,
+				synced: false,
+			};
+		}
+
+		case $.SYNC_SUCCESS:
+		case $.UP_TO_DATE: {
+			return {
+				...state,
+				syncing: false,
+				synced: true,
+			};
+		}
+
+		case $.SYNC_FAIL: {
+			return {
+				...state,
+				syncing: false,
+				synced: false,
+			};
+		}
+
+		// Add, update pet
 
 		case $.ADD_START:
 		case $.UPDATE_START:
@@ -155,7 +183,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 				updating: false,
 			};
 
-		// Delete
+		// Delete pet
 
 		case $.DELETE_START:
 			return {
@@ -192,20 +220,20 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		// Sync pet reports
 
-		case $.SYNC_START: {
+		case $.SYNC_REPORTS_START: {
 			const { petId } = action.payload;
 			const update = { syncing: true, synced: false };
 			return makeModifiedPet(state, petId, (pet) => ({ ...pet, ...update }));
 		}
 
-		case $.SYNC_SUCCESS:
-		case $.UP_TO_DATE: {
+		case $.SYNC_REPORTS_SUCCESS:
+		case $.REPORTS_UP_TO_DATE: {
 			const { petId } = action.payload;
 			const update = { syncing: false, synced: true };
 			return makeModifiedPet(state, petId, (pet) => ({ ...pet, ...update }));
 		}
 
-		case $.SYNC_FAIL: {
+		case $.SYNC_REPORTS_FAIL: {
 			const { petId } = action.payload;
 			const update = { syncing: false, synced: false };
 			return makeModifiedPet(state, petId, (pet) => ({ ...pet, ...update }));

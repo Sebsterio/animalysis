@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as $ from "./pets-actions";
 import { getPetById, getAllPets } from "./pets-selectors";
-import { simplifyReports } from "./pets-utils";
+import { simplifyReports, simplifyPets } from "./pets-utils";
 import { getPetId } from "redux/survey/survey-selectors";
 import { clear as clearSurvey } from "redux/survey/survey-actions";
 import { modify as modifyUser } from "redux/user/user-actions";
@@ -66,6 +66,39 @@ export const modifyPet = (data) => (dispatch, getState) => {
 		});
 };
 
+// ----------------------- syncPets (vet) --------------------------
+
+// Fetch pets not present locally or updated more recently
+export const syncPets = () => (dispatch, getState) => {
+	const endpoint = "/api/pet/sync";
+	const pets = simplifyPets(getAllPets(getState()));
+	console.log({ pets });
+	const reqData = JSON.stringify({ pets });
+	const config = getTokenConfig(getState());
+	dispatch($.syncStart());
+	axios
+		.post(endpoint, reqData, config)
+		.then((res) => {
+			if (res.status === 201) {
+				dispatch($.upToDate());
+			} else {
+				dispatch($.syncSuccess());
+				const { diffs, pets } = res.data;
+				if (pets) dispatch($.setList(pets));
+				else if (diffs)
+					diffs.forEach(({ isNew, data }) => {
+						if (isNew) dispatch($.addPet(data));
+						else dispatch($.modifyPet({ id: data.id, formData: data }));
+					});
+			}
+			dispatch(syncAllReports());
+		})
+		.catch((err) => {
+			dispatch($.syncFail());
+			dispatch(error(err));
+		});
+};
+
 // ------------------------ addReportToPet ----------------------------
 
 // Add report to store (then go to Report page)
@@ -76,7 +109,7 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 	if (isVet) return;
 
 	const { petId, id } = data;
-	const endpoint = "/api/pet/report";
+	const endpoint = "/api/pet/add-report";
 	const reqData = JSON.stringify(data);
 	const config = getTokenConfig(getState());
 	dispatch($.sendReportStart({ id, petId }));
@@ -88,23 +121,24 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 			dispatch(error(err));
 		});
 };
+
 // ---------------- syncReports & syncAllReports -------------------
 
 // Fetch reports not present locally or updated more recently
 export const syncReports = (petId) => (dispatch, getState) => {
-	const endpoint = "/api/pet/sync";
+	const endpoint = "/api/pet/sync-reports";
 	const pet = getPetById(getState(), petId);
 	const reports = pet.reports ? simplifyReports(pet.reports) : [];
 	const reqData = JSON.stringify({ petId, reports });
 	const config = getTokenConfig(getState());
-	dispatch($.syncStart({ petId }));
+	dispatch($.syncReportsStart({ petId }));
 	axios
 		.post(endpoint, reqData, config)
 		.then((res) => {
 			if (res.status === 201) {
-				dispatch($.upToDate({ petId }));
+				dispatch($.reportsUpToDate({ petId }));
 			} else {
-				dispatch($.syncSuccess({ petId }));
+				dispatch($.syncReportsSuccess({ petId }));
 				const { diffs } = res.data;
 				diffs.forEach(({ isNew, data }) => {
 					data = { ...data, sent: true };
@@ -115,7 +149,7 @@ export const syncReports = (petId) => (dispatch, getState) => {
 			}
 		})
 		.catch((err) => {
-			dispatch($.syncFail({ petId }));
+			dispatch($.syncReportsFail({ petId }));
 			dispatch(error(err));
 		});
 };

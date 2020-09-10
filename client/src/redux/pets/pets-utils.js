@@ -39,3 +39,5 @@ export const simplifyReports = (reports) =>
 		const { id, dateUpdated } = report;
 		return { id, dateUpdated };
 	});
+
+export const simplifyPets = simplifyReports;

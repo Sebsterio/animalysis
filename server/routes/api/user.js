@@ -61,7 +61,7 @@ router.post("/sign-up", async (req, res) => {
 
 // --------------------- Sign-in ---------------------
 // Access: email & password
-// Returns: user + token, profile, clinics, pets
+// Returns: user + token, profile, clinics
 
 router.post("/sign-in", async (req, res) => {
 	try {
@@ -95,14 +95,6 @@ router.post("/sign-in", async (req, res) => {
 			else clinic = foundClinic;
 		}
 
-		// Get pets
-		let pets;
-		const { petIds, type } = user;
-		if (type === "client" && petIds.length) {
-			pets = await Pet.find({ userId: user.id });
-			pets = pets.map((pet) => filterPet(pet));
-		}
-
 		// Record action (non-blocking; for analytics only)
 		user.dateSynced = new Date();
 		user.save();
@@ -112,7 +104,6 @@ router.post("/sign-in", async (req, res) => {
 			token,
 			...filterUserRes(user), // includes profile
 			clinic: filterClientClinic(clinic), // = clinicInfo || clinicId_data
-			pets,
 		};
 		return res.status(200).json(resData);
 	} catch (e) {
@@ -122,7 +113,7 @@ router.post("/sign-in", async (req, res) => {
 
 // ------------------ Sync user -----------------
 // Access: token
-// Returns: user, profile, clinics, pets
+// Returns: user, profile, clinics,
 
 router.post("/", auth, async (req, res) => {
 	try {
@@ -149,19 +140,10 @@ router.post("/", auth, async (req, res) => {
 			if (foundClinic) clinic = foundClinic;
 		}
 
-		// Get pets
-		let pets;
-		const { petIds, type } = user;
-		if (type === "client" && petIds.length) {
-			pets = await Pet.find({ userId: user.id });
-			pets = pets.map((pet) => filterPet(pet));
-		}
-
 		// Send response
 		const resData = {
 			...filterUserRes(user), // includes profile
 			clinic: filterClientClinic(clinic), // = clinicInfo || (clinicId -> data)
-			pets,
 		};
 		return res.status(200).json(resData);
 	} catch (e) {

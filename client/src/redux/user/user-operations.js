@@ -10,7 +10,7 @@ import * as surveyActions from "redux/survey/survey-actions";
 
 import { getDateModified, getIsAuthenticated } from "./user-selectors";
 import { fetchOrganisation } from "redux/clinic/clinic-operations";
-import { syncAllReports } from "redux/pets/pets-operations";
+import { syncPets } from "redux/pets/pets-operations";
 import { syncSurvey } from "redux/survey-data/survey-data-operations";
 import { error } from "redux/error/error-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
@@ -54,14 +54,13 @@ export const signIn = (formData) => (dispatch) => {
 	axios
 		.post(endpoint, data, config)
 		.then((res) => {
-			const { type, profile, clinic, pets } = res.data;
+			const { type, profile, clinic } = res.data;
 			dispatch($.fetchSuccess(res.data));
 			dispatch(profileActions.set(profile));
+			dispatch(clinicActions.set(clinic));
 			if (["vet", "superuser"].includes(type))
 				dispatch(fetchOrganisation(clinic.id));
-			else dispatch(clinicActions.set(clinic));
-			dispatch(petsActions.setList(pets));
-			dispatch(syncAllReports());
+			dispatch(syncPets());
 			dispatch(syncSurvey());
 		})
 		.catch((err) => {
@@ -73,8 +72,8 @@ export const signIn = (formData) => (dispatch) => {
 // -------------------- syncData -----------------------
 
 // GET user data if newer than local
-// Add received data in user, profile, clinic, pets store
-// Sync pet reports and survey
+// Add received data in user, profile, clinic stores
+// Sync pets and survey
 export const syncData = () => (dispatch, getState) => {
 	const state = getState();
 	const signedIn = getIsAuthenticated(state);
@@ -91,15 +90,14 @@ export const syncData = () => (dispatch, getState) => {
 			if (res.status === 201) {
 				dispatch($.upToDate());
 			} else {
-				const { type, profile, clinic, pets } = res.data;
+				const { type, profile, clinic } = res.data;
 				dispatch($.fetchSuccess(res.data));
 				dispatch(profileActions.set(profile));
+				dispatch(clinicActions.set(clinic));
 				if (["vet", "superuser"].includes(type))
 					dispatch(fetchOrganisation(clinic.id));
-				else dispatch(clinicActions.set(clinic));
-				dispatch(petsActions.modifyList(pets));
 			}
-			dispatch(syncAllReports());
+			dispatch(syncPets());
 			dispatch(syncSurvey());
 		})
 		.catch((err) => {
@@ -158,5 +156,5 @@ export const signOut = () => (dispatch) => {
 	dispatch(clinicActions.clear());
 	dispatch(petsActions.clear());
 	dispatch(surveyActions.clear());
-	localStorage.clear();
+	// localStorage.clear(); -- don't clear survey-data
 };
