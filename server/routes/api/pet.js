@@ -73,7 +73,7 @@ router.post("/update", auth, async (req, res) => {
 });
 
 // ------------------- Sync pets -------------------
-// Access: token
+// Access: token; client & vet
 // Returns: diffs OR all pets
 
 router.post("/sync", auth, async (req, res) => {
@@ -102,7 +102,6 @@ router.post("/sync", auth, async (req, res) => {
 		const diffs = [];
 		pets.forEach((remote) => {
 			const local = localPets.find((pet) => remote.id.equals(pet.id));
-			console.log({ remote, local });
 			if (local) {
 				if (!local.dateUpdated && !remote.dateUpdated) return;
 				const dateLocal = new Date(local.dateUpdated).getTime();
@@ -156,7 +155,7 @@ router.post("/add-report", auth, async (req, res) => {
 	}
 });
 // ---------------- Sync pet reports ----------------
-// Access: token
+// Access: token; client & vet
 // Returns: diffs
 
 router.post("/sync-reports", auth, async (req, res) => {
@@ -165,8 +164,16 @@ router.post("/sync-reports", auth, async (req, res) => {
 		const { petId, reports: localReports } = body;
 
 		// Validate
+		const user = await User.findById(userId).select("-password");
+		if (!user) return res.status(404).json("User doesn't exist");
 		const pet = await Pet.findById(petId);
 		if (!pet) return res.status(404).json("Pet doesn't exist");
+		const { type, clinicId } = user;
+		if (
+			(type === "vet" && !pet.clinicId.equals(clinicId)) ||
+			(type === "client" && !pet.userId(userId))
+		)
+			return res.status(401).json("Not authorized to fetch pet");
 
 		// Get pet reports and determine diffs
 		const remoteReports = await Report.find({ petId: pet.id });

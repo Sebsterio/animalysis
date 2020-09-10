@@ -56,7 +56,9 @@ export const joinClinic = (data) => async (dispatch, getState) => {
 // ------------------------ leaveClinic ------------------------------
 
 // Remove clinicId from profile and clear clinic store
-export const leaveClinic = () => (dispatch) => {
+export const leaveClinic = () => (dispatch, getState) => {
+	const isVet = getIsVet(getState());
+	if (!isVet) dispatch(modifyAllPets({ clinicId: null }));
 	dispatch(updateUser({ clinicId: null }));
 	dispatch($.clear());
 };
