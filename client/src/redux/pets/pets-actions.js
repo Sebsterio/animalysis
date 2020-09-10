@@ -138,6 +138,11 @@ export const syncSuccess = (data) => ({
 	type: SYNC_SUCCESS,
 	payload: data,
 });
+export const UP_TO_DATE = "pets/UP_TO_DATE";
+export const upToDate = (data) => ({
+	type: UP_TO_DATE,
+	payload: data,
+});
 export const SYNC_FAIL = "pets/SYNC_FAIL";
 export const syncFail = (data) => ({
 	type: SYNC_FAIL,

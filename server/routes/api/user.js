@@ -97,8 +97,8 @@ router.post("/sign-in", async (req, res) => {
 
 		// Get pets
 		let pets;
-		const { petIds } = user;
-		if (petIds.length) {
+		const { petIds, type } = user;
+		if (type === "client" && petIds.length) {
 			pets = await Pet.find({ userId: user.id });
 			pets = pets.map((pet) => filterPet(pet));
 		}
@@ -160,7 +160,7 @@ router.post("/", auth, async (req, res) => {
 		// Send response
 		const resData = {
 			...filterUserRes(user), // includes profile
-			clinic: filterClientClinic(clinic), // = clinicInfo || clinicId_data
+			clinic: filterClientClinic(clinic), // = clinicInfo || (clinicId -> data)
 			pets,
 		};
 		return res.status(200).json(resData);

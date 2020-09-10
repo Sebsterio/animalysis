@@ -56,9 +56,10 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		// Overwrite
 		case $.SET_LIST: {
+			const pets = action.payload;
 			return {
 				...state,
-				list: [...action.payload],
+				list: pets ? [...pets] : [],
 			};
 		}
 
@@ -66,6 +67,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		// Add missing pets; remove excess pets
 		case $.MODIFY_LIST: {
 			const newPets = action.payload;
+			console.log({ newPets });
 			return {
 				...state,
 				list: newPets.map((pet) => {
@@ -106,7 +108,7 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		}
 
 		case $.SORT_REPORTS: {
-			const petId = action.payload;
+			const { petId } = action.payload;
 			const byDateCreated_descending = (cur, next) => {
 				const dateCur = new Date(cur.dateCreated).getTime();
 				const dateNext = new Date(next.dateCreated).getTime();
@@ -191,21 +193,22 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 		// Sync pet reports
 
 		case $.SYNC_START: {
-			const id = action.payload;
+			const { petId } = action.payload;
 			const update = { syncing: true, synced: false };
-			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
+			return makeModifiedPet(state, petId, (pet) => ({ ...pet, ...update }));
 		}
 
-		case $.SYNC_SUCCESS: {
-			const id = action.payload;
+		case $.SYNC_SUCCESS:
+		case $.UP_TO_DATE: {
+			const { petId } = action.payload;
 			const update = { syncing: false, synced: true };
-			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
+			return makeModifiedPet(state, petId, (pet) => ({ ...pet, ...update }));
 		}
 
 		case $.SYNC_FAIL: {
-			const id = action.payload;
+			const { petId } = action.payload;
 			const update = { syncing: false, synced: false };
-			return makeModifiedPet(state, id, (pet) => ({ ...pet, ...update }));
+			return makeModifiedPet(state, petId, (pet) => ({ ...pet, ...update }));
 		}
 
 		default:

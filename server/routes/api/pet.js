@@ -139,6 +139,7 @@ router.post("/sync", auth, async (req, res) => {
 			});
 
 		// Send response
+		if (!diffs.length) return res.status(201).send();
 		res.status(200).json({ diffs });
 	} catch (e) {
 		res.status(500).json(e.message);

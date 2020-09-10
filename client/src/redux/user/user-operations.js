@@ -123,7 +123,7 @@ export const updateUser = (formData) => async (dispatch, getState) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			dispatch($.updateSuccess(res.data));
-			if (!!formData.type) dispatch(syncData());
+			if (!!formData.type) dispatch(signOut());
 		})
 		.catch((err) => {
 			dispatch($.updateFail());

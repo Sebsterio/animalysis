@@ -97,22 +97,25 @@ export const syncReports = (petId) => (dispatch, getState) => {
 	const reports = pet.reports ? simplifyReports(pet.reports) : [];
 	const reqData = JSON.stringify({ petId, reports });
 	const config = getTokenConfig(getState());
-	dispatch($.syncStart(petId));
+	dispatch($.syncStart({ petId }));
 	axios
 		.post(endpoint, reqData, config)
 		.then((res) => {
-			dispatch($.syncSuccess(petId));
-			const { diffs } = res.data;
-			if (!diffs.length) return;
-			diffs.forEach(({ isNew, data }) => {
-				data = { ...data, sent: true };
-				if (isNew) dispatch($.addReportToPet(data));
-				else dispatch($.modifyReport(data));
-			});
-			dispatch($.sortReports(petId));
+			if (res.status === 201) {
+				dispatch($.upToDate({ petId }));
+			} else {
+				dispatch($.syncSuccess({ petId }));
+				const { diffs } = res.data;
+				diffs.forEach(({ isNew, data }) => {
+					data = { ...data, sent: true };
+					if (isNew) dispatch($.addReportToPet(data));
+					else dispatch($.modifyReport(data));
+				});
+				dispatch($.sortReports({ petId }));
+			}
 		})
 		.catch((err) => {
-			dispatch($.syncFail(petId));
+			dispatch($.syncFail({ petId }));
 			dispatch(error(err));
 		});
 };
