@@ -45,7 +45,8 @@ export const App = ({
 	// Create user-relevant Routes from routes array
 	const routes = isVet ? vetRoutes : clientRoutes;
 	const mainRoutes = routes.map((route) => {
-		const { path, component, exact } = route;
+		const { path, component, exact, suOnly } = route;
+		if (suOnly && !isSuperuser) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
 		return <Route exact={exact} path={path} component={component} key={path} />;
 	});
 

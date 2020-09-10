@@ -57,6 +57,7 @@ export const vetRoutes = [
 		component: SurveyEditor,
 		exact,
 		inNav,
+		suOnly: true, // superuser only (temp)
 	},
 	{
 		path: "/survey/view",

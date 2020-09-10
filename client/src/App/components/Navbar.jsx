@@ -74,8 +74,11 @@ export const Navbar = ({ routes, isSuperuser }) => {
 						/>
 						<List>
 							{routes.map(
-								({ path, title, linkText, exact, inNav }) =>
-									inNav && (
+								({ path, title, linkText, exact, inNav, suOnly }) =>
+									inNav &&
+									// TEMP <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+									(!suOnly || isSuperuser) && (
+										// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 										<ListItem
 											button
 											component={NavLink}
