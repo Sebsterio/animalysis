@@ -26,6 +26,7 @@ export const VetSurvey = ({
 	startRoutineCheck,
 	addDemoPet,
 	modifyPet,
+	deletePet,
 }) => {
 	const c = useStyles();
 
@@ -49,13 +50,19 @@ export const VetSurvey = ({
 		startProblemReport({ pet, history });
 	};
 
+	const handleEndPreview = () => deletePet({ id: "demo-pet" });
+
 	// -------------------------- View --------------------------
 
 	if (surveyIsLoaded) return <Redirect to="/analysis" />;
 
 	return (
 		<Container maxWidth="xs" className={c.container}>
-			<LinkBlock to="/survey/edit" text="End preview" />
+			<LinkBlock
+				to="/survey/edit"
+				text="End preview"
+				clickHandler={handleEndPreview}
+			/>
 			<div>
 				<Form state={pet} setState={setPet} fields={formFields} />
 			</div>

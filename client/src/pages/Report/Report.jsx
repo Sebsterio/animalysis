@@ -9,9 +9,10 @@ import { summaryData } from "pages/Summary/Summary-data";
 
 const useStyles = makeStyles((theme) => ({
 	dialogContent: { padding: theme.spacing(3) },
+	footerButton: { margin: theme.spacing(0.3, 0) },
 }));
 
-const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
+const Report = ({ history, match, getReport, getPet, isVet }) => {
 	const c = useStyles();
 
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -30,10 +31,11 @@ const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
 
 	// Vet: end preview; Client: back to pet's page
 	const closePage = () => {
-		if (!isVet) return history.push("/pet/" + pet.name);
-		history.goBack(); // can be either SurveyEditor or Dashboard
-		deletePet({ id: "demo-pet" });
+		if (!isVet) history.push("/pet/" + pet.name);
+		else history.goBack(); // can be either SurveyEditor or Dashboard
 	};
+
+	const contactOwner = () => history.push("/user/" + pet.userId);
 
 	return (
 		<>
@@ -67,13 +69,27 @@ const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
 					</>
 				}
 				footer={
-					<Button
-						fullWidth
-						variant="outlined"
-						color="default"
-						children="Close"
-						onClick={closePage}
-					/>
+					<>
+						{isVet && (
+							<Button
+								fullWidth
+								className={c.footerButton}
+								variant="outlined"
+								color="primary"
+								children="Contact owner"
+								onClick={contactOwner}
+								disabled={!pet.userId}
+							/>
+						)}
+						<Button
+							fullWidth
+							className={c.footerButton}
+							variant="outlined"
+							color="default"
+							children="Close"
+							onClick={closePage}
+						/>
+					</>
 				}
 			/>
 
