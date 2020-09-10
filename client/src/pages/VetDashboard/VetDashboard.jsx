@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
-import { Page, ReportsList } from "components";
+import { Page, ReportsList, Spinner } from "components";
 // import { ClinicSnippet } from "./components";
 
 const useStyles = makeStyles((theme) => ({
@@ -9,6 +9,10 @@ const useStyles = makeStyles((theme) => ({
 	denseStack: {
 		display: "grid",
 		gridGap: theme.spacing(1),
+	},
+	spinnerContainer: {
+		position: "relative",
+		height: "30vh",
 	},
 }));
 
@@ -32,8 +36,6 @@ export const VetDashboard = ({
 	const reportClickCallback = (id) =>
 		modifyReport({ id, update: { dateSeen: new Date() } });
 
-	console.log({ reports });
-
 	// -------------------------- View ---------------------------
 
 	return (
@@ -49,13 +51,17 @@ export const VetDashboard = ({
 			main={
 				hasClinic ? (
 					// User is a member of a clinic
-					reports.length && (
-						<>
-							{/* <ClinicSnippet {...{ clinic }} /> */}
-							<Typography variant="h6">New reports</Typography>
+					<>
+						{/* <ClinicSnippet {...{ clinic }} /> */}
+						<Typography variant="h6">New reports</Typography>
+						{!!reports.length ? (
 							<ReportsList {...{ reports, history, reportClickCallback }} />
-						</>
-					)
+						) : (
+							<div className={c.spinnerContainer}>
+								<Spinner />
+							</div>
+						)}
+					</>
 				) : (
 					// User is not a member of any clinic
 					<div className={c.denseStack}>
