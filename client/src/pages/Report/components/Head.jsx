@@ -14,14 +14,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Head = ({ pet, clinicIsSet, userHasPhone }) => {
+export const Head = ({ pet, clinicIsSet, userHasPhone, isVet }) => {
 	const c = useStyles();
 
 	return (
 		// separte content from parent's grid layout
 		<div>
 			<PetSnippet pet={pet} small />
-			{!clinicIsSet ? (
+			{isVet ? null : !clinicIsSet ? (
 				<Link to="/my-clinic" className={c.link}>
 					<Alert
 						severity="error"

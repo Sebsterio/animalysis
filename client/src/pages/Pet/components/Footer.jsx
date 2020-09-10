@@ -28,7 +28,7 @@ export const Footer = ({
 				fullWidth
 				variant="contained"
 				className={c.button}
-				onClick={() => startRoutineCheck(pet, history)}
+				onClick={() => startRoutineCheck({ pet, history })}
 				children="Routine Health Check"
 			/>
 			<Button
@@ -36,7 +36,7 @@ export const Footer = ({
 				variant="contained"
 				color={unfinishedAnalysis ? "default" : "primary"}
 				className={c.button}
-				onClick={() => startProblemReport(pet, history)}
+				onClick={() => startProblemReport({ pet, history })}
 				children="Report a Problem"
 			/>
 			{unfinishedAnalysis && (

@@ -5,6 +5,7 @@ import {
 	makeArrayWithRemovedItems,
 	makeSortedArray,
 } from "utils/array";
+import { byDateCreated_descending } from "utils/sort";
 import {
 	makeModifiedPet,
 	makeStateWithModifiedPetReport,
@@ -110,11 +111,6 @@ const reportsReducer = (state = INITIAL_STATE, action) => {
 
 		case $.SORT_REPORTS: {
 			const { petId } = action.payload;
-			const byDateCreated_descending = (cur, next) => {
-				const dateCur = new Date(cur.dateCreated).getTime();
-				const dateNext = new Date(next.dateCreated).getTime();
-				return dateNext - dateCur;
-			};
 			return makeModifiedPet(state, petId, (pet) =>
 				makeState(pet, "reports", (reports) =>
 					makeSortedArray(reports, byDateCreated_descending)

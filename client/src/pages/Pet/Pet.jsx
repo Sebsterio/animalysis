@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { ReportsList, Footer } from "./components";
-import { Page, PetSnippet } from "components";
+import { Footer } from "./components";
+import { Page, PetSnippet, ReportsList } from "components";
 
 export const Pet = ({
 	// router

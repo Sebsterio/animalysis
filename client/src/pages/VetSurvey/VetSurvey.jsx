@@ -42,11 +42,11 @@ export const VetSurvey = ({
 
 	const handleRoutineCheckClick = () => {
 		updatePet();
-		startRoutineCheck(pet, history);
+		startRoutineCheck({ pet, history });
 	};
 	const handleProblemReportClick = () => {
 		updatePet();
-		startProblemReport(pet, history);
+		startProblemReport({ pet, history });
 	};
 
 	// -------------------------- View --------------------------

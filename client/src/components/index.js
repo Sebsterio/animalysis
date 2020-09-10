@@ -10,3 +10,4 @@ export * from "./ConfirmDialog";
 export * from "./Spinner";
 export * from "./Stack";
 export * from "./LinkBlock";
+export * from "./ReportsList";

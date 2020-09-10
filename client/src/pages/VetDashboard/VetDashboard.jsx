@@ -1,16 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import { Page } from "components";
+import { Page, ReportsList } from "components";
+import { ClinicSnippet } from "./components";
 
 const useStyles = makeStyles((theme) => ({
-	row: {
-		display: "flex",
-		flexFlow: "row nowrap",
-		alignItems: "center",
-	},
-	logo: { marginRight: theme.spacing(2) },
 	greeting: { margin: theme.spacing(4, 0) },
 	denseStack: {
 		display: "grid",
@@ -24,10 +18,9 @@ export const VetDashboard = ({
 	username,
 	clinic,
 	hasClinic,
+	reports,
 }) => {
 	const c = useStyles();
-
-	const { logo, name } = clinic;
 
 	// ------------------------ Handlers -------------------------
 
@@ -51,16 +44,14 @@ export const VetDashboard = ({
 				hasClinic ? (
 					// User is a member of a clinic
 					<>
-						<div className={c.row}>
-							{logo && (
-								<div className={c.logo}>
-									<Avatar alt={name + " logo"} src={logo} />
-								</div>
-							)}
-							<Typography variant="h6">{name}</Typography>
-						</div>
-						<Typography>- New reports list</Typography>
-						<Typography>- Load old reports link</Typography>
+						<ClinicSnippet {...{ clinic }} />
+						<Typography variant="h6">New reports</Typography>
+						<ReportsList {...{ reports, history }} />
+						<Button
+							color="primary"
+							children="Search history"
+							onClick={() => {}}
+						/>
 					</>
 				) : (
 					// User is not a member of any clinic

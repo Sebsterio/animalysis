@@ -22,6 +22,8 @@ const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
 	if (!id) return <Redirect to="/not-found" />;
 
 	const report = getReport(id);
+	if (!report) return null;
+
 	const { petId, dateCreated, title, alert, problemList } = report;
 	const pet = getPet(petId);
 	const dialogText = summaryData[alert].textMain(pet);
@@ -29,14 +31,14 @@ const Report = ({ history, match, getReport, getPet, isVet, deletePet }) => {
 	// Vet: end preview; Client: back to pet's page
 	const closePage = () => {
 		if (!isVet) return history.push("/pet/" + pet.name);
+		history.goBack(); // can be either SurveyEditor or Dashboard
 		deletePet({ id: "demo-pet" });
-		history.push("/survey/edit");
 	};
 
 	return (
 		<>
 			<Page
-				header={<Head pet={pet} />}
+				header={<Head {...{ pet, isVet }} />}
 				main={
 					<>
 						<div className={c.titleBlock}>

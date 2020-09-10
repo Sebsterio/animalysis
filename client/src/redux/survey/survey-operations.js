@@ -28,18 +28,21 @@ export const callClinic = () => (dispatch) => alert("CALL_CLINIC--STUB");
 
 // --------------------- Initialization -------------------------
 
-export const startRoutineCheck = (pet, history) => (dispatch, getState) => {
+export const startRoutineCheck = ({ pet, history }) => (dispatch, getState) => {
 	const data = {
 		...getPersonalizedSurveyData(getState, pet),
 		petId: pet.id,
 		alert: 0,
 		title: "Routine Health Check",
 	};
-	dispatch(initSurvey(data, history));
+	dispatch(initSurvey({ data, history }));
 };
 
 // Add primer section to mainQueue and set alert to green
-export const startProblemReport = (pet, history) => (dispatch, getState) => {
+export const startProblemReport = ({ pet, history }) => (
+	dispatch,
+	getState
+) => {
 	const data = {
 		...getPersonalizedSurveyData(getState, pet),
 		petId: pet.id,
@@ -48,11 +51,11 @@ export const startProblemReport = (pet, history) => (dispatch, getState) => {
 	};
 	const { primerQueue, mainQueue } = data;
 	data.mainQueue = [...primerQueue, ...mainQueue];
-	dispatch(initSurvey(data, history));
+	dispatch(initSurvey({ data, history }));
 };
 
 // Initialize survey store & set first question
-const initSurvey = (data, history) => (dispatch, getState) => {
+const initSurvey = ({ data, history }) => (dispatch, getState) => {
 	const { petId, sections, mainQueue, optionalQueue, alert, title } = data;
 	dispatch($.clear());
 	dispatch($.setPetId(petId));
@@ -81,8 +84,8 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 export const endSurvey = (history) => (dispatch) => {
 	const reportId = shortid.generate();
 	dispatch(generateReport({ reportId }));
-	dispatch($.clear());
 	history.replace(`/report/${reportId}`);
+	dispatch($.clear());
 };
 
 const generateReport = ({ reportId }) => (dispatch, getState) => {
