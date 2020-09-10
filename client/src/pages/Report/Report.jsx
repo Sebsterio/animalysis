@@ -26,6 +26,7 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 	if (!report) return null;
 
 	const { petId, dateCreated, title, alert, problemList } = report;
+	const { sending, sent, dateSeen } = report;
 	const pet = getPet(petId);
 	const dialogText = summaryData[alert].textMain(pet);
 
@@ -57,6 +58,23 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 								align="center"
 								children={getDateString(dateCreated)}
 							/>
+							{!isVet && (
+								<Typography
+									component="h3"
+									variant="body1"
+									color="textSecondary"
+									align="center"
+									children={
+										dateSeen
+											? "Delivered"
+											: sent
+											? "Sent"
+											: sending
+											? "Sending..."
+											: "Not sent!"
+									}
+								/>
+							)}
 						</div>
 						<Alert level={alert} clickHandler={openDialog} small alignLeft />
 

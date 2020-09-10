@@ -38,12 +38,12 @@ const INITIAL_STATE = {
 		// 			petId: "",
 		// 			dateCreated: undefined,
 		//			dateUpdated: undefined,
+		//      dateSeen: undefined,
 		// 			title: "",
 		// 			problemList: [],
 		// 			alert: 0,
 		// 			sending: false,
 		// 			sent: false,
-		//      seen: false
 		// 		},
 		// 	],
 		// },
