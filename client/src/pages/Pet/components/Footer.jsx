@@ -12,6 +12,7 @@ export const Footer = ({
 	// parent
 	history,
 	pet,
+	isVet,
 	// store
 	isPetIdActive,
 	// dispatch
@@ -24,30 +25,34 @@ export const Footer = ({
 
 	return (
 		<div>
-			<Button
-				fullWidth
-				variant="contained"
-				className={c.button}
-				onClick={() => startRoutineCheck({ pet, history })}
-				children="Routine Health Check"
-			/>
-			<Button
-				fullWidth
-				variant="contained"
-				color={unfinishedAnalysis ? "default" : "primary"}
-				className={c.button}
-				onClick={() => startProblemReport({ pet, history })}
-				children="Report a Problem"
-			/>
-			{unfinishedAnalysis && (
-				<Button
-					fullWidth
-					variant="contained"
-					color="primary"
-					className={c.button}
-					onClick={() => history.push("/analysis")}
-					children="Continue Analysis"
-				/>
+			{!isVet && (
+				<>
+					<Button
+						fullWidth
+						variant="contained"
+						className={c.button}
+						onClick={() => startRoutineCheck({ pet, history })}
+						children="Routine Health Check"
+					/>
+					<Button
+						fullWidth
+						variant="contained"
+						color={unfinishedAnalysis ? "default" : "primary"}
+						className={c.button}
+						onClick={() => startProblemReport({ pet, history })}
+						children="Report a Problem"
+					/>
+					{unfinishedAnalysis && (
+						<Button
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={c.button}
+							onClick={() => history.push("/analysis")}
+							children="Continue Analysis"
+						/>
+					)}
+				</>
 			)}
 			<Button
 				fullWidth

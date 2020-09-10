@@ -27,6 +27,7 @@ export const getPetById = (id, pets) => pets.find((pet) => pet.id === id);
 
 // Add default image if missing
 export const convertPet = (pet) => {
+	if (!pet) return null;
 	let { imageUrl, species } = pet;
 	if (!imageUrl) imageUrl = species === "canine" ? dogImage : catImage;
 	return { ...pet, imageUrl };

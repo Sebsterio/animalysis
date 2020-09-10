@@ -9,19 +9,22 @@ export const Pet = ({
 	history,
 	// store
 	getPetByName,
+	getPetById,
 	getReports,
+	isVet,
 }) => {
-	const { name } = match.params;
-	const pet = getPetByName(name);
+	const { name } = match.params; // should be name_or_id
+	let pet = getPetByName(name);
+	if (!pet) pet = getPetById(name);
 	if (!pet) return <Redirect to="/not-found" />;
 
 	const reports = getReports(pet);
 
 	return (
 		<Page
-			header={<PetSnippet {...{ history, pet }} />}
+			header={<PetSnippet {...{ history, pet, isVet }} />}
 			main={<ReportsList {...{ history, reports }} />}
-			footer={<Footer {...{ history, pet }} />}
+			footer={<Footer {...{ history, pet, isVet }} />}
 		/>
 	);
 };

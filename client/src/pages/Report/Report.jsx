@@ -19,6 +19,8 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 	const openDialog = () => setDialogOpen(true);
 	const closeDialog = () => setDialogOpen(false);
 
+	// --------------- Props derrived from URL param ---------------
+
 	const { id } = match.params;
 	if (!id) return <Redirect to="/not-found" />;
 
@@ -27,8 +29,12 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 
 	const { petId, dateCreated, title, alert, problemList } = report;
 	const { sending, sent, dateSeen } = report;
+
 	const pet = getPet(petId);
+
 	const dialogText = summaryData[alert].textMain(pet);
+
+	// ----------------------- Handlers ----------------------------
 
 	// Vet: end preview; Client: back to pet's page
 	const closePage = () => {
@@ -37,6 +43,10 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 	};
 
 	const contactOwner = () => history.push("/user/" + pet.userId);
+
+	const viewPet = () => history.push("/pet/" + pet.id);
+
+	// ------------------------- View ------------------------------
 
 	return (
 		<>
@@ -88,6 +98,17 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 				}
 				footer={
 					<>
+						{isVet && (
+							<Button
+								fullWidth
+								className={c.footerButton}
+								variant="outlined"
+								color="primary"
+								children="View pet"
+								onClick={viewPet}
+								disabled={!pet.userId}
+							/>
+						)}
 						{isVet && (
 							<Button
 								fullWidth

@@ -9,6 +9,7 @@ import {
 	VetClinicForm,
 	ClinicSearch,
 	Report,
+	Pet,
 } from "pages";
 
 // Aux
@@ -107,6 +108,13 @@ export const vetRoutes = [
 		title: "My Account",
 		linkText: "Account",
 		component: Account,
+		exact,
+	},
+	// --- Pet profile ---
+	{
+		path: "/pet/:name",
+		title: "Pet Profile",
+		component: Pet,
 		exact,
 	},
 ];

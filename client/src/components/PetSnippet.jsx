@@ -39,6 +39,7 @@ export const PetSnippet = ({
 	pet: { name, breed, imageUrl, sex, birthMonth: month, birthYear: year },
 	history,
 	small,
+	isVet,
 }) => {
 	const c = useStyles({ small });
 
@@ -53,7 +54,7 @@ export const PetSnippet = ({
 			<div className={c.info}>
 				<div className={c.infoHeader}>
 					<Typography variant={small ? "h6" : "h4"} children={name} />
-					{!!history && (
+					{!!history && !isVet && (
 						<IconButton aria-label="edit pet details" onClick={editPet}>
 							<EditIcon />
 						</IconButton>
