@@ -10,6 +10,7 @@ import {
 	ClinicSearch,
 	Report,
 	Pet,
+	VetReports,
 } from "pages";
 
 // Aux
@@ -21,6 +22,15 @@ export const vetRoutes = [
 		path: "/",
 		title: "Dashboard",
 		component: VetDashboard,
+		exact,
+		inNav,
+	},
+	// --- Reports History ---
+	{
+		path: "/reports",
+		title: "Reports History",
+		linkText: "Reports",
+		component: VetReports,
 		exact,
 		inNav,
 	},

@@ -12,3 +12,4 @@ export * from "./SurveyEditor";
 export * from "./VetSurvey";
 export * from "./VetClinicForm";
 export * from "./ClinicSearch";
+export * from "./VetReports";

@@ -36,6 +36,8 @@ export const VetDashboard = ({
 	const reportClickCallback = (id) =>
 		modifyReport({ id, update: { dateSeen: new Date() } });
 
+	const goToReportsage = () => history.push("/reports");
+
 	// -------------------------- View ---------------------------
 
 	return (
@@ -88,7 +90,7 @@ export const VetDashboard = ({
 						variant="contained"
 						color="primary"
 						children="Search history"
-						onClick={() => {}}
+						onClick={goToReportsage}
 					/>
 				)
 			}
