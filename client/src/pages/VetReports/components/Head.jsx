@@ -30,6 +30,7 @@ export const Head = ({
 				{columns.map((column) => (
 					<TableCell
 						key={column.id}
+						className={c.cell}
 						align="center"
 						style={{ minWidth: column.minWidth }}
 						children={column.label}

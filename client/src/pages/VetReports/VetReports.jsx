@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import Checkbox from "@material-ui/core/Checkbox";
-import { Toolbar, Head } from "./components";
+import { Toolbar, Head, Body } from "./components";
 
 import { alertData } from "components";
 import { getDateString } from "utils/date";
 import { getAugmentedReports, getNewSelected } from "./VetReports-utils";
+import { useStyles } from "./VetReports-styles";
 
 // =========================== Constants ===============================
 
@@ -22,7 +18,6 @@ const columns = [
 	{
 		id: "alert",
 		label: "Alert",
-		minWidth: 50,
 		format: (alert) => (
 			<FiberManualRecordIcon style={{ color: alertData[alert].color }} />
 		),
@@ -30,27 +25,14 @@ const columns = [
 	{
 		id: "dateCreated",
 		label: "Date",
-		minWidth: 100,
 		format: (val) => getDateString(val),
 	},
-	{ id: "title", label: "Title", minWidth: 200 },
-	{ id: "name", label: "Pet's name", minWidth: 120 },
-	{ id: "species", label: "Species", minWidth: 100 },
-	{ id: "breed", label: "Breed", minWidth: 100 },
-	{ id: "ownerName", label: "Owner", minWidth: 120 },
+	{ id: "title", label: "Title" },
+	{ id: "name", label: "Pet's name" },
+	{ id: "species", label: "Species" },
+	{ id: "breed", label: "Breed" },
+	{ id: "ownerName", label: "Owner" },
 ];
-
-const useStyles = makeStyles({
-	root: {
-		width: "100%",
-	},
-	container: {
-		height: "calc(100vh - 175px)", // Navbar + Toolbar + TablePagination
-	},
-	unseenReport: {
-		fontWeight: "bold",
-	},
-});
 
 // =========================== Component ===============================
 
@@ -115,59 +97,25 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	return (
 		<Paper className={c.root}>
-			<Toolbar numSelected={selected.length} {...{ markSelectedAsSeen }} />
+			<Toolbar numSelected={selected.length} {...{ c, markSelectedAsSeen }} />
+
 			<TableContainer className={c.container}>
 				<Table stickyHeader>
 					<Head
-						{...{
-							c,
-							columns,
-							/* order, orderBy, */
-							handleSelectAllClick,
-							/* handleRequestSort */
-						}}
+						{...{ c, columns, handleSelectAllClick }}
+						/* order, orderBy, */
+						/* handleRequestSort */
 						numSelected={selected.length}
 						rowCount={rows.length}
 					/>
 
-					<TableBody>
-						{rows
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((row) => {
-								const isItemSelected = isSelected(row.id);
-								return (
-									<TableRow
-										hover
-										role="checkbox"
-										tabIndex={-1}
-										key={row.id}
-										selected={isItemSelected}
-									>
-										<TableCell padding="checkbox">
-											<Checkbox
-												checked={isItemSelected}
-												onClick={(e) => handleCheckboxClick(e, row.id)}
-											/>
-										</TableCell>
-
-										{columns.map((column) => {
-											const value = row[column.id];
-											return (
-												<TableCell
-													key={column.id}
-													align="center"
-													className={!row.dateSeen ? c.unseenReport : null}
-												>
-													{column.format ? column.format(value) : value}
-												</TableCell>
-											);
-										})}
-									</TableRow>
-								);
-							})}
-					</TableBody>
+					<Body
+						{...{ c, page, rowsPerPage, isSelected }}
+						{...{ handleCheckboxClick, columns, rows }}
+					/>
 				</Table>
 			</TableContainer>
+
 			<TablePagination
 				rowsPerPageOptions={[10, 25, 100]}
 				component="div"
