@@ -66,9 +66,11 @@ export const App = ({
 					<Navbar {...{ routes, isSuperuser }} />
 				</header>
 			)}
-			<div className={c.item}>
-				<ErrorAlert />
-			</div>
+			{isError && (
+				<div className={c.item}>
+					<ErrorAlert />
+				</div>
+			)}
 			<main className={c.main} onClick={handleMainClick}>
 				<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
 			</main>
