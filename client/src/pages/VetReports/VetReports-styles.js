@@ -5,7 +5,7 @@ export const useStyles = makeStyles({
 		width: "100%",
 	},
 	container: {
-		height: "calc(100vh - 175px)", // Navbar + Toolbar + TablePagination
+		height: "calc(100vh - 180px)", // Navbar + Toolbar + TablePagination
 	},
 	cell: {
 		whiteSpace: "nowrap",
