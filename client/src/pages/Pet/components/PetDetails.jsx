@@ -11,7 +11,7 @@ export const PetDetails = ({ weight, microchip, owner }) => {
 	return (
 		<Card>
 			<CardContent>
-				<Dictionary>
+				<Dictionary compact>
 					{!!weight && (
 						<>
 							<Typography variant="subtitle2" color="primary">
