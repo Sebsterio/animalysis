@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { Footer } from "./components";
-import { Page, PetSnippet, ReportsList } from "components";
+import { Footer, PetDetails } from "./components";
+import { Page, Stack, PetSnippet, ReportsList } from "components";
 
 export const Pet = ({
 	// router
@@ -23,7 +23,12 @@ export const Pet = ({
 	return (
 		<Page
 			header={<PetSnippet {...{ history, pet, isVet }} />}
-			main={<ReportsList {...{ history, reports }} />}
+			main={
+				<Stack>
+					{isVet && <PetDetails {...pet} />}
+					<ReportsList {...{ history, reports }} />
+				</Stack>
+			}
 			footer={<Footer {...{ history, pet, isVet }} />}
 		/>
 	);

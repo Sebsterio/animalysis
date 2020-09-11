@@ -54,8 +54,12 @@ export const PetSnippet = ({
 			<div className={c.info}>
 				<div className={c.infoHeader}>
 					<Typography variant={small ? "h6" : "h4"} children={name} />
-					{!!history && !isVet && (
-						<IconButton aria-label="edit pet details" onClick={editPet}>
+					{!!history && (
+						<IconButton
+							aria-label="edit pet details"
+							onClick={editPet}
+							disabled={isVet}
+						>
 							<EditIcon />
 						</IconButton>
 					)}

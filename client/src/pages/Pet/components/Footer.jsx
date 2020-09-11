@@ -58,7 +58,7 @@ export const Footer = ({
 				fullWidth
 				variant="outlined"
 				className={c.button}
-				onClick={() => history.push("/")}
+				onClick={() => history.goBack()}
 				children="Back"
 			/>
 		</div>
