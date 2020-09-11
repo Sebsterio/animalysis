@@ -76,7 +76,6 @@ export const modifyAllPets = (formData) => (dispatch, getState) => {
 export const syncPets = () => (dispatch, getState) => {
 	const endpoint = "/api/pet/sync";
 	const pets = simplifyPets(getAllPets(getState()));
-	console.log({ pets });
 	const reqData = JSON.stringify({ pets });
 	const config = getTokenConfig(getState());
 	dispatch($.syncStart());

@@ -110,8 +110,8 @@ export const syncData = () => (dispatch, getState) => {
 // -------------------------- updateUser ------------------------------
 
 // POST user data to db
-// Set dateModified in user store
-// If changed user type, reset all stores
+// Spread data from db in user store
+// If changed user type, reset pets store
 export const updateUser = (formData) => async (dispatch, getState) => {
 	const endpoint = "/api/user/update";
 	const data = JSON.stringify(formData);
@@ -121,7 +121,9 @@ export const updateUser = (formData) => async (dispatch, getState) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			dispatch($.updateSuccess(res.data));
-			if (!!formData.type) dispatch(signOut());
+			if (!formData.type) return;
+			dispatch(petsActions.clear());
+			dispatch(syncPets());
 		})
 		.catch((err) => {
 			dispatch($.updateFail());

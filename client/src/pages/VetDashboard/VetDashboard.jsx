@@ -10,9 +10,11 @@ const useStyles = makeStyles((theme) => ({
 		display: "grid",
 		gridGap: theme.spacing(1),
 	},
-	spinnerContainer: {
+	reportsPlaceholder: {
 		position: "relative",
 		height: "30vh",
+		display: "flex",
+		alignItems: "center",
 	},
 }));
 
@@ -23,6 +25,7 @@ export const VetDashboard = ({
 	superuser,
 	hasClinic,
 	reports,
+	syncing,
 	modifyReport,
 }) => {
 	const c = useStyles();
@@ -50,25 +53,13 @@ export const VetDashboard = ({
 	);
 
 	if (superuser) return WelcomeText;
-	return (
-		<Page
-			header={WelcomeText}
-			main={
-				hasClinic ? (
-					// User is a member of a clinic
-					<>
-						{/* <ClinicSnippet {...{ clinic }} /> */}
-						<Typography variant="h6">New reports</Typography>
-						{!!reports.length ? (
-							<ReportsList {...{ reports, history, reportClickCallback }} />
-						) : (
-							<div className={c.spinnerContainer}>
-								<Spinner />
-							</div>
-						)}
-					</>
-				) : (
-					// User is not a member of any clinic
+
+	if (!hasClinic)
+		// Vet user is not a member of any clinic
+		return (
+			<Page
+				header={WelcomeText}
+				main={
 					<div className={c.denseStack}>
 						<Button
 							variant="outlined"
@@ -84,18 +75,43 @@ export const VetDashboard = ({
 							onClick={handleRegisterClinic}
 						/>
 					</div>
-				)
+				}
+			/>
+		);
+
+	// Vet user is a member of a clinic
+	return (
+		<Page
+			header={WelcomeText}
+			main={
+				<>
+					{/* <ClinicSnippet {...{ clinic }} /> */}
+					{!reports.length && !syncing ? (
+						// No reports to show
+						<Typography variant="h6" align="center" children="No new reports" />
+					) : (
+						// Reports loaded or loading
+						<>
+							<Typography variant="h6">New reports</Typography>
+							{syncing ? (
+								<div className={c.reportsPlaceholder}>
+									<Spinner />
+								</div>
+							) : (
+								<ReportsList {...{ reports, history, reportClickCallback }} />
+							)}
+						</>
+					)}
+				</>
 			}
 			footer={
-				hasClinic && (
-					<Button
-						fullWidth
-						variant="contained"
-						color="primary"
-						children="Search history"
-						onClick={goToReportsPage}
-					/>
-				)
+				<Button
+					fullWidth
+					variant="contained"
+					color="primary"
+					children="Search history"
+					onClick={goToReportsPage}
+				/>
 			}
 		/>
 	);

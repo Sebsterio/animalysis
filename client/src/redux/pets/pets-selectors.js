@@ -2,8 +2,14 @@ export const getAllPets = (state) => state.pets.list;
 
 export const getIsPetsListEmpty = (state) => !getAllPets(state).length;
 
+export const getIsSyncing = (state) => state.pets.syncing;
+
 export const getIsUpdating = (state) => state.pets.updating;
+
 export const getIsDeleting = (state) => state.pets.deleting;
+
+export const getAreAnyPetsSyncing = (state) =>
+	getAllPets(state).some((pet) => pet.syncing);
 
 // ------------ single pet --------------
 

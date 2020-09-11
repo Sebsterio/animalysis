@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("../../middleware/auth");
 const User = require("../../models/user");
 const Pet = require("../../models/pet");
+const Clinic = require("../../models/clinic");
 const utils = require("./pet-utils");
 
 const { filterPet } = utils;
@@ -72,7 +73,7 @@ router.post("/update", auth, async (req, res) => {
 
 // ------------------- Sync pets -------------------
 // Access: token; client & vet
-// Returns: diffs OR all pets
+// Returns: diffs OR all pets OR 201
 
 router.post("/sync", auth, async (req, res) => {
 	try {
@@ -81,9 +82,21 @@ router.post("/sync", auth, async (req, res) => {
 
 		const user = await User.findById(userId).select("-password");
 		if (!user) return res.status(404).json("User doesn't exist");
+		const { petIds, type, email, clinicId } = user;
+
+		// Validate vet user
+		if (type === "vet") {
+			const clinic = await Clinic.findById(clinicId);
+			if (!clinic) return res.status(404).json("Clinic doesn't exists");
+			const isMember = clinic.members.some((m) => m.email === email);
+			if (!isMember)
+				return res.status(403).json({
+					target: "generic",
+					msg: "You're not a member of this organisation.",
+				});
+		}
 
 		// Get pets
-		const { petIds, type, clinicId } = user;
 		let pets =
 			type === "client" && !!petIds.length
 				? await Pet.find({ userId: user.id })

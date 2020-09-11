@@ -40,7 +40,6 @@ export const fetchClinics = (queryData) => async (dispatch, getState) => {
 export const joinClinic = (data) => async (dispatch, getState) => {
 	const isVet = getIsVet(getState());
 	const clinicId = data.id;
-	console.log({ clinicId });
 	if (isVet) {
 		const res = await dispatch(fetchOrganisation(clinicId));
 		if (!res) return false;
