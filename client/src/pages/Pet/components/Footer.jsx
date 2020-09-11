@@ -23,9 +23,21 @@ export const Footer = ({
 
 	const unfinishedAnalysis = isPetIdActive(pet.id);
 
+	const contactOwner = () => history.push("/client/" + pet.userId);
+
 	return (
 		<div>
-			{!isVet && (
+			{isVet ? (
+				<Button
+					fullWidth
+					className={c.button}
+					variant="outlined"
+					color="primary"
+					children="Contact owner"
+					onClick={contactOwner}
+					disabled={!pet.userId}
+				/>
+			) : (
 				<>
 					<Button
 						fullWidth
