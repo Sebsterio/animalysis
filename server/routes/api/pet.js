@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("../../middleware/auth");
 const User = require("../../models/user");
 const Pet = require("../../models/pet");
+const Report = require("../../models/report");
 const Clinic = require("../../models/clinic");
 const utils = require("./pet-utils");
 
@@ -146,6 +147,10 @@ router.delete("/:id", auth, async (req, res) => {
 
 		const petRes = await Pet.findByIdAndRemove(id);
 		if (!petRes) return res.status(404).json("Pet doesn't exist");
+
+		// Flag reports as deleted
+		const update = { deleted: true, dateUpdated: new Date() };
+		await Report.update({ petId: id }, update, { multi: true });
 
 		// Update user dateModified
 		const dateModified = new Date();

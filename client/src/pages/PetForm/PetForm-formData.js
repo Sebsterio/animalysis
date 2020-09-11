@@ -75,7 +75,7 @@ export default ({
 	// Remove-pet button
 	const deletePetButtonConfig = {
 		handler: deletePet,
-		label: "Delete Profile",
+		label: "Delete Pet",
 		color: "secondary",
 		// variant: "contained",
 	};

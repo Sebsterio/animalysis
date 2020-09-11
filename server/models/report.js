@@ -15,6 +15,7 @@ const ReportSchema = new Schema({
 	dateCreated: Date,
 	dateUpdated: Date,
 	dateSeen: Date,
+	deleted: Boolean,
 });
 
 const Report = mongoose.model("Report", ReportSchema);
