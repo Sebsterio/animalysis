@@ -102,10 +102,19 @@ router.post("/sync", auth, async (req, res) => {
 			type === "client" && !!petIds.length
 				? await Pet.find({ userId: user.id })
 				: type === "vet" && !!clinicId
-				? await Pet.find({ clinicId })
+				? await Pet.find({ clinicId }).populate("userId")
 				: [];
 		if (!pets.length) return res.status(404).json("No pets have been found");
-		pets = pets.map((pet) => ({ ...filterPet(pet.toObject()), id: pet._id }));
+
+		// Format pets
+		pets = pets.map((pet) => {
+			pet = { ...filterPet(pet.toObject()), id: pet._id };
+			if (type !== "vet") return pet;
+			const { profile, email } = pet.userId; // now Object (after .populate())
+			pet.owner = { ...profile, email };
+			pet.userId = pet.userId._id; // restore prop from .populate()
+			return pet;
+		});
 
 		// Send all results if localPets not provided
 		if (!localPets.length) return res.status(200).json({ pets });
@@ -120,7 +129,6 @@ router.post("/sync", auth, async (req, res) => {
 				const dateRemote = new Date(remote.dateUpdated).getTime();
 				if (dateLocal == dateRemote) return;
 			}
-			// dateUpdated changed so add remote to diffs
 			diffs.push({ data: remote, isNew: !local ? true : false });
 		});
 

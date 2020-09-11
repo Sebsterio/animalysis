@@ -16,6 +16,7 @@ const filterPet = (pet) => {
 		"dateUpdated",
 		"clinicId",
 		"userId",
+		"owner",
 	];
 	const filteredPet = makeObjectWithSelectedProps(pet, allowedProps);
 	return makeObjectWithoutUndefinedProps(filteredPet);

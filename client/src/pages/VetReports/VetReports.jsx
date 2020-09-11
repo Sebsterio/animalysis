@@ -11,6 +11,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 
+import { getAugmentedReports } from "./VetReports-utils";
 import { getDateString } from "utils/date";
 import { alertData } from "components";
 
@@ -35,6 +36,7 @@ const columns = [
 	{ id: "name", label: "Pet's name", minWidth: 120 },
 	{ id: "species", label: "Species", minWidth: 100 },
 	{ id: "breed", label: "Breed", minWidth: 100 },
+	{ id: "ownerName", label: "Owner", minWidth: 120 },
 ];
 
 const useStyles = makeStyles({
@@ -73,7 +75,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	const [rows, setRows] = useState([]);
 
 	useEffect(() => {
-		setRows(reports);
+		setRows(getAugmentedReports(reports));
 	}, [reports]);
 
 	const openReport = (id) => {
@@ -112,7 +114,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 												<TableCell
 													key={column.id}
 													align="center"
-													className={!row.dateSeen && c.unseenReport}
+													className={!row.dateSeen ? c.unseenReport : null}
 												>
 													{column.format ? column.format(value) : value}
 												</TableCell>
