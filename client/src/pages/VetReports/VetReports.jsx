@@ -10,10 +10,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import Checkbox from "@material-ui/core/Checkbox";
+import { Toolbar } from "./components";
 
-import { getAugmentedReports } from "./VetReports-utils";
-import { getDateString } from "utils/date";
 import { alertData } from "components";
+import { getDateString } from "utils/date";
+import { getAugmentedReports, getNewSelected } from "./VetReports-utils";
 
 // =========================== Constants ===============================
 
@@ -44,7 +46,7 @@ const useStyles = makeStyles({
 		width: "100%",
 	},
 	container: {
-		height: "calc(100vh - 118px)", // Navbar + TablePagination
+		height: "calc(100vh - 175px)", // Navbar + Toolbar + TablePagination
 	},
 	unseenReport: {
 		fontWeight: "bold",
@@ -55,6 +57,43 @@ const useStyles = makeStyles({
 
 export const VetReports = ({ history, reports, modifyReport }) => {
 	const c = useStyles();
+
+	// ---------------------------- Data ----------------------------
+
+	const [rows, setRows] = useState([]);
+
+	useEffect(() => {
+		setRows(getAugmentedReports(reports));
+	}, [reports]);
+
+	// -------------------------- Selection -------------------------
+
+	const [selected, setSelected] = React.useState([]);
+
+	const handleSelectAllClick = (e) => {
+		if (!e.target.checked) return setSelected([]);
+		const newSelecteds = rows.map((row) => row.id);
+		setSelected(newSelecteds);
+	};
+
+	const handleCheckboxClick = (e, id) => {
+		const selectedIndex = selected.indexOf(id);
+		setSelected(getNewSelected(id, selected, selectedIndex));
+	};
+
+	const isSelected = (name) => selected.indexOf(name) !== -1;
+
+	// ---------------- Modification & Navigation ------------------
+
+	const markAsSeen = (id) =>
+		modifyReport({ id, update: { dateSeen: new Date() } });
+
+	const openReport = (id) => {
+		history.push(`/report/${id}`);
+		markAsSeen(id);
+	};
+
+	const markAllAsSeen = () => selected.forEach((id) => markAsSeen(id));
 
 	// ------------------------ Pagination ------------------------
 
@@ -70,23 +109,11 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 		setPage(0);
 	};
 
-	// --------------------------- Data ---------------------------
-
-	const [rows, setRows] = useState([]);
-
-	useEffect(() => {
-		setRows(getAugmentedReports(reports));
-	}, [reports]);
-
-	const openReport = (id) => {
-		history.push(`/report/${id}`);
-		modifyReport({ id, update: { dateSeen: new Date() } });
-	};
-
 	// --------------------------- View ---------------------------
 
 	return (
 		<Paper className={c.root}>
+			<Toolbar numSelected={selected.length} {...{ markAllAsSeen }} />
 			<TableContainer className={c.container}>
 				<Table stickyHeader>
 					<TableHead>
@@ -96,18 +123,32 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 									key={column.id}
 									align="center"
 									style={{ minWidth: column.minWidth }}
-								>
-									{column.label}
-								</TableCell>
+									children={column.label}
+								/>
 							))}
 						</TableRow>
 					</TableHead>
+
 					<TableBody>
 						{rows
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row) => {
+								const isItemSelected = isSelected(row.id);
 								return (
-									<TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+									<TableRow
+										hover
+										role="checkbox"
+										tabIndex={-1}
+										key={row.id}
+										selected={isItemSelected}
+									>
+										<TableCell padding="checkbox">
+											<Checkbox
+												checked={isItemSelected}
+												onClick={(e) => handleCheckboxClick(e, row.id)}
+											/>
+										</TableCell>
+
 										{columns.map((column) => {
 											const value = row[column.id];
 											return (
