@@ -130,7 +130,7 @@ router.post("/update", auth, async (req, res) => {
 				});
 		}
 
-		if (!members.length)
+		if (members && !members.length)
 			return res.status(403).json({
 				target: "generic",
 				msg: "Removing the last member is not allowed",

@@ -20,7 +20,7 @@ export const VetDashboard = ({
 	history,
 	profileLoading,
 	username,
-	// clinic,
+	superuser,
 	hasClinic,
 	reports,
 	modifyReport,
@@ -36,20 +36,23 @@ export const VetDashboard = ({
 	const reportClickCallback = (id) =>
 		modifyReport({ id, update: { dateSeen: new Date() } });
 
-	const goToReportsage = () => history.push("/reports");
+	const goToReportsPage = () => history.push("/reports");
 
 	// -------------------------- View ---------------------------
 
+	const WelcomeText = (
+		<Typography
+			variant="h4"
+			align="center"
+			children={profileLoading ? " " : `Welcome, ${username || "Guest"}`}
+			className={c.greeting}
+		/>
+	);
+
+	if (superuser) return WelcomeText;
 	return (
 		<Page
-			header={
-				<Typography
-					variant="h4"
-					align="center"
-					children={profileLoading ? " " : `Welcome, ${username || "Guest"}`}
-					className={c.greeting}
-				/>
-			}
+			header={WelcomeText}
 			main={
 				hasClinic ? (
 					// User is a member of a clinic
@@ -90,7 +93,7 @@ export const VetDashboard = ({
 						variant="contained"
 						color="primary"
 						children="Search history"
-						onClick={goToReportsage}
+						onClick={goToReportsPage}
 					/>
 				)
 			}

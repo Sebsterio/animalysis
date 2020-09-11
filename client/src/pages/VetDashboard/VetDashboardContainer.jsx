@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import { getIsSuperuser } from "redux/user/user-selectors";
 import { getName, getIsLoading } from "redux/profile/profile-selectors";
 import { getFormData, getIsRegistered } from "redux/clinic/clinic-selectors";
 import { getAllUnseenReports } from "redux/pets/pets-selectors";
@@ -16,6 +17,7 @@ const mapStateToProps = (state) => ({
 	clinic: getFormData(state),
 	hasClinic: getIsRegistered(state),
 	reports: getAllUnseenReports(state),
+	superuser: getIsSuperuser(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
