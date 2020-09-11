@@ -124,7 +124,7 @@ export const vetRoutes = [
 	},
 	// --- Pet profile ---
 	{
-		path: "/pet/:name",
+		path: "/pet/:name", // name or id
 		title: "Pet Profile",
 		component: Pet,
 		exact,

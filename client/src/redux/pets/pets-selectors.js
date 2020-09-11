@@ -21,6 +21,9 @@ export const getPetByName = (state, name) =>
 		(pet) => pet.name.toLowerCase() === name.toLowerCase()
 	);
 
+export const getPetsByUserId = (state, userId) =>
+	getAllPets(state).filter((pet) => pet.userId === userId);
+
 export const getFirstPet = (state) => getAllPets(state)[0];
 
 export const getPetReports = (pet) => pet.reports || [];
