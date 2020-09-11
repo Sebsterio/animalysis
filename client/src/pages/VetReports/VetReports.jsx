@@ -6,12 +6,11 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Toolbar } from "./components";
+import { Toolbar, Head } from "./components";
 
 import { alertData } from "components";
 import { getDateString } from "utils/date";
@@ -93,19 +92,22 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 		markAsSeen(id);
 	};
 
-	const markAllAsSeen = () => selected.forEach((id) => markAsSeen(id));
+	const markSelectedAsSeen = () => {
+		selected.forEach((id) => markAsSeen(id));
+		// deselect all selected
+	};
 
 	// ------------------------ Pagination ------------------------
 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 
-	const handleChangePage = (event, newPage) => {
+	const handleChangePage = (e, newPage) => {
 		setPage(newPage);
 	};
 
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(+event.target.value);
+	const handleChangeRowsPerPage = (e) => {
+		setRowsPerPage(+e.target.value);
 		setPage(0);
 	};
 
@@ -113,21 +115,20 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	return (
 		<Paper className={c.root}>
-			<Toolbar numSelected={selected.length} {...{ markAllAsSeen }} />
+			<Toolbar numSelected={selected.length} {...{ markSelectedAsSeen }} />
 			<TableContainer className={c.container}>
 				<Table stickyHeader>
-					<TableHead>
-						<TableRow>
-							{columns.map((column) => (
-								<TableCell
-									key={column.id}
-									align="center"
-									style={{ minWidth: column.minWidth }}
-									children={column.label}
-								/>
-							))}
-						</TableRow>
-					</TableHead>
+					<Head
+						{...{
+							c,
+							columns,
+							/* order, orderBy, */
+							handleSelectAllClick,
+							/* handleRequestSort */
+						}}
+						numSelected={selected.length}
+						rowCount={rows.length}
+					/>
 
 					<TableBody>
 						{rows
