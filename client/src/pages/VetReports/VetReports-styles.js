@@ -10,7 +10,8 @@ export const useStyles = makeStyles({
 	cell: {
 		whiteSpace: "nowrap",
 	},
-	unseenReport: {
+	cellUnseen: {
+		whiteSpace: "nowrap",
 		fontWeight: "bold",
 	},
 });

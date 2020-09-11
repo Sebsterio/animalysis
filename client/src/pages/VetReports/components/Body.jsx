@@ -39,9 +39,8 @@ export const Body = ({
 								return (
 									<TableCell
 										key={column.id}
-										className={c.cell}
 										align="center"
-										className={!row.dateSeen ? c.unseenReport : null}
+										className={!row.dateSeen ? c.cellUnseen : c.cell}
 									>
 										{column.format ? column.format(value) : value}
 									</TableCell>
