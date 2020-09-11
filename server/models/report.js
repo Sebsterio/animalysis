@@ -10,7 +10,7 @@ const ReportSchema = new Schema({
 		required: true,
 	},
 	title: String,
-	problemList: [String],
+	problemList: [{ print: String, printNote: String }],
 	alert: Number,
 	dateCreated: Date,
 	dateUpdated: Date,
