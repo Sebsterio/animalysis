@@ -2,6 +2,7 @@ import axios from "axios";
 import * as $ from "./pets-actions";
 import { getPetById, getAllPets, getReportById } from "./pets-selectors";
 import { simplifyReports, simplifyPets } from "./pets-utils";
+import { getClinicId } from "redux/clinic/clinic-selectors";
 import { getPetId } from "redux/survey/survey-selectors";
 import { clear as clearSurvey } from "redux/survey/survey-actions";
 import { modify as modifyUser } from "redux/user/user-actions";
@@ -21,7 +22,8 @@ export const addDemoPet = () => (dispatch) => dispatch($.addPet(demoPet));
 // go to Pet page
 export const addPet = ({ formData }) => async (dispatch, getState) => {
 	const endpoint = "/api/pet/create";
-	const data = JSON.stringify(formData);
+	const clinicId = getClinicId(getState());
+	const data = JSON.stringify({ ...formData, clinicId });
 	const config = getTokenConfig(getState());
 	dispatch($.addStart());
 	return axios
