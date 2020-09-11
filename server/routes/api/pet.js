@@ -152,10 +152,11 @@ router.delete("/:id", auth, async (req, res) => {
 		const update = { deleted: true, dateUpdated: new Date() };
 		await Report.update({ petId: id }, update, { multi: true });
 
-		// Update user dateModified
+		// Update user
 		const dateModified = new Date();
 		user.dateModified = dateModified;
-		user.save(); // no async
+		user.petIds = user.petIds.filter((petId) => petId !== id);
+		user.save(); // non-blocking
 
 		// Send response
 		res.status(200).json({ dateModified });
