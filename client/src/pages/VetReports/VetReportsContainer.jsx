@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { getAllPetReports } from "redux/pets/pets-selectors";
+import { getAllReportsAugmented } from "redux/pets/pets-selectors";
 import { modifyReport } from "redux/pets/pets-operations";
 
 import { VetReports } from "./VetReports";
@@ -9,7 +9,7 @@ import { VetReports } from "./VetReports";
 // --------------------------------------------------------------
 
 const mapStateToProps = (state) => ({
-	reports: getAllPetReports(state),
+	reports: getAllReportsAugmented(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

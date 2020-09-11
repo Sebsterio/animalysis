@@ -36,6 +36,13 @@ export const getAllPetReports = (state) =>
 		[]
 	);
 
+export const getAllReportsAugmented = (state) =>
+	getAllPets(state).reduce((acc, pet) => {
+		if (!pet.reports) return acc;
+		const augmentedReports = pet.reports.map((rep) => ({ ...pet, ...rep }));
+		return [...acc, ...augmentedReports];
+	}, []);
+
 export const getAllUnseenReports = (state) =>
 	getAllPetReports(state).filter((report) => !report.dateSeen);
 
