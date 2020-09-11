@@ -44,9 +44,10 @@ const useStyles = makeStyles({
 	container: {
 		height: "calc(100vh - 118px)", // Navbar + TablePagination
 	},
+	unseenReport: {
+		fontWeight: "bold",
+	},
 });
-
-const useMountEffect = (fun) => useEffect(fun, []);
 
 // =========================== Component ===============================
 
@@ -108,7 +109,11 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 										{columns.map((column) => {
 											const value = row[column.id];
 											return (
-												<TableCell key={column.id} align="center">
+												<TableCell
+													key={column.id}
+													align="center"
+													className={!row.dateSeen && c.unseenReport}
+												>
 													{column.format ? column.format(value) : value}
 												</TableCell>
 											);
