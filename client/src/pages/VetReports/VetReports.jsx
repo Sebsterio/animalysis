@@ -9,16 +9,21 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+
 import { getDateString } from "utils/date";
+import { alertData } from "components";
 
 // =========================== Constants ===============================
 
 const columns = [
 	{
-		id: "dateSeen",
-		label: "Seen",
+		id: "alert",
+		label: "Alert",
 		minWidth: 50,
-		format: (val) => !!val,
+		format: (alert) => (
+			<FiberManualRecordIcon style={{ color: alertData[alert].color }} />
+		),
 	},
 	{
 		id: "dateCreated",
@@ -27,7 +32,6 @@ const columns = [
 		format: (val) => getDateString(val),
 	},
 	{ id: "title", label: "Title", minWidth: 200 },
-	{ id: "alert", label: "Alert", minWidth: 50 },
 	{ id: "name", label: "Pet's name", minWidth: 120 },
 	{ id: "species", label: "Species", minWidth: 100 },
 	{ id: "breed", label: "Breed", minWidth: 100 },
