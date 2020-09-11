@@ -32,6 +32,8 @@ const INITIAL_STATE = {
 		// 	dateUpdated: undefined,
 		//  syncing: false,
 		//	synced: false,
+		//  userId: '',
+		//  owner: {}, // vet mode only
 		// 	reports: [
 		// 		{
 		// 			id: "",

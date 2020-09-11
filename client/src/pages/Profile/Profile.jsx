@@ -9,6 +9,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Page, Spinner, Dictionary, Stack, PetSnippet } from "components";
 
+import { convertPet } from "redux/pets/pets-utils";
+
 const useStyles = makeStyles((theme) => ({
 	footerButton: { margin: theme.spacing(0.3, 0) },
 	petSnippetContainer: { padding: theme.spacing(2) },
@@ -72,9 +74,12 @@ export const Profile = ({ match, history, fetchClient, getPets }) => {
 					{pets.length && (
 						<Paper className={c.petSnippetContainer}>
 							{pets.map((pet) => (
-								<RouterLink to={"/pet/" + pet.id} className={c.petSnippetLink}>
-									<PetSnippet pet={pet} small isVet />
-								</RouterLink>
+								<RouterLink
+									to={"/pet/" + pet.id}
+									className={c.petSnippetLink}
+									key={pet.id}
+									children={<PetSnippet pet={convertPet(pet)} small isVet />}
+								/>
 							))}
 						</Paper>
 					)}
