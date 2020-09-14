@@ -77,24 +77,32 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	// Needed for the "clear" button to clear search input element
 	const [query, setQuery] = useState("");
 
-	// Filter rows by search query (match any field)
+	const [seenHidden, setSeenHidden] = useState(false);
+
+	// Filter rows by search query (match any field) and seen prop
 	// prettier-ignore
-	const handleInput = (e) => {
-		const value = e.target.value;
+	const filterRows = () => {
 		const originalRows = getAugmentedReports(reports)
-		setQuery(value)
-		if (value === "") setRows(originalRows);
-		else setRows(originalRows.filter((row) =>
+		let newRows = originalRows
+		if (seenHidden)	newRows = newRows.filter((row) => !row.dateSeen)
+		if (query !== '')	newRows = newRows.filter((row) =>
 			searchableFields.some((field) => {
 				const fieldString =
 					field === "dateCreated"
 						? getDateString(row[field])
 						: String(row[field]).toLowerCase();
-				const valueString = value.toLowerCase();
-				return fieldString.includes(valueString);
+				return fieldString.includes(query.toLowerCase());
 			}))
-		);
-	};
+		setRows(newRows);
+	}
+
+	useEffect(() => {
+		filterRows();
+	}, [query, seenHidden]);
+
+	const handleInput = (e) => setQuery(e.target.value);
+
+	const toggleSeenHidden = () => setSeenHidden(!seenHidden);
 
 	// ---------------- Modification & Navigation ------------------
 
@@ -145,8 +153,9 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 				</Table>
 			</TableContainer>
 			<Footer
-				{...{ selected, markSelectedAsSeen, rows, rowsPerPage, page }}
-				{...{ handleChangePage, handleChangeRowsPerPage, query, handleInput }}
+				{...{ selected, markSelectedAsSeen, rows, rowsPerPage }}
+				{...{ page, handleChangePage, handleChangeRowsPerPage }}
+				{...{ query, handleInput, seenHidden, toggleSeenHidden }}
 			/>
 		</Paper>
 	);

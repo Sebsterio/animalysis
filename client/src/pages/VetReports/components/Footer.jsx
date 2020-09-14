@@ -8,6 +8,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import TextField from "@material-ui/core/TextField";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ClearIcon from "@material-ui/icons/Clear";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const useStyles = makeStyles((theme) => {
 	const toolbar = {
@@ -43,6 +45,8 @@ export const Footer = ({
 	handleChangeRowsPerPage,
 	query,
 	handleInput,
+	seenHidden,
+	toggleSeenHidden,
 }) => {
 	const selectionActive = selected.length > 0;
 
@@ -81,6 +85,11 @@ export const Footer = ({
 						<Tooltip title="Clear">
 							<IconButton onClick={handleClear}>
 								<ClearIcon />
+							</IconButton>
+						</Tooltip>
+						<Tooltip title={seenHidden ? "Show seen" : "Hide seen"}>
+							<IconButton onClick={toggleSeenHidden}>
+								{seenHidden ? <VisibilityOffIcon /> : <VisibilityIcon />}
 							</IconButton>
 						</Tooltip>
 					</>
