@@ -33,6 +33,15 @@ const columns = [
 	{ id: "ownerName", label: "Owner" },
 ];
 
+const searchableFields = [
+	"name",
+	"species",
+	"breed",
+	"ownerName",
+	"dateCreated",
+	"title",
+];
+
 // =========================== Component ===============================
 
 export const VetReports = ({ history, reports, modifyReport }) => {
@@ -75,14 +84,18 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	// Filter rows by search query (match any field)
 	const handleInput = (e) => {
 		const value = e.target.value;
-		console.log({ value });
 		if (value === "") return clearQuery();
 		setQuery(value);
 		setRows(
-			rows.filter((row) =>
-				Object.values(row).some((field) =>
-					String(field).toLowerCase().includes(value.toLowerCase())
-				)
+			getAugmentedReports(reports).filter((row) =>
+				searchableFields.some((field) => {
+					const fieldString =
+						field === "dateCreated"
+							? getDateString(row[field])
+							: String(row[field]).toLowerCase();
+					const valueString = value.toLowerCase();
+					return fieldString.includes(valueString);
+				})
 			)
 		);
 	};
