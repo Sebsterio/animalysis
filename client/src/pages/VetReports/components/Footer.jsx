@@ -41,7 +41,6 @@ export const Footer = ({
 	page,
 	handleChangePage,
 	handleChangeRowsPerPage,
-	query,
 	handleInput,
 }) => {
 	const selectionActive = selected.length > 0;
@@ -72,7 +71,6 @@ export const Footer = ({
 							autoFocus
 							fullWidth
 							label="Search"
-							value={query}
 							onChange={handleInput}
 						/>
 						<Tooltip title="Clear">

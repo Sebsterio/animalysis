@@ -74,29 +74,21 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	// -------------------------- Search ---------------------------
 
-	const [query, setQuery] = useState("");
-
-	const clearQuery = () => {
-		setQuery("");
-		setRows(getAugmentedReports(reports));
-	};
-
 	// Filter rows by search query (match any field)
+	// prettier-ignore
 	const handleInput = (e) => {
 		const value = e.target.value;
-		if (value === "") return clearQuery();
-		setQuery(value);
-		setRows(
-			getAugmentedReports(reports).filter((row) =>
-				searchableFields.some((field) => {
-					const fieldString =
-						field === "dateCreated"
-							? getDateString(row[field])
-							: String(row[field]).toLowerCase();
-					const valueString = value.toLowerCase();
-					return fieldString.includes(valueString);
-				})
-			)
+		const originalRows = getAugmentedReports(reports)
+		if (value === "") setRows(originalRows);
+		else setRows(originalRows.filter((row) =>
+			searchableFields.some((field) => {
+				const fieldString =
+					field === "dateCreated"
+						? getDateString(row[field])
+						: String(row[field]).toLowerCase();
+				const valueString = value.toLowerCase();
+				return fieldString.includes(valueString);
+			}))
 		);
 	};
 
@@ -150,7 +142,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 			</TableContainer>
 			<Footer
 				{...{ selected, markSelectedAsSeen, rows, rowsPerPage, page }}
-				{...{ handleChangePage, handleChangeRowsPerPage, query, handleInput }}
+				{...{ handleChangePage, handleChangeRowsPerPage, handleInput }}
 			/>
 		</Paper>
 	);
