@@ -72,13 +72,17 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	const isSelected = (name) => selected.indexOf(name) !== -1;
 
-	// -------------------------- Search ---------------------------
+	// -------------------- Search & Filtering ----------------------
+
+	// Needed for the "clear" button to clear search input element
+	const [query, setQuery] = useState("");
 
 	// Filter rows by search query (match any field)
 	// prettier-ignore
 	const handleInput = (e) => {
 		const value = e.target.value;
 		const originalRows = getAugmentedReports(reports)
+		setQuery(value)
 		if (value === "") setRows(originalRows);
 		else setRows(originalRows.filter((row) =>
 			searchableFields.some((field) => {
@@ -142,7 +146,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 			</TableContainer>
 			<Footer
 				{...{ selected, markSelectedAsSeen, rows, rowsPerPage, page }}
-				{...{ handleChangePage, handleChangeRowsPerPage, handleInput }}
+				{...{ handleChangePage, handleChangeRowsPerPage, query, handleInput }}
 			/>
 		</Paper>
 	);

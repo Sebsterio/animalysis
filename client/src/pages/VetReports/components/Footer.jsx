@@ -41,11 +41,15 @@ export const Footer = ({
 	page,
 	handleChangePage,
 	handleChangeRowsPerPage,
+	query,
 	handleInput,
 }) => {
 	const selectionActive = selected.length > 0;
 
 	const c = useStyles({ selectionActive });
+
+	// Send fake input event with (value = "")
+	const handleClear = () => handleInput({ target: { value: "" } });
 
 	return (
 		<div className={c.container}>
@@ -71,10 +75,11 @@ export const Footer = ({
 							autoFocus
 							fullWidth
 							label="Search"
+							value={query}
 							onChange={handleInput}
 						/>
 						<Tooltip title="Clear">
-							<IconButton>
+							<IconButton onClick={handleClear}>
 								<ClearIcon />
 							</IconButton>
 						</Tooltip>
