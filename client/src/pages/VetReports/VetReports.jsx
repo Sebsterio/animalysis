@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
+import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import { Toolbar, Head, Body } from "./components";
+import { Head, Body, Footer } from "./components";
 
 import { alertData } from "components";
 import { getDateString } from "utils/date";
@@ -69,14 +70,14 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	const markAsSeen = (id) =>
 		modifyReport({ id, update: { dateSeen: new Date() } });
 
-	const openReport = (id) => {
-		history.push(`/report/${id}`);
-		markAsSeen(id);
-	};
+	// const openReport = (id) => {
+	// 	history.push(`/report/${id}`);
+	// 	markAsSeen(id);
+	// };
 
 	const markSelectedAsSeen = () => {
 		selected.forEach((id) => markAsSeen(id));
-		// deselect all selected
+		setSelected([]);
 	};
 
 	// ------------------------ Pagination ------------------------
@@ -97,8 +98,6 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	return (
 		<Paper className={c.root}>
-			<Toolbar numSelected={selected.length} {...{ c, markSelectedAsSeen }} />
-
 			<TableContainer className={c.container}>
 				<Table stickyHeader>
 					<Head
@@ -108,22 +107,15 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 						numSelected={selected.length}
 						rowCount={rows.length}
 					/>
-
 					<Body
 						{...{ c, page, rowsPerPage, isSelected }}
 						{...{ handleCheckboxClick, columns, rows }}
 					/>
 				</Table>
 			</TableContainer>
-
-			<TablePagination
-				rowsPerPageOptions={[10, 25, 100]}
-				component="div"
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
+			<Footer
+				{...{ selected, markSelectedAsSeen, rows, rowsPerPage }}
+				{...{ page, handleChangePage, handleChangeRowsPerPage }}
 			/>
 		</Paper>
 	);
