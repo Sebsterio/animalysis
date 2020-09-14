@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableFooter from "@material-ui/core/TableFooter";
-import TablePagination from "@material-ui/core/TablePagination";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { Head, Body, Footer } from "./components";
 
@@ -65,6 +63,30 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	const isSelected = (name) => selected.indexOf(name) !== -1;
 
+	// -------------------------- Search ---------------------------
+
+	const [query, setQuery] = useState("");
+
+	const clearQuery = () => {
+		setQuery("");
+		setRows(getAugmentedReports(reports));
+	};
+
+	// Filter rows by search query (match any field)
+	const handleInput = (e) => {
+		const value = e.target.value;
+		console.log({ value });
+		if (value === "") return clearQuery();
+		setQuery(value);
+		setRows(
+			rows.filter((row) =>
+				Object.values(row).some((field) =>
+					String(field).toLowerCase().includes(value.toLowerCase())
+				)
+			)
+		);
+	};
+
 	// ---------------- Modification & Navigation ------------------
 
 	const markAsSeen = (id) =>
@@ -114,8 +136,8 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 				</Table>
 			</TableContainer>
 			<Footer
-				{...{ selected, markSelectedAsSeen, rows, rowsPerPage }}
-				{...{ page, handleChangePage, handleChangeRowsPerPage }}
+				{...{ selected, markSelectedAsSeen, rows, rowsPerPage, page }}
+				{...{ handleChangePage, handleChangeRowsPerPage, query, handleInput }}
 			/>
 		</Paper>
 	);

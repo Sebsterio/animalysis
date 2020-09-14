@@ -5,13 +5,15 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import TextField from "@material-ui/core/TextField";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => {
 	const toolbar = {
 		paddingLeft: theme.spacing(2),
 		paddingRight: theme.spacing(1),
+		flex: 1,
 	};
 	const highlight = {
 		...toolbar,
@@ -26,7 +28,7 @@ const useStyles = makeStyles((theme) => {
 				alignItems: "center",
 			},
 		},
-		toolbar: ({ active }) => (active ? highlight : toolbar),
+		toolbar: ({ selectionActive }) => (selectionActive ? highlight : toolbar),
 		title: { flex: "1 1 100%" },
 	};
 });
@@ -39,39 +41,46 @@ export const Footer = ({
 	page,
 	handleChangePage,
 	handleChangeRowsPerPage,
+	query,
+	handleInput,
 }) => {
-	const numSelected = selected.length;
+	const selectionActive = selected.length > 0;
 
-	const c = useStyles({ active: numSelected > 0 });
+	const c = useStyles({ selectionActive });
 
 	return (
 		<div className={c.container}>
 			<Toolbar className={c.toolbar}>
-				{
-					numSelected > 0 ? (
+				{selectionActive ? (
+					<>
 						<Typography
 							className={c.title}
 							color="inherit"
 							variant="subtitle1"
 							component="div"
-							children={numSelected + " selected"}
+							children={selectionActive + " selected"}
 						/>
-					) : null
-					// TODO: Search bar here
-				}
-
-				{numSelected > 0 ? (
-					<Tooltip title="Mark as received">
-						<IconButton onClick={markSelectedAsSeen}>
-							<CheckCircleIcon color="primary" />
-						</IconButton>
-					</Tooltip>
+						<Tooltip title="Mark as received">
+							<IconButton onClick={markSelectedAsSeen}>
+								<CheckCircleIcon color="primary" />
+							</IconButton>
+						</Tooltip>
+					</>
 				) : (
-					<Tooltip title="Filter list">
-						<IconButton>
-							<FilterListIcon />
-						</IconButton>
-					</Tooltip>
+					<>
+						<TextField
+							autoFocus
+							fullWidth
+							label="Search"
+							value={query}
+							onChange={handleInput}
+						/>
+						<Tooltip title="Clear">
+							<IconButton>
+								<ClearIcon />
+							</IconButton>
+						</Tooltip>
+					</>
 				)}
 			</Toolbar>
 
