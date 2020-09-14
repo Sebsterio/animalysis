@@ -72,37 +72,6 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	const isSelected = (name) => selected.indexOf(name) !== -1;
 
-	// -------------------- Search & Filtering ----------------------
-
-	// Needed for the "clear" button to clear search input element
-	const [query, setQuery] = useState("");
-
-	const [seenHidden, setSeenHidden] = useState(false);
-
-	// Filter rows by search query (match any field) and seen prop
-	// prettier-ignore
-	const filterRows = () => {
-		let newRows = [...reports]
-		if (seenHidden)	newRows = newRows.filter((row) => !row.dateSeen)
-		if (query !== '')	newRows = newRows.filter((row) =>
-			searchableFields.some((field) => {
-				const fieldString =
-					field === "dateCreated"
-						? getDateString(row[field])
-						: String(row[field]).toLowerCase();
-				return fieldString.includes(query.toLowerCase());
-			}))
-		setRows(newRows);
-	}
-
-	useEffect(() => {
-		filterRows();
-	}, [query, seenHidden]);
-
-	const handleInput = (e) => setQuery(e.target.value);
-
-	const toggleSeenHidden = () => setSeenHidden(!seenHidden);
-
 	// ---------------- Modification & Navigation ------------------
 
 	const markAsSeen = (id) =>
@@ -131,6 +100,36 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 		setRowsPerPage(+e.target.value);
 		setPage(0);
 	};
+
+	// -------------------- Search & Filtering ----------------------
+
+	const [query, setQuery] = useState("");
+	const [seenHidden, setSeenHidden] = useState(false);
+
+	// Filter rows by search query (match any field) and seen prop
+	// prettier-ignore
+	const filterRows = () => {
+		let newRows = [...reports]
+		if (seenHidden)	newRows = newRows.filter((row) => !row.dateSeen)
+		if (query !== '')	newRows = newRows.filter((row) =>
+			searchableFields.some((field) => {
+				const fieldString =
+					field === "dateCreated"
+						? getDateString(row[field])
+						: String(row[field]).toLowerCase();
+				return fieldString.includes(query.toLowerCase());
+			}))
+		setRows(newRows);
+		setPage(0)
+	}
+
+	useEffect(() => {
+		filterRows();
+	}, [query, seenHidden]);
+
+	const handleInput = (e) => setQuery(e.target.value);
+
+	const toggleSeenHidden = () => setSeenHidden(!seenHidden);
 
 	// --------------------------- View ---------------------------
 
