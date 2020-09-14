@@ -1,10 +1,3 @@
-export const getAugmentedReports = (reports) =>
-	reports.map((report) => {
-		const { firstName, surname } = report.owner;
-		const ownerName = firstName + (surname ? ` ${surname}` : "");
-		return { ...report, ownerName };
-	});
-
 // Add clicked row.id to array of selected rows
 export const getNewSelected = (id, selected, selectedIndex) => {
 	let newSelected = [];

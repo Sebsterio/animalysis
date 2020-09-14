@@ -4,6 +4,9 @@ import { Typography, Button } from "@material-ui/core";
 import { Page, ReportsList, Spinner } from "components";
 // import { ClinicSnippet } from "./components";
 
+import { makeSortedArray } from "utils/array";
+import { byDateCreated_descending } from "utils/sort";
+
 const useStyles = makeStyles((theme) => ({
 	greeting: { margin: theme.spacing(4, 0) },
 	denseStack: {
@@ -29,6 +32,9 @@ export const VetDashboard = ({
 	modifyReport,
 }) => {
 	const c = useStyles();
+
+	// Sort reports by date across all pets (else they're sorted separately for each pet)
+	const sortedReports = makeSortedArray(reports, byDateCreated_descending);
 
 	// ------------------------ Handlers -------------------------
 
@@ -100,8 +106,9 @@ export const VetDashboard = ({
 								</div>
 							) : (
 								<ReportsList
-									{...{ reports, history, reportClickCallback }}
 									showOwner
+									reports={sortedReports}
+									{...{ history, reportClickCallback }}
 								/>
 							)}
 						</>
