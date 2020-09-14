@@ -42,12 +42,20 @@ export const getAllPetReports = (state) =>
 export const getAllReportsAugmented = (state) =>
 	getAllPets(state).reduce((acc, pet) => {
 		if (!pet.reports) return acc;
-		const augmentedReports = pet.reports.map((rep) => ({ ...pet, ...rep }));
+		const { firstName, surname } = pet.owner;
+		const ownerName = firstName + (surname ? ` ${surname}` : "");
+		const augmentedReports = pet.reports.map((report) => {
+			return { ...pet, ...report, ownerName };
+		});
 		return [...acc, ...augmentedReports];
 	}, []);
 
 export const getAllUnseenReports = (state) =>
 	getAllPetReports(state).filter((report) => !report.dateSeen);
+
+// TODO: filter dateSeen first
+export const getAugmentedUnseenReports = (state) =>
+	getAllReportsAugmented(state).filter((report) => !report.dateSeen);
 
 export const getHasReports = (state) => !!getAllPetReports(state).length;
 

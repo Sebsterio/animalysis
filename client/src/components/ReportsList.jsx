@@ -8,12 +8,15 @@ import { alertData } from "components";
 const useStyles = makeStyles((theme) => ({
 	report: {
 		display: "flex",
-	},
-	date: {
-		flex: "0 0 auto",
+		justifyContent: "stretch",
 	},
 	title: {
-		flex: "0 1 100%",
+		flex: 1.5,
+		textAlign: "center",
+		textTransform: "capitalize",
+	},
+	owner: {
+		flex: 1,
 		textAlign: "center",
 		textTransform: "capitalize",
 	},
@@ -22,10 +25,33 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.grey[600],
 	},
 }));
+// const useStyles = makeStyles((theme) => ({
+// 	report: {
+// 		display: "flex",
+// 		justifyContent: "space-between",
+// 	},
+// 	title: {
+// 		textAlign: "center",
+// 		textTransform: "capitalize",
+// 	},
+// 	owner: {
+// 		textAlign: "center",
+// 		textTransform: "capitalize",
+// 	},
+// 	showAllBtn: {
+// 		marginTop: theme.spacing(2),
+// 		color: theme.palette.grey[600],
+// 	},
+// }));
 
 const LIMIT = 7;
 
-export const ReportsList = ({ history, reports, reportClickCallback }) => {
+export const ReportsList = ({
+	history,
+	reports,
+	reportClickCallback,
+	showOwner,
+}) => {
 	const [showAll, setShowAll] = useState(false);
 	const toggleShowAll = () => setShowAll(!showAll);
 
@@ -54,13 +80,16 @@ export const ReportsList = ({ history, reports, reportClickCallback }) => {
 			<ButtonGroup
 				fullWidth
 				orientation="vertical"
-				children={renderedReports.map(({ id, dateCreated, title, alert }) => (
-					<Button className={c.report} onClick={() => openReport(id)}>
-						<span className={c.date}>{getDateString(dateCreated)}</span>
-						<span className={c.title}>{title}</span>
-						<FiberManualRecordIcon style={getStyle(alert)} />
-					</Button>
-				))}
+				children={renderedReports.map(
+					({ id, dateCreated, title, alert, ownerName }) => (
+						<Button className={c.report} onClick={() => openReport(id)}>
+							<span>{getDateString(dateCreated)}</span>
+							<span className={c.title}>{title}</span>
+							{showOwner && <span className={c.owner}>{ownerName}</span>}
+							<FiberManualRecordIcon style={getStyle(alert)} />
+						</Button>
+					)
+				)}
 			/>
 			{overflowed && (
 				<Button

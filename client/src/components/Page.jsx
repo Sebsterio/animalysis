@@ -30,10 +30,16 @@ const useStyles = makeStyles((theme) => ({
 	footer: {},
 }));
 
-export const Page = ({ header, footer, main, children = main }) => {
+export const Page = ({
+	header,
+	footer,
+	main,
+	children = main,
+	maxWidth = "xs",
+}) => {
 	const c = useStyles();
 	return (
-		<Container maxWidth="xs" className={c.page}>
+		<Container maxWidth={maxWidth} className={c.page}>
 			{header && <div className={c.header}>{header}</div>}
 			<div className={c.main}>{children}</div>
 			{footer && <div className={c.footer}>{footer}</div>}

@@ -82,6 +82,7 @@ export const VetDashboard = ({
 	// Vet user is a member of a clinic
 	return (
 		<Page
+			maxWidth="sm"
 			header={WelcomeText}
 			main={
 				<>
@@ -98,7 +99,10 @@ export const VetDashboard = ({
 									<Spinner />
 								</div>
 							) : (
-								<ReportsList {...{ reports, history, reportClickCallback }} />
+								<ReportsList
+									{...{ reports, history, reportClickCallback }}
+									showOwner
+								/>
 							)}
 						</>
 					)}

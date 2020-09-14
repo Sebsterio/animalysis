@@ -8,7 +8,7 @@ import { Head, Body, Footer } from "./components";
 
 import { alertData } from "components";
 import { getDateString } from "utils/date";
-import { getAugmentedReports, getNewSelected } from "./VetReports-utils";
+import { getNewSelected } from "./VetReports-utils";
 import { useStyles } from "./VetReports-styles";
 
 // =========================== Constants ===============================
@@ -52,7 +52,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	const [rows, setRows] = useState([]);
 
 	useEffect(() => {
-		setRows(getAugmentedReports(reports));
+		setRows([...reports]);
 	}, [reports]);
 
 	// -------------------------- Selection -------------------------
@@ -82,8 +82,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	// Filter rows by search query (match any field) and seen prop
 	// prettier-ignore
 	const filterRows = () => {
-		const originalRows = getAugmentedReports(reports)
-		let newRows = originalRows
+		let newRows = [...reports]
 		if (seenHidden)	newRows = newRows.filter((row) => !row.dateSeen)
 		if (query !== '')	newRows = newRows.filter((row) =>
 			searchableFields.some((field) => {

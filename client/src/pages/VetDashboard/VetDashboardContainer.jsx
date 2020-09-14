@@ -5,7 +5,7 @@ import { getIsSuperuser } from "redux/user/user-selectors";
 import { getName, getIsLoading } from "redux/profile/profile-selectors";
 import { getFormData, getIsRegistered } from "redux/clinic/clinic-selectors";
 import {
-	getAllUnseenReports,
+	getAugmentedUnseenReports,
 	getIsSyncing,
 	getAreAnyPetsSyncing,
 } from "redux/pets/pets-selectors";
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => ({
 	profileLoading: getIsLoading(state),
 	clinic: getFormData(state),
 	hasClinic: getIsRegistered(state),
-	reports: getAllUnseenReports(state),
+	reports: getAugmentedUnseenReports(state),
 	superuser: getIsSuperuser(state),
 	syncing: getIsSyncing(state) || getAreAnyPetsSyncing(state),
 });
