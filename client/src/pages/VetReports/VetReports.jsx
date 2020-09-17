@@ -108,7 +108,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	// Filter rows by search query (match any field) and seen prop
 	// prettier-ignore
-	const filterRows = () => {
+	useEffect(() => {
 		let newRows = [...reports]
 		if (seenHidden)	newRows = newRows.filter((row) => !row.dateSeen)
 		if (query !== '')	newRows = newRows.filter((row) =>
@@ -120,12 +120,8 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 				return fieldString.includes(query.toLowerCase());
 			}))
 		setRows(newRows);
-		setPage(0)
-	}
-
-	useEffect(() => {
-		filterRows();
-	}, [query, seenHidden]);
+		setPage(0);
+	}, [query, seenHidden, reports]);
 
 	const handleInput = (e) => setQuery(e.target.value);
 

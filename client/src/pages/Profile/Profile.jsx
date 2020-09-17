@@ -35,7 +35,7 @@ export const Profile = ({ match, history, fetchClient, getPets }) => {
 			setPets(getPets(id));
 			setStatus("success");
 		})();
-	}, [fetchClient, id]);
+	}, [fetchClient, id, getPets]);
 
 	if (status === "loading") return <Spinner />;
 	if (status === "error") return <Redirect to="/not-found" />;
