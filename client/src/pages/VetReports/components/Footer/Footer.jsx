@@ -52,7 +52,8 @@ export const Footer = ({
 	setSelected,
 	toggleSeenHidden,
 }) => {
-	const selectionActive = selected.length > 0;
+	const numSelected = selected.length;
+	const selectionActive = numSelected > 0;
 
 	const c = useStyles({ selectionActive });
 
@@ -89,7 +90,7 @@ export const Footer = ({
 							color="inherit"
 							variant="subtitle1"
 							component="div"
-							children={selectionActive + " selected"}
+							children={numSelected + " selected"}
 						/>
 						<Tooltip title="Mark as received">
 							<IconButton onClick={markSelectedAsSeen}>
