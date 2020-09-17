@@ -3,46 +3,14 @@ import React, { useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { Head, Body, Footer } from "./components";
 
-import { alertData } from "components";
 import { getDateString } from "utils/date";
 import { getNewSelected } from "./VetReports-utils";
+import { columns, searchableFields } from "./VetReports-constants";
 import { useStyles } from "./VetReports-styles";
 
-// =========================== Constants ===============================
-
-const columns = [
-	{
-		id: "alert",
-		label: "Alert",
-		format: (alert) => (
-			<FiberManualRecordIcon style={{ color: alertData[alert].color }} />
-		),
-	},
-	{
-		id: "dateCreated",
-		label: "Date",
-		format: (val) => getDateString(val),
-	},
-	{ id: "title", label: "Title" },
-	{ id: "name", label: "Pet's name" },
-	{ id: "species", label: "Species" },
-	{ id: "breed", label: "Breed" },
-	{ id: "ownerName", label: "Owner" },
-];
-
-const searchableFields = [
-	"name",
-	"species",
-	"breed",
-	"ownerName",
-	"dateCreated",
-	"title",
-];
-
-// =========================== Component ===============================
+// ================================================================
 
 export const VetReports = ({ history, reports, modifyReport }) => {
 	const c = useStyles();
@@ -54,6 +22,17 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	useEffect(() => {
 		setRows([...reports]);
 	}, [reports]);
+
+	// --------------------------- Sorting --------------------------
+
+	const [order, setOrder] = React.useState("asc");
+	const [orderBy, setOrderBy] = React.useState("calories");
+
+	const handleRequestSort = (event, property) => {
+		const isAsc = orderBy === property && order === "asc";
+		setOrder(isAsc ? "desc" : "asc");
+		setOrderBy(property);
+	};
 
 	// -------------------------- Selection -------------------------
 
@@ -134,14 +113,13 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 			<TableContainer className={c.container}>
 				<Table stickyHeader>
 					<Head
-						{...{ c, columns, handleSelectAllClick }}
-						/* order, orderBy, */
-						/* handleRequestSort */
 						numSelected={selected.length}
 						rowCount={rows.length}
+						{...{ c, columns, handleSelectAllClick }}
+						{...{ order, orderBy, handleRequestSort }}
 					/>
 					<Body
-						{...{ c, page, rowsPerPage, isSelected }}
+						{...{ c, page, rowsPerPage, isSelected, order, orderBy }}
 						{...{ handleCheckboxClick, columns, rows }}
 					/>
 				</Table>

@@ -1,8 +1,8 @@
 import React from "react";
-
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
 export const Head = ({
@@ -15,6 +15,8 @@ export const Head = ({
 	rowCount,
 	handleRequestSort,
 }) => {
+	const createSortHandler = (property) => (e) => handleRequestSort(e, property);
+
 	return (
 		<TableHead>
 			<TableRow>
@@ -32,8 +34,22 @@ export const Head = ({
 						className={c.cell}
 						align="center"
 						style={{ minWidth: column.minWidth }}
-						children={column.label}
-					/>
+						// padding={column.disablePadding ? 'none' : 'default'}
+						sortDirection={orderBy === column.id ? order : false}
+					>
+						<TableSortLabel
+							active={orderBy === column.id}
+							direction={orderBy === column.id ? order : "asc"}
+							onClick={createSortHandler(column.id)}
+						>
+							{column.label}
+							{orderBy === column.id ? (
+								<span className={c.visuallyHidden}>
+									{order === "desc" ? "sorted descending" : "sorted ascending"}
+								</span>
+							) : null}
+						</TableSortLabel>
+					</TableCell>
 				))}
 			</TableRow>
 		</TableHead>
