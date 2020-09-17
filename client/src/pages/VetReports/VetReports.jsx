@@ -5,10 +5,10 @@ import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import { Head, Body, Footer } from "./components";
 
+import { useStyles } from "./VetReports-styles";
 import { getDateString } from "utils/date";
 import { getNewSelected } from "./VetReports-utils";
 import { columns, searchableFields } from "./VetReports-constants";
-import { useStyles } from "./VetReports-styles";
 
 // ================================================================
 
@@ -25,10 +25,10 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 
 	// --------------------------- Sorting --------------------------
 
-	const [order, setOrder] = React.useState("asc");
-	const [orderBy, setOrderBy] = React.useState("calories");
+	const [order, setOrder] = React.useState("desc");
+	const [orderBy, setOrderBy] = React.useState("dateCreated");
 
-	const handleRequestSort = (event, property) => {
+	const handleRequestSort = (e, property) => {
 		const isAsc = orderBy === property && order === "asc";
 		setOrder(isAsc ? "desc" : "asc");
 		setOrderBy(property);
