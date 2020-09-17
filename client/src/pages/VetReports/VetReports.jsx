@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import { Head, Body, Footer } from "./components";
 
-import { useStyles } from "./VetReports-styles";
 import { getDateString } from "utils/date";
 import { getNewSelected } from "./VetReports-utils";
 import { columns, searchableFields } from "./VetReports-constants";
+
+export const useStyles = makeStyles((theme) => ({
+	root: {
+		width: "100%",
+	},
+	container: {
+		height: "calc(100vh - 180px)", // Navbar + Toolbar + TablePagination
+		[theme.breakpoints.up("sm")]: {
+			height: "calc(100vh - 130px)", // Navbar + Footer
+		},
+	},
+}));
 
 // ================================================================
 
@@ -85,17 +97,16 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	const [query, setQuery] = useState("");
 	const [seenHidden, setSeenHidden] = useState(false);
 
-	// Filter rows by search query (match any field) and seen prop
+	// Filter rows by search query (match any field) and "seen" status
 	// prettier-ignore
 	useEffect(() => {
 		let newRows = [...reports]
 		if (seenHidden)	newRows = newRows.filter((row) => !row.dateSeen)
 		if (query !== '')	newRows = newRows.filter((row) =>
 			searchableFields.some((field) => {
-				const fieldString =
-					field === "dateCreated"
-						? getDateString(row[field])
-						: String(row[field]).toLowerCase();
+				const fieldString =	field === "dateCreated"
+					? getDateString(row[field])
+					: String(row[field]).toLowerCase();
 				return fieldString.includes(query.toLowerCase());
 			}))
 		setRows(newRows);

@@ -1,29 +1,18 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
+import { getComparator, stableSort } from "../VetReports-utils";
 
-const descendingComparator = (a, b, orderBy) => {
-	if (b[orderBy] < a[orderBy]) return -1;
-	if (b[orderBy] > a[orderBy]) return 1;
-	return 0;
-};
-
-const getComparator = (order, orderBy) =>
-	order === "desc"
-		? (a, b) => descendingComparator(a, b, orderBy)
-		: (a, b) => -descendingComparator(a, b, orderBy);
-
-const stableSort = (array, comparator) => {
-	const stabilizedThis = array.map((el, index) => [el, index]);
-	stabilizedThis.sort((a, b) => {
-		const order = comparator(a[0], b[0]);
-		if (order !== 0) return order;
-		return a[1] - b[1];
-	});
-	return stabilizedThis.map((el) => el[0]);
-};
+export const useStyles = makeStyles((theme) => ({
+	cell: { whiteSpace: "nowrap" },
+	cellUnseen: {
+		whiteSpace: "nowrap",
+		fontWeight: "bold",
+	},
+}));
 
 export const Body = ({
 	page,
@@ -34,8 +23,9 @@ export const Body = ({
 	rows,
 	order,
 	orderBy,
-	c,
 }) => {
+	const c = useStyles();
+
 	return (
 		<TableBody>
 			{stableSort(rows, getComparator(order, orderBy))

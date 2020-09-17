@@ -1,12 +1,31 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
+export const useStyles = makeStyles((theme) => ({
+	headCell: {
+		whiteSpace: "nowrap",
+		paddingRight: 0, // Counter text displacement caused by sort-arrow-icon
+	},
+	visuallyHidden: {
+		border: 0,
+		clip: "rect(0 0 0 0)",
+		height: 1,
+		margin: -1,
+		overflow: "hidden",
+		padding: 0,
+		position: "absolute",
+		top: 20,
+		width: 1,
+	},
+}));
+
 export const Head = ({
-	c,
 	columns,
 	handleSelectAllClick,
 	order,
@@ -15,6 +34,8 @@ export const Head = ({
 	rowCount,
 	handleRequestSort,
 }) => {
+	const c = useStyles();
+
 	const createSortHandler = (property) => (e) => handleRequestSort(e, property);
 
 	return (
@@ -31,10 +52,9 @@ export const Head = ({
 				{columns.map((column) => (
 					<TableCell
 						key={column.id}
-						className={c.cell}
+						className={c.headCell}
 						align="center"
 						style={{ minWidth: column.minWidth }}
-						// padding={column.disablePadding ? 'none' : 'default'}
 						sortDirection={orderBy === column.id ? order : false}
 					>
 						<TableSortLabel

@@ -3,13 +3,15 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { alertData } from "components";
 import { getDateString } from "utils/date";
 
+const alertIcon = (level) => (
+	<FiberManualRecordIcon style={{ color: alertData[level].color }} />
+);
+
 export const columns = [
 	{
 		id: "alert",
 		label: "Alert",
-		format: (alert) => (
-			<FiberManualRecordIcon style={{ color: alertData[alert].color }} />
-		),
+		format: (level) => alertIcon(level),
 	},
 	{
 		id: "dateCreated",
@@ -22,8 +24,8 @@ export const columns = [
 	{ id: "breed", label: "Breed" },
 	{ id: "ownerName", label: "Owner" },
 ];
-// disablePadding: true
 
+// Columns inluded in search
 export const searchableFields = [
 	"name",
 	"species",
