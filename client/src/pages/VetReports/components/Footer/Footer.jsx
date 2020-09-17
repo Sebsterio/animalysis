@@ -36,24 +36,48 @@ const useStyles = makeStyles((theme) => {
 });
 
 export const Footer = ({
+	// Parent
+	markAsSeen,
+	// Store
 	selected,
-	markSelectedAsSeen,
 	rows,
 	rowsPerPage,
 	page,
-	handleChangePage,
-	handleChangeRowsPerPage,
 	query,
-	handleInput,
 	seenHidden,
+	// Dispatch
+	setRowsPerPage,
+	setPage,
+	setQuery,
+	setSelected,
 	toggleSeenHidden,
 }) => {
 	const selectionActive = selected.length > 0;
 
 	const c = useStyles({ selectionActive });
 
+	// ---------------------- Selecting ----------------------
+
+	const handleInput = (e) => setQuery(e.target.value);
+
 	// Send fake input event with (value = "")
 	const handleClear = () => handleInput({ target: { value: "" } });
+
+	const markSelectedAsSeen = () => {
+		selected.forEach((id) => markAsSeen(id));
+		setSelected([]);
+	};
+
+	// --------------------- Pagination ----------------------
+
+	const handleChangePage = (e, newPage) => setPage(newPage);
+
+	const handleChangeRowsPerPage = (e) => {
+		setRowsPerPage(+e.target.value);
+		setPage(0);
+	};
+
+	// ------------------------ View -------------------------
 
 	return (
 		<div className={c.container}>
@@ -87,7 +111,7 @@ export const Footer = ({
 								<ClearIcon />
 							</IconButton>
 						</Tooltip>
-						<Tooltip title={seenHidden ? "Show seen" : "Hide seen"}>
+						<Tooltip title={seenHidden ? "Seen hidden" : "Seen visible"}>
 							<IconButton onClick={toggleSeenHidden}>
 								{seenHidden ? <VisibilityOffIcon /> : <VisibilityIcon />}
 							</IconButton>

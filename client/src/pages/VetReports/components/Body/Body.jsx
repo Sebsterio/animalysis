@@ -1,12 +1,15 @@
 import React from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
-import { getComparator, stableSort } from "../VetReports-utils";
 
-export const useStyles = makeStyles((theme) => ({
+import { getComparator, stableSort, getNewSelected } from "./Body-utils";
+import { columns } from "../../VetReports-constants";
+
+const useStyles = makeStyles((theme) => ({
 	row: { cursor: "pointer" },
 	cell: { whiteSpace: "nowrap" },
 	cellUnseen: {
@@ -16,17 +19,27 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export const Body = ({
+	// Parent
+	openReport,
+	// Store
 	page,
 	rowsPerPage,
-	isSelected,
-	handleCheckboxClick,
-	columns,
 	rows,
 	order,
 	orderBy,
-	openReport,
+	selected,
+	// Dispatch
+	setSelected,
 }) => {
 	const c = useStyles();
+
+	const isSelected = (name) => selected.indexOf(name) !== -1;
+
+	const handleCheckboxClick = (e, id) => {
+		e.stopPropagation();
+		const selectedIndex = selected.indexOf(id);
+		setSelected(getNewSelected(id, selected, selectedIndex));
+	};
 
 	return (
 		<TableBody>

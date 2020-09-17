@@ -9,18 +9,13 @@ import petsReducer from "redux/pets/pets-reducer";
 import surveyReducer from "redux/survey/survey-reducer";
 import surveyDataReducer from "redux/survey-data/survey-data-reducer";
 import errorReducer from "redux/error/error-reducer";
+import reportsHistoryReducer from "redux/reports-history/reports-history-reducer";
 
 const persistConfig = {
 	key: "root",
 	storage,
-	blacklist: ["error"],
+	blacklist: ["error", "reportsHistory"],
 };
-
-// const surveyPersistConfig = {
-// 	key: "survey",
-// 	storage,
-// 	blacklist: ["data"],
-// };
 
 const rootReducer = combineReducers({
 	user: userReducer,
@@ -29,8 +24,8 @@ const rootReducer = combineReducers({
 	pets: petsReducer,
 	survey: surveyReducer,
 	surveyData: surveyDataReducer,
+	reportsHistory: reportsHistoryReducer,
 	error: errorReducer,
-	// survey: persistReducer(surveyPersistConfig, surveyReducer),
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -7,7 +7,9 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
-export const useStyles = makeStyles((theme) => ({
+import { columns } from "../../VetReports-constants";
+
+const useStyles = makeStyles((theme) => ({
 	headCell: {
 		whiteSpace: "nowrap",
 		paddingRight: 0, // Counter text displacement caused by sort-arrow-icon
@@ -26,15 +28,32 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 export const Head = ({
-	columns,
-	handleSelectAllClick,
+	// Store
+	rows,
+	selected,
 	order,
 	orderBy,
-	numSelected,
-	rowCount,
-	handleRequestSort,
+	// Dispatch
+	setSelected,
+	setOrder,
+	setOrderBy,
 }) => {
+	const numSelected = selected.length;
+	const rowCount = rows.length;
+
 	const c = useStyles();
+
+	const handleSelectAllClick = (e) => {
+		if (!e.target.checked) return setSelected([]);
+		const newSelecteds = rows.map((row) => row.id);
+		setSelected(newSelecteds);
+	};
+
+	const handleRequestSort = (e, property) => {
+		const isAsc = orderBy === property && order === "asc";
+		setOrder(isAsc ? "desc" : "asc");
+		setOrderBy(property);
+	};
 
 	const createSortHandler = (property) => (e) => handleRequestSort(e, property);
 
