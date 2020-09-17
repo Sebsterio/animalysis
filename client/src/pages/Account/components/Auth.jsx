@@ -1,5 +1,7 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import Icon from "@material-ui/core/Icon";
+import Logo from "assets/logo_blue.png";
 
 // Components
 import {
@@ -48,14 +50,11 @@ export const Auth = ({ mode, handleSubmit }) => {
 		<Container maxWidth="xs" className={c.container}>
 			{/* Head */}
 			<Box className={c.head}>
+				<Icon className={c.logoContainer}>
+					<img className={c.logo} src={Logo} />
+				</Icon>
 				<Typography component="h1" variant="h2">
 					Animalysis
-				</Typography>
-				<Typography component="h1" variant="h5">
-					Clinic Name
-				</Typography>
-				<Typography component="h1" variant="h6">
-					(Logo)
 				</Typography>
 			</Box>
 

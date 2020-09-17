@@ -27,4 +27,15 @@ export const useStyles = makeStyles((theme) => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 	},
+
+	// Logo
+	logoContainer: {
+		display: "block",
+		width: 200,
+		height: "auto",
+		objectFit: "contain",
+	},
+	logo: {
+		width: "100%",
+	},
 }));
