@@ -57,6 +57,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	};
 
 	const handleCheckboxClick = (e, id) => {
+		e.stopPropagation();
 		const selectedIndex = selected.indexOf(id);
 		setSelected(getNewSelected(id, selected, selectedIndex));
 	};
@@ -68,10 +69,10 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 	const markAsSeen = (id) =>
 		modifyReport({ id, update: { dateSeen: new Date() } });
 
-	// const openReport = (id) => {
-	// 	history.push(`/report/${id}`);
-	// 	markAsSeen(id);
-	// };
+	const openReport = (id) => {
+		history.push(`/report/${id}`);
+		markAsSeen(id);
+	};
 
 	const markSelectedAsSeen = () => {
 		selected.forEach((id) => markAsSeen(id));
@@ -131,7 +132,7 @@ export const VetReports = ({ history, reports, modifyReport }) => {
 					/>
 					<Body
 						{...{ c, page, rowsPerPage, isSelected, order, orderBy }}
-						{...{ handleCheckboxClick, columns, rows }}
+						{...{ handleCheckboxClick, columns, rows, openReport }}
 					/>
 				</Table>
 			</TableContainer>

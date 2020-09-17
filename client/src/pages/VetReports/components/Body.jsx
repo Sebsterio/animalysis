@@ -7,6 +7,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { getComparator, stableSort } from "../VetReports-utils";
 
 export const useStyles = makeStyles((theme) => ({
+	row: { cursor: "pointer" },
 	cell: { whiteSpace: "nowrap" },
 	cellUnseen: {
 		whiteSpace: "nowrap",
@@ -23,6 +24,7 @@ export const Body = ({
 	rows,
 	order,
 	orderBy,
+	openReport,
 }) => {
 	const c = useStyles();
 
@@ -38,7 +40,9 @@ export const Body = ({
 							role="checkbox"
 							tabIndex={-1}
 							key={row.id}
+							className={c.row}
 							selected={isItemSelected}
+							onClick={() => openReport(row.id)}
 						>
 							<TableCell padding="checkbox">
 								<Checkbox
