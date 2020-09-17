@@ -10,39 +10,22 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "stretch",
 	},
-	title: {
-		flex: 1.5,
+	columnWide: {
+		flex: 2.5,
 		textAlign: "center",
 		textTransform: "capitalize",
 	},
-	owner: {
+	columnNarrow: {
 		flex: 1,
 		textAlign: "center",
 		textTransform: "capitalize",
+		textAlign: "left",
 	},
 	showAllBtn: {
 		marginTop: theme.spacing(2),
 		color: theme.palette.grey[600],
 	},
 }));
-// const useStyles = makeStyles((theme) => ({
-// 	report: {
-// 		display: "flex",
-// 		justifyContent: "space-between",
-// 	},
-// 	title: {
-// 		textAlign: "center",
-// 		textTransform: "capitalize",
-// 	},
-// 	owner: {
-// 		textAlign: "center",
-// 		textTransform: "capitalize",
-// 	},
-// 	showAllBtn: {
-// 		marginTop: theme.spacing(2),
-// 		color: theme.palette.grey[600],
-// 	},
-// }));
 
 const LIMIT = 7;
 
@@ -50,7 +33,8 @@ export const ReportsList = ({
 	history,
 	reports,
 	reportClickCallback,
-	showOwner,
+	showPetName,
+	// showOwner,
 }) => {
 	const [showAll, setShowAll] = useState(false);
 	const toggleShowAll = () => setShowAll(!showAll);
@@ -81,11 +65,12 @@ export const ReportsList = ({
 				fullWidth
 				orientation="vertical"
 				children={renderedReports.map(
-					({ id, dateCreated, title, alert, ownerName }) => (
+					({ id, dateCreated, title, alert, name, ownerName }) => (
 						<Button className={c.report} onClick={() => openReport(id)}>
 							<span>{getDateString(dateCreated)}</span>
-							<span className={c.title}>{title}</span>
-							{showOwner && <span className={c.owner}>{ownerName}</span>}
+							<span className={c.columnWide}>{title}</span>
+							{showPetName && <span className={c.columnNarrow}>{name}</span>}
+							{/* {showOwner && <span className={c.columnNarrow}>{ownerName}</span>} */}
 							<FiberManualRecordIcon style={getStyle(alert)} />
 						</Button>
 					)

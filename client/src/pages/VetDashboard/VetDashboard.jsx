@@ -106,7 +106,7 @@ export const VetDashboard = ({
 								</div>
 							) : (
 								<ReportsList
-									showOwner
+									showPetName
 									reports={sortedReports}
 									{...{ history, reportClickCallback }}
 								/>
