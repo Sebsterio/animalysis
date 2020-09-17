@@ -7,10 +7,14 @@ export const useStyles = makeStyles((theme) => ({
 		maxWidth: theme.breakpoints.values.sm,
 		margin: "auto",
 	},
-	appLogo: {
-		textDecoration: "none",
-		color: "white",
-		lineHeight: 0,
+	logoContainer: {
+		display: "block",
+		width: 35,
+		height: 35,
+		objectFit: "contain",
+	},
+	logo: {
+		width: "100%",
 	},
 	title: { flexGrow: 1 },
 

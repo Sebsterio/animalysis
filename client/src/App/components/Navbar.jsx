@@ -12,7 +12,8 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import CloseIcon from "@material-ui/icons/Close";
-import PetsIcon from "@material-ui/icons/Pets";
+import Icon from "@material-ui/core/Icon";
+import Logo from "assets/logo_simple_white_small.png";
 
 import { useStyles } from "./Navbar-styles";
 
@@ -37,8 +38,10 @@ export const Navbar = ({ routes, isSuperuser }) => {
 						color="inherit"
 						aria-label="logo"
 						children={
-							<Link to="/" className={c.appLogo}>
-								<PetsIcon />
+							<Link to="/">
+								<Icon className={c.logoContainer}>
+									<img className={c.logo} src={Logo} />
+								</Icon>
 							</Link>
 						}
 					/>
