@@ -2,7 +2,16 @@ export const SET_ERROR = "error/SET_ERROR";
 export const setError = (actionData) => {
 	const { response, message } = actionData;
 	const { data, status, statusText } = response || {};
-	const { msg, target } = data || {};
+	let { msg, target } = data || {};
+
+	if (status === 503 && !target) {
+		target = "generic";
+		msg = "Error contacting the server. Please try again later.";
+	}
+	if (message === "Network Error") {
+		target = "generic";
+		msg = "You're not connected to the internet.";
+	}
 
 	return {
 		type: SET_ERROR,
