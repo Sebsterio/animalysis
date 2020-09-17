@@ -1,8 +1,9 @@
 {
-	"name": "vet-check",
+	"name": "animalysis",
 	"version": "1.0.0",
 	"description": "App that facilitates communication with vet clinics.",
-	"author": "Sebastian Rosloniec",
+	"author": "Sebastian Rosloniec <sebastian.rosloniec@gmail.com>",
+	"license": "UNLICENSED",
 	"main": "server.js",
 	"scripts": {
 		"client": "npm start --prefix client",
@@ -36,9 +37,8 @@
 		"node": "14.x",
 		"npm": "6.x"
 	},
-	"license": "UNLICENSED",
 	"bugs": {
 		"url": "https://github.com/Sebsterio/vet-connect/issues"
 	},
-	"homepage": "https://github.com/Sebsterio/vet-connect#readme"
+	"homepage": "https://animalysis.com"
 }

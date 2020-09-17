@@ -1,4 +1,4 @@
-# VetConnect
+# Animalysis
 
 ## --- Under Construction ---
 

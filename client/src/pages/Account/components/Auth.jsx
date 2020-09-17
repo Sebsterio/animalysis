@@ -49,7 +49,7 @@ export const Auth = ({ mode, handleSubmit }) => {
 			{/* Head */}
 			<Box className={c.head}>
 				<Typography component="h1" variant="h2">
-					VetCheck
+					Animalysis
 				</Typography>
 				<Typography component="h1" variant="h5">
 					Clinic Name
