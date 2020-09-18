@@ -8,16 +8,27 @@ import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 import { Stack } from "components";
 
 const useStyles = makeStyles((theme) => ({
-	logo: {
-		display: "flex",
-		justifyContent: "center",
-	},
 	header: {
 		display: "grid",
-		gridTemplateColumns: "1fr auto",
+		gridTemplateColumns: "1fr auto 1fr",
+		alignItems: "center",
+		marginBottom: theme.spacing(-1),
+	},
+	logo: { marginRight: theme.spacing(2) },
+	badge: { justifySelf: "end" },
+	details: {
+		display: "grid",
+		gridTemplateColumns: "1fr 1fr",
+	},
+	detailsColumn: {
+		display: "grid",
+		justifyContent: "center",
+		alignContent: "start",
+		gridGap: theme.spacing(0.5),
 	},
 }));
 
@@ -34,39 +45,54 @@ export const ClinicDetails = ({
 
 	return (
 		<Stack>
-			{logoUrl && (
-				<div className={c.logo}>
-					<Avatar alt={name + " logo"} src={logoUrl} />
-				</div>
-			)}
 			<Card className={c.root}>
 				<CardContent>
 					<Stack>
+						{/* Header */}
 						<div className={c.header}>
-							<Typography variant="h5" className={c.heading}>
+							<div>
+								{logoUrl && (
+									<Avatar
+										className={c.logo}
+										alt={name + " logo"}
+										src={logoUrl}
+									/>
+								)}
+							</div>
+							<Typography variant="h5" align="center" className={c.heading}>
 								{name}
 							</Typography>
-							{verified && (
-								<Tooltip title="Verified" aria-label="Verified">
-									<CheckCircleIcon color="primary" />
-								</Tooltip>
-							)}
+							<div className={c.badge}>
+								{verified && (
+									<Tooltip title="Verified" aria-label="Verified">
+										<CheckCircleIcon color="primary" />
+									</Tooltip>
+								)}
+							</div>
 						</div>
 
-						<div>
-							<Typography variant="body2">{email}</Typography>
-							<Typography variant="body2">{phone}</Typography>
-							{phone2 && <Typography>{phone2}</Typography>}
-						</div>
+						<Divider />
 
-						<div>
-							{address.split(",").map((part, i) => (
-								<Typography key={i}>{part}</Typography>
-							))}
+						{/* Details */}
+						<div className={c.details}>
+							<div className={c.detailsColumn}>
+								<Typography variant="body2">{email}</Typography>
+								<Typography variant="body2">{phone}</Typography>
+								{phone2 && <Typography variant="body2">{phone2}</Typography>}
+							</div>
+
+							<div className={c.detailsColumn}>
+								{address.split(",").map((part, i) => (
+									<Typography variant="body2" key={i}>
+										{part}
+									</Typography>
+								))}
+							</div>
 						</div>
 					</Stack>
 				</CardContent>
 			</Card>
+
 			<Button
 				fullWidth
 				variant="outlined"
