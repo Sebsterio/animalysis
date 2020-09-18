@@ -158,10 +158,10 @@ export const Question = ({
 			{/* File upload */}
 			<Typography component="label" children="Image" />
 			<FileInput
-				variant="outlined"
 				label={!!imageUrl ? "Change" : "Upload "}
 				name="imageUrl"
 				onChange={editQuestion}
+				variant="outlined"
 			/>
 		</>
 	);

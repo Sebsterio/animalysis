@@ -8,7 +8,8 @@ import { Queue, Instructions } from "./components";
 import { Nav, LinkBlock } from "components";
 
 import { useStyles } from "./SurveyEditor-styles";
-import { useSurveyState, usePopover } from "./hooks";
+import { useSurveyState } from "./hooks";
+import { usePopover } from "hooks";
 import { useValueWithTimeout } from "hooks";
 
 /******************************************************************************
