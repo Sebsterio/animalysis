@@ -24,13 +24,6 @@ export const limitBirthDateToToday = (pet) => {
 	return { ...pet, birthMonth, birthYear };
 };
 
-export const convertFileToBlob = (pet) => {
-	const { imageUrl: file } = pet;
-	if (!file || typeof file === "string") return pet;
-	const blob = URL.createObjectURL(file);
-	return { ...pet, imageUrl: blob };
-};
-
 export const mapLbsToKg = (pet, newPet) => {
 	const weightPropChanged = didPropsChange(pet, newPet, "weight");
 	if (weightPropChanged) return newPet;

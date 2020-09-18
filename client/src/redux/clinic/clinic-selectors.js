@@ -11,16 +11,16 @@ export const getShouldShowClinicReminder = (state) =>
 	!getIsClinicSet(state) && !getClinicReminderIsDismissed(state);
 
 // For ClinicForm
+// prettier-ignore
 export const getFormData = (state) => {
-	const { name, address, email, phone, phone2, verified } = getClinic(state);
-	return { name, address, email, phone, phone2, verified };
+	const { name, address, email, phone, phone2, verified, logoUrl } = getClinic(state);
+	return { name, address, email, phone, phone2, verified, logoUrl };
 };
 // For VetClinicForm
+// prettier-ignore
 export const getVetFormData = (state) => {
-	const { name, address, email, phone, phone2, members, verified } = getClinic(
-		state
-	);
-	return { name, address, email, phone, phone2, members, verified };
+	const { name, address, email, phone, phone2, members, verified, logoUrl } = getClinic(state);
+	return { name, address, email, phone, phone2, members, verified, logoUrl };
 };
 
 export const getIsUpdating = (state) => getClinic(state).isUpdating;

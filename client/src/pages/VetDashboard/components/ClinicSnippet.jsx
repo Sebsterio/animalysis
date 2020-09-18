@@ -14,13 +14,13 @@ const useStyles = makeStyles((theme) => ({
 
 export const ClinicSnippet = ({ clinic }) => {
 	const c = useStyles();
-	const { logo, name } = clinic;
+	const { logoUrl, name } = clinic;
 
 	return (
 		<div className={c.row}>
-			{logo && (
+			{logoUrl && (
 				<div className={c.logo}>
-					<Avatar alt={name + " logo"} src={logo} />
+					<Avatar alt={name + " logo"} src={logoUrl} />
 				</div>
 			)}
 			<Typography variant="h6">{name}</Typography>

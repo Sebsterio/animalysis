@@ -11,10 +11,10 @@ import {
 	mapAgeToBirthDate,
 	limitBirthDateToToday,
 	mapBirthDateToAge,
-	convertFileToBlob,
 	mapKgToLbs,
 	mapLbsToKg,
 } from "./PetForm-utils";
+import { convertFileToBlob } from "utils/file";
 
 /*******************************************************
  * Routing:
@@ -85,7 +85,7 @@ export const PetForm = ({
 
 	// Add side-effects to form onChange handler
 	const useSetPet = (newPet) => {
-		newPet = convertFileToBlob(newPet);
+		newPet = convertFileToBlob(newPet, "imageUrl");
 		newPet = mapLbsToKg(pet, newPet);
 		newPet = mapAgeToBirthDate(pet, newPet);
 		newPet = limitBirthDateToToday(newPet);

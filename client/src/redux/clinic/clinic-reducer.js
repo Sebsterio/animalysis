@@ -14,6 +14,7 @@ const INITIAL_STATE = {
 	email: "",
 	phone: "",
 	phone2: "",
+	logoUrl: "",
 	// pet-owner-mode only
 	reminderDismissed: false,
 	// vet-mode only

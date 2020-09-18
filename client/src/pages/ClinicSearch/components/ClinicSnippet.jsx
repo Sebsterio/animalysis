@@ -45,17 +45,21 @@ const useStyles = makeStyles((theme) => {
 });
 
 export const ClinicSnippet = ({ clinicData, isCurrent, handleClick }) => {
-	const { name, address, email, phone, phone2, logo, verified } = clinicData;
-	const c = useStyles({ isCurrent, hasLogo: !!logo, clickable: !!handleClick });
+	const { name, address, email, phone, phone2, logoUrl, verified } = clinicData;
+	const c = useStyles({
+		isCurrent,
+		hasLogo: !!logoUrl,
+		clickable: !!handleClick,
+	});
 
 	return (
 		<Paper
 			className={c.container}
 			onClick={handleClick ? () => handleClick(clinicData) : null}
 		>
-			{logo && (
+			{logoUrl && (
 				<div className={c.logo}>
-					<Avatar alt={name + " logo"} src={logo} />
+					<Avatar alt={name + " logo"} src={logoUrl} />
 				</div>
 			)}
 			<div>

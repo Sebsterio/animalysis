@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Typography from "@material-ui/core/Typography";
@@ -19,9 +19,8 @@ import {
 } from "components";
 import { Members } from "./components";
 import { useValueWithTimeout } from "hooks";
-
+import { convertFileToBlob } from "utils/file";
 import getFormFields from "./VetClinicForm-formData";
-import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
 	accordionDetails: {
@@ -94,6 +93,11 @@ export const VetClinicForm = ({
 
 	const toggleVerified = () => update({ verified: !verified });
 
+	// Add side-effects to form onChange handler
+	const useSetClinic = (newClinic) => {
+		setClinic(convertFileToBlob(newClinic, "logoUrl"));
+	};
+
 	// ------------------------- Selectors ---------------------------
 
 	const canSubmit = () =>
@@ -104,6 +108,7 @@ export const VetClinicForm = ({
 	const formFields = getFormFields({
 		emailError: emailError ? errorMessage : false,
 		disabled: registered && !isAdmin,
+		hasPhoto: !!clinic.logoUrl,
 	});
 
 	const defaultButtonText = registered ? "Update" : "Register";
@@ -125,13 +130,17 @@ export const VetClinicForm = ({
 				}
 				main={
 					<div>
-						{/* Contact */}
+						{/* Details */}
 						<Accordion defaultExpanded={!registered}>
 							<AccordionSummary expandIcon={<ExpandMoreIcon />}>
-								<Typography variant="h5">Contact</Typography>
+								<Typography variant="h5">Details</Typography>
 							</AccordionSummary>
 							<AccordionDetails className={c.accordionDetails}>
-								<Form state={clinic} setState={setClinic} fields={formFields} />
+								<Form
+									state={clinic}
+									setState={useSetClinic}
+									fields={formFields}
+								/>
 							</AccordionDetails>
 						</Accordion>
 

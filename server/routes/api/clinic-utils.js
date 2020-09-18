@@ -11,7 +11,7 @@ const filterClinic = (profile) => {
 		"email",
 		"phone",
 		"phone2",
-		"logo",
+		"logoUrl",
 		"verified",
 		"members",
 		"dateModified",
@@ -31,7 +31,7 @@ const filterClientClinic = (profile) => {
 		"email",
 		"phone",
 		"phone2",
-		"logo",
+		"logoUrl",
 		"verified",
 	];
 	const filteredClinic = makeObjectWithSelectedProps(profile, allowedProps);

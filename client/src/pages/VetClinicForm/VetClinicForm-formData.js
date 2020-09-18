@@ -2,14 +2,20 @@
 const req = true;
 const multiline = true;
 
-export default ({ emailError, disabled }) => {
+export default ({ emailError, disabled, hasPhoto }) => {
 	const addresConfig = {
 		req,
 		multiline,
 		disabled,
 		helperText: 'Use commas "," to separate address lines',
 	};
+
+	const logoUrlConfig = {
+		label: hasPhoto ? "Change logo" : "Upload logo",
+	};
+
 	const formFields = [
+		["file", "logoUrl", logoUrlConfig],
 		["text", "name", { req, label: "Clinic name", disabled }],
 		["email", "email", { req, err: emailError, disabled }],
 		["tel", "phone", { req, label: "Telephone", disabled }],

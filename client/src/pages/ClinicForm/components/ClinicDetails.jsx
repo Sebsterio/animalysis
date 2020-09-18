@@ -27,16 +27,16 @@ export const ClinicDetails = ({
 	email,
 	phone,
 	phone2,
-	logo,
+	logoUrl,
 	verified,
 }) => {
 	const c = useStyles();
 
 	return (
 		<Stack>
-			{logo && (
+			{logoUrl && (
 				<div className={c.logo}>
-					<Avatar alt={name + " logo"} src={logo} />
+					<Avatar alt={name + " logo"} src={logoUrl} />
 				</div>
 			)}
 			<Card className={c.root}>
