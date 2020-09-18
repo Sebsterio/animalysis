@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ButtonGroup, Button, Typography } from "@material-ui/core";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { getDateString } from "utils/date";
@@ -11,15 +13,14 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "stretch",
 	},
 	columnWide: {
-		flex: 2.5,
-		textAlign: "center",
 		textTransform: "capitalize",
+		textAlign: "center",
+		flex: 2.5,
 	},
 	columnNarrow: {
-		flex: 1,
-		textAlign: "center",
 		textTransform: "capitalize",
 		textAlign: "left",
+		flex: 1,
 	},
 	showAllBtn: {
 		marginTop: theme.spacing(2),
@@ -45,19 +46,22 @@ export const ReportsList = ({
 
 	const c = useStyles({ overflowed });
 
-	if (!reports.length)
-		return (
-			<Typography variant="h6" align="center">
-				No reports...
-			</Typography>
-		);
+	const theme = useTheme();
+	const wideScreen = useMediaQuery(theme.breakpoints.up("sm"));
+
+	const getAlertStyle = (alert) => ({ color: alertData[alert].color });
 
 	const openReport = (id) => {
 		history.push(`/report/${id}`);
 		if (reportClickCallback) reportClickCallback(id);
 	};
 
-	const getStyle = (alert) => ({ color: alertData[alert].color });
+	if (!reports.length)
+		return (
+			<Typography variant="h6" align="center">
+				No reports...
+			</Typography>
+		);
 
 	return (
 		<div>
@@ -69,9 +73,11 @@ export const ReportsList = ({
 						<Button className={c.report} onClick={() => openReport(id)}>
 							<span>{getDateString(dateCreated)}</span>
 							<span className={c.columnWide}>{title}</span>
-							{showPetName && <span className={c.columnNarrow}>{name}</span>}
-							{/* {showOwner && <span className={c.columnNarrow}>{ownerName}</span>} */}
-							<FiberManualRecordIcon style={getStyle(alert)} />
+							{showPetName && wideScreen && (
+								<span className={c.columnNarrow}>{name}</span>
+							)}
+							{/* {showOwner && wideScreen && <span className={c.columnNarrow}>{ownerName}</span>} */}
+							<FiberManualRecordIcon style={getAlertStyle(alert)} />
 						</Button>
 					)
 				)}
