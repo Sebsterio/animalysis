@@ -41,9 +41,8 @@ export const Form = ({ fields, state, setState, layout }) => {
 	const c = useStyles({ layout, numItems: fields.length });
 
 	const handleChange = (e) => {
-		let { name, value, type, files } = e.target;
+		let { name, value, type } = e.target;
 		if (type === "number") value = Number(value);
-		if (type === "file") value = files[0];
 		setState({ ...state, [name]: value });
 	};
 

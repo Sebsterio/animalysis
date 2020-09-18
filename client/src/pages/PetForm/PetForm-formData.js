@@ -16,6 +16,7 @@ export default ({
 	const req = true;
 	const derrived = true;
 
+	// Upload-image button
 	const imageUrlConfig = {
 		label: <PhotoCamera color={hasPhoto ? "action" : "primary"} />,
 	};

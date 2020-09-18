@@ -51,7 +51,7 @@ export const Auth = ({ mode, handleSubmit }) => {
 			{/* Head */}
 			<Box className={c.head}>
 				<Icon className={c.logoContainer}>
-					<img className={c.logo} src={Logo} />
+					<img className={c.logo} src={Logo} alt="logo" />
 				</Icon>
 				<Typography component="h1" variant="h2">
 					Animalysis

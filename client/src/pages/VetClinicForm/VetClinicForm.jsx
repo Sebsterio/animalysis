@@ -93,11 +93,6 @@ export const VetClinicForm = ({
 
 	const toggleVerified = () => update({ verified: !verified });
 
-	// Add side-effects to form onChange handler
-	const useSetClinic = (newClinic) => {
-		setClinic(convertFileToBlob(newClinic, "logoUrl"));
-	};
-
 	// ------------------------- Selectors ---------------------------
 
 	const canSubmit = () =>
@@ -136,11 +131,7 @@ export const VetClinicForm = ({
 								<Typography variant="h5">Details</Typography>
 							</AccordionSummary>
 							<AccordionDetails className={c.accordionDetails}>
-								<Form
-									state={clinic}
-									setState={useSetClinic}
-									fields={formFields}
-								/>
+								<Form state={clinic} setState={setClinic} fields={formFields} />
 							</AccordionDetails>
 						</Accordion>
 
