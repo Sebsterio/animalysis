@@ -23,7 +23,7 @@ export const FileInput = withError(
 				data.append("file", file);
 				data.append("upload_preset", "ml_default");
 				const endpoint =
-					"https://api.cloudinary.com/v1_1/animalysis/image/upload/w_10, h_10/";
+					"https://api.cloudinary.com/v1_1/animalysis/image/upload";
 				const config = { method: "POST", body: data };
 				const res = await fetch(endpoint, config);
 				const resData = await res.json();
