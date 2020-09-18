@@ -16,6 +16,10 @@ export default ({
 	const req = true;
 	const derrived = true;
 
+	const imageUrlConfig = {
+		label: <PhotoCamera color={hasPhoto ? "action" : "primary"} />,
+	};
+
 	// Sex form field
 	const sexConfig = {
 		options: [
@@ -81,7 +85,7 @@ export default ({
 	};
 
 	const formFields = [
-		["file", "imageUrl", { label: <PhotoCamera color="primary" /> }],
+		["file", "imageUrl", imageUrlConfig],
 		["text", "name", { req, err: nameError }],
 		["select", "species", { options: ["canine", "feline"], req }],
 		["select", "sex", sexConfig],
