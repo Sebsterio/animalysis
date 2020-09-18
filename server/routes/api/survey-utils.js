@@ -3,8 +3,8 @@ const { makeObjectWithSelectedProps, makeObjectWithoutUndefinedProps } = utils;
 
 const filterSurvey = (survey) => {
 	const allowedProps = ["data", "dateModified", "datePublished", "publishedBy"];
-	const filteredUser = makeObjectWithSelectedProps(survey, allowedProps);
-	return makeObjectWithoutUndefinedProps(filteredUser);
+	const filteredSurvey = makeObjectWithSelectedProps(survey, allowedProps);
+	return makeObjectWithoutUndefinedProps(filteredSurvey);
 };
 
 module.exports = { filterSurvey };

@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const auth = require("../../middleware/auth");
 const Survey = require("../../models/survey");
 const User = require("../../models/user");
@@ -18,7 +17,7 @@ const router = express.Router();
 router.post("/publish", auth, async (req, res) => {
 	try {
 		const { userId, body } = req;
-		const { surveyData, datePublished, clinicId } = body;
+		const { surveyData, clinicId } = body;
 
 		const user = await User.findById(userId).select("-password");
 		if (!user) return res.status(404).json("User doesn't exist");

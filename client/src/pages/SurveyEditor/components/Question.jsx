@@ -24,6 +24,7 @@ export const Question = ({
 		label,
 		type,
 		imageUrl,
+		description,
 		setsTitle = false,
 		lengthLimit = 0,
 		answers = [],
@@ -41,10 +42,12 @@ export const Question = ({
 		updateAnswer,
 	} = operations;
 
+	console.log({ imageUrl });
+
 	// --------------------- Edit-question handler ----------------------
 
 	const copyQuestion = () => {
-		let newQuestion = { id, label, type, answers };
+		let newQuestion = { id, label, type, answers, description, imageUrl };
 		if (type === "text") {
 			if (setsTitle) newQuestion = { ...newQuestion, setsTitle };
 			if (lengthLimit > 0) newQuestion = { ...newQuestion, lengthLimit };
@@ -93,6 +96,7 @@ export const Question = ({
 	const typeId = id + "-type";
 	const setsTitleId = id + "-setsTitle";
 	const lengthLimitId = id + "-lengthLimit";
+	const desciptionId = id + "-desciption";
 
 	const form = (
 		<>
@@ -154,6 +158,20 @@ export const Question = ({
 					/>
 				</>
 			)}
+
+			{/* description */}
+			<Typography
+				component="label"
+				htmlFor={desciptionId}
+				children="Instruction"
+			/>
+			<TextField
+				fullWidth
+				name="description"
+				value={description}
+				inputProps={{ id: desciptionId }}
+				onChange={editQuestion}
+			/>
 
 			{/* File upload */}
 			<Typography component="label" children="Image" />
