@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import { Navbar, ErrorAlert } from "./components";
 import { Spinner } from "components";
-import { Account } from "pages";
+import { Account, NotFound } from "pages";
 
 import { useStyles } from "./App-styles";
 import { clientRoutes, vetRoutes } from "routes";
@@ -49,6 +49,7 @@ export const App = ({
 		if (suOnly && !isSuperuser) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
 		return <Route exact={exact} path={path} component={component} key={path} />;
 	});
+	mainRoutes.push(<Route component={NotFound} />);
 
 	// Enforce authentication
 	const authRoutes = (

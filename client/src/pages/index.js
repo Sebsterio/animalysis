@@ -14,3 +14,4 @@ export * from "./VetClinicForm";
 export * from "./ClinicSearch";
 export * from "./VetReports";
 export * from "./Profile";
+export * from "./NotFound";
