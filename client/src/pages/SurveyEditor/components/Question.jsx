@@ -5,6 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 
+import { FileInput } from "components/FileInput";
 import { Division, Answer } from "./index";
 
 import { includeInputValue } from "../SurveyEditor-utils";
@@ -22,9 +23,10 @@ export const Question = ({
 		id,
 		label,
 		type,
+		imageUrl,
 		setsTitle = false,
 		lengthLimit = 0,
-		answers,
+		answers = [],
 	} = questionProps;
 
 	const questionId = id;
@@ -152,6 +154,15 @@ export const Question = ({
 					/>
 				</>
 			)}
+
+			{/* File upload */}
+			<Typography component="label" children="Image" />
+			<FileInput
+				variant="outlined"
+				label={!!imageUrl ? "Change" : "Upload "}
+				name="imageUrl"
+				onChange={editQuestion}
+			/>
 		</>
 	);
 

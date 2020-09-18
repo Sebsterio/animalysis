@@ -19,6 +19,7 @@ export const INITIAL_STATE = {
 					type: "",  					// text | select-one | select-multiple
 					setsTitle: false,		// if (type=text) answer becomes the report's title
 					lengthLimit: 0,   	// if (type=text) character limit; 0 = no limit
+					imageUrl: '',
 					answers: [
 						{
 							text: "", 			// displayed in UI
