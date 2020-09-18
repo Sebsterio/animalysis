@@ -8,7 +8,7 @@ import {
 	getIsGenericError,
 	getErrorMessage,
 } from "redux/error/error-selectors";
-import { clearError } from "redux/error/error-actions";
+import { setError, clearError } from "redux/error/error-actions";
 
 export const withError = (Component) =>
 	connect(
@@ -21,6 +21,7 @@ export const withError = (Component) =>
 			isGenericError: getIsGenericError(state),
 		}),
 		(dispatch) => ({
+			setError: (data) => dispatch(setError(data)),
 			clearError: (data) => dispatch(clearError(data)),
 		})
 	)((props) => <Component {...props} />);

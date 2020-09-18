@@ -1,8 +1,10 @@
 export const SET_ERROR = "error/SET_ERROR";
 export const setError = (actionData) => {
-	const { response, message } = actionData;
+	let { response, message, msg, target } = actionData;
 	const { data, status, statusText } = response || {};
-	let { msg, target } = data || {};
+	// let { msg, target } = data || {};
+	if (!msg && !!data) ({ msg } = data);
+	if (!target && !!data) ({ target } = data);
 
 	if (status === 503 && !target) {
 		target = "generic";
