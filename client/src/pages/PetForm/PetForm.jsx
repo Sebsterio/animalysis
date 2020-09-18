@@ -14,7 +14,6 @@ import {
 	mapKgToLbs,
 	mapLbsToKg,
 } from "./PetForm-utils";
-import { convertFileToBlob } from "utils/file";
 
 /*******************************************************
  * Routing:

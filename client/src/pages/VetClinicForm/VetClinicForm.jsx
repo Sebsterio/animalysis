@@ -19,7 +19,6 @@ import {
 } from "components";
 import { Members } from "./components";
 import { useValueWithTimeout } from "hooks";
-import { convertFileToBlob } from "utils/file";
 import getFormFields from "./VetClinicForm-formData";
 
 const useStyles = makeStyles((theme) => ({

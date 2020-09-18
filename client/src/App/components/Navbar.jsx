@@ -41,7 +41,7 @@ export const Navbar = ({ routes, isSuperuser }) => {
 						children={
 							<Link to="/">
 								<Icon className={c.logoContainer}>
-									<img className={c.logo} src={Logo} />
+									<img className={c.logo} src={Logo} alt="app logo" />
 								</Icon>
 							</Link>
 						}
