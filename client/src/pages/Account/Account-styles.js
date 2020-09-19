@@ -1,22 +1,13 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
-	container: {
-		paddingTop: theme.spacing(6),
-		paddingBottom: theme.spacing(4),
-		display: "flex",
-		flexFlow: "column nowrap",
-		alignItems: "stretch",
-		justifyContent: "space-between",
-	},
 	head: {
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
+		marginTop: theme.spacing(2),
 	},
-	paper: {
-		marginTop: theme.spacing(6),
-		marginBottom: theme.spacing(6),
+	main: {
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",

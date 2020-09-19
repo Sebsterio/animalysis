@@ -4,14 +4,7 @@ import Icon from "@material-ui/core/Icon";
 import Logo from "assets/logo_blue.png";
 
 // Components
-import {
-	Container,
-	Box,
-	Grid,
-	Typography,
-	Button,
-	Link,
-} from "@material-ui/core";
+import { Box, Grid, Typography, Button, Link } from "@material-ui/core";
 import {
 	ProfileInfo,
 	EmailInput,
@@ -19,7 +12,7 @@ import {
 	Terms,
 	TypeInput,
 } from "./index";
-import { Copyright } from "components";
+import { Page, Copyright } from "components";
 
 // Other
 import { authModes } from "../Account-constants";
@@ -47,56 +40,57 @@ export const Auth = ({ mode, handleSubmit }) => {
 	};
 
 	return (
-		<Container maxWidth="xs" className={c.container}>
-			{/* Head */}
-			<Box className={c.head}>
-				<Icon className={c.logoContainer}>
-					<img className={c.logo} src={Logo} alt="logo" />
-				</Icon>
-				<Typography component="h1" variant="h2">
-					Animalysis
-				</Typography>
-			</Box>
-
-			<Box className={c.paper} onSubmit={handleSubmit}>
-				<form className={c.form}>
-					{/* Main form */}
-					<Grid container spacing={2}>
-						{modesData[mode].profileInfo || null}
-						<EmailInput />
-						<PasswordInput />
-						{modesData[mode].typeInput || null}
-						{modesData[mode].terms || null}
-					</Grid>
-
-					{/* Button */}
-					<Button
-						fullWidth
-						type="submit"
-						color="primary"
-						variant="contained"
-						className={c.submit}
-					>
-						{modesData[mode].btnText || null}
-					</Button>
-
-					{/* Change mode link (sing-in/up) */}
-					<Grid container justify="flex-end">
-						<Grid item>
-							<Link
-								component={RouterLink}
-								to={modesData[mode].linkHref || "#"}
-								variant="body2"
-							>
-								{modesData[mode].linkText || ""}
-							</Link>
+		<Page
+			header={
+				<Box className={c.head}>
+					<Icon className={c.logoContainer}>
+						<img className={c.logo} src={Logo} alt="logo" />
+					</Icon>
+					<Typography component="h1" variant="h2">
+						Animalysis
+					</Typography>
+				</Box>
+			}
+			main={
+				<Box className={c.main}>
+					<form className={c.form} onSubmit={handleSubmit}>
+						{/* Main form */}
+						<Grid container spacing={2}>
+							{modesData[mode].profileInfo || null}
+							<EmailInput />
+							<PasswordInput />
+							{modesData[mode].typeInput || null}
+							{modesData[mode].terms || null}
 						</Grid>
-					</Grid>
-				</form>
-			</Box>
 
-			<Copyright />
-		</Container>
+						{/* Button */}
+						<Button
+							fullWidth
+							type="submit"
+							color="primary"
+							variant="contained"
+							className={c.submit}
+						>
+							{modesData[mode].btnText || null}
+						</Button>
+
+						{/* Change mode link (sing-in/up) */}
+						<Grid container justify="flex-end">
+							<Grid item>
+								<Link
+									component={RouterLink}
+									to={modesData[mode].linkHref || "#"}
+									variant="body2"
+								>
+									{modesData[mode].linkText || ""}
+								</Link>
+							</Grid>
+						</Grid>
+					</form>
+				</Box>
+			}
+			footer={<Copyright />}
+		/>
 	);
 };
 
