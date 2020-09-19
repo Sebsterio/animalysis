@@ -19,8 +19,8 @@ export const getFormData = (state) => {
 // For VetClinicForm
 // prettier-ignore
 export const getVetFormData = (state) => {
-	const { name, address, email, phone, phone2, members, verified, logoUrl } = getClinic(state);
-	return { name, address, email, phone, phone2, members, verified, logoUrl };
+	const { name, address, email, phone, phone2, members, verified, logoUrl, emailNotifications } = getClinic(state);
+	return { name, address, email, phone, phone2, members, verified, logoUrl, emailNotifications };
 };
 
 export const getIsUpdating = (state) => getClinic(state).isUpdating;

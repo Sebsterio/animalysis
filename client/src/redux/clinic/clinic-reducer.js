@@ -18,6 +18,7 @@ const INITIAL_STATE = {
 	// pet-owner-mode only
 	reminderDismissed: false,
 	// vet-mode only
+	emailNotifications: undefined, // should receive reports by email
 	members: [
 		// {
 		// 	username: '',

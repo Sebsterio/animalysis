@@ -10,6 +10,7 @@ const ClinicSchema = new Schema({
 	phone2: String,
 	logoUrl: String,
 	verified: Boolean,
+	emailNotifications: Boolean,
 	members: [
 		{
 			email: String,

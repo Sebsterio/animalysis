@@ -10,6 +10,7 @@ export const FileInput = withError(
 		className,
 		variant,
 		label,
+		disabled,
 		//withError
 		setError,
 	}) => {
@@ -53,6 +54,7 @@ export const FileInput = withError(
 						component="span"
 						className="fileUploadButton"
 						fullWidth
+						disabled // from props
 					/>
 				</label>
 			</div>

@@ -7,6 +7,8 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import { Alert } from "@material-ui/lab";
 import {
 	Page,
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: theme.spacing(1, 2, 3),
 		flexFlow: "column nowrap",
 	},
+	indent: { marginLeft: theme.spacing(1) },
 }));
 
 export const VetClinicForm = ({
@@ -91,6 +94,9 @@ export const VetClinicForm = ({
 	};
 
 	const toggleVerified = () => update({ verified: !verified });
+
+	const setEmailNotifications = (e) =>
+		setClinic({ ...clinic, emailNotifications: e.target.checked });
 
 	// ------------------------- Selectors ---------------------------
 
@@ -174,6 +180,17 @@ export const VetClinicForm = ({
 											fullWidth
 										/>
 									)}
+									<FormControlLabel
+										className={c.indent}
+										label="Recieve reports by email"
+										disabled={!isAdmin}
+										control={
+											<Checkbox
+												checked={clinic.emailNotifications || false}
+												onChange={setEmailNotifications}
+											/>
+										}
+									/>
 									<Button
 										children="Leave Organisation"
 										onClick={handleLeaveClinic}

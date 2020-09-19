@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const Clinic = require("../models/clinic");
 
 const transporter = nodemailer.createTransport({
 	service: "gmail",
@@ -42,13 +43,25 @@ const createEmailBody = (report, user) => {
 };
 
 const sendReportByEmail = async ({ user, report }) => {
-	const { clinicInfo, email: userEmail } = user;
-	if (!clinicInfo || !clinicInfo.email) return;
+	const { clinicInfo, clinicId, email: userEmail } = user;
+
+	// Get clinic email address
+	// ClinicId: send email if emailNotifications are on
+	// ClinicInfo: send email if clinic is not registered or emailNotifications are on
+	let clinicEmail;
+	if (clinicId) {
+		const clinic = await Clinic.findById(clinicId);
+		if (clinic && clinic.emailNotifications) clinicEmail = clinic.email;
+	} else if (clinicInfo && clinicInfo.email) {
+		const { email } = clinicInfo;
+		const clinic = await Clinic.findOne({ email });
+		if (!clinic || clinic.emailNotifications) clinicEmail = email;
+	}
 
 	const mailOptions = {
-		from: userEmail,
+		from: userEmail, // doesn't seem to work with gmail
 		replyTo: userEmail,
-		to: clinicInfo.email,
+		to: clinicEmail,
 		subject: "New Report: " + report.title,
 		html: createEmailBody(report, user),
 	};
@@ -60,7 +73,7 @@ const sendReportByEmail = async ({ user, report }) => {
 				from: "animalysis.reports@gmail.com",
 				to: "sebastian.rosloniec@gmail.com",
 				subject: "Animalysis error",
-				text: `Error sending an email from ${userEmail} to ${clinicInfo.email}.\n\n ${error}`,
+				text: `Error sending an email from ${userEmail} to ${clinicEmail}.\n\n ${error}`,
 			});
 		} else {
 			console.log("Email sent: " + info.response);

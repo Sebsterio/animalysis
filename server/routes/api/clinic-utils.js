@@ -14,6 +14,7 @@ const filterClinic = (profile) => {
 		"logoUrl",
 		"verified",
 		"members",
+		"emailNotifications",
 		"dateModified",
 		"modifiedBy",
 	];

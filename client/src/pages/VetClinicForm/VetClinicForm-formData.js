@@ -12,6 +12,7 @@ export default ({ emailError, disabled, hasPhoto }) => {
 
 	const logoUrlConfig = {
 		label: hasPhoto ? "Change logo" : "Upload logo",
+		disabled,
 	};
 
 	const formFields = [
