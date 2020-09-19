@@ -8,7 +8,7 @@ import { makeSortedArray } from "utils/array";
 import { byDateCreated_descending } from "utils/sort";
 
 const useStyles = makeStyles((theme) => ({
-	greeting: { margin: theme.spacing(4, 0) },
+	greeting: { marginTop: theme.spacing(4) },
 	denseStack: {
 		display: "grid",
 		gridGap: theme.spacing(1),

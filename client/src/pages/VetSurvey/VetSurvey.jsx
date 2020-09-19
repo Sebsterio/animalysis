@@ -1,22 +1,8 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Container, Button } from "@material-ui/core";
-import { LinkBlock, Form } from "components";
-import { formFields } from "./VetSurvey-formData";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-	container: {
-		display: "flex",
-		flexFlow: "column nowrap",
-		justifyContent: "space-between",
-		padding: theme.spacing(3),
-	},
-	button: {
-		margin: theme.spacing(0.3, 0),
-	},
-}));
+import { Button } from "@material-ui/core";
+import { Page, Stack, LinkBlock, Form } from "components";
+import { formFields } from "./VetSurvey-formData";
 
 export const VetSurvey = ({
 	history,
@@ -28,8 +14,6 @@ export const VetSurvey = ({
 	modifyPet,
 	deletePet,
 }) => {
-	const c = useStyles();
-
 	const [pet, setPet] = useState({});
 
 	useEffect(() => {
@@ -57,32 +41,32 @@ export const VetSurvey = ({
 	if (surveyIsLoaded) return <Redirect to="/analysis" />;
 
 	return (
-		<Container maxWidth="xs" className={c.container}>
-			<LinkBlock
-				to="/survey/edit"
-				text="End preview"
-				clickHandler={handleEndPreview}
-			/>
-			<div>
-				<Form state={pet} setState={setPet} fields={formFields} />
-			</div>
-			<div>
-				<Button
-					children="Routine Health Check"
-					onClick={handleRoutineCheckClick}
-					className={c.button}
-					variant="contained"
-					fullWidth
+		<Page
+			header={
+				<LinkBlock
+					to="/survey/edit"
+					text="End preview"
+					clickHandler={handleEndPreview}
 				/>
-				<Button
-					fullWidth
-					children="Report a Problem"
-					onClick={handleProblemReportClick}
-					color="primary"
-					className={c.button}
-					variant="contained"
-				/>
-			</div>
-		</Container>
+			}
+			main={<Form state={pet} setState={setPet} fields={formFields} />}
+			footer={
+				<Stack dense>
+					<Button
+						children="Routine Health Check"
+						onClick={handleRoutineCheckClick}
+						variant="contained"
+						fullWidth
+					/>
+					<Button
+						children="Report a Problem"
+						onClick={handleProblemReportClick}
+						color="primary"
+						variant="contained"
+						fullWidth
+					/>
+				</Stack>
+			}
+		/>
 	);
 };

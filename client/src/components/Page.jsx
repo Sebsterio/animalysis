@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 		paddingTop: theme.spacing(4),
 		paddingBottom: theme.spacing(4),
 	},
+	fakeMain: { height: theme.spacing(4) },
 	footer: {},
 }));
 
@@ -41,7 +42,11 @@ export const Page = ({
 	return (
 		<Container maxWidth={maxWidth} className={c.page}>
 			{header && <div className={c.header}>{header}</div>}
-			<div className={c.main}>{children}</div>
+			{main ? (
+				<div className={c.main}>{children}</div>
+			) : (
+				<div className={c.fakeMain} />
+			)}
 			{footer && <div className={c.footer}>{footer}</div>}
 		</Container>
 	);

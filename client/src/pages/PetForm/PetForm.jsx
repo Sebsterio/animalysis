@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
 
-import { Container } from "@material-ui/core";
-import { Nav, Form, isFormFilled, ConfirmDialog } from "components";
+import { Page, Nav, Form, isFormFilled, ConfirmDialog } from "components";
 
 import { defaultPet } from "./PetForm-defaultPet";
 import getFormFields from "./PetForm-formData";
@@ -22,18 +20,6 @@ import {
  * /add-pet                 -- init empty form
  ********************************************************/
 
-const useStyles = makeStyles((theme) => ({
-	page: {
-		display: "flex",
-		flexFlow: "column nowrap",
-		justifyContent: "space-between",
-		padding: theme.spacing(3),
-	},
-	footer: {
-		marginTop: theme.spacing(4),
-	},
-}));
-
 export const PetForm = ({
 	// router
 	match,
@@ -47,8 +33,6 @@ export const PetForm = ({
 	modifyPet,
 	deletePet,
 }) => {
-	const c = useStyles();
-
 	// Load edited-pet data OR assign default values
 	const { name } = match.params;
 	const matchedPet = name ? getPet(name) : null;
@@ -122,13 +106,26 @@ export const PetForm = ({
 	});
 
 	return (
-		<Container maxWidth="xs" className={c.page}>
-			<Form
-				state={getAugmentedPet(pet)}
-				setState={useSetPet}
-				fields={formFields}
+		<>
+			<Page
+				header={
+					<Form
+						state={getAugmentedPet(pet)}
+						setState={useSetPet}
+						fields={formFields}
+					/>
+				}
+				footer={
+					<Nav
+						textLeft="Cancel"
+						onClickLeft={closeForm}
+						textRight={updating ? "Saving..." : "Save"}
+						onClickRight={submitForm}
+						disabledRight={!canSubmit()}
+						noArrows
+					/>
+				}
 			/>
-
 			<ConfirmDialog
 				title="Caution!"
 				text="This will permanently delete your pet's profile and all associated data. Do you want to proceed?"
@@ -137,17 +134,6 @@ export const PetForm = ({
 				close={closeDialog}
 				confirm={handleDelete}
 			/>
-
-			<div className={c.footer}>
-				<Nav
-					textLeft="Cancel"
-					onClickLeft={closeForm}
-					textRight={updating ? "Saving..." : "Save"}
-					onClickRight={submitForm}
-					disabledRight={!canSubmit()}
-					noArrows
-				/>
-			</div>
-		</Container>
+		</>
 	);
 };

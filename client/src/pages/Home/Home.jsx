@@ -2,21 +2,13 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Button } from "@material-ui/core";
 import { Head, PetCard } from "./components";
+import { Page } from "components";
 
 const useStyles = makeStyles((theme) => ({
-	page: {
-		display: "flex",
-		flexFlow: "column nowrap",
-		justifyContent: "space-between",
-		padding: theme.spacing(3),
-	},
 	main: {
 		display: "flex",
 		flexFlow: "row wrap",
 		justifyContent: "space-around",
-	},
-	surveyBtn: {
-		margin: theme.spacing(4, 0, 0),
 	},
 }));
 
@@ -25,34 +17,34 @@ export const Home = ({ history, pets }) => {
 
 	const noPets = !pets.length;
 
+	const addPet = () => history.push("/add-pet");
+
+	const goToPet = (name) => history.push("/pet/" + name);
+
 	return (
-		<Container maxWidth="xs" className={c.page}>
-			<Head history={history} />
-
-			<div className={c.main}>
-				{noPets ? (
-					<PetCard handleClick={() => history.push("/add-pet")} />
+		<Page
+			header={<Head history={history} />}
+			main={
+				<div className={c.main}>
+					{noPets ? (
+						<PetCard handleClick={addPet} />
+					) : (
+						pets.map((pet) => <PetCard key={pet.id} {...{ pet, goToPet }} />)
+					)}
+				</div>
+			}
+			footer={
+				!noPets ? (
+					<Button
+						children="New Pet"
+						onClick={addPet}
+						variant="outlined"
+						fullWidth
+					/>
 				) : (
-					pets.map((pet) => (
-						<PetCard
-							key={pet.id}
-							pet={pet}
-							handleClick={() => history.push("/pet/" + pet.name)}
-						/>
-					))
-				)}
-			</div>
-
-			{!noPets ? (
-				<Button
-					variant="outlined"
-					className={c.surveyBtn}
-					onClick={() => history.push("/add-pet")}
-					children="New Pet"
-				/>
-			) : (
-				<div style={{ height: "10vh" }} />
-			)}
-		</Container>
+					<div style={{ height: "10vh" }} />
+				)
+			}
+		/>
 	);
 };

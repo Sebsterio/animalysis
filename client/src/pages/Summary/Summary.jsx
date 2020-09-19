@@ -1,21 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Container, Typography, Button } from "@material-ui/core";
-import { Nav, Alert } from "components";
+import { Typography, Button } from "@material-ui/core";
+import { Page, Nav, Alert } from "components";
 import { summaryData } from "./Summary-data";
-
-const useStyles = makeStyles((theme) => ({
-	page: {
-		display: "flex",
-		flexFlow: "column nowrap",
-		justifyContent: "space-between",
-		padding: theme.spacing(3),
-	},
-	main: {
-		display: "grid",
-		gridGap: theme.spacing(3),
-	},
-}));
 
 const Summary = ({
 	pet,
@@ -26,40 +12,43 @@ const Summary = ({
 	endSurvey,
 }) => {
 	const data = summaryData[alertLevel];
-	const c = useStyles(data);
 
 	const canContinue = optionalQueueExists && alertLevel < 4;
 
 	return (
-		<Container maxWidth="xs" className={c.page}>
-			<Alert level={alertLevel} />
+		<Page
+			header={<Alert level={alertLevel} />}
+			main={
+				<>
+					<Typography children={data.textMain(pet)} />
 
-			<Container className={c.main}>
-				<Typography children={data.textMain(pet)} />
-				{canContinue && !!data.textContinue && (
-					<Typography children={data.textContinue(pet)} />
-				)}
-				{!!data.textEnd && <Typography children={data.textEnd(pet)} />}
+					{canContinue && !!data.textContinue && (
+						<Typography children={data.textContinue(pet)} />
+					)}
 
-				<Button
-					fullWidth
-					variant={alertLevel ? "contained" : "outlined"}
-					color="primary"
-					children="Call Clinic"
-					component="a"
-					href={"tel:" + phone}
-					disabled={!phone}
+					{!!data.textEnd && <Typography children={data.textEnd(pet)} />}
+
+					<Button
+						fullWidth
+						variant={alertLevel ? "contained" : "outlined"}
+						color="primary"
+						children="Call Clinic"
+						component="a"
+						href={"tel:" + phone}
+						disabled={!phone}
+					/>
+				</>
+			}
+			footer={
+				<Nav
+					textLeft={canContinue && "Continue Analysis"}
+					onClickLeft={continueSurvey}
+					textRight="Submit report"
+					onClickRight={endSurvey}
+					noArrows
 				/>
-			</Container>
-
-			<Nav
-				textLeft={canContinue && "Continue Analysis"}
-				onClickLeft={continueSurvey}
-				textRight="Submit report"
-				onClickRight={endSurvey}
-				noArrows
-			/>
-		</Container>
+			}
+		/>
 	);
 };
 

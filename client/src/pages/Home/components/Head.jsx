@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	link: { textDecoration: "none" },
 	alert: { alignItems: "center" },
-	greeting: { margin: theme.spacing(4, 0) },
+	greeting: { marginTop: theme.spacing(4) },
 }));
 
 export const Head = ({
