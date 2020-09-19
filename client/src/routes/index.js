@@ -1,2 +1,2 @@
-export * from "./client-routes";
-export * from "./vet-routes";
+export * from "./clientRoutes";
+export * from "./vetRoutes";

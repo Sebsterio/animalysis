@@ -4,6 +4,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const compression = require("compression");
+const enforce = require("express-sslify");
 
 const userRoutes = require("./routes/api/user");
 const clinicRoutes = require("./routes/api/clinic");
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV !== "production") {
 
 if (process.env.NODE_ENV === "production") {
 	app.use(compression());
+	app.use(enforce.HTTPS({ trustProtoHeader: true /* Heroku thing */ }));
 }
 
 // ---------------- Mongo ----------------

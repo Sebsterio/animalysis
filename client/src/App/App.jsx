@@ -1,19 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
+import { useStyles } from "./App-styles";
 
 import { Navbar, ErrorAlert } from "./components";
 import { Spinner } from "components";
 import { Account, NotFound } from "pages";
 
-import { useStyles } from "./App-styles";
 import { clientRoutes, vetRoutes } from "routes";
-import { useState } from "react";
 
 /*******************************
  * App layout
- * Show Spinner when user is loading
- * Root-level Routing
  * Trigger user sync
+ * Show Spinner when user or page is loading
+ * Root-level Routing (lazy)
  *******************************/
 
 export const App = ({
@@ -45,15 +44,11 @@ export const App = ({
 	// ----------- Ensure <main> fills screen on mobile ------------
 
 	const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
-	console.log({ viewportHeight });
-	const handleResize = () => {
-		console.log("resize");
-		setViewportHeight(window.innerHeight);
-	};
 
 	useEffect(() => {
-		const onResize = window.addEventListener("resize", handleResize);
-		return window.removeEventListener("resize", onResize);
+		const handleResize = () => setViewportHeight(window.innerHeight);
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 
 	const c = useStyles({ viewportHeight });

@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { store, persistor } from "redux/store";
-// import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from "./serviceWorker";
 
 import { App } from "App";
 import "styles/index.scss";
@@ -25,4 +25,4 @@ ReactDOM.render(
 	document.getElementById("root")
 );
 
-// serviceWorker.unregister();
+serviceWorker.register();
