@@ -31,6 +31,8 @@ export const getClinicId = (state) => getClinic(state).id;
 
 export const getIsRegistered = (state) => !!getClinicId(state);
 
+export const getClinicPhone = (state) => getClinic(state).phone;
+
 const getMembers = (state) => getClinic(state).members;
 
 // ================== Authorization ===================

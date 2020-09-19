@@ -43,8 +43,6 @@ export const Profile = ({ match, history, fetchClient, getPets }) => {
 	const { email, profile } = client;
 	const { firstName, surname, phone } = profile;
 
-	console.log({ pets });
-
 	return (
 		<Page
 			main={
@@ -88,27 +86,32 @@ export const Profile = ({ match, history, fetchClient, getPets }) => {
 			footer={
 				<>
 					<Button
+						children="Send an email"
+						component="a"
+						href={"mailto:" + email}
+						target="_blank"
+						disabled={!email}
 						fullWidth
 						color="primary"
 						variant="outlined"
 						className={c.footerButton}
-						onClick={() => {}}
-						children="Send an email"
 					/>
 					<Button
+						children="Call"
+						component="a"
+						href={"tel:" + phone}
+						disabled={!phone}
 						fullWidth
 						color="primary"
 						variant="contained"
 						className={c.footerButton}
-						onClick={() => {}}
-						children="Call"
 					/>
 					<Button
+						children="Back"
+						onClick={history.goBack}
 						fullWidth
 						variant="outlined"
 						className={c.footerButton}
-						onClick={() => history.goBack()}
-						children="Back"
 					/>
 				</>
 			}

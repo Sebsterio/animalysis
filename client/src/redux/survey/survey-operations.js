@@ -23,9 +23,6 @@ import { addReportToPet } from "redux/pets/pets-operations";
 import { getPersonalizedSurveyData } from "./survey-utils";
 import { arrayify } from "utils/array";
 
-// TEMP
-export const callClinic = () => (dispatch) => alert("CALL_CLINIC--STUB");
-
 // --------------------- Initialization -------------------------
 
 export const startRoutineCheck = ({ pet, history }) => (dispatch, getState) => {

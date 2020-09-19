@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const AlertModal = ({ isActive, closeModal, endSurvey, callClinic }) => {
+const AlertModal = ({ isActive, phone, closeModal, endSurvey }) => {
 	const c = useStyles();
 
 	const handleClose = () => {
@@ -58,7 +58,9 @@ const AlertModal = ({ isActive, closeModal, endSurvey, callClinic }) => {
 					color="default"
 					children="Call Clinic"
 					className={c.callButton}
-					onClick={callClinic}
+					component="a"
+					href={"tel:" + phone}
+					disabled={!phone}
 				/>
 				<Typography children="You may complete the analysis at any time or send it to your vet now." />
 

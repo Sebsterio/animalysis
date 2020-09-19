@@ -49,7 +49,7 @@ export const App = ({
 		if (suOnly && !isSuperuser) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
 		return <Route exact={exact} path={path} component={component} key={path} />;
 	});
-	mainRoutes.push(<Route component={NotFound} />);
+	mainRoutes.push(<Route key={404} component={NotFound} />);
 
 	// Enforce authentication
 	const authRoutes = (

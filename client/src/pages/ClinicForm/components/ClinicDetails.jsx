@@ -94,18 +94,23 @@ export const ClinicDetails = ({
 			</Card>
 
 			<Button
+				children="Send an email"
+				component="a"
+				href={"mailto:" + email}
+				target="_blank"
+				disabled={!email}
 				fullWidth
 				variant="outlined"
 				color="primary"
-				children="Send an email"
-				onClick={() => {}}
 			/>
 			<Button
+				children="Call"
+				component="a"
+				href={"tel:" + phone}
+				disabled={!phone}
 				fullWidth
 				variant="contained"
 				color="primary"
-				children="Call"
-				onClick={() => {}}
 			/>
 		</Stack>
 	);

@@ -228,7 +228,6 @@ router.get("/:id", auth, async (req, res) => {
 		const callee = await User.findById(id);
 		if (!callee) throw Error("User does not exist");
 
-		console.log({ caller: caller.clinicId, callee: callee.clinicId });
 		const clinicsMatch = callee.clinicId.equals(caller.clinicId);
 		if (!clinicsMatch) return res.status(401).json("ClinicId doesn't match");
 

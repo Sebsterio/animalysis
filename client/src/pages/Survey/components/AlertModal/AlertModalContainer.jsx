@@ -3,18 +3,19 @@ import { connect } from "react-redux";
 
 import { getIsAlertModalActive } from "redux/survey/survey-selectors";
 import { deactivateAlertModal } from "redux/survey/survey-actions";
-import { endSurvey, callClinic } from "redux/survey/survey-operations";
+import { endSurvey } from "redux/survey/survey-operations";
+import { getClinicPhone } from "redux/clinic/clinic-selectors";
 
 import AlertModal from "./AlertModal";
 
 const mapStateToProps = (state) => ({
 	isActive: getIsAlertModalActive(state),
+	phone: getClinicPhone(state),
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
 	closeModal: () => dispatch(deactivateAlertModal()),
 	endSurvey: () => dispatch(endSurvey(props.history)),
-	callClinic: () => dispatch(callClinic()),
 });
 
 const AlertModalContainer = (props) => <AlertModal {...props} />;

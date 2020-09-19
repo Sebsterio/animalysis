@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
 const Summary = ({
 	pet,
 	alertLevel,
+	phone,
 	optionalQueueExists,
-	callClinic,
 	continueSurvey,
 	endSurvey,
 }) => {
@@ -46,7 +46,9 @@ const Summary = ({
 					variant={alertLevel ? "contained" : "outlined"}
 					color="primary"
 					children="Call Clinic"
-					onClick={callClinic}
+					component="a"
+					href={"tel:" + phone}
+					disabled={!phone}
 				/>
 			</Container>
 
