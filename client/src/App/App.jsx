@@ -7,6 +7,7 @@ import { Account, NotFound } from "pages";
 
 import { useStyles } from "./App-styles";
 import { clientRoutes, vetRoutes } from "routes";
+import { useState } from "react";
 
 /*******************************
  * App layout
@@ -24,8 +25,6 @@ export const App = ({
 	isError,
 	clearError,
 }) => {
-	const c = useStyles();
-
 	// TEMP
 	useEffect(() => {
 		const ESCAPE_KEY = 27;
@@ -35,12 +34,31 @@ export const App = ({
 		return () => window.removeEventListener("keydown", clearStorage);
 	}, []);
 
+	// Trigger sync
 	useEffect(() => {
 		syncData();
 	}, [syncData]);
 
 	// Clear error on all clicks (if there's error)
 	const handleMainClick = () => (isError ? clearError() : null);
+
+	// ----------- Ensure <main> fills screen on mobile ------------
+
+	const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+	console.log({ viewportHeight });
+	const handleResize = () => {
+		console.log("resize");
+		setViewportHeight(window.innerHeight);
+	};
+
+	useEffect(() => {
+		const onResize = window.addEventListener("resize", handleResize);
+		return window.removeEventListener("resize", onResize);
+	}, []);
+
+	const c = useStyles({ viewportHeight });
+
+	// -------------------------- View -----------------------------
 
 	// Create user-relevant Routes from routes array
 	const routes = isVet ? vetRoutes : clientRoutes;

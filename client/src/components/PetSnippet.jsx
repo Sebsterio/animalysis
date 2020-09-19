@@ -46,7 +46,10 @@ export const PetSnippet = ({
 	const editPet = () => history.push("/edit-pet/" + name.toLowerCase());
 
 	const age = getAgeFromDate(month, year);
-	const ageString = age[1] > 0 ? `${age[1]} years old` : `${age[0]} months old`;
+	// prettier-ignore
+	const ageString =	age[1] === 1 ? `1 year old`
+			: age[1] > 1 ? `${age[1]} years old`
+			: `${age[0]} months old`;
 
 	return (
 		<div className={c.container}>

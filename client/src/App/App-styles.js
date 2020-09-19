@@ -2,10 +2,13 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
 	app: {
-		position: "absolute",
+		position: "fixed",
+		top: 0,
+		left: 0,
 		width: "100vw",
-		height: "100vh",
-		overflowX: "hidden",
+		// height: "100vh", // fallback
+		height: ({ viewportHeight }) => viewportHeight || "100vh",
+		overflow: "hidden",
 		display: "flex",
 		flexFlow: "column nowrap",
 		justifyContent: "stretch",
@@ -22,5 +25,6 @@ export const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "stretch",
+		overflowY: "auto",
 	},
 }));

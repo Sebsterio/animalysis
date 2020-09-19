@@ -1,19 +1,14 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button } from "@material-ui/core";
-import { Page, ReportsList, Spinner } from "components";
+import { Page, Stack, ReportsList, Spinner } from "components";
 // import { ClinicSnippet } from "./components";
 
 import { makeSortedArray } from "utils/array";
 import { byDateCreated_descending } from "utils/sort";
 
 const useStyles = makeStyles((theme) => ({
-	greeting: { marginTop: theme.spacing(4) },
-	denseStack: {
-		display: "grid",
-		gridGap: theme.spacing(1),
-	},
-	reportsPlaceholder: {
+	spinnerContainer: {
 		position: "relative",
 		height: "30vh",
 		display: "flex",
@@ -66,7 +61,7 @@ export const VetDashboard = ({
 			<Page
 				header={WelcomeText}
 				main={
-					<div className={c.denseStack}>
+					<Stack dense>
 						<Button
 							variant="outlined"
 							color="primary"
@@ -80,7 +75,7 @@ export const VetDashboard = ({
 							children="Register a clinic"
 							onClick={handleRegisterClinic}
 						/>
-					</div>
+					</Stack>
 				}
 			/>
 		);
@@ -101,7 +96,7 @@ export const VetDashboard = ({
 						<>
 							<Typography variant="h6">New reports</Typography>
 							{syncing ? (
-								<div className={c.reportsPlaceholder}>
+								<div className={c.spinnerContainer}>
 									<Spinner />
 								</div>
 							) : (

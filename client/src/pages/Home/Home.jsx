@@ -1,11 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { Head, PetCard } from "./components";
 import { Page } from "components";
 
 const useStyles = makeStyles((theme) => ({
-	main: {
+	masonry: {
 		display: "flex",
 		flexFlow: "row wrap",
 		justifyContent: "space-around",
@@ -25,7 +25,7 @@ export const Home = ({ history, pets }) => {
 		<Page
 			header={<Head history={history} />}
 			main={
-				<div className={c.main}>
+				<div className={c.masonry}>
 					{noPets ? (
 						<PetCard handleClick={addPet} />
 					) : (

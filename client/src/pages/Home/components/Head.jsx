@@ -9,14 +9,16 @@ const useStyles = makeStyles((theme) => ({
 	container: {
 		display: "flex",
 		flexFlow: "column nowrap",
-		justifyContent: "center",
+		justifyContent: "stretch",
 	},
 	item: {
 		marginBottom: theme.spacing(0.5),
 	},
 	link: { textDecoration: "none" },
 	alert: { alignItems: "center" },
-	greeting: { marginTop: theme.spacing(4) },
+	greeting: {
+		marginTop: ({ remindersOn }) => theme.spacing(remindersOn ? 3 : 0),
+	},
 }));
 
 export const Head = ({
@@ -31,7 +33,9 @@ export const Head = ({
 	dismissClinicReminder,
 	dismissProfileReminder,
 }) => {
-	const c = useStyles();
+	const remindersOn = clinicReminderOn || profileReminderOn;
+
+	const c = useStyles({ remindersOn });
 
 	const handleClinicAlertActionClick = (e) => {
 		e.preventDefault();

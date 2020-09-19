@@ -15,20 +15,22 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
-		padding: theme.spacing(3),
+		// browser bug fix
+		padding: theme.spacing(3, 3, 0, 3),
+		"& > *:last-child": { marginBottom: theme.spacing(3) },
 	},
-	header: {},
 	main: {
 		flex: 1,
-		overflowY: "auto",
+		paddingTop: theme.spacing(4),
+		paddingBottom: theme.spacing(4),
 		display: "grid",
 		gridGap: theme.spacing(3),
 		alignContent: "center",
-		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(4),
 	},
-	fakeMain: { height: theme.spacing(4) },
-	footer: {},
+	fakeMain: {
+		height: theme.spacing(4),
+		flex: "0 0 auto",
+	},
 }));
 
 export const Page = ({
@@ -36,18 +38,20 @@ export const Page = ({
 	footer,
 	main,
 	children = main,
+	headerClass,
+	footerClass,
 	maxWidth = "xs",
 }) => {
 	const c = useStyles();
 	return (
 		<Container maxWidth={maxWidth} className={c.page}>
-			{header && <div className={c.header}>{header}</div>}
+			{header && <div className={headerClass}>{header}</div>}
 			{main ? (
 				<div className={c.main}>{children}</div>
 			) : (
 				<div className={c.fakeMain} />
 			)}
-			{footer && <div className={c.footer}>{footer}</div>}
+			{footer && <div className={footerClass}>{footer}</div>}
 		</Container>
 	);
 };
