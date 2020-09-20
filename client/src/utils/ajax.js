@@ -1,4 +1,3 @@
-import { lazy } from "react";
 import { getToken } from "redux/user/user-selectors";
 
 export const getConfig = () => ({
