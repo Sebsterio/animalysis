@@ -16,3 +16,4 @@ export * from "./VetReports";
 export * from "./Profile";
 export * from "./NotFound";
 export * from "./SuDashboard";
+export * from "./Demo";

@@ -10,34 +10,43 @@ import { Container } from "@material-ui/core";
  *   overflow Y-scrollable
  *************************************************/
 
-const useStyles = makeStyles((theme) => ({
-	page: {
-		display: "flex",
-		flexFlow: "column nowrap",
-		justifyContent: "space-between",
-		// browser bug fix
-		padding: theme.spacing(3, 3, 0, 3),
-		"& > *:last-child": { marginBottom: theme.spacing(3) },
-	},
-	main: {
+const useStyles = makeStyles((theme) => {
+	const main = {
 		flex: 1,
-		paddingTop: theme.spacing(4),
-		paddingBottom: theme.spacing(4),
 		display: "grid",
 		gridGap: theme.spacing(3),
 		alignContent: "center",
-	},
-	fakeMain: {
-		height: theme.spacing(4),
-		flex: "0 0 auto",
-	},
-}));
+	};
+	return {
+		page: {
+			display: "flex",
+			flexFlow: "column nowrap",
+			justifyContent: "space-between",
+			// browser bug fix
+			padding: theme.spacing(3, 3, 0, 3),
+			"& > *:last-child": { marginBottom: theme.spacing(3) },
+		},
+		main: {
+			...main,
+			paddingTop: theme.spacing(4),
+		},
+		main2: {
+			...main,
+			paddingBottom: theme.spacing(4),
+		},
+		spacer: {
+			height: theme.spacing(4),
+			flex: "0 0 auto",
+		},
+	};
+});
 
 export const Page = ({
 	header,
 	footer,
 	main,
 	children = main,
+	main2,
 	headerClass,
 	footerClass,
 	maxWidth = "xs",
@@ -46,11 +55,11 @@ export const Page = ({
 	return (
 		<Container maxWidth={maxWidth} className={c.page}>
 			{header && <div className={headerClass}>{header}</div>}
-			{main ? (
-				<div className={c.main}>{children}</div>
-			) : (
-				<div className={c.fakeMain} />
-			)}
+
+			{main && <div className={c.main}>{children}</div>}
+			<div className={c.spacer} />
+			{main2 && <div className={c.main2}>{main2}</div>}
+
 			{footer && <div className={footerClass}>{footer}</div>}
 		</Container>
 	);

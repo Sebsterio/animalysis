@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import { Spinner } from "components";
 import { Navbar, ErrorAlert } from "./components";
-import { Account, NotFound } from "pages";
+import { Account, Demo, NotFound } from "pages";
 import { clientRoutes, vetRoutes, suRoutes } from "routes";
 import { useStyles } from "./App-styles";
 
@@ -63,13 +63,14 @@ export const App = ({
 	const mainRoutes = routes.map((route) => {
 		const { path, component, exact, demoOnly } = route;
 		if (demoOnly && !isDemo) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
-		return <Route exact={exact} path={path} component={component} key={path} />;
+		return <Route key={path} {...{ exact, path, component }} />;
 	});
 	mainRoutes.push(<Route key={404} component={NotFound} />);
 
 	// Enforce authentication
 	const authRoutes = (
 		<>
+			<Route path="/demo" component={Demo} />
 			<Route path="/account/:mode" component={Account} />
 			<Route component={Account} />
 		</>
