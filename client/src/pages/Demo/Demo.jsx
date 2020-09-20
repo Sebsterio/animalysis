@@ -25,16 +25,24 @@ const useStyles = makeStyles((theme) => ({
 	link: { textAlign: "right" },
 }));
 
-export const Demo = ({ history }) => {
+export const Demo = ({ history, signIn }) => {
 	const c = useStyles();
 
 	// if is authenticated, go to '/'
 
 	const runClientDemo = () => {
-		// sign-in as demo-client@animalysis.com
+		signIn({
+			email: "pet-owner@animalysis.com",
+			password: "Animalysis",
+		});
+		history.push("/");
 	};
 	const runVetDemo = () => {
-		// sign-in as demo-vet@animalysis.com
+		signIn({
+			email: "vet@animalysis.com",
+			password: "Animalysis",
+		});
+		history.push("/");
 	};
 
 	return (

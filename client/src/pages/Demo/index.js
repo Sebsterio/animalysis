@@ -1,2 +1,2 @@
-export * from "./Demo";
-export { Demo as default } from "./Demo";
+export { default as Demo } from "./DemoContainer";
+export { default } from "./DemoContainer";

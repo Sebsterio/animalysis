@@ -78,7 +78,7 @@ export const App = ({
 				)}
 
 				<main className={c.main} onClick={handleMainClick}>
-					{/* NOTE: Issues when Routes arent descendant of Switch */}
+					{/* NOTE: Don't use Fragment between Routes and Switch */}
 					{!authenticated ? (
 						// Enforce authentication
 						<Switch>
