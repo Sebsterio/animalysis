@@ -58,40 +58,45 @@ export const App = ({
 	// -------------------------- View -----------------------------
 
 	// Create user-relevant Routes from routes array
-	const routes = isSuperuser ? suRoutes : isVet ? vetRoutes : clientRoutes;
-
-	const mainRoutes = routes.map((route) => {
-		const { path, component, exact, demoOnly } = route;
-		if (demoOnly && !isDemo) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
-		return <Route key={path} {...{ exact, path, component }} />;
-	});
-	mainRoutes.push(<Route key={404} component={NotFound} />);
-
-	// Enforce authentication
-	const authRoutes = (
-		<>
-			<Route path="/demo" component={Demo} />
-			<Route path="/account/:mode" component={Account} />
-			<Route component={Account} />
-		</>
-	);
+	const routesArray = isSuperuser ? suRoutes : isVet ? vetRoutes : clientRoutes;
 
 	if (loading) return <Spinner />;
+
 	return (
 		<div className={c.app}>
 			<Suspense fallback={Spinner}>
 				{authenticated && (
 					<header className={c.item}>
-						<Navbar {...{ routes, isSuperuser, isDemo }} />
+						<Navbar routes={routesArray} {...{ isSuperuser, isDemo }} />
 					</header>
 				)}
+
 				{isError && (
 					<div className={c.item}>
 						<ErrorAlert />
 					</div>
 				)}
+
 				<main className={c.main} onClick={handleMainClick}>
-					<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
+					{/* NOTE: Issues when Routes arent descendant of Switch */}
+					{!authenticated ? (
+						// Enforce authentication
+						<Switch>
+							<Route path="/demo" component={Demo} />
+							<Route path="/account/:mode" component={Account} />
+							<Route component={Account} />
+						</Switch>
+					) : (
+						// Main routes
+						<Switch>
+							{routesArray.map((route) => {
+								const { path, component, exact, demoOnly } = route;
+								if (demoOnly && !isDemo) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
+								return <Route key={path} {...{ exact, path, component }} />;
+							})}
+							<Route key={404} component={NotFound} />
+						</Switch>
+					)}
 				</main>
 			</Suspense>
 		</div>
