@@ -41,6 +41,7 @@ export const VetClinicForm = ({
 	isMember,
 	isAdmin,
 	isOwner,
+	isDemo,
 	isSuperuser,
 	isAllowedToDeleteMember,
 	// dispatch
@@ -101,13 +102,13 @@ export const VetClinicForm = ({
 	// ------------------------- Selectors ---------------------------
 
 	const canSubmit = () =>
-		isFormFilled(formFields, clinic) && (!registered || isAdmin);
+		isFormFilled(formFields, clinic) && (!registered || isAdmin) && !isDemo;
 
 	// --------------------------- View ------------------------------
 
 	const formFields = getFormFields({
 		emailError: emailError ? errorMessage : false,
-		disabled: registered && !isAdmin,
+		disabled: (registered && !isAdmin) || isDemo,
 		hasPhoto: !!clinic.logoUrl,
 	});
 
@@ -141,7 +142,7 @@ export const VetClinicForm = ({
 						</Accordion>
 
 						{/* Members */}
-						<Accordion disabled={!registered}>
+						<Accordion disabled={!registered || isDemo}>
 							<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 								<Typography variant="h5">Members</Typography>
 							</AccordionSummary>
@@ -159,7 +160,7 @@ export const VetClinicForm = ({
 						</Accordion>
 
 						{/* Manage */}
-						<Accordion disabled={!registered || !isMember}>
+						<Accordion disabled={!registered || !isMember || isDemo}>
 							<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 								<Typography variant="h5">Manage</Typography>
 							</AccordionSummary>

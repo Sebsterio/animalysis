@@ -39,15 +39,15 @@ export const vetRoutes = [
 	// --- Clinic ---
 	{
 		path: "/my-clinic",
-		title: "My Organisation",
-		linkText: "Organisation",
+		title: "My Clinic",
+		linkText: "Clinic",
 		component: VetClinicForm,
 		exact,
 		inNav,
 	},
 	{
 		path: "/clinic-search",
-		title: "Find Organisation",
+		title: "Clinic Search",
 		component: ClinicSearch,
 		exact,
 	},

@@ -13,7 +13,8 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	type: String, // client  | vet | superuser | demo
+	type: String, // client  | vet | superuser
+	demo: Boolean, // demo users can send GET requests only
 	profile: {
 		firstName: String,
 		surname: String,

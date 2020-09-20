@@ -28,6 +28,7 @@ export const VetReports = ({
 	// Store
 	query,
 	seenHidden,
+	isDemo,
 	// Dispatch
 	initTable,
 	sortRows,
@@ -45,8 +46,9 @@ export const VetReports = ({
 		sortRows({ query, seenHidden, searchableFields });
 	}, [query, seenHidden, sortRows]);
 
-	const markAsSeen = (id) =>
-		modifyReport({ id, update: { dateSeen: new Date() } });
+	const markAsSeen = (id) => {
+		if (!isDemo) modifyReport({ id, update: { dateSeen: new Date() } });
+	};
 
 	const openReport = (id) => {
 		history.push(`/report/${id}`);

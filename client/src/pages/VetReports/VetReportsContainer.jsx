@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import { getIsDemo } from "redux/user/user-selectors";
 import {
 	setRows,
 	toggleSeenHidden,
@@ -15,9 +16,10 @@ import { VetReports } from "./VetReports";
 
 // --------------------------------------------------------------
 
-const mapStateToProps = ({ reportsHistory: { query, seenHidden } }) => ({
-	query,
-	seenHidden,
+const mapStateToProps = (state) => ({
+	query: state.reportsHistory.query,
+	seenHidden: state.reportsHistory.seenHidden,
+	isDemo: getIsDemo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

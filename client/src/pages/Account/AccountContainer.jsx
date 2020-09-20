@@ -5,6 +5,7 @@ import {
 	getIsAuthenticated,
 	getIsUpdating,
 	getIsSuperuser,
+	getIsDemo,
 } from "redux/user/user-selectors";
 import { updateUser } from "redux/user/user-operations";
 import {
@@ -21,6 +22,7 @@ const mapStateToProps = (state) => ({
 	authenticated: getIsAuthenticated(state),
 	updating: getIsUpdating(state),
 	superuser: getIsSuperuser(state),
+	isDemo: getIsDemo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -9,6 +9,7 @@ import {
 	getAreAnyPetsSyncing,
 } from "redux/pets/pets-selectors";
 import { modifyReport } from "redux/pets/pets-operations";
+import { getIsDemo } from "redux/user/user-selectors";
 
 import { VetDashboard } from "./VetDashboard";
 
@@ -21,6 +22,7 @@ const mapStateToProps = (state) => ({
 	hasClinic: getIsRegistered(state),
 	reports: getAugmentedUnseenReports(state),
 	syncing: getIsSyncing(state) || getAreAnyPetsSyncing(state),
+	isDemo: getIsDemo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

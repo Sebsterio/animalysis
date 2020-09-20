@@ -13,6 +13,7 @@ const filterUserRes = (user) => {
 	const allowedProps = [
 		"email",
 		"type",
+		"demo",
 		"profile",
 		"clinic", // not cLinicId or clinicInfo
 		"pets", // not petIds

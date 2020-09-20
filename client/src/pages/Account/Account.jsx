@@ -19,6 +19,7 @@ const AccountPage = ({
 	authenticated,
 	updating,
 	superuser,
+	isDemo,
 	// dispatch
 	signIn,
 	signUp,
@@ -66,7 +67,7 @@ const AccountPage = ({
 		// Render Account page
 		return (
 			<Main
-				{...{ mode, mainModeIsMatched, updating, superuser }}
+				{...{ mode, mainModeIsMatched, updating, superuser, isDemo }}
 				{...{ handleSubmit, signOut, goBack }}
 			/>
 		);

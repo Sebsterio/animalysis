@@ -9,6 +9,7 @@ const INITIAL_STATE = {
 	token: "", // JWT
 	email: "",
 	type: "", // clinic | pet-owner | superuser | demo
+	demo: false, // demo users have limited UI and db access
 	// Meta
 	dateModified: undefined, // NOTE: dont' use null
 };

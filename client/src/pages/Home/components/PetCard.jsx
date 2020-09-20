@@ -19,17 +19,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const PetCard = ({ pet, goToPet }) => {
+export const PetCard = ({ pet, handleClick }) => {
 	const c = useStyles();
 
 	if (!pet) pet = { name: "Add a pet", imageUrl: PlusImage };
 
 	const { name, imageUrl } = pet;
 
-	const handleClick = () => goToPet(pet.name);
-
 	return (
-		<Card className={c.root} onClick={handleClick}>
+		<Card className={c.root} onClick={() => handleClick(pet.name)}>
 			<CardActionArea>
 				<CardMedia
 					className={c.media}

@@ -7,6 +7,7 @@ export const ClinicForm = ({
 	history,
 	currentClinic,
 	clinicRegistered,
+	isDemo,
 	updateClinicInfo,
 	leaveClinic,
 }) => {
@@ -47,7 +48,7 @@ export const ClinicForm = ({
 					onClickLeft={closeForm}
 					textRight={clinicRegistered ? "Customize" : "Save"}
 					onClickRight={clinicRegistered ? customizeClinic : submitForm}
-					disabledRight={clinicRegistered ? false : !canSubmit()}
+					disabledRight={isDemo || (clinicRegistered ? false : !canSubmit())}
 					noArrows
 				/>
 			}

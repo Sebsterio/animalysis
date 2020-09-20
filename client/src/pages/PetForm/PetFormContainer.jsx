@@ -7,11 +7,13 @@ import {
 } from "redux/pets/pets-selectors";
 import { addPet, modifyPet, deletePet } from "redux/pets/pets-operations";
 import { PetForm } from "./PetForm";
+import { getIsDemo } from "redux/user/user-selectors";
 
 const mapStateToProps = (state) => ({
 	getPet: (name) => getPetByName(state, name),
 	isNameUnique: (name) => isNameUnique(state, name),
 	updating: getIsUpdating(state),
+	isDemo: getIsDemo(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -23,6 +23,7 @@ export const VetDashboard = ({
 	hasClinic,
 	reports,
 	syncing,
+	isDemo,
 	modifyReport,
 }) => {
 	const c = useStyles();
@@ -36,8 +37,9 @@ export const VetDashboard = ({
 
 	const handleRegisterClinic = () => history.push("/my-clinic");
 
-	const reportClickCallback = (id) =>
-		modifyReport({ id, update: { dateSeen: new Date() } });
+	const reportClickCallback = (id) => {
+		if (!isDemo) modifyReport({ id, update: { dateSeen: new Date() } });
+	};
 
 	const goToReportsPage = () => history.push("/reports");
 

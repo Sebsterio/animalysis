@@ -14,14 +14,12 @@ import { useStyles } from "./App-styles";
  * Root-level Routing
  *******************************/
 
-// TEMP
-const isDemo = false;
-
 export const App = ({
 	loading,
 	authenticated,
 	isVet,
 	isSuperuser,
+	isDemo,
 	syncData,
 	isError,
 	clearError,
@@ -64,7 +62,7 @@ export const App = ({
 
 	return (
 		<div className={c.app}>
-			<Suspense fallback={Spinner}>
+			<Suspense fallback={<Spinner />}>
 				{authenticated && (
 					<header className={c.item}>
 						<Navbar routes={routesArray} {...{ isSuperuser, isDemo }} />

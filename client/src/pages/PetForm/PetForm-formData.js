@@ -11,6 +11,7 @@ export default ({
 	toggleShowKg,
 	isSaved,
 	deletePet,
+	disabled,
 }) => {
 	// Aux
 	const req = true;
@@ -18,7 +19,8 @@ export default ({
 
 	// Upload-image button
 	const imageUrlConfig = {
-		label: <PhotoCamera color={hasPhoto ? "action" : "primary"} />,
+		label: <PhotoCamera color={hasPhoto || disabled ? "action" : "primary"} />,
+		disabled,
 	};
 
 	// Sex form field
@@ -83,6 +85,7 @@ export default ({
 		label: "Delete Pet",
 		color: "secondary",
 		// variant: "contained",
+		disabled,
 	};
 
 	const formFields = [

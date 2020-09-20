@@ -29,7 +29,9 @@ export const Home = ({ history, pets }) => {
 					{noPets ? (
 						<PetCard handleClick={addPet} />
 					) : (
-						pets.map((pet) => <PetCard key={pet.id} {...{ pet, goToPet }} />)
+						pets.map((pet) => (
+							<PetCard key={pet.id} pet={pet} handleClick={goToPet} />
+						))
 					)}
 				</div>
 			}

@@ -26,6 +26,7 @@ export const SurveyEditor = ({
 	history,
 	data,
 	isAdmin,
+	isDemo,
 	updateStore,
 	updateDatabase,
 	clearPreview,
@@ -120,7 +121,7 @@ export const SurveyEditor = ({
 					onClickLeft={goBack}
 					textMiddle={publishButtonText}
 					onClickMiddle={publish}
-					disabledMiddle={publishing || isPublished}
+					disabledMiddle={publishing || isPublished || isDemo}
 					textRight={saveButtonText}
 					onClickRight={save}
 					disabledRight={!hasChanged}

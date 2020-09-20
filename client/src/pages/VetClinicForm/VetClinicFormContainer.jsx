@@ -17,7 +17,7 @@ import {
 	deleteOrganisation,
 	leaveClinic,
 } from "redux/clinic/clinic-operations";
-import { getEmail, getIsSuperuser } from "redux/user/user-selectors";
+import { getEmail, getIsSuperuser, getIsDemo } from "redux/user/user-selectors";
 
 import { VetClinicForm } from "./VetClinicForm";
 
@@ -27,6 +27,7 @@ const mapStateToProps = (state) => ({
 	updating: getIsUpdating(state),
 	userEmail: getEmail(state),
 	isSuperuser: getIsSuperuser(state),
+	isDemo: getIsDemo(state),
 	isMember: getIsMember(state),
 	isOwner: getIsAdmin(state),
 	isAdmin: getIsOwner(state),

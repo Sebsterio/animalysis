@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { withError } from "HOC";
 import { Button } from "@material-ui/core";
 
+// NOTE: `disabled` prop must be in both input and button
 export const FileInput = withError(
 	({
 		name,
@@ -42,19 +43,18 @@ export const FileInput = withError(
 		return (
 			<div {...{ className }}>
 				<input
-					{...{ id, name, onChange: uploadImage, required }}
+					{...{ id, name, onChange: uploadImage, required, disabled }}
 					type="file"
 					accept="image/*"
 					hidden
 				/>
 				<label htmlFor={id}>
 					<Button
-						{...{ variant }}
+						{...{ variant, disabled }}
 						children={uploading ? "Uploading..." : label}
 						component="span"
 						className="fileUploadButton"
 						fullWidth
-						disabled // from props
 					/>
 				</label>
 			</div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Page, Nav, Form, isFormFilled } from "components";
 import { formFields } from "./ProfileForm-formData";
 
-export const ProfileForm = ({ history, currentProfile, update }) => {
+export const ProfileForm = ({ history, currentProfile, isDemo, update }) => {
 	const [profile, setProfile] = useState({ ...currentProfile });
 
 	const closeForm = () => history.push("/");
@@ -12,7 +12,7 @@ export const ProfileForm = ({ history, currentProfile, update }) => {
 		closeForm();
 	};
 
-	const canSubmit = () => isFormFilled(formFields, profile);
+	const canSubmit = () => isFormFilled(formFields, profile) && !isDemo;
 
 	return (
 		<Page

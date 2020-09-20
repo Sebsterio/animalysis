@@ -12,6 +12,7 @@ export const ClinicSearch = ({
 	isVet,
 	hasClinic,
 	clinicId,
+	isDemo,
 	// dispatch
 	fetchClinics,
 	joinClinic,
@@ -28,12 +29,16 @@ export const ClinicSearch = ({
 		? "Search by name, email, telephone, or address"
 		: null;
 
+	// Don't show Demo Clinic outside of demo mode
+	const filterResults = (results) =>
+		isDemo ? results : results.filter((res) => res.name !== "Demo Clinic");
+
 	const fetch = async (e, data, callback) => {
 		e.preventDefault();
 		setLoading(true);
 		setFetchedAll(false);
 		const res = await fetchClinics(data);
-		if (res) callback(res);
+		if (res) callback(filterResults(res));
 		else setFetchedAll(true);
 		setLoading(false);
 	};
@@ -55,6 +60,7 @@ export const ClinicSearch = ({
 		);
 
 	const handleSnippetClick = async (data) => {
+		if (isDemo) return;
 		const success = await joinClinic(data);
 		if (success) history.push("/my-clinic");
 	};

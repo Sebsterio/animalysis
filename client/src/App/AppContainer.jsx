@@ -6,6 +6,7 @@ import {
 	getIsAuthenticated,
 	getIsVet,
 	getIsSuperuser,
+	getIsDemo,
 } from "redux/user/user-selectors";
 import { syncData } from "redux/user/user-operations";
 import { clearError } from "redux/error/error-actions";
@@ -18,6 +19,7 @@ const mapStateToProps = (state) => ({
 	authenticated: getIsAuthenticated(state),
 	isVet: getIsVet(state),
 	isSuperuser: getIsSuperuser(state),
+	isDemo: getIsDemo(state),
 	isError: getIsError(state),
 });
 

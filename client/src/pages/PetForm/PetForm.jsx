@@ -28,6 +28,7 @@ export const PetForm = ({
 	getPet,
 	isNameUnique,
 	updating,
+	isDemo,
 	// dispatch
 	addPet,
 	modifyPet,
@@ -81,7 +82,9 @@ export const PetForm = ({
 		isNameUnique(pet.name) || (matchedPet && pet.name === matchedPet.name);
 
 	const canSubmit = () =>
-		isFormFilled(formFields, pet) && isNewNameUnique(pet, matchedPet);
+		isFormFilled(formFields, pet) &&
+		isNewNameUnique(pet, matchedPet) &&
+		!isDemo;
 
 	// Get state with added derrived props
 	const getAugmentedPet = (pet) => {
@@ -103,6 +106,7 @@ export const PetForm = ({
 		toggleShowKg: () => toggleState("kg"),
 		isSaved: !!pet.id,
 		deletePet: openDialog,
+		disabled: isDemo,
 	});
 
 	return (

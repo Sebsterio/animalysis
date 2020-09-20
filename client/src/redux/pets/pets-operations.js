@@ -6,7 +6,7 @@ import { getClinicId } from "redux/clinic/clinic-selectors";
 import { getPetId } from "redux/survey/survey-selectors";
 import { clear as clearSurvey } from "redux/survey/survey-actions";
 import { modify as modifyUser } from "redux/user/user-actions";
-import { getIsVet } from "redux/user/user-selectors";
+import { getIsVet, getIsDemo } from "redux/user/user-selectors";
 import { error } from "redux/error/error-operations";
 import { getTokenConfig } from "utils/ajax";
 import { demoPet } from "./demoPet";
@@ -109,14 +109,16 @@ export const syncPets = () => (dispatch, getState) => {
 // Add report to store (then go to Report page)
 // Client: POST report and add id to pet doc (sync status shows on Report page)
 export const addReportToPet = (data) => (dispatch, getState) => {
-	const isVet = getIsVet(getState());
+	const state = getState();
+	const isVet = getIsVet(state);
+	const isDemo = getIsDemo(state);
 	dispatch($.addReportToPet(data));
-	if (isVet) return;
+	if (isVet || isDemo) return;
 
 	const { petId, id } = data;
 	const endpoint = "/api/report/add";
 	const reqData = JSON.stringify(data);
-	const config = getTokenConfig(getState());
+	const config = getTokenConfig(state);
 	dispatch($.sendReportStart({ id, petId }));
 	axios
 		.post(endpoint, reqData, config)
