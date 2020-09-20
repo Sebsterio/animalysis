@@ -192,11 +192,11 @@ export const modifyReport = ({ id, update }) => (dispatch, getState) => {
 // remove petId from user and update dateModified (server & redux)
 // clear survey if it was initialized for the deleted pet
 // go to Home
-export const deletePet = ({ id, history }) => (dispatch, getState) => {
+export const deletePet = ({ id, history }) => async (dispatch, getState) => {
 	const endpoint = `/api/pet/${id}`;
 	const config = getTokenConfig(getState());
 	dispatch($.deleteStart());
-	axios
+	return axios
 		.delete(endpoint, config)
 		.then((res) => {
 			const { dateModified } = res.data;
@@ -205,7 +205,7 @@ export const deletePet = ({ id, history }) => (dispatch, getState) => {
 			dispatch(modifyUser({ dateModified }));
 			const surveyPetId = getPetId(getState());
 			if (surveyPetId === id) dispatch(clearSurvey());
-			history.push("/");
+			if (history) history.push("/");
 		})
 		.catch((err) => {
 			dispatch($.deleteFail());

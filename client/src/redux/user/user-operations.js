@@ -9,8 +9,9 @@ import * as surveyActions from "redux/survey/survey-actions";
 // import * as surveyDataActions from "redux/survey-data/survey-data-actions";
 
 import { getDateModified, getIsAuthenticated } from "./user-selectors";
+import { getAllPets } from "redux/pets/pets-selectors";
 import { fetchOrganisation } from "redux/clinic/clinic-operations";
-import { syncPets } from "redux/pets/pets-operations";
+import { syncPets, deletePet } from "redux/pets/pets-operations";
 import { syncSurvey } from "redux/survey-data/survey-data-operations";
 import { error } from "redux/error/error-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
@@ -148,10 +149,12 @@ export const fetchUserById = (id) => async (dispatch, getState) => {
 
 // -------------------------- deleteUser ------------------------------
 
-// Delete all user-related docs; Restart app
-export const closeAccount = (formData) => (dispatch, getState) => {
+// Delete user and pets; Restart app
+export const closeAccount = (formData) => async (dispatch, getState) => {
 	const token = getTokenConfig(getState());
+	const petIds = getAllPets(getState()).map((pet) => pet.id);
 	dispatch($.deleteStart());
+	await Promise.all(petIds.map((id) => dispatch(deletePet({ id }))));
 	axios
 		.post("/api/user/delete", JSON.stringify(formData), token)
 		.then(() => {
