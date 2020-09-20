@@ -1,7 +1,7 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Icon from "@material-ui/core/Icon";
-import Logo from "assets/logo_blue.png";
+import Logo from "assets/logo_blue.svg";
 
 // Components
 import { Box, Grid, Typography, Button, Link } from "@material-ui/core";
