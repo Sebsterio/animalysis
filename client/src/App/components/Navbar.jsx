@@ -20,7 +20,7 @@ import { useStyles } from "./Navbar-styles";
 
 // ----------------------------------------------------------------
 
-export const Navbar = ({ routes, isSuperuser }) => {
+export const Navbar = ({ routes, isSuperuser, isDemo }) => {
 	const c = useStyles();
 
 	const titles = routes.map(({ path, title, exact }) => (
@@ -33,7 +33,6 @@ export const Navbar = ({ routes, isSuperuser }) => {
 	return (
 		<div>
 			<AppBar position="static" color={isSuperuser ? "secondary" : "primary"}>
-				{/* <AppBar position="fixed" className={c.appBar}> */}
 				<Toolbar className={c.toolbar}>
 					<IconButton
 						color="inherit"
@@ -78,10 +77,10 @@ export const Navbar = ({ routes, isSuperuser }) => {
 						/>
 						<List>
 							{routes.map(
-								({ path, title, linkText, exact, inNav, suOnly }) =>
+								({ path, title, linkText, exact, inNav, demoOnly }) =>
 									inNav &&
 									// TEMP <<<<<<<<<<<<<<<<<<<<<<<<<<<<
-									(!suOnly || isSuperuser) && (
+									(!demoOnly || isDemo) && (
 										// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 										<ListItem
 											button

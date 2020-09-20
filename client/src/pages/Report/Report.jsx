@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button, Dialog } from "@material-ui/core";
 import { Page, Alert } from "components";
@@ -22,8 +21,6 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 	// --------------- Props derrived from URL param ---------------
 
 	const { id } = match.params;
-	if (!id) return <Redirect to="/not-found" />;
-
 	const report = getReport(id);
 	if (!report) return null;
 

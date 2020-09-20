@@ -1,15 +1,15 @@
-import {
-	Home,
-	Pet,
-	PetForm,
-	Survey,
-	Report,
-	Account,
-	Summary,
-	ClinicForm,
-	ClinicSearch,
-	ProfileForm,
-} from "pages";
+import { lazy } from "react";
+
+const Home = lazy(() => import("pages/Home"));
+const Pet = lazy(() => import("pages/Pet"));
+const PetForm = lazy(() => import("pages/PetForm"));
+const Survey = lazy(() => import("pages/Survey"));
+const Report = lazy(() => import("pages/Report"));
+const Account = lazy(() => import("pages/Account"));
+const Summary = lazy(() => import("pages/Summary"));
+const ClinicForm = lazy(() => import("pages/ClinicForm"));
+const ClinicSearch = lazy(() => import("pages/ClinicSearch"));
+const ProfileForm = lazy(() => import("pages/ProfileForm"));
 
 // Aux
 const exact = true;
@@ -88,12 +88,6 @@ export const clientRoutes = [
 		exact,
 	},
 	// --- Report ---
-	{
-		path: "/report",
-		title: "Report",
-		component: Report,
-		exact,
-	},
 	{
 		path: "/report/:id",
 		title: "Report",

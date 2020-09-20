@@ -8,5 +8,6 @@
 		component: Home, // To render in App > Route
 		exact,           // Router Switch match
 		inNav,           // Is listed in Nav Menu
+		demoOnly,				 // Only available for the demo user
 	}
 ```

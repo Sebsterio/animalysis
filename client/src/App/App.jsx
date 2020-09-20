@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
-import { useStyles } from "./App-styles";
 
-import { Navbar, ErrorAlert } from "./components";
 import { Spinner } from "components";
+import { Navbar, ErrorAlert } from "./components";
 import { Account, NotFound } from "pages";
-
-import { clientRoutes, vetRoutes } from "routes";
+import { clientRoutes, vetRoutes, suRoutes } from "routes";
+import { useStyles } from "./App-styles";
 
 /*******************************
  * App layout
  * Trigger user sync
  * Show Spinner when user or page is loading
- * Root-level Routing (lazy)
+ * Root-level Routing
  *******************************/
+
+// TEMP
+const isDemo = false;
 
 export const App = ({
 	loading,
@@ -56,10 +58,11 @@ export const App = ({
 	// -------------------------- View -----------------------------
 
 	// Create user-relevant Routes from routes array
-	const routes = isVet ? vetRoutes : clientRoutes;
+	const routes = isSuperuser ? suRoutes : isVet ? vetRoutes : clientRoutes;
+
 	const mainRoutes = routes.map((route) => {
-		const { path, component, exact, suOnly } = route;
-		if (suOnly && !isSuperuser) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
+		const { path, component, exact, demoOnly } = route;
+		if (demoOnly && !isDemo) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
 		return <Route exact={exact} path={path} component={component} key={path} />;
 	});
 	mainRoutes.push(<Route key={404} component={NotFound} />);
@@ -75,19 +78,21 @@ export const App = ({
 	if (loading) return <Spinner />;
 	return (
 		<div className={c.app}>
-			{authenticated && (
-				<header className={c.item}>
-					<Navbar {...{ routes, isSuperuser }} />
-				</header>
-			)}
-			{isError && (
-				<div className={c.item}>
-					<ErrorAlert />
-				</div>
-			)}
-			<main className={c.main} onClick={handleMainClick}>
-				<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
-			</main>
+			<Suspense fallback={Spinner}>
+				{authenticated && (
+					<header className={c.item}>
+						<Navbar {...{ routes, isSuperuser, isDemo }} />
+					</header>
+				)}
+				{isError && (
+					<div className={c.item}>
+						<ErrorAlert />
+					</div>
+				)}
+				<main className={c.main} onClick={handleMainClick}>
+					<Switch>{!authenticated ? authRoutes : mainRoutes}</Switch>
+				</main>
+			</Suspense>
 		</div>
 	);
 };

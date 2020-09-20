@@ -1,54 +1,45 @@
 import { lazy } from "react";
 
-const VetDashboard = lazy(() => import("pages/VetDashboard"));
+const SuDashboard = lazy(() => import("pages/SuDashboard"));
 const VetSurvey = lazy(() => import("pages/VetSurvey"));
 const SurveyEditor = lazy(() => import("pages/SurveyEditor"));
 const Survey = lazy(() => import("pages/Survey"));
 const Summary = lazy(() => import("pages/Summary"));
+const Report = lazy(() => import("pages/Report"));
 const Account = lazy(() => import("pages/Account"));
 const ProfileForm = lazy(() => import("pages/ProfileForm"));
 const VetClinicForm = lazy(() => import("pages/VetClinicForm"));
 const ClinicSearch = lazy(() => import("pages/ClinicSearch"));
-const Report = lazy(() => import("pages/Report"));
-const Pet = lazy(() => import("pages/Pet"));
-const VetReports = lazy(() => import("pages/VetReports"));
-const Profile = lazy(() => import("pages/Profile"));
+
+/*******************
+ * Superuser routes
+ * No client profiles, no pet profiles
+ *******************/
 
 // Aux
 const exact = true;
 const inNav = true;
-const demoOnly = true; // temp; v.1 only
 
-export const vetRoutes = [
+export const suRoutes = [
 	{
 		path: "/",
 		title: "Dashboard",
-		component: VetDashboard,
-		exact,
-		inNav,
-	},
-	// --- Reports History ---
-	{
-		path: "/reports",
-		title: "Reports History",
-		linkText: "Reports",
-		component: VetReports,
+		component: SuDashboard,
 		exact,
 		inNav,
 	},
 	// --- Clinic ---
 	{
-		path: "/my-clinic",
-		title: "My Organisation",
-		linkText: "Organisation",
-		component: VetClinicForm,
+		path: "/clinic-search",
+		title: "Clinics",
+		component: ClinicSearch,
 		exact,
 		inNav,
 	},
 	{
-		path: "/clinic-search",
-		title: "Find Organisation",
-		component: ClinicSearch,
+		path: "/my-clinic",
+		title: "View Clinic",
+		component: VetClinicForm,
 		exact,
 	},
 	// --- Survey ---
@@ -59,36 +50,38 @@ export const vetRoutes = [
 		component: SurveyEditor,
 		exact,
 		inNav,
-		demoOnly, // temp; v.1 only
 	},
 	{
 		path: "/survey/view",
 		title: "Survey Preview",
 		component: VetSurvey,
 		exact,
-		demoOnly, // temp; v.1 only
 	},
 	{
 		path: "/analysis",
 		title: "Survey Preview",
 		component: Survey,
 		exact,
-		demoOnly, // temp; v.1 only
 	},
 	{
 		path: "/analysis/summary",
 		title: "Analysis Summary",
 		component: Summary,
 		exact,
-		demoOnly, // temp; v.1 only
 	},
 	{
 		path: "/analysis/alert",
 		title: "Alert",
 		component: Summary,
 		exact,
-		demoOnly, // temp; v.1 only
 	},
+	{
+		path: "/report/:id",
+		title: "Report",
+		component: Report,
+		exact,
+	},
+
 	// --- Profile ---
 	{
 		path: "/profile",
@@ -112,27 +105,6 @@ export const vetRoutes = [
 		title: "My Account",
 		linkText: "Account",
 		component: Account,
-		exact,
-	},
-	// --- Report ---
-	{
-		path: "/report/:id",
-		title: "Report",
-		component: Report,
-		exact,
-	},
-	// --- Pet profile ---
-	{
-		path: "/pet/:name", // name or id
-		title: "Pet Profile",
-		component: Pet,
-		exact,
-	},
-	// --- Pet Owner profile ---
-	{
-		path: "/client/:id",
-		title: "Client Profile",
-		component: Profile,
 		exact,
 	},
 ];

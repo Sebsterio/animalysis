@@ -20,7 +20,6 @@ export const VetDashboard = ({
 	history,
 	profileLoading,
 	username,
-	superuser,
 	hasClinic,
 	reports,
 	syncing,
@@ -52,8 +51,6 @@ export const VetDashboard = ({
 			className={c.greeting}
 		/>
 	);
-
-	if (superuser) return WelcomeText;
 
 	if (!hasClinic)
 		// Vet user is not a member of any clinic
