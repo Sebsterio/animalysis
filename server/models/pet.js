@@ -19,7 +19,7 @@ const PetSchema = new Schema({
 	birthYear: Number,
 	birthMonth: Number,
 	weight: Number,
-	microchip: Number,
+	microchip: String,
 	imageUrl: String,
 	reportIds: [String], // yup
 	dateCreated: Date,
