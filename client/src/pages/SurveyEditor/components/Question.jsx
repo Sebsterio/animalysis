@@ -42,12 +42,12 @@ export const Question = ({
 		updateAnswer,
 	} = operations;
 
-	console.log({ imageUrl });
-
 	// --------------------- Edit-question handler ----------------------
 
 	const copyQuestion = () => {
-		let newQuestion = { id, label, type, answers, description, imageUrl };
+		let newQuestion = { id, label, type, answers };
+		if (imageUrl) newQuestion.imageUrl = imageUrl;
+		if (description) newQuestion.description = description;
 		if (type === "text") {
 			if (setsTitle) newQuestion = { ...newQuestion, setsTitle };
 			if (lengthLimit > 0) newQuestion = { ...newQuestion, lengthLimit };
@@ -97,6 +97,7 @@ export const Question = ({
 	const setsTitleId = id + "-setsTitle";
 	const lengthLimitId = id + "-lengthLimit";
 	const desciptionId = id + "-desciption";
+	const removeImageId = id + "-removeImage";
 
 	const form = (
 		<>
@@ -159,27 +160,51 @@ export const Question = ({
 				</>
 			)}
 
+			{/* File upload */}
+			<Typography component="label" children="Image" />
+			{!imageUrl ? (
+				<FileInput
+					label="Upload "
+					name="imageUrl"
+					onChange={editQuestion}
+					variant="outlined"
+				/>
+			) : (
+				<div style={{ display: "flex", flexFlow: "row nowrap" }}>
+					<FileInput
+						label="Change"
+						name="imageUrl"
+						onChange={editQuestion}
+						variant="outlined"
+						fullWidth
+					/>
+					<input
+						type="submit"
+						name="imageUrl"
+						value=""
+						onClick={editQuestion}
+						id={removeImageId}
+						hidden
+					/>
+					<label htmlFor={removeImageId} style={{ width: "100%" }}>
+						<Button
+							children="Remove"
+							component="span"
+							variant="outlined"
+							fullWidth
+						/>
+					</label>
+				</div>
+			)}
+
 			{/* description */}
-			<Typography
-				component="label"
-				htmlFor={desciptionId}
-				children="Instruction"
-			/>
+			<Typography component="label" htmlFor={desciptionId} children="Caption" />
 			<TextField
 				fullWidth
 				name="description"
 				value={description}
 				inputProps={{ id: desciptionId }}
 				onChange={editQuestion}
-			/>
-
-			{/* File upload */}
-			<Typography component="label" children="Image" />
-			<FileInput
-				label={!!imageUrl ? "Change" : "Upload "}
-				name="imageUrl"
-				onChange={editQuestion}
-				variant="outlined"
 			/>
 		</>
 	);

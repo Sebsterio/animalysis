@@ -12,6 +12,7 @@ export const FileInput = withError(
 		variant,
 		label,
 		disabled,
+		fullWidth,
 		//withError
 		setError,
 	}) => {
@@ -40,8 +41,11 @@ export const FileInput = withError(
 
 		const id = "form-input--" + name;
 
+		const containerStyles = {};
+		if (fullWidth) containerStyles.width = "100%";
+
 		return (
-			<div {...{ className }}>
+			<div {...{ className }} style={containerStyles}>
 				<input
 					{...{ id, name, onChange: uploadImage, required, disabled }}
 					type="file"
@@ -53,7 +57,6 @@ export const FileInput = withError(
 						{...{ variant, disabled }}
 						children={uploading ? "Uploading..." : label}
 						component="span"
-						className="fileUploadButton"
 						fullWidth
 					/>
 				</label>

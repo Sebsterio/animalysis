@@ -2,11 +2,12 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
 	page: {
-		padding: theme.spacing(2),
 		width: "100%",
 		display: "flex",
 		flexFlow: "column nowrap",
 		justifyContent: "space-between",
+		padding: theme.spacing(2, 2, 0, 2),
+		"& > *:last-child": { marginBottom: theme.spacing(2) },
 	},
 	header: {
 		display: "flex",

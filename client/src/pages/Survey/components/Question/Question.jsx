@@ -47,7 +47,10 @@ const Question = ({
 	const [answerTooLong, setAnswerTooLong] = useState(isAnswerTooLong(answer));
 
 	// Popover
-	const [{ isOpen, anchorEl }, { showPopover, hidePopover }] = usePopover();
+	const [
+		{ isOpen, anchorEl, infoText: popover },
+		{ showPopover, hidePopover },
+	] = usePopover();
 
 	const c = useStyles();
 
@@ -97,29 +100,42 @@ const Question = ({
 						);
 				  })()
 				: // type: select-one | select-multiple
-				  answers.map(({ text, followUp, alert }, answerIndex) => {
-						const isSelected = isAnswerSelected(answerIndex);
-						const handleClick = () =>
-							handleAnswer(
-								{ answerIndex, followUp, alert, isSelected },
-								history
+				  answers.map(
+						({ text, followUp, alert, imageUrl, description }, answerIndex) => {
+							const isSelected = isAnswerSelected(answerIndex);
+							const handleClick = () =>
+								handleAnswer(
+									{ answerIndex, followUp, alert, isSelected },
+									history
+								);
+							const icon =
+								!!imageUrl || !!description ? (
+									<IconButton
+										children={<InfoOutlinedIcon />}
+										onClick={(e) => showPopover(e, { imageUrl, description })}
+									/>
+								) : null;
+							return (
+								<Box mb={2} key={shortid.generate()}>
+									<Button
+										fullWidth
+										variant={isSelected ? "contained" : "outlined"}
+										color="default"
+										children={text}
+										endIcon={icon}
+										onClick={handleClick}
+									/>
+								</Box>
 							);
-						return (
-							<Box mb={2} key={shortid.generate()}>
-								<Button
-									fullWidth
-									variant={isSelected ? "contained" : "outlined"}
-									color="default"
-									children={text}
-									onClick={handleClick}
-								/>
-							</Box>
-						);
-				  })}
+						}
+				  )}
 
 			{(!!imageUrl || !!description) && (
 				<div className={c.infoContainer}>
-					<IconButton children={<InfoOutlinedIcon />} onClick={showPopover} />
+					<IconButton
+						children={<InfoOutlinedIcon />}
+						onClick={(e) => showPopover(e, { imageUrl, description })}
+					/>
 				</div>
 			)}
 
@@ -131,21 +147,26 @@ const Question = ({
 					open={isOpen}
 					anchorEl={anchorEl}
 					onClose={hidePopover}
-					anchorOrigin={{ vertical: "center", horizontal: "center" }}
-					transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+					anchorReference="anchorPosition"
+					anchorPosition={{
+						top: window.innerHeight / 2,
+						left: window.innerWidth / 2,
+					}}
+					// anchorOrigin={{ vertical: "center", horizontal: "center" }}
+					transformOrigin={{ vertical: "center", horizontal: "center" }}
 				>
 					<Card className={c.card}>
 						<CardActionArea>
-							{!!imageUrl && (
+							{!!popover.imageUrl && (
 								<CardMedia
 									className={c.media}
-									image={imageUrl}
+									image={popover.imageUrl}
 									title="Helper image"
 								/>
 							)}
-							{description && (
+							{popover.description && (
 								<CardContent>
-									<Typography align="center" children={description} />
+									<Typography align="center" children={popover.description} />
 								</CardContent>
 							)}
 						</CardActionArea>

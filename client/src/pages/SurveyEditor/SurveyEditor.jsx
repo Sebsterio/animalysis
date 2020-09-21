@@ -88,45 +88,47 @@ export const SurveyEditor = ({
 	const datePublishedStr = new Date(datePublished).toDateString();
 
 	return (
-		<div className={c.page}>
-			{/* ------------ Body ------------ */}
+		<>
+			<div className={c.page}>
+				{/* ------------ Body ------------ */}
 
-			<div className={c.header}>
-				<div>
-					<Typography variant="body2">
-						<b>Published:</b> {datePublishedStr}
-					</Typography>
-					<Typography variant="body2">
-						<b>By:</b> {publishedBy}
-					</Typography>
+				<div className={c.header}>
+					<div>
+						<Typography variant="body2">
+							<b>Published:</b> {datePublishedStr}
+						</Typography>
+						<Typography variant="body2">
+							<b>By:</b> {publishedBy}
+						</Typography>
+					</div>
+					{!hasChanged && <LinkBlock to="/survey/view" text="Preview survey" />}
 				</div>
-				{!hasChanged && <LinkBlock to="/survey/view" text="Preview survey" />}
-			</div>
 
-			<div>
-				{Object.entries(queues).map(([queueName, queueProps]) => (
-					<Queue
-						key={queueName}
-						{...{ queueName, queueProps, selectors, isAdmin }}
-						operations={{ ...operations, showPopover }}
+				<div>
+					{Object.entries(queues).map(([queueName, queueProps]) => (
+						<Queue
+							key={queueName}
+							{...{ queueName, queueProps, selectors, isAdmin }}
+							operations={{ ...operations, showPopover }}
+						/>
+					))}
+
+					<Instructions />
+				</div>
+
+				<div className={c.footer}>
+					<Nav
+						textLeft="Cancel"
+						onClickLeft={goBack}
+						textMiddle={publishButtonText}
+						onClickMiddle={publish}
+						disabledMiddle={publishing || isPublished || isDemo}
+						textRight={saveButtonText}
+						onClickRight={save}
+						disabledRight={!hasChanged}
+						noArrows
 					/>
-				))}
-
-				<Instructions />
-			</div>
-
-			<div className={c.footer}>
-				<Nav
-					textLeft="Cancel"
-					onClickLeft={goBack}
-					textMiddle={publishButtonText}
-					onClickMiddle={publish}
-					disabledMiddle={publishing || isPublished || isDemo}
-					textRight={saveButtonText}
-					onClickRight={save}
-					disabledRight={!hasChanged}
-					noArrows
-				/>
+				</div>
 			</div>
 
 			{/* ------------ Popover ------------ */}
@@ -147,6 +149,6 @@ export const SurveyEditor = ({
 					children={<Typography className={c.popover} children={infoText} />}
 				/>
 			</Backdrop>
-		</div>
+		</>
 	);
 };

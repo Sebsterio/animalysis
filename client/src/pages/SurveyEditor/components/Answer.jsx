@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Tooltip from "@material-ui/core/Tooltip";
 
+import { FileInput } from "components/FileInput";
 import { Section, Division } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
@@ -39,6 +40,8 @@ export const Answer = ({
 		print = "",
 		printNote = "",
 		alert = 0,
+		imageUrl = "",
+		description = "",
 		followUp = {
 			after: ["none"], // TODO: rename to "targets"
 			target: [], // TODO: rename to "sections"
@@ -88,9 +91,11 @@ export const Answer = ({
 	// Include non-empty answerProps in data to submit
 	const copyAnswer = () => {
 		let newAnswer = { id, text };
-		if (print !== "") newAnswer.print = print;
-		if (printNote !== "") newAnswer.printNote = printNote;
-		if (alert !== 0) newAnswer.alert = alert;
+		if (print) newAnswer.print = print;
+		if (printNote) newAnswer.printNote = printNote;
+		if (imageUrl) newAnswer.imageUrl = imageUrl;
+		if (description) newAnswer.description = description;
+		if (alert > 0) newAnswer.alert = alert;
 		if (!!target.length) newAnswer.followUp = { after, target };
 		return newAnswer;
 	};
@@ -188,7 +193,7 @@ export const Answer = ({
 						Print-note: {printNote}
 					</Typography>
 				)}
-				{alert && (
+				{alert > 0 && (
 					<Typography component="div" variant="caption">
 						Alert: {getAlertMessage(alert)}
 					</Typography>
@@ -203,6 +208,8 @@ export const Answer = ({
 	const printNoteId = id + "-printNote";
 	const alertId = id + "-alert";
 	const followUpId = id + "-followUp";
+	const removeImageId = id + "-removeImage";
+	const desciptionId = id + "-desciption";
 
 	const form = (
 		<>
@@ -252,6 +259,7 @@ export const Answer = ({
 				inputProps={{ id: alertId }}
 				onChange={editAnswer}
 			>
+				<MenuItem value={0}>None</MenuItem>
 				<MenuItem value={1}>Green</MenuItem>
 				<MenuItem value={2}>Yellow</MenuItem>
 				<MenuItem value={3}>Orange</MenuItem>
@@ -259,7 +267,6 @@ export const Answer = ({
 			</TextField>
 
 			{/* followUp after*/}
-
 			<Tooltip title="If chosen section is already completed, the follow-up will appear after this question.">
 				<Typography
 					component="label"
@@ -286,6 +293,53 @@ export const Answer = ({
 					<MenuItem value={name} key={name} children={"After " + title} />
 				))}
 			</TextField>
+
+			{/* File upload */}
+			<Typography component="label" children="Image" />
+			{!imageUrl ? (
+				<FileInput
+					label="Upload "
+					name="imageUrl"
+					onChange={editAnswer}
+					variant="outlined"
+				/>
+			) : (
+				<div style={{ display: "flex", flexFlow: "row nowrap" }}>
+					<FileInput
+						label="Change"
+						name="imageUrl"
+						onChange={editAnswer}
+						variant="outlined"
+						fullWidth
+					/>
+					<input
+						type="submit"
+						name="imageUrl"
+						value=""
+						onClick={editAnswer}
+						id={removeImageId}
+						hidden
+					/>
+					<label htmlFor={removeImageId} style={{ width: "100%" }}>
+						<Button
+							children="Remove"
+							component="span"
+							variant="outlined"
+							fullWidth
+						/>
+					</label>
+				</div>
+			)}
+
+			{/* description */}
+			<Typography component="label" htmlFor={desciptionId} children="Caption" />
+			<TextField
+				fullWidth
+				name="description"
+				value={description}
+				inputProps={{ id: desciptionId }}
+				onChange={editAnswer}
+			/>
 		</>
 	);
 

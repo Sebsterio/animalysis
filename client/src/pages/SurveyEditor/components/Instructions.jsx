@@ -44,7 +44,7 @@ export const Instructions = () => {
 					</Typography>
 					<Typography paragraph>
 						<code className={c.codeBlock}>
-							Does [name] want to play[species? canine: and go on walks]?
+							Does [name] want to play [species? canine: and go on walks]?
 						</code>
 					</Typography>
 					<Typography paragraph>
@@ -84,7 +84,7 @@ export const Instructions = () => {
 					<hr className={c.mBottom2} />
 
 					<Typography paragraph>
-						Any spaces within a square brackets but not inside an expression are
+						Any spaces within square brackets but not inside an expression are
 						ignored. Should you need to inject a space, use underscore "_" and a
 						space will be put in it's place in the final message.
 					</Typography>
