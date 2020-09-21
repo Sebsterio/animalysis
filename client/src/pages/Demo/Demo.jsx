@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import Icon from "@material-ui/core/Icon";
 
-import { Page, Stack, Copyright } from "components";
+import { Page, Copyright } from "components";
 
 import Logo from "assets/logo_blue.svg";
 
@@ -28,22 +28,14 @@ const useStyles = makeStyles((theme) => ({
 export const Demo = ({ history, signIn }) => {
 	const c = useStyles();
 
-	// if is authenticated, go to '/'
+	const runDemo = (email, password) => {
+		signIn({ email, password });
+		history.push("/");
+	};
 
-	const runClientDemo = () => {
-		signIn({
-			email: "pet-owner@animalysis.com",
-			password: "Animalysis",
-		});
-		history.push("/");
-	};
-	const runVetDemo = () => {
-		signIn({
-			email: "vet@animalysis.com",
-			password: "Animalysis",
-		});
-		history.push("/");
-	};
+	const runClientDemo = () => runDemo("pet-owner@animalysis.com", "Animalysis");
+
+	const runVetDemo = () => runDemo("vet@animalysis.com", "Animalysis");
 
 	return (
 		<Page
