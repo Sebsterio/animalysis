@@ -200,6 +200,7 @@ const addFollowUpToQueue = ({ followUp, answerIndex }) => (dispatch, getState) =
 		.reverse()
 		.forEach((target) => {
 			let newLocations = getLocationsFromSection(getState(), target);
+			if (!newLocations) return // Ignore filtered out conditional sections
 			newLocations = newLocations.map(addProps);
 
 			if (after[0] === "all") dispatch($.pushLocationsToQueue({ newLocations }));

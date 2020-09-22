@@ -1,12 +1,34 @@
 import { getPersonalizedString } from "./index";
 
-// Inject pet props into question labels and aswer text across survey data
+const doesPetMatchCondition = (pet, condition) => {
+	const [prop, value] = condition.split(':')
+	return pet[prop] && typeof pet[prop] === 'string' && pet[prop].includes(value)
+}
+
+const removeSectionFromAllQueues = (itemToRemove, data) => 
+	['primerQueue', 'mainQueue', 'optionalQueue'].forEach(queue =>
+		data[queue] = data[queue].filter(item => item !== itemToRemove)
+	)
+
+// Adapt raw surveData to given pet
 export const getPersonalizedSurveyData = (getState, pet) => {
-	const newData = { ...getState().surveyData };
-	const sections = Object.entries(newData.sections);
+	const data = getState().surveyData
+	const sections = Object.entries(data.sections);
+
+	let newData = { ...data };
+	const newSections = {}
 
 	sections.forEach(([sectionName, sectionData]) => {
-		newData.sections[sectionName].questions = sectionData.questions.map(
+		const {questions, condition} = sectionData
+		
+		// Filter out conditional sections that don't match pet
+		if (condition) {
+			const noMatch = !doesPetMatchCondition(pet, condition)
+			if (noMatch) return removeSectionFromAllQueues(sectionName, newData)
+		}
+		
+		// Inject pet props into question labels and aswer text
+		const newQuestions = questions.map(
 			(question) => {
 				const { label, answers } = question;
 				question.label = getPersonalizedString(label, pet);
@@ -16,7 +38,9 @@ export const getPersonalizedSurveyData = (getState, pet) => {
 				return question;
 			}
 		);
+		
+		newSections[sectionName] = { ...sectionData, questions: newQuestions }
 	});
 
-	return newData;
+	return { ...newData, sections: newSections	};
 };

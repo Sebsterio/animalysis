@@ -1,14 +1,15 @@
 import React from "react";
+import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import { Division, Question } from "./index";
-import { useStyles } from "../SurveyEditor-styles";
 
 // ----------------------------------------------------------
 
 export const Section = ({
 	sectionName,
-	sectionData: { title, questions },
+	sectionData: { title, condition = "", questions },
 	isFirst,
 	isLast,
 	operations,
@@ -17,6 +18,7 @@ export const Section = ({
 }) => {
 	const {
 		modifySectionTitle,
+		modifySectionCondition,
 		deleteSection,
 		moveSection,
 		addQuestion,
@@ -29,12 +31,13 @@ export const Section = ({
 		updateAnswer,
 	} = operations;
 
-	const c = useStyles();
-
 	// ---------------------------- Handlers -----------------------------
 
 	const handleSectionTitleInput = (e) =>
 		modifySectionTitle({ sectionName, value: e.target.value });
+
+	const handleSectionConditionInput = (e) =>
+		modifySectionCondition({ sectionName, value: e.target.value });
 
 	const handleDeleteSection = () => {
 		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
@@ -64,16 +67,48 @@ export const Section = ({
 
 	// ------------------------------ View -------------------------------
 
-	// Viewer
+	// Config editor
+
+	const titleId = sectionName + "-title";
+	const conditionId = sectionName + "-condition";
 
 	const form = (
-		<TextField
-			autoFocus
-			fullWidth
-			value={title}
-			onChange={handleSectionTitleInput}
-			className={c.heading}
-		/>
+		<>
+			{/* Title */}
+			<Typography component="label" htmlFor={titleId} children="Title" />
+			<TextField
+				autoFocus
+				fullWidth
+				value={title}
+				inputProps={{ id: titleId }}
+				onChange={handleSectionTitleInput}
+			/>
+
+			{/* Condition */}
+			<Typography
+				component="label"
+				htmlFor={conditionId}
+				children="Condition"
+			/>
+			<TextField
+				select
+				fullWidth
+				value={condition}
+				inputProps={{ id: conditionId }}
+				onChange={handleSectionConditionInput}
+			>
+				<MenuItem value="species:canine">Dog</MenuItem>
+				<MenuItem value="species:feline">Cat</MenuItem>
+				<MenuItem value="sex:male">Male (any)</MenuItem>
+				<MenuItem value="sex:male entire">Male entire</MenuItem>
+				<MenuItem value="sex:male neutered">Male neutered</MenuItem>
+				<MenuItem value="sex:female">Female (any)</MenuItem>
+				<MenuItem value="sex:female entire">Female entire</MenuItem>
+				<MenuItem value="sex:female neutered">Female neutered</MenuItem>
+				<MenuItem value="sex:entire">(any) entire)</MenuItem>
+				<MenuItem value="sex:neutered">(any) neutered</MenuItem>
+			</TextField>
+		</>
 	);
 
 	// Fields editor
@@ -106,6 +141,7 @@ export const Section = ({
 			headingVariant="h6"
 			headingPrefix={headingPrefix}
 			form={form}
+			formType="grid"
 			fields={fields}
 			fieldsFooter={fieldsFooter}
 			isFirst={isFirst}

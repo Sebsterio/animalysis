@@ -101,6 +101,7 @@ export const getCurrentSectionTitle = (state) => {
 // Get an array of location objects from sectionName
 export const getLocationsFromSection = (state, sectionName) => {
 	const sectionData = getSectionData(state, sectionName);
+	if (!sectionData) return null;
 	return sectionData.questions.map((_, i) => ({
 		sectionName,
 		questionIndex: i,

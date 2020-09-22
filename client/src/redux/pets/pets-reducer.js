@@ -19,16 +19,16 @@ const INITIAL_STATE = {
 	synced: false,
 	list: [
 		// {
-		// 	id: "123412341234",
-		// 	name: "Benny",
-		// 	species: "canine",
-		// 	sex: "male",
-		// 	breed: "Dalmatian",
-		// 	birthYear: 2010,
-		// 	birthMonth: 7,
+		// 	id: "",
+		// 	name: "",
+		// 	species: "", // canine | feline
+		// 	sex: "", // male entire | male neutered | female entire | female neutered
+		// 	breed: "",
+		// 	birthYear: 0,
+		// 	birthMonth: 0,
 		// 	weight: 0,
 		// 	microchip: 0,
-		// 	imageUrl: Benny,
+		// 	imageUrl: ',
 		// 	dateUpdated: undefined,
 		//  syncing: false,
 		//	synced: false,

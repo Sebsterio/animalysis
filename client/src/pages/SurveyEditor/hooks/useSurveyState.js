@@ -134,10 +134,13 @@ export const useSurveyState = (initialData) => {
 		}));
 	};
 
-	// Section title
+	// Section
 
 	const modifySectionTitle = ({ sectionName, value }) =>
 		modifySectionProp(sectionName, "title", value);
+
+	const modifySectionCondition = ({ sectionName, value }) =>
+		modifySectionProp(sectionName, "condition", value);
 
 	// Questions
 
@@ -290,6 +293,7 @@ export const useSurveyState = (initialData) => {
 		moveSection,
 		addSectionToSections,
 		modifySectionTitle,
+		modifySectionCondition,
 		deleteSectionFromSections,
 		addQuestion,
 		deleteQuestion,
