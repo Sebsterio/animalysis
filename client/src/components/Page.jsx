@@ -4,10 +4,9 @@ import { Container } from "@material-ui/core";
 
 /*************************************************
  * Container: assummed to be stretched by parent (x & y)
- * Page: Grows vertically to contain children, limited height
- * Header & footer: optional, non-scrollable
- * Main: Grows vertically to fill free space,
- *   overflow Y-scrollable
+ * Page: Grows vertically to contain children
+ * Header & footer: optional
+ * Main: Grows vertically to fill free space
  *************************************************/
 
 const useStyles = makeStyles((theme) => {

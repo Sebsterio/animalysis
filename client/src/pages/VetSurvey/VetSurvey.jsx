@@ -12,7 +12,7 @@ export const VetSurvey = ({
 	startRoutineCheck,
 	addDemoPet,
 	modifyPet,
-	deletePet,
+	endPreview,
 }) => {
 	const [pet, setPet] = useState({});
 
@@ -23,7 +23,7 @@ export const VetSurvey = ({
 
 	// -------------------------- Handlers --------------------------
 
-	const updatePet = () => modifyPet({ id: pet.id, data: pet });
+	const updatePet = () => modifyPet({ id: pet.id, formData: pet });
 
 	const handleRoutineCheckClick = () => {
 		updatePet();
@@ -33,8 +33,6 @@ export const VetSurvey = ({
 		updatePet();
 		startProblemReport({ pet, history });
 	};
-
-	const handleEndPreview = () => deletePet({ id: "demo-pet" });
 
 	// -------------------------- View --------------------------
 
@@ -46,7 +44,7 @@ export const VetSurvey = ({
 				<LinkBlock
 					to="/survey/edit"
 					text="End preview"
-					clickHandler={handleEndPreview}
+					clickHandler={endPreview}
 				/>
 			}
 			main={<Form state={pet} setState={setPet} fields={formFields} />}

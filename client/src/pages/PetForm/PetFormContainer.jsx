@@ -18,7 +18,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	addPet: (data) => dispatch(addPet(data)),
-	modifyPet: (id, data) => dispatch(modifyPet(id, data)),
+	modifyPet: (data) => dispatch(modifyPet(data)),
 	deletePet: (data) => dispatch(deletePet(data)),
 });
 

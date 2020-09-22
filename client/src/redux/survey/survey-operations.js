@@ -19,6 +19,7 @@ import {
 	getPetId,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
+import { deletePet } from "redux/pets/pets-actions";
 import { addReportToPet } from "redux/pets/pets-operations";
 import { getPersonalizedSurveyData } from "./survey-utils";
 import { arrayify } from "utils/array";
@@ -97,6 +98,11 @@ const generateReport = ({ reportId }) => (dispatch, getState) => {
 			problemList: getProblemListFromHistory(state),
 		})
 	);
+};
+
+export const endPreview = () => (dispatch) => {
+	dispatch(deletePet({ id: "demo-pet" }));
+	dispatch($.clear());
 };
 
 // ----------------------- Answer ---------------------------

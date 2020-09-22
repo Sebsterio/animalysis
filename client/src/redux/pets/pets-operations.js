@@ -1,13 +1,15 @@
 import axios from "axios";
+
 import * as $ from "./pets-actions";
 import { getPetById, getAllPets, getReportById } from "./pets-selectors";
-import { simplifyReports, simplifyPets } from "./pets-utils";
 import { getClinicId } from "redux/clinic/clinic-selectors";
 import { getPetId } from "redux/survey/survey-selectors";
 import { clear as clearSurvey } from "redux/survey/survey-actions";
 import { modify as modifyUser } from "redux/user/user-actions";
 import { getIsVet, getIsDemo } from "redux/user/user-selectors";
 import { error } from "redux/error/error-operations";
+
+import { simplifyReports, simplifyPets, excludeDemoPet } from "./pets-utils";
 import { getTokenConfig } from "utils/ajax";
 import { demoPet } from "./demoPet";
 
@@ -77,7 +79,7 @@ export const modifyAllPets = (formData) => (dispatch, getState) => {
 // Fetch pets not present locally or updated more recently
 export const syncPets = () => (dispatch, getState) => {
 	const endpoint = "/api/pet/sync";
-	const pets = simplifyPets(getAllPets(getState()));
+	const pets = simplifyPets(excludeDemoPet(getAllPets(getState())));
 	const reqData = JSON.stringify({ pets });
 	const config = getTokenConfig(getState());
 	dispatch($.syncStart());
@@ -162,7 +164,7 @@ export const syncReports = (petId) => (dispatch, getState) => {
 };
 
 export const syncAllReports = () => (dispatch, getState) => {
-	const pets = getAllPets(getState());
+	const pets = excludeDemoPet(getAllPets(getState()));
 	pets.forEach((pet) => (pet.id ? dispatch(syncReports(pet.id)) : null));
 };
 

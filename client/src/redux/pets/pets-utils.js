@@ -3,6 +3,7 @@ import {
 	makeArrayWithModifiedItems,
 	makeArrayWithReplacedItem,
 } from "utils/array";
+import { demoPet } from "./demoPet";
 import dogImage from "assets/dog.png";
 import catImage from "assets/cat.png";
 
@@ -42,3 +43,6 @@ export const simplifyReports = (reports) =>
 	});
 
 export const simplifyPets = simplifyReports;
+
+export const excludeDemoPet = (pets) =>
+	pets.filter((pet) => pet.id !== demoPet.id);

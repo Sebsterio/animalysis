@@ -19,12 +19,19 @@ export const Section = ({
 	sectionTitle,
 	historySections,
 	historyAndQueueSections,
+	endPreview,
 }) => {
 	const c = useStyles();
 
 	return (
 		<Box className={c.container}>
-			{isVet && <LinkBlock to="/survey/edit" text="End preview" />}
+			{isVet && (
+				<LinkBlock
+					to="/survey/edit"
+					text="End preview"
+					clickHandler={endPreview}
+				/>
+			)}
 			<Box mb={1}>
 				<MobileStepper
 					variant="dots"

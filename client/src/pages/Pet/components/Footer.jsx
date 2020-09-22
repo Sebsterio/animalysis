@@ -25,53 +25,58 @@ export const Footer = ({
 
 	const contactOwner = () => history.push("/client/" + pet.userId);
 
-	return (
+	return isVet ? (
 		<div>
-			{isVet ? (
-				<Button
-					fullWidth
-					className={c.button}
-					variant="outlined"
-					color="primary"
-					children="Contact owner"
-					onClick={contactOwner}
-					disabled={!pet.userId}
-				/>
-			) : (
-				<>
-					<Button
-						fullWidth
-						variant="contained"
-						className={c.button}
-						onClick={() => startRoutineCheck({ pet, history })}
-						children="Routine Health Check"
-					/>
-					<Button
-						fullWidth
-						variant="contained"
-						color={unfinishedAnalysis ? "default" : "primary"}
-						className={c.button}
-						onClick={() => startProblemReport({ pet, history })}
-						children="Report a Problem"
-					/>
-					{unfinishedAnalysis && (
-						<Button
-							fullWidth
-							variant="contained"
-							color="primary"
-							className={c.button}
-							onClick={() => history.push("/analysis")}
-							children="Continue Analysis"
-						/>
-					)}
-				</>
-			)}
+			<Button
+				fullWidth
+				className={c.button}
+				variant="outlined"
+				color="primary"
+				children="Contact owner"
+				onClick={contactOwner}
+				disabled={!pet.userId}
+			/>
 			<Button
 				fullWidth
 				variant="outlined"
 				className={c.button}
 				onClick={history.goBack}
 				children="Back"
+			/>
+		</div>
+	) : (
+		<div>
+			<Button
+				fullWidth
+				variant="contained"
+				className={c.button}
+				onClick={() => startRoutineCheck({ pet, history })}
+				children="Routine Health Check"
+			/>
+			<Button
+				fullWidth
+				variant="contained"
+				color={unfinishedAnalysis ? "default" : "primary"}
+				className={c.button}
+				onClick={() => startProblemReport({ pet, history })}
+				children="Report a Problem"
+			/>
+			{unfinishedAnalysis && (
+				<Button
+					fullWidth
+					variant="contained"
+					color="primary"
+					className={c.button}
+					onClick={() => history.push("/analysis")}
+					children="Continue Analysis"
+				/>
+			)}
+			<Button
+				fullWidth
+				variant="outlined"
+				className={c.button}
+				onClick={() => history.push("/")}
+				children="Close"
 			/>
 		</div>
 	);
