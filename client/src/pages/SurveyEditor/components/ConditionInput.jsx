@@ -12,7 +12,7 @@ export const ConditionInput = (props) => (
 		<MenuItem value="sex:female">Female (any)</MenuItem>
 		<MenuItem value="sex:female entire">Female entire</MenuItem>
 		<MenuItem value="sex:female neutered">Female neutered</MenuItem>
-		<MenuItem value="sex:entire">(any) entire)</MenuItem>
+		<MenuItem value="sex:entire">(any) entire</MenuItem>
 		<MenuItem value="sex:neutered">(any) neutered</MenuItem>
 	</TextField>
 );
