@@ -1,9 +1,8 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
-import { Division, Question } from "./index";
+import { Division, Question, ConditionInput } from "./index";
 
 // ----------------------------------------------------------
 
@@ -74,7 +73,7 @@ export const Section = ({
 
 	const form = (
 		<>
-			{/* Title */}
+			{/* title */}
 			<Typography component="label" htmlFor={titleId} children="Title" />
 			<TextField
 				autoFocus
@@ -84,30 +83,17 @@ export const Section = ({
 				onChange={handleSectionTitleInput}
 			/>
 
-			{/* Condition */}
+			{/* condition */}
 			<Typography
 				component="label"
 				htmlFor={conditionId}
 				children="Condition"
 			/>
-			<TextField
-				select
-				fullWidth
+			<ConditionInput
 				value={condition}
 				inputProps={{ id: conditionId }}
 				onChange={handleSectionConditionInput}
-			>
-				<MenuItem value="species:canine">Dog</MenuItem>
-				<MenuItem value="species:feline">Cat</MenuItem>
-				<MenuItem value="sex:male">Male (any)</MenuItem>
-				<MenuItem value="sex:male entire">Male entire</MenuItem>
-				<MenuItem value="sex:male neutered">Male neutered</MenuItem>
-				<MenuItem value="sex:female">Female (any)</MenuItem>
-				<MenuItem value="sex:female entire">Female entire</MenuItem>
-				<MenuItem value="sex:female neutered">Female neutered</MenuItem>
-				<MenuItem value="sex:entire">(any) entire)</MenuItem>
-				<MenuItem value="sex:neutered">(any) neutered</MenuItem>
-			</TextField>
+			/>
 		</>
 	);
 

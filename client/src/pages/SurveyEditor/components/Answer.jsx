@@ -7,7 +7,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import { FileInput } from "components/FileInput";
-import { Section, Division } from "./index";
+import { Section, Division, ConditionInput } from "./index";
 
 import { useStyles } from "../SurveyEditor-styles";
 import {
@@ -42,6 +42,7 @@ export const Answer = ({
 		alert = 0,
 		imageUrl = "",
 		description = "",
+		condition = "",
 		followUp = {
 			after: ["none"], // TODO: rename to "targets"
 			target: [], // TODO: rename to "sections"
@@ -95,6 +96,7 @@ export const Answer = ({
 		if (printNote) newAnswer.printNote = printNote;
 		if (imageUrl) newAnswer.imageUrl = imageUrl;
 		if (description) newAnswer.description = description;
+		if (condition) newAnswer.condition = condition;
 		if (alert > 0) newAnswer.alert = alert;
 		if (!!target.length) newAnswer.followUp = { after, target };
 		return newAnswer;
@@ -210,6 +212,7 @@ export const Answer = ({
 	const followUpId = id + "-followUp";
 	const removeImageId = id + "-removeImage";
 	const desciptionId = id + "-desciption";
+	const conditionId = id + "-condition";
 
 	const form = (
 		<>
@@ -266,6 +269,19 @@ export const Answer = ({
 				<MenuItem value={4}>Red</MenuItem>
 			</TextField>
 
+			{/* condition */}
+			<Typography
+				component="label"
+				htmlFor={conditionId}
+				children="Condition"
+			/>
+			<ConditionInput
+				name="condition"
+				value={condition}
+				inputProps={{ id: conditionId }}
+				onChange={editAnswer}
+			/>
+
 			{/* followUp after*/}
 			<Tooltip title="If chosen section is already completed, the follow-up will appear after this question.">
 				<Typography
@@ -294,7 +310,7 @@ export const Answer = ({
 				))}
 			</TextField>
 
-			{/* File upload */}
+			{/* imageUrl */}
 			<Typography component="label" children="Image" />
 			{!imageUrl ? (
 				<FileInput

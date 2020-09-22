@@ -22,22 +22,25 @@ export const getPersonalizedSurveyData = (getState, pet) => {
 		const {questions, condition} = sectionData
 		
 		// Filter out conditional sections that don't match pet
-		if (condition) {
-			const noMatch = !doesPetMatchCondition(pet, condition)
-			if (noMatch) return removeSectionFromAllQueues(sectionName, newData)
+		if (condition && !doesPetMatchCondition(pet, condition)) {
+			removeSectionFromAllQueues(sectionName, newData)
+			return
 		}
 		
 		// Inject pet props into question labels and aswer text
-		const newQuestions = questions.map(
-			(question) => {
-				const { label, answers } = question;
-				question.label = getPersonalizedString(label, pet);
-				if (answers) question.answers = answers.map((answer) => ({
-					...answer, text: getPersonalizedString(answer.text, pet),
-				}));
-				return question;
-			}
-		);
+		const newQuestions = questions.map((question) => {
+			const { label, answers } = question;
+			const newLabel = getPersonalizedString(label, pet)
+			if (!answers) return {...question, label: newLabel}
+			let newAnswers = []
+			answers.forEach((answer) => {
+				const { text, condition } = answer
+				const newText = getPersonalizedString(text, pet)
+				const match = !condition || doesPetMatchCondition(pet, condition)
+				if (match) newAnswers.push({...answer, text: newText}) 
+			})
+			return {...question, label: newLabel, answers: newAnswers};
+		});
 		
 		newSections[sectionName] = { ...sectionData, questions: newQuestions }
 	});
