@@ -78,8 +78,11 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	grid: {
 		display: "grid",
-		gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
 		gridGap: theme.spacing(2),
+		gridTemplateColumns: "auto",
+		[theme.breakpoints.up("sm")]: {
+			gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+		},
 	},
 
 	// Instructions
