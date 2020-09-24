@@ -1,2 +1,2 @@
-export * from "./SuDashboard";
-export { SuDashboard as default } from "./SuDashboard";
+export { default } from "./SuDashboardContainer";
+export { default as SuDashboard } from "./SuDashboardContainer";
