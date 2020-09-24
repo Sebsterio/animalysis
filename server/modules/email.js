@@ -19,7 +19,7 @@ const getAlertName = (level) =>
 	"(ERROR)";
 
 // prettier-ignore
-const createEmailBody = (report, user) => {
+const createEmailBody = ({report, user, pet}) => {
 	const { title, alert, problemList } = report;
 	const { profile, email } = user;
 	const {firstName, surname} = profile
@@ -35,6 +35,7 @@ const createEmailBody = (report, user) => {
 					).join('')}
 				</ul></p>`
 			: ""}
+		<p><b>Pet's name:</b> ${pet.name}</p>
 		<p><b>Owner's name:</b> ${userName}</p>
 		<p><b>Owner's email:</b> ${email}</p>
 		<p>You can contact the owner by replying to this email.</p>
@@ -42,7 +43,7 @@ const createEmailBody = (report, user) => {
 	`;
 };
 
-const sendReportByEmail = async ({ user, report }) => {
+const sendReportByEmail = async ({ user, pet, report }) => {
 	const { clinicInfo, clinicId, email: userEmail } = user;
 
 	// Get clinic email address
@@ -63,7 +64,7 @@ const sendReportByEmail = async ({ user, report }) => {
 		replyTo: userEmail,
 		to: clinicEmail,
 		subject: "New Report: " + report.title,
-		html: createEmailBody(report, user),
+		html: createEmailBody({ report, user, pet }),
 	};
 
 	transporter.sendMail(mailOptions, function (error, info) {
@@ -73,7 +74,11 @@ const sendReportByEmail = async ({ user, report }) => {
 				from: "animalysis.reports@gmail.com",
 				to: "sebastian.rosloniec@gmail.com",
 				subject: "Animalysis error",
-				text: `Error sending an email from ${userEmail} to ${clinicEmail}.\n\n ${error}`,
+				text: `
+					Error sending an email from ${userEmail} to ${clinicEmail}. \n
+					${error} \n
+					${JSON.stringify(error)}
+				`,
 			});
 		} else {
 			console.log("Email sent: " + info.response);

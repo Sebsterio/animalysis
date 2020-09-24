@@ -38,7 +38,7 @@ router.post("/add", auth, async (req, res) => {
 		pet.save();
 
 		// Email report
-		sendReportByEmail({ user, report: filterReport(body) });
+		sendReportByEmail({ user, pet, report: filterReport(body) });
 
 		// Send response
 		res.status(200).json({ dateUpdated });
