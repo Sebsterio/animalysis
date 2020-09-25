@@ -7,8 +7,19 @@ App that streamlines the process of reporting a pet's health problem and automat
 ## How to use
 
 ```
+# Development
+
 $ npm i
 $ npm run dev
+
+# Deployment
+
+$ heroku login
+$ heroku git:remote -a animalysis  # Once
+$ git add .
+$ git commit -am "make it better"
+$ git push heroku master
+
 ```
 
 ## TODO

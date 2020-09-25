@@ -111,6 +111,7 @@ const Question = ({
 							const icon =
 								!!imageUrl || !!description ? (
 									<IconButton
+										component="span"
 										children={<InfoOutlinedIcon />}
 										onClick={(e) => showPopover(e, { imageUrl, description })}
 									/>
