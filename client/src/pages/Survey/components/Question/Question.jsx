@@ -12,7 +12,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 
 import { usePopover } from "hooks";
-import shortid from "shortid";
 
 // ---------------------------------------------------------------
 
@@ -23,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
 	media: {
 		height: 0,
 		paddingTop: "100%", // 16:9
+	},
+	answerContainer: {
+		display: "flex",
 	},
 }));
 
@@ -108,24 +110,21 @@ const Question = ({
 									{ answerIndex, followUp, alert, isSelected },
 									history
 								);
-							const icon =
-								!!imageUrl || !!description ? (
-									<IconButton
-										component="span"
-										children={<InfoOutlinedIcon />}
-										onClick={(e) => showPopover(e, { imageUrl, description })}
-									/>
-								) : null;
 							return (
-								<Box mb={2} key={shortid.generate()}>
+								<Box mb={2} key={answerIndex} className={c.answerContainer}>
 									<Button
 										fullWidth
 										variant={isSelected ? "contained" : "outlined"}
 										color="default"
 										children={text}
-										endIcon={icon}
 										onClick={handleClick}
 									/>
+									{(!!imageUrl || !!description) && (
+										<IconButton
+											children={<InfoOutlinedIcon />}
+											onClick={(e) => showPopover(e, { imageUrl, description })}
+										/>
+									)}
 								</Box>
 							);
 						}
