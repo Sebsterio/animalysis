@@ -23,9 +23,9 @@ const useStyles = makeStyles((theme) => ({
 		height: 0,
 		paddingTop: "100%", // 16:9
 	},
-	answerContainer: {
-		display: "flex",
-	},
+	answerContainer: { display: "flex" },
+	answerWithMargin: { marginRight: theme.spacing(5) },
+	infoButton: { marginLeft: theme.spacing(1) },
 }));
 
 const Question = ({
@@ -47,6 +47,9 @@ const Question = ({
 		!!text && text.length > lengthLimit && lengthLimit > 0;
 
 	const [answerTooLong, setAnswerTooLong] = useState(isAnswerTooLong(answer));
+
+	const someAnswersHaveInfo =
+		Array.isArray(answers) && answers.some((a) => a.imageUrl || a.description);
 
 	// Popover
 	const [
@@ -110,19 +113,24 @@ const Question = ({
 									{ answerIndex, followUp, alert, isSelected },
 									history
 								);
+							const hasMargin =
+								someAnswersHaveInfo && !imageUrl && !description;
 							return (
 								<Box mb={2} key={answerIndex} className={c.answerContainer}>
 									<Button
-										fullWidth
-										variant={isSelected ? "contained" : "outlined"}
-										color="default"
 										children={text}
 										onClick={handleClick}
+										variant={isSelected ? "contained" : "outlined"}
+										color={isSelected ? "primary" : "default"}
+										className={hasMargin && c.answerWithMargin}
+										fullWidth
 									/>
 									{(!!imageUrl || !!description) && (
 										<IconButton
+											size="small"
 											children={<InfoOutlinedIcon />}
 											onClick={(e) => showPopover(e, { imageUrl, description })}
+											className={c.infoButton}
 										/>
 									)}
 								</Box>
