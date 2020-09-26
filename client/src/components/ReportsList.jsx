@@ -69,8 +69,12 @@ export const ReportsList = ({
 				fullWidth
 				orientation="vertical"
 				children={renderedReports.map(
-					({ id, dateCreated, title, alert, name, ownerName }) => (
-						<Button className={c.report} onClick={() => openReport(id)}>
+					({ id, dateCreated, title, alert, name, sent /* ownerName */ }) => (
+						<Button
+							className={c.report}
+							color={sent ? "default" : "secondary"}
+							onClick={() => openReport(id)}
+						>
 							<span>{getDateString(dateCreated)}</span>
 							<span className={c.columnWide}>{title}</span>
 							{showPetName && wideScreen && (

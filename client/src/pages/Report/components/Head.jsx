@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: "none",
 	},
 	alert: {
-		marginTop: theme.spacing(2),
+		marginBottom: theme.spacing(2),
 		alignItems: "center",
 	},
 }));
@@ -20,7 +20,6 @@ export const Head = ({ pet, clinicIsSet, userHasPhone, isVet }) => {
 	return (
 		// separte content from parent's grid layout
 		<div>
-			<PetSnippet pet={pet} small />
 			{isVet ? null : !clinicIsSet ? (
 				<Link to="/my-clinic" className={c.link}>
 					<Alert
@@ -38,6 +37,7 @@ export const Head = ({ pet, clinicIsSet, userHasPhone, isVet }) => {
 					/>
 				</Link>
 			) : null}
+			<PetSnippet pet={pet} small />
 		</div>
 	);
 };

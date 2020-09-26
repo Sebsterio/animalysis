@@ -22,7 +22,7 @@ const filterReport = (report) => {
 
 // --------------------------- Report email ------------------------
 
-const { transporter, sendErrorEmailToDev } = emailModule;
+const { transporter } = emailModule;
 
 // Get clinic email address
 // ClinicId: send email if emailNotifications are on
@@ -78,7 +78,7 @@ const createReportEmailBody = ({report, user, pet}) => {
 
 const sendReportByEmail = async ({ clinicEmail, user, report, pet }) => {
 	try {
-		const { email: userEmail, profile } = user;
+		const { email: userEmail } = user;
 		const mailOptions = {
 			from: userEmail, // doesn't seem to work with gmail
 			replyTo: userEmail,
