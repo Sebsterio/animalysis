@@ -5,6 +5,7 @@ import {
 	getIsEmailError,
 	getIsNewEmailError,
 	getIsPasswordError,
+	getIsCodeError,
 	getIsGenericError,
 	getErrorMessage,
 } from "redux/error/error-selectors";
@@ -17,6 +18,7 @@ export const withError = (Component) =>
 			isError: getIsError(state),
 			newEmailError: getIsNewEmailError(state),
 			passwordError: getIsPasswordError(state),
+			codeError: getIsCodeError(state),
 			errorMessage: getErrorMessage(state),
 			isGenericError: getIsGenericError(state),
 		}),

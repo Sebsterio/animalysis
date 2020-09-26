@@ -7,7 +7,7 @@ const Clinic = require("../../models/clinic");
 const utils = require("./user-utils");
 const clinicUtils = require("./clinic-utils");
 
-const { filterUserReq, filterUserRes } = utils;
+const { filterUserReq, filterUserRes, generateCode, sendCodeByEmail } = utils;
 const { filterClientClinic } = clinicUtils;
 
 const router = express.Router();
@@ -105,6 +105,73 @@ router.post("/sign-in", async (req, res) => {
 		return res.status(200).json(resData);
 	} catch (e) {
 		res.status(500).json(e.message);
+	}
+});
+
+// ---------------- Send security code ----------------
+// Access: public
+// Returns: 200
+
+router.post("/send-code", async (req, res) => {
+	try {
+		const { email } = req.body;
+
+		const user = await User.findOne({ email });
+		if (!user)
+			return res.status(403).json({
+				target: "email",
+				msg: "User doesn't exists",
+			});
+
+		const code = generateCode();
+		const success = await sendCodeByEmail({ user, code });
+		if (!success)
+			return res.status(403).json({
+				target: "generic",
+				msg: "Error sending security code. Please contact support.",
+			});
+
+		user.code = code;
+		user.save();
+
+		res.status(200).send();
+	} catch (e) {
+		res.status(400).json(e.message);
+	}
+});
+
+// ---------------- Reset password ----------------
+// Access: security-code
+// Returns: 200
+
+router.post("/reset-pw", async (req, res) => {
+	try {
+		const { code, password } = req.body;
+
+		if (!code) throw Error("Code missing"); // before findOne
+
+		const user = await User.findOne({ code });
+		if (!user)
+			return res.status(403).json({
+				target: "code",
+				msg: "Code not recognized",
+			});
+
+		// Get encrypted password
+		const salt = await bcrypt.genSalt(10);
+		if (!salt) throw Error("Error with bcrypt");
+		const hash = await bcrypt.hash(password, salt);
+		if (!hash) throw Error("Error hashing the password");
+
+		// Update user
+		user.password = hash;
+		user.code = undefined;
+		user.dateModified = new Date();
+		await user.save();
+
+		res.status(200).send();
+	} catch (e) {
+		res.status(400).json(e.message);
 	}
 });
 

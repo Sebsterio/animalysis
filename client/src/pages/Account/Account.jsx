@@ -1,7 +1,12 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { Auth, Main } from "./components";
-import { mainModes, authModes, subroutes } from "./Account-constants";
+import {
+	inputNames,
+	mainModes,
+	authModes,
+	subroutes,
+} from "./Account-constants";
 import { getTruthyInputDataFromForm } from "utils/form";
 
 /*********************************
@@ -23,27 +28,37 @@ const AccountPage = ({
 	// dispatch
 	signIn,
 	signUp,
+	sendCode,
+	resetPassword,
 	signOut,
 	update,
 	close,
 	clearError,
 }) => {
+	const { mode } = match.params;
+
 	// ---------------------- Handlers ----------------------
 
-	// prettier-ignore
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		clearError()
-		const inputNames = ["email", "password", "newEmail", "newPassword", "firstName", 'type'];
+		clearError();
 		const data = getTruthyInputDataFromForm(e.target, ...inputNames);
 		if (mode === authModes.signIn) return signIn(data);
 		if (mode === authModes.signUp) return signUp(data);
 		if (mode === mainModes.close) return close(data);
-		const {email, password, type} = mainModes
-		if ( [email, password, type].includes(mode)) {
-			await update(data)
-			history.push('/')
-		};
+		if (mode === authModes.forgotPw) {
+			const res = await sendCode(data);
+			return res ? history.push(subroutes.resetPw) : null;
+		}
+		if (mode === authModes.resetPw) {
+			const res = await resetPassword(data);
+			return res ? history.push(subroutes.signIn) : null;
+		}
+		const { email, password, type } = mainModes;
+		if ([email, password, type].includes(mode)) {
+			const res = await update(data);
+			return res ? history.push("/") : null;
+		}
 	};
 
 	const goBack = () => {
@@ -53,8 +68,6 @@ const AccountPage = ({
 	};
 
 	// ------------------ Routing & Render ------------------
-
-	const { mode } = match.params;
 
 	const mainModeIsMatched = Object.values(mainModes).includes(mode);
 	const authModeIsMatched = Object.values(authModes).includes(mode);
@@ -75,9 +88,9 @@ const AccountPage = ({
 	// Not authenticated
 	else {
 		// Ensure URL param is present and valid
-		if (!mode || !authModeIsMatched) return <Redirect to={subroutes.singIn} />;
+		if (!mode || !authModeIsMatched) return <Redirect to={subroutes.signIn} />;
 		// Render Auth form
-		return <Auth {...{ mode, handleSubmit }} />;
+		return <Auth {...{ mode, handleSubmit, updating }} />;
 	}
 };
 

@@ -1,14 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link as RouterLink } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
 import Icon from "@material-ui/core/Icon";
 
-import { Page, Copyright } from "components";
+import { Page, LinkBlock, Copyright } from "components";
 
 import Logo from "assets/logo_blue.svg";
 
@@ -58,10 +56,9 @@ export const Demo = ({ history, signIn }) => {
 						Here you can explore the app in offline mode. You can switch to the
 						full version at any time by signing out.
 					</Typography>
-				</>
-			}
-			main2={
-				<>
+
+					<div></div>
+
 					<Button
 						fullWidth
 						color="default"
@@ -78,9 +75,8 @@ export const Demo = ({ history, signIn }) => {
 						onClick={runVetDemo}
 					/>
 
-					<Link
+					<LinkBlock
 						children="Switch to full version"
-						component={RouterLink}
 						to="/"
 						variant="body2"
 						className={c.link}

@@ -70,6 +70,36 @@ export const signIn = (formData) => (dispatch) => {
 		});
 };
 
+// -------------------------- sendCode ------------------------------
+
+// Send password-reset security code by email
+export const sendCode = (formData) => async (dispatch) => {
+	const config = getConfig();
+	dispatch($.updateStart());
+	return axios
+		.post("/api/user/send-code", JSON.stringify(formData), config)
+		.then(() => dispatch($.updateSuccess()))
+		.catch((err) => {
+			dispatch($.updateFail());
+			dispatch(error(err));
+		});
+};
+
+// -------------------------- resetPassword ------------------------------
+
+// Change password using previously sent security code
+export const resetPassword = (formData) => async (dispatch) => {
+	const config = getConfig();
+	dispatch($.updateStart());
+	return axios
+		.post("/api/user/reset-pw", JSON.stringify(formData), config)
+		.then(() => dispatch($.updateSuccess()))
+		.catch((err) => {
+			dispatch($.updateFail());
+			dispatch(error(err));
+		});
+};
+
 // -------------------- syncData -----------------------
 
 // GET user data if newer than local
@@ -122,13 +152,15 @@ export const updateUser = (formData) => async (dispatch, getState) => {
 		.post(endpoint, data, config)
 		.then((res) => {
 			dispatch($.updateSuccess(res.data));
-			if (!formData.type) return;
+			if (!formData.type) return true;
 			dispatch(petsActions.clear());
 			dispatch(syncPets());
+			return true;
 		})
 		.catch((err) => {
 			dispatch($.updateFail());
 			dispatch(error(err));
+			return false;
 		});
 };
 

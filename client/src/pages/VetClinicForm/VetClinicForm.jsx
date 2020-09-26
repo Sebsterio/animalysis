@@ -124,10 +124,9 @@ export const VetClinicForm = ({
 		<>
 			<Page
 				header={
-					<LinkBlock
-						to="/clinic-search"
-						text={registered ? "Search organisations" : "Join an organisation"}
-					/>
+					<LinkBlock to="/clinic-search">
+						{registered ? "Search organisations" : "Join an organisation"}
+					</LinkBlock>
 				}
 				main={
 					<div>

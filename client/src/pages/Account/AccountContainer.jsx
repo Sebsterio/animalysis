@@ -11,6 +11,8 @@ import { updateUser } from "redux/user/user-operations";
 import {
 	signIn,
 	signUp,
+	sendCode,
+	resetPassword,
 	signOut,
 	closeAccount,
 } from "redux/user/user-operations";
@@ -28,6 +30,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	signIn: (data) => dispatch(signIn(data)),
 	signUp: (data) => dispatch(signUp(data)),
+	sendCode: (data) => dispatch(sendCode(data)),
+	resetPassword: (data) => dispatch(resetPassword(data)),
 	update: (data) => dispatch(updateUser(data)),
 	close: (data) => dispatch(closeAccount(data)),
 	signOut: () => dispatch(signOut()),

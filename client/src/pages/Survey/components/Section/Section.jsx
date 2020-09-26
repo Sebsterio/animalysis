@@ -28,8 +28,8 @@ export const Section = ({
 			{isVet && (
 				<LinkBlock
 					to="/survey/edit"
-					text="End preview"
-					clickHandler={endPreview}
+					children="End preview"
+					onClick={endPreview}
 				/>
 			)}
 			<Box mb={1}>

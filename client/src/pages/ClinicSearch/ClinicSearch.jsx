@@ -82,7 +82,7 @@ export const ClinicSearch = ({
 
 	return (
 		<Page
-			header={<LinkBlock to="/my-clinic" text={linkText} />}
+			header={<LinkBlock to="/my-clinic" children={linkText} />}
 			main={
 				<Stack>
 					<form onSubmit={search}>

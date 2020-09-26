@@ -4,8 +4,8 @@ const User = require("../../models/user");
 const Pet = require("../../models/pet");
 const Report = require("../../models/report");
 const utils = require("./report-utils");
-const { sendReportByEmail } = require("../../modules/email");
-const { filterReport } = utils;
+
+const { filterReport, getClinicEmail, sendReportByEmail } = utils;
 
 const router = express.Router();
 
@@ -38,7 +38,9 @@ router.post("/add", auth, async (req, res) => {
 		pet.save();
 
 		// Email report
-		sendReportByEmail({ user, pet, report: filterReport(body) });
+		const { clinicInfo, clinicId } = user;
+		const clinicEmail = await getClinicEmail({ clinicId, clinicInfo });
+		if (clinicEmail) sendReportByEmail({ clinicEmail, user, report, pet });
 
 		// Send response
 		res.status(200).json({ dateUpdated });

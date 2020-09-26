@@ -15,9 +15,7 @@ export const useStyles = makeStyles((theme) => ({
 	form: {
 		width: "100%", // Fixes IE 11 issue.
 	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
+	submit: { margin: theme.spacing(3, 0, 2) },
 
 	// Logo
 	logoContainer: {
@@ -26,7 +24,8 @@ export const useStyles = makeStyles((theme) => ({
 		height: "auto",
 		objectFit: "contain",
 	},
-	logo: {
-		width: "100%",
-	},
+	logo: { width: "100%" },
+
+	// Other
+	link2: { marginTop: theme.spacing(1) },
 }));

@@ -13,6 +13,7 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	code: String, // used to reset password
 	type: String, // client  | vet | superuser
 	demo: Boolean, // demo users can send GET requests only
 	profile: {

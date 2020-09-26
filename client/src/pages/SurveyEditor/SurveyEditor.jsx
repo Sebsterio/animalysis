@@ -101,7 +101,9 @@ export const SurveyEditor = ({
 							<b>By:</b> {publishedBy}
 						</Typography>
 					</div>
-					{!hasChanged && <LinkBlock to="/survey/view" text="Preview survey" />}
+					{!hasChanged && (
+						<LinkBlock to="/survey/view" children="Preview survey" />
+					)}
 				</div>
 
 				<div>

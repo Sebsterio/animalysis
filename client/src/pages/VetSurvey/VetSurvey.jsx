@@ -43,8 +43,8 @@ export const VetSurvey = ({
 			header={
 				<LinkBlock
 					to="/survey/edit"
-					text="End preview"
-					clickHandler={endPreview}
+					children="End preview"
+					onClick={endPreview}
 				/>
 			}
 			main={<Form state={pet} setState={setPet} fields={formFields} />}

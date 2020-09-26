@@ -7,3 +7,4 @@ export * from "./Terms";
 export * from "./MenuButton";
 export * from "./Form";
 export * from "./TypeInput";
+export * from "./CodeInput";

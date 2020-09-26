@@ -32,7 +32,7 @@ export const ClinicForm = ({
 			header={
 				<LinkBlock
 					to="/clinic-search"
-					text={clinicRegistered ? "Change clinic" : "Find a clinic"}
+					children={clinicRegistered ? "Change clinic" : "Find a clinic"}
 				/>
 			}
 			main={

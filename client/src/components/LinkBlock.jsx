@@ -11,16 +11,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const LinkBlock = ({ text, to, clickHandler }) => {
+export const LinkBlock = (props) => {
 	const c = useStyles();
 	return (
 		<div className={c.container}>
-			<Link
-				component={RouterLink}
-				to={to}
-				children={text}
-				onClick={clickHandler}
-			/>
+			<Link component={RouterLink} {...props} />
 		</div>
 	);
 };
