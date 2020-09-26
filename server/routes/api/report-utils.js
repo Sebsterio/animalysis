@@ -30,13 +30,16 @@ const { transporter, sendErrorEmailToDev } = emailModule;
 const getClinicEmail = async ({ clinicId, clinicInfo }) => {
 	if (clinicId) {
 		const clinic = await Clinic.findById(clinicId);
-		if (clinic && clinic.emailNotifications) return clinic.email;
+		if (!clinic) return false;
+		if (!clinic.emailNotifications) return "notifications-off";
+		return clinic.email;
 	} else if (clinicInfo && clinicInfo.email) {
 		const { email } = clinicInfo;
 		const clinic = await Clinic.findOne({ email });
-		if (!clinic || clinic.emailNotifications) return email;
+		if (clinic && !clinic.emailNotifications) return "notifications-off";
+		return email;
 	}
-	return false;
+	return false; // user doesn't have a clinic
 };
 
 // prettier-ignore
@@ -56,6 +59,9 @@ const createReportEmailBody = ({report, user, pet}) => {
 	const userName = firstName + (surname ? (" " + surname) : "");
 	return `
 		<h2>${title}</h2>
+		<p><b>Owner's name:</b> ${userName}</p>
+		<p><b>Owner's email:</b> ${email}</p>
+		<p><b>Pet's name:</b> ${pet.name}</p>
 		<p><b>Urgency level:</b> ${getAlertName(alert)}</p>
 		${problemList.length 
 			? `<p><b>Problems:</b></p>
@@ -65,33 +71,25 @@ const createReportEmailBody = ({report, user, pet}) => {
 					).join('')}
 				</ul></p>`
 			: ""}
-		<p><b>Pet's name:</b> ${pet.name}</p>
-		<p><b>Owner's name:</b> ${userName}</p>
-		<p><b>Owner's email:</b> ${email}</p>
 		<p>You can contact the owner by replying to this email.</p>
 		<p>To create a free Animalysis account, click <a href="https://animalysis.com">here</a>.</p>
 	`;
 };
 
-const sendReportByEmail = ({ clinicEmail, user, report, pet }) => {
-	const { email: userEmail } = user;
-	const mailOptions = {
-		from: userEmail, // doesn't seem to work with gmail
-		replyTo: userEmail,
-		to: clinicEmail,
-		subject: "New Report: " + report.title,
-		html: createReportEmailBody({ report, user, pet }),
-	};
-	const cb = (error, info) => {
-		if (error) {
-			console.log("Error sending email"); // TEMP <<<<<<<<<<<<<<<
-			const msg = `Error sending an email from ${userEmail} to ${clinicEmail}.`;
-			sendErrorEmailToDev({ error, msg });
-		} else {
-			console.log("Email sent: " + info.response); // TEMP <<<<<<<<<<<<<<<
-		}
-	};
-	transporter.sendMail(mailOptions, cb);
+const sendReportByEmail = async ({ clinicEmail, user, report, pet }) => {
+	try {
+		const { email: userEmail, profile } = user;
+		const mailOptions = {
+			from: userEmail, // doesn't seem to work with gmail
+			replyTo: userEmail,
+			to: clinicEmail,
+			subject: "New Report: " + report.title,
+			html: createReportEmailBody({ report, user, pet }),
+		};
+		return await transporter.sendMail(mailOptions);
+	} catch (err) {
+		return false;
+	}
 };
 
 // ----------------------------------------------------------------

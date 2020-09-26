@@ -40,10 +40,15 @@ router.post("/add", auth, async (req, res) => {
 		// Email report
 		const { clinicInfo, clinicId } = user;
 		const clinicEmail = await getClinicEmail({ clinicId, clinicInfo });
-		if (clinicEmail) sendReportByEmail({ clinicEmail, user, report, pet });
+		if (!clinicEmail) throw Error("Clinic emnail not found");
+		else if (clinicEmail !== "notifications-off") {
+			const config = { clinicEmail, user, report, pet };
+			const success = await sendReportByEmail(config);
+			if (!success) throw Error("Error sending email");
+		}
 
 		// Send response
-		res.status(200).json({ dateUpdated });
+		res.status(200).send();
 	} catch (e) {
 		res.status(500).json(e.message);
 	}
