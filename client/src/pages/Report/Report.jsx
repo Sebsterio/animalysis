@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 	footerButton: { margin: theme.spacing(0.3, 0) },
 }));
 
-const Report = ({ history, match, getReport, getPet, isVet }) => {
+const Report = ({ history, match, getReport, getPet, isVet, resendReport }) => {
 	const c = useStyles();
 
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -43,6 +43,8 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 
 	const viewPet = () => history.push("/pet/" + pet.id);
 
+	const sendReport = () => resendReport({ id: report.id, petId });
+
 	// ------------------------- View ------------------------------
 
 	return (
@@ -69,7 +71,6 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 								<Typography
 									component="h3"
 									variant="body1"
-									color="textSecondary"
 									align="center"
 									children={
 										dateSeen
@@ -80,9 +81,11 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 											? "Sending..."
 											: "Not sent!"
 									}
+									color={sent || sending ? "textSecondary" : "secondary"}
 								/>
 							)}
 						</div>
+
 						<Alert level={alert} clickHandler={openDialog} small alignLeft />
 
 						{!!problemList.length && (
@@ -115,6 +118,16 @@ const Report = ({ history, match, getReport, getPet, isVet }) => {
 								children="Contact owner"
 								onClick={contactOwner}
 								disabled={!pet.userId}
+							/>
+						)}
+						{!sent && !sending && (
+							<Button
+								fullWidth
+								className={c.footerButton}
+								variant="contained"
+								color="primary"
+								children={sending ? "Sending..." : "Send report"}
+								onClick={sendReport}
 							/>
 						)}
 						<Button

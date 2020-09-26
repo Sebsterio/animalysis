@@ -131,6 +131,23 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 		});
 };
 
+// ------------------------ resendReport ----------------------------
+
+// Attempt to send report by email
+export const resendReport = ({ id, petId }) => (dispatch, getState) => {
+	const endpoint = "/api/report/resend";
+	const reqData = JSON.stringify({ id, petId });
+	const config = getTokenConfig(getState());
+	dispatch($.sendReportStart({ id, petId }));
+	axios
+		.post(endpoint, reqData, config)
+		.then(() => dispatch($.sendReportSuccess({ id, petId })))
+		.catch((err) => {
+			dispatch($.sendReportFail({ id, petId }));
+			dispatch(error(err));
+		});
+};
+
 // ---------------- syncReports & syncAllReports -------------------
 
 // Fetch reports not present locally or updated more recently

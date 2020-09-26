@@ -44,7 +44,7 @@ export const ClinicForm = ({
 			}
 			footer={
 				<Nav
-					textLeft="Cancel"
+					textLeft="Close"
 					onClickLeft={closeForm}
 					textRight={clinicRegistered ? "Customize" : "Save"}
 					onClickRight={clinicRegistered ? customizeClinic : submitForm}

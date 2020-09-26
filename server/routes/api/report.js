@@ -11,7 +11,8 @@ const router = express.Router();
 
 // ------------------- Add report -------------------
 // Access: token
-// Returns: dateUpdated (pet)
+// Returns: 200;
+// TODO: return pet.dateUpdated
 
 router.post("/add", auth, async (req, res) => {
 	try {
@@ -40,7 +41,7 @@ router.post("/add", auth, async (req, res) => {
 		// Email report
 		const { clinicInfo, clinicId } = user;
 		const clinicEmail = await getClinicEmail({ clinicId, clinicInfo });
-		if (!clinicEmail) throw Error("Clinic emnail not found");
+		if (!clinicEmail) throw Error("Clinic email not found");
 		else if (clinicEmail !== "notifications-off") {
 			const config = { clinicEmail, user, report, pet };
 			const success = await sendReportByEmail(config);
@@ -53,6 +54,42 @@ router.post("/add", auth, async (req, res) => {
 		res.status(500).json(e.message);
 	}
 });
+
+// ------------------- Resend report -------------------
+// Access: token
+// Returns: 200
+
+router.post("/resend", auth, async (req, res) => {
+	try {
+		const { userId, body } = req;
+		const { id, petId } = body;
+		console.log({ petId });
+
+		// Validate
+		const user = await User.findById(userId).select("-password");
+		if (!user) return res.status(404).json("User doesn't exist");
+		const pet = await Pet.findById(petId);
+		if (!pet) return res.status(404).json("Pet doesn't exist");
+		const report = await Report.findById(id);
+		if (!report) return res.status(404).json("Report doesn't exist");
+
+		// Email report
+		const { clinicInfo, clinicId } = user;
+		const clinicEmail = await getClinicEmail({ clinicId, clinicInfo });
+		if (!clinicEmail) throw Error("Clinic email not found");
+		else if (clinicEmail !== "notifications-off") {
+			const config = { clinicEmail, user, report, pet };
+			const success = await sendReportByEmail(config);
+			if (!success) throw Error("Error sending email");
+		}
+
+		// Send response
+		res.status(200).send();
+	} catch (e) {
+		res.status(500).json(e.message);
+	}
+});
+
 // ---------------- Sync pet reports ----------------
 // Access: token; client & vet
 // Returns: diffs
