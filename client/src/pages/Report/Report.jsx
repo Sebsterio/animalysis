@@ -1,17 +1,31 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button, Dialog } from "@material-ui/core";
-import { Page, Alert } from "components";
-import { Head, ProblemList } from "./components";
+import { Alert as MUI_Alert } from "@material-ui/lab";
+import { Page, Alert, PetSnippet } from "components";
+import { ProblemList } from "./components";
 import { getDateString } from "utils/date";
 import { summaryData } from "pages/Summary/Summary-data";
 
 const useStyles = makeStyles((theme) => ({
 	dialogContent: { padding: theme.spacing(3) },
+	link: { textDecoration: "none" },
+	alert: { marginBottom: theme.spacing(2), alignItems: "center" },
 	footerButton: { margin: theme.spacing(0.3, 0) },
 }));
 
-const Report = ({ history, match, getReport, getPet, isVet, resendReport }) => {
+const Report = ({
+	history,
+	match,
+	getReport,
+	getPet,
+	isVet,
+	isDemo,
+	resendReport,
+	clinicIsSet,
+	userHasPhone,
+}) => {
 	const c = useStyles();
 
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -50,9 +64,27 @@ const Report = ({ history, match, getReport, getPet, isVet, resendReport }) => {
 	return (
 		<>
 			<Page
-				header={<Head {...{ pet, isVet }} />}
-				main={
-					<>
+				header={
+					// separte content from parent's grid layout
+					<div>
+						{isVet ? null : !clinicIsSet ? (
+							<Link to="/my-clinic" className={c.link}>
+								<MUI_Alert
+									severity="error"
+									children="You haven't chosen a clinic to send reports to. Click here to add one."
+									className={c.alert}
+								/>
+							</Link>
+						) : !userHasPhone ? (
+							<Link to="/profile" className={c.link}>
+								<MUI_Alert
+									severity="warning"
+									children="Add a phone number so that your clinic can contact you."
+									className={c.alert}
+								/>
+							</Link>
+						) : null}
+
 						<div className={c.titleBlock}>
 							<Typography
 								component="h2"
@@ -67,24 +99,12 @@ const Report = ({ history, match, getReport, getPet, isVet, resendReport }) => {
 								align="center"
 								children={getDateString(dateCreated)}
 							/>
-							{!isVet && (
-								<Typography
-									component="h3"
-									variant="body1"
-									align="center"
-									children={
-										dateSeen
-											? "Delivered"
-											: sent
-											? "Sent"
-											: sending
-											? "Sending..."
-											: "Not sent!"
-									}
-									color={sent || sending ? "textSecondary" : "secondary"}
-								/>
-							)}
 						</div>
+					</div>
+				}
+				main={
+					<>
+						<PetSnippet pet={pet} small />
 
 						<Alert level={alert} clickHandler={openDialog} small alignLeft />
 
@@ -93,6 +113,26 @@ const Report = ({ history, match, getReport, getPet, isVet, resendReport }) => {
 								<Typography variant="h6" children="Issues" gutterBottom />
 								<ProblemList data={problemList} />
 							</div>
+						)}
+
+						{!isVet && (
+							<Typography
+								component="h3"
+								variant="body1"
+								align="center"
+								children={
+									dateSeen
+										? "Received by clinic"
+										: sent
+										? "Report Sent"
+										: sending
+										? "Sending..."
+										: isDemo
+										? "Posting reports is disabled in demo"
+										: "Report not sent!"
+								}
+								color={sent || sending ? "textSecondary" : "secondary"}
+							/>
 						)}
 					</>
 				}
@@ -120,7 +160,7 @@ const Report = ({ history, match, getReport, getPet, isVet, resendReport }) => {
 								disabled={!pet.userId}
 							/>
 						)}
-						{!sent && !sending && (
+						{!sent && !sending && !isDemo && (
 							<Button
 								fullWidth
 								className={c.footerButton}
