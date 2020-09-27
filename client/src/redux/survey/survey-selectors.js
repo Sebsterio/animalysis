@@ -14,6 +14,11 @@ export const getPreviousLocation = (state) => {
 	return history[history.length - 2];
 };
 
+export const isSectionInHistory = (state, section) => {
+	const history = getHistory(state);
+	return history.some((location) => location.sectionName === section);
+};
+
 // --------------- Current location ---------------
 
 export const getCurrentLocation = (state) => {
@@ -27,6 +32,11 @@ export const getCurrentLocationHistoryIndex = (state) =>
 export const getCurrentSectionName = (state) => {
 	const location = getCurrentLocation(state);
 	return location ? location.sectionName : null;
+};
+
+export const isSectionCurrent = (state, section) => {
+	const currentSection = getCurrentSectionName(state);
+	return currentSection === section;
 };
 
 export const getCurrentQuestionIndex = (state) => {
@@ -59,6 +69,11 @@ export const getQueueLength = (state) => getQueue(state).length;
 
 export const getNextLocation = (state) => {
 	return getQueue(state)[0];
+};
+
+export const isSectionInQueue = (state, section) => {
+	const queue = getQueue(state);
+	return queue.some((location) => location.sectionName === section);
 };
 
 // Optional queue
@@ -232,3 +247,13 @@ export const getTitle = (state) => state.survey.title;
 export const getPetId = (state) => state.survey.petId;
 
 export const isPetIdActive = (state, id) => getPetId(state) === id;
+
+// ---------------- Combos ---------------------
+
+// NOTE: If section is current, it must return false regardless of wether it's in history
+export const hasSectionBeenAddedButIsNotCurrent = (state, section) => {
+	const isCompleted = isSectionInHistory(state, section);
+	const isScheduled = isSectionInQueue(state, section);
+	const isCurrent = isSectionCurrent(state, section);
+	return (isCompleted || isScheduled) && !isCurrent;
+};

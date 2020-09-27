@@ -17,6 +17,7 @@ import {
 	getMaxAlertFromHistory,
 	getTitle,
 	getPetId,
+	hasSectionBeenAddedButIsNotCurrent,
 } from "redux/survey/survey-selectors";
 import * as $ from "redux/survey/survey-actions";
 import { deletePet } from "redux/pets/pets-actions";
@@ -175,7 +176,7 @@ const goBack = (history) => (dispatch, getState) => {
 
 // -------------------------- ALert Popup -----------------------------
 
-// Open warning popup if alert reached level 2 (only once through entire survey)
+// Open warning popup if alert reached level 3 (only once through entire survey)
 const handleAlert = (alert) => (dispatch, getState) => {
 	const currentAlert = getCurrentAlert(getState());
 	if (alert <= currentAlert) return;
@@ -186,29 +187,31 @@ const handleAlert = (alert) => (dispatch, getState) => {
 // ------------------------- Follow Ups ---------------------------------
 
 // Extract locations from target section(s)
-// add info about invoking (this) location to each extracted location
-// Insert extracted locations into correct place in queue
-// Remove target section(s) from optionalQueue
+// Add info about invoking (current) location to each extracted location
+// Insert extracted locations into correct place in queue (determined by `after`)
+// Remove target sections from optionalQueue
 /* prettier-ignore */
 const addFollowUpToQueue = ({ followUp, answerIndex }) => (dispatch, getState) => {
 	const { target, after } = followUp;
+	const targets = arrayify(target)
 	const historyIndex = getCurrentLocationHistoryIndex(getState());
 	const addedBy = { historyIndex, answerIndex }
 	const addProps = (location) => ({	...location, addedBy });
 
-	arrayify(target)
-		.reverse()
-		.forEach((target) => {
-			let newLocations = getLocationsFromSection(getState(), target);
-			if (!newLocations) return // Ignore filtered out conditional sections
-			newLocations = newLocations.map(addProps);
+	targets.reverse().forEach((target) => {
+		// Don't add sections that have already been completed or are scheduled
+		// - unless it's current section (to support looped sequences)
+		if (hasSectionBeenAddedButIsNotCurrent(getState(), target)) return;
 
-			if (after[0] === "all") dispatch($.pushLocationsToQueue({ newLocations }));
-			else if (after[0] === "none") dispatch($.unshiftLocationsToQueue({ newLocations }));
-			else dispatch($.injectLocationsToQueue({ newLocations, after }));
+		let newLocations = getLocationsFromSection(getState(), target);
+		if (!newLocations) return; // Skip filtered out conditional sections
+		newLocations = newLocations.map(addProps);
 
-			dispatch($.removeFromOptionalQueue(target));
-		});
+		if (after[0] === "all") dispatch($.pushLocationsToQueue({ newLocations }));
+		else if (after[0] === "none") dispatch($.unshiftLocationsToQueue({ newLocations }));
+		else dispatch($.injectLocationsToQueue({ newLocations, after }));
+	})
+	targets.forEach((target) => dispatch($.removeFromOptionalQueue(target))) // forEach doesn't chain
 };
 
 // Remove locations addedBy questions at given historyIndex
