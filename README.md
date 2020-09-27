@@ -8,12 +8,12 @@ App that streamlines the process of reporting a pet's health problem and automat
 
 ### Set up
 
-[Sing up for Heroku](https://www.heroku.com/)  
+[Sign up for Heroku](https://www.heroku.com/)  
 [Install Heroku](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
 
 ```
 $ npm i
-$ heroku login # Opens browser
+$ heroku login // Opens browser
 $ heroku git:remote -a animalysis
 ```
 
@@ -28,7 +28,7 @@ $ npm run dev
 ```
 $ git add .
 $ git commit -m "...message..."
-$ npm run deploy
+$ npm run deploy // Wait till finished
 ```
 
 ## TODO
