@@ -13,6 +13,7 @@
 		"start": "node server.js",
 		"server": "nodemon server.js",
 		"dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+		"deploy": "git push origin && git push heroku master",
 		"heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
 	},
 	"dependencies": {
