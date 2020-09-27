@@ -122,7 +122,7 @@ const Question = ({
 										onClick={handleClick}
 										variant={isSelected ? "contained" : "outlined"}
 										color={isSelected ? "primary" : "default"}
-										className={hasMargin && c.answerWithMargin}
+										className={hasMargin ? c.answerWithMargin : null}
 										fullWidth
 									/>
 									{(!!imageUrl || !!description) && (
