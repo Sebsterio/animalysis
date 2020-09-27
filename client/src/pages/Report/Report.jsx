@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Button, Dialog } from "@material-ui/core";
-import { Alert as MUI_Alert } from "@material-ui/lab";
+import { Alert as MUIAlert } from "@material-ui/lab";
 import { Page, Alert, PetSnippet } from "components";
 import { ProblemList } from "./components";
 import { getDateString } from "utils/date";
@@ -69,7 +69,7 @@ const Report = ({
 					<div>
 						{isVet ? null : !clinicIsSet ? (
 							<Link to="/my-clinic" className={c.link}>
-								<MUI_Alert
+								<MUIAlert
 									severity="error"
 									children="You haven't chosen a clinic to send reports to. Click here to add one."
 									className={c.alert}
@@ -77,7 +77,7 @@ const Report = ({
 							</Link>
 						) : !userHasPhone ? (
 							<Link to="/profile" className={c.link}>
-								<MUI_Alert
+								<MUIAlert
 									severity="warning"
 									children="Add a phone number so that your clinic can contact you."
 									className={c.alert}
@@ -122,9 +122,9 @@ const Report = ({
 								align="center"
 								children={
 									dateSeen
-										? "Received by clinic"
+										? "Recieved by clinic"
 										: sent
-										? "Report Sent"
+										? "Report sent"
 										: sending
 										? "Sending..."
 										: isDemo
