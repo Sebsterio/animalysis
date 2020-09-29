@@ -4,6 +4,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 export const ConditionInput = (props) => (
 	<TextField select fullWidth {...props}>
+		<MenuItem value=""></MenuItem>
 		<MenuItem value="species:canine">Dog</MenuItem>
 		<MenuItem value="species:feline">Cat</MenuItem>
 		<MenuItem value="sex:male">Male (any)</MenuItem>

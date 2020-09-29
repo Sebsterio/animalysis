@@ -13,6 +13,8 @@ export const INITIAL_STATE = {
 	sections: { 
 		_sectionName_: { 	// (variable)
 			title: "",    	// displayed in UI
+			condition: '',  // run section only if pet matches condition
+			hidden: false,  // don't run section unless referenced as followUp
 			questions: [
 				{
 					label: "", 					// diplayed in UI

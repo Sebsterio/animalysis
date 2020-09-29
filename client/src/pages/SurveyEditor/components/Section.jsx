@@ -1,14 +1,16 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
 import { Division, Question, ConditionInput } from "./index";
 
 // ----------------------------------------------------------
 
 export const Section = ({
 	sectionName,
-	sectionData: { title, condition = "", questions },
+	sectionData: { title, condition = "", questions, hidden = false },
 	isFirst,
 	isLast,
 	operations,
@@ -18,6 +20,7 @@ export const Section = ({
 	const {
 		modifySectionTitle,
 		modifySectionCondition,
+		modifySectionIsHidden,
 		deleteSection,
 		moveSection,
 		addQuestion,
@@ -37,6 +40,9 @@ export const Section = ({
 
 	const handleSectionConditionInput = (e) =>
 		modifySectionCondition({ sectionName, value: e.target.value });
+
+	const handleSectionIsHiddenInput = (e) =>
+		modifySectionIsHidden({ sectionName, value: e.target.checked });
 
 	const handleDeleteSection = () => {
 		const confirmed = window.confirm("Permanently delete the ENTIRE section?");
@@ -70,11 +76,14 @@ export const Section = ({
 
 	const titleId = sectionName + "-title";
 	const conditionId = sectionName + "-condition";
+	const isHiddenId = sectionName + "-isHidden";
 
 	const form = (
 		<>
 			{/* title */}
-			<Typography component="label" htmlFor={titleId} children="Title" />
+			<Tooltip title="Displayed in survey header">
+				<Typography component="label" htmlFor={titleId} children="Title" />
+			</Tooltip>
 			<TextField
 				autoFocus
 				fullWidth
@@ -84,15 +93,27 @@ export const Section = ({
 			/>
 
 			{/* condition */}
-			<Typography
-				component="label"
-				htmlFor={conditionId}
-				children="Condition"
-			/>
+			<Tooltip title="Run section only if the pet matches the condition">
+				<Typography
+					component="label"
+					htmlFor={conditionId}
+					children="Condition"
+				/>
+			</Tooltip>
 			<ConditionInput
 				value={condition}
 				inputProps={{ id: conditionId }}
 				onChange={handleSectionConditionInput}
+			/>
+
+			{/* hidden */}
+			<Tooltip title="Don't run section unless it's referenced as a follow-up">
+				<Typography component="label" htmlFor={isHiddenId} children="Hidden" />
+			</Tooltip>
+			<Switch
+				checked={hidden}
+				inputProps={{ id: isHiddenId }}
+				onChange={handleSectionIsHiddenInput}
 			/>
 		</>
 	);

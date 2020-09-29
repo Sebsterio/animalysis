@@ -142,6 +142,9 @@ export const useSurveyState = (initialData) => {
 	const modifySectionCondition = ({ sectionName, value }) =>
 		modifySectionProp(sectionName, "condition", value);
 
+	const modifySectionIsHidden = ({ sectionName, value }) =>
+		modifySectionProp(sectionName, "hidden", value);
+
 	// Questions
 
 	const modifySectionQuestions = (sectionName, value) =>
@@ -294,6 +297,7 @@ export const useSurveyState = (initialData) => {
 		addSectionToSections,
 		modifySectionTitle,
 		modifySectionCondition,
+		modifySectionIsHidden,
 		deleteSectionFromSections,
 		addQuestion,
 		deleteQuestion,

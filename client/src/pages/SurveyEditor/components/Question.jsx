@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { FileInput } from "components/FileInput";
 import { Division, Answer } from "./index";
@@ -131,11 +132,13 @@ export const Question = ({
 			{type === "text" && (
 				<>
 					{/* setsTitle */}
-					<Typography
-						component="label"
-						htmlFor={setsTitleId}
-						children="Sets title"
-					/>
+					<Tooltip title="Let answer become the title of the report">
+						<Typography
+							component="label"
+							htmlFor={setsTitleId}
+							children="Sets title"
+						/>
+					</Tooltip>
 					<Switch
 						name="setsTitle"
 						checked={setsTitle}
@@ -144,11 +147,13 @@ export const Question = ({
 					/>
 
 					{/* lengthLimit */}
-					<Typography
-						component="label"
-						htmlFor={lengthLimitId}
-						children="Length limit"
-					/>
+					<Tooltip title="Limit number of characters">
+						<Typography
+							component="label"
+							htmlFor={lengthLimitId}
+							children="Length limit"
+						/>
+					</Tooltip>
 					<TextField
 						fullWidth
 						type="number"
@@ -161,7 +166,9 @@ export const Question = ({
 			)}
 
 			{/* File upload */}
-			<Typography component="label" children="Image" />
+			<Tooltip title="Displayed in info popup">
+				<Typography component="label" children="Image" />
+			</Tooltip>
 			{!imageUrl ? (
 				<FileInput
 					label="Upload "
@@ -198,7 +205,13 @@ export const Question = ({
 			)}
 
 			{/* description */}
-			<Typography component="label" htmlFor={desciptionId} children="Caption" />
+			<Tooltip title="Displayed in info popup">
+				<Typography
+					component="label"
+					htmlFor={desciptionId}
+					children="Caption"
+				/>
+			</Tooltip>
 			<TextField
 				fullWidth
 				name="description"

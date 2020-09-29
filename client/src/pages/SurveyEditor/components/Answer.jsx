@@ -229,7 +229,9 @@ export const Answer = ({
 			/>
 
 			{/* print */}
-			<Typography component="label" htmlFor={printId} children="Print" />
+			<Tooltip title="Added to final report">
+				<Typography component="label" htmlFor={printId} children="Print" />
+			</Tooltip>
 			<TextField
 				fullWidth
 				name="print"
@@ -239,11 +241,13 @@ export const Answer = ({
 			/>
 
 			{/* printNote */}
-			<Typography
-				component="label"
-				htmlFor={printNoteId}
-				children="Print-note"
-			/>
+			<Tooltip title="Added to final report (indented)">
+				<Typography
+					component="label"
+					htmlFor={printNoteId}
+					children="Print-note"
+				/>
+			</Tooltip>
 			<TextField
 				fullWidth
 				name="printNote"
@@ -253,7 +257,9 @@ export const Answer = ({
 			/>
 
 			{/* alert */}
-			<Typography component="label" htmlFor={alertId} children="Alert" />
+			<Tooltip title="Added to final report. Highest alert reached determines summary message. Red alert terminates the survey.">
+				<Typography component="label" htmlFor={alertId} children="Alert" />
+			</Tooltip>
 			<TextField
 				select
 				fullWidth
@@ -270,11 +276,13 @@ export const Answer = ({
 			</TextField>
 
 			{/* condition */}
-			<Typography
-				component="label"
-				htmlFor={conditionId}
-				children="Condition"
-			/>
+			<Tooltip title="Show answer only if the pet matches the condition">
+				<Typography
+					component="label"
+					htmlFor={conditionId}
+					children="Condition"
+				/>
+			</Tooltip>
 			<ConditionInput
 				name="condition"
 				value={condition}
@@ -283,7 +291,7 @@ export const Answer = ({
 			/>
 
 			{/* followUp after*/}
-			<Tooltip title="If chosen section is already completed, the follow-up will appear after this question.">
+			<Tooltip title="Schedule another section. Optional queue sections (Refs) run maximum once per survey.">
 				<Typography
 					component="label"
 					htmlFor={followUpId}
@@ -311,7 +319,9 @@ export const Answer = ({
 			</TextField>
 
 			{/* imageUrl */}
-			<Typography component="label" children="Image" />
+			<Tooltip title="Displayed in info popup">
+				<Typography component="label" children="Image" />
+			</Tooltip>
 			{!imageUrl ? (
 				<FileInput
 					label="Upload "
@@ -348,7 +358,13 @@ export const Answer = ({
 			)}
 
 			{/* description */}
-			<Typography component="label" htmlFor={desciptionId} children="Caption" />
+			<Tooltip title="Displayed in info popup">
+				<Typography
+					component="label"
+					htmlFor={desciptionId}
+					children="Caption"
+				/>
+			</Tooltip>
 			<TextField
 				fullWidth
 				name="description"

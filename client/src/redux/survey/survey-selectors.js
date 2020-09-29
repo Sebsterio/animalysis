@@ -114,9 +114,10 @@ export const getCurrentSectionTitle = (state) => {
 };
 
 // Get an array of location objects from sectionName
-export const getLocationsFromSection = (state, sectionName) => {
+export const getLocationsFromSection = (state, sectionName, skipHidden) => {
 	const sectionData = getSectionData(state, sectionName);
 	if (!sectionData) return null;
+	if (skipHidden && sectionData.hidden) return null;
 	return sectionData.questions.map((_, i) => ({
 		sectionName,
 		questionIndex: i,
@@ -126,9 +127,10 @@ export const getLocationsFromSection = (state, sectionName) => {
 // Map section names into location objects
 export const getUnpackedQueue = (state, queue) => {
 	const newQueue = [];
-	queue.forEach((sectionName) =>
-		newQueue.push(...getLocationsFromSection(state, sectionName))
-	);
+	queue.forEach((sectionName) => {
+		const locations = getLocationsFromSection(state, sectionName, true);
+		if (locations && locations.length) newQueue.push(...locations);
+	});
 	return newQueue;
 };
 
