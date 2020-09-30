@@ -80,14 +80,20 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 
 // --------------------- Termination -------------------------
 
-export const endSurvey = (history) => (dispatch) => {
-	const reportId = shortid.generate();
-	dispatch(generateReport({ reportId }));
-	dispatch($.clear());
-	history.replace(`/report/${reportId}`);
+export const endSurvey = (history, debug) => (dispatch) => {
+	debug("endSurvey start");
+	try {
+		const reportId = shortid.generate();
+		debug("reportId: " + reportId);
+		dispatch(generateReport({ reportId, debug }));
+		dispatch($.clear());
+		history.replace(`/report/${reportId}`);
+	} catch (err) {
+		debug("ERROR: " + JSON.stringify(err));
+	}
 };
 
-const generateReport = ({ reportId }) => (dispatch, getState) => {
+const generateReport = ({ reportId, debug }) => (dispatch, getState) => {
 	const state = getState();
 	dispatch(
 		addReportToPet({
@@ -97,6 +103,7 @@ const generateReport = ({ reportId }) => (dispatch, getState) => {
 			title: getTitle(state),
 			alert: getMaxAlertFromHistory(state),
 			problemList: getProblemListFromHistory(state),
+			debug,
 		})
 	);
 };

@@ -21,7 +21,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, props) => ({
 	continueSurvey: () => dispatch(initOptionalSurvey(props.history)),
-	endSurvey: () => dispatch(endSurvey(props.history)),
+	endSurvey: (debug) => dispatch(endSurvey(props.history, debug)),
 });
 
 const SummaryContainer = (props) => <Summary {...props} />;
