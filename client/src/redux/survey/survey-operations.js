@@ -81,32 +81,15 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 // --------------------- Termination -------------------------
 
 export const endSurvey = (history, debug) => (dispatch) => {
-	debug("endSurvey start");
-	try {
-		const reportId = shortid.generate();
-		debug("reportId: " + reportId);
-		dispatch(generateReport({ reportId, debug }));
-		dispatch($.clear());
-		history.replace(`/report/${reportId}`);
-	} catch (err) {
-		debug("ERROR: " + JSON.stringify(err));
-	}
+	const reportId = shortid.generate();
+	debug("reportId: " + reportId);
+	dispatch(generateReport({ reportId, debug }));
+	dispatch($.clear());
+	history.replace(`/report/${reportId}`);
 };
 
 const generateReport = ({ reportId, debug }) => (dispatch, getState) => {
 	const state = getState();
-
-	const petId = getPetId(state);
-	debug("petId " + petId);
-	const dateCreated = new Date();
-	debug("dateCreated " + dateCreated);
-	const title = getTitle(state);
-	debug("title " + title);
-	const alert = getMaxAlertFromHistory(state);
-	debug("alert " + alert);
-	const problemList = getProblemListFromHistory(state);
-	debug("problemList " + problemList);
-
 	dispatch(
 		addReportToPet({
 			id: reportId,
@@ -114,7 +97,7 @@ const generateReport = ({ reportId, debug }) => (dispatch, getState) => {
 			dateCreated: new Date(),
 			title: getTitle(state),
 			alert: getMaxAlertFromHistory(state),
-			problemList: getProblemListFromHistory(state),
+			problemList: getProblemListFromHistory(state, debug),
 			debug,
 		})
 	);

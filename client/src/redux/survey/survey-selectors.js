@@ -195,19 +195,33 @@ export const getCurrentAnswerData = (state) => {
 // Problem List
 
 // Get an array with print and printNote values from answers given
-export const getProblemListFromHistory = (state) =>
-	getHistory(state)
-		.map(({ sectionName, questionIndex, answer }) => {
+export const getProblemListFromHistory = (state, debug) => {
+	if (!debug) return alert("Module Under Maintenance. Please come back later");
+	const history = getHistory(state);
+	debug("history: " + JSON.stringify(history));
+	const mappedHistory = history.map(
+		({ sectionName, questionIndex, answer }) => {
 			if (typeof answer === "string") return {};
 			const section = getSectionData(state, sectionName);
+			debug("section: " + JSON.stringify(section));
 			const question = getQuestionData(section, questionIndex);
+			debug("question: " + JSON.stringify(question));
 			const answerData = getAnswerData(question, answer);
+			debug("answerData: " + JSON.stringify(answerData));
 			return arrayify(answerData).map(({ print, printNote }) => {
 				return { print, printNote };
 			});
-		})
-		.flat()
-		.filter((problem) => problem.print || problem.printNote);
+		}
+	);
+	debug("mappedHistory: " + JSON.stringify(mappedHistory));
+	const flatHistory = mappedHistory.flat();
+	debug("flatHistory: " + JSON.stringify(flatHistory));
+	const filteredHistory = flatHistory.filter(
+		(problem) => problem.print || problem.printNote
+	);
+	debug("filteredHistory: " + JSON.stringify(filteredHistory));
+	return filteredHistory;
+};
 
 // -------------------- Alert -------------------------
 
