@@ -95,6 +95,18 @@ export const endSurvey = (history, debug) => (dispatch) => {
 
 const generateReport = ({ reportId, debug }) => (dispatch, getState) => {
 	const state = getState();
+
+	const petId = getPetId(state);
+	debug("petId " + petId);
+	const dateCreated = new Date();
+	debug("dateCreated " + dateCreated);
+	const title = getTitle(state);
+	debug("title " + title);
+	const alert = getMaxAlertFromHistory(state);
+	debug("alert " + alert);
+	const problemList = getProblemListFromHistory(state);
+	debug("problemList " + problemList);
+
 	dispatch(
 		addReportToPet({
 			id: reportId,
