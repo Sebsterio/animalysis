@@ -22,11 +22,18 @@ router.post("/create", auth, async (req, res) => {
 		const user = await User.findById(userId).select("-password");
 		if (!user) return res.status(404).json("User doesn't exist");
 
+		// Get user clinic
+		let { clinicId, clinicInfo } = user;
+		if (!clinicId && clinicInfo && clinicInfo.email) {
+			const clinic = await Clinic.findOne({ email: clinicInfo.email });
+			if (clinic) clinicId = clinic.id;
+		}
+
 		// Create Pet doc
 		const dateCreated = new Date();
 		const reportIds = [];
 		const formData = filterPet(body);
-		const saveData = { ...formData, userId, reportIds, dateCreated };
+		const saveData = { ...formData, userId, clinicId, reportIds, dateCreated };
 		const savedPet = await new Pet(saveData).save();
 		if (!savedPet) throw Error("Error saving the pet");
 		const { id } = savedPet;
@@ -56,8 +63,18 @@ router.post("/update", auth, async (req, res) => {
 		const user = await User.findById(userId).select("-password");
 		if (!user) return res.status(404).json("User doesn't exist");
 
+		// Determine clinicId
+		let clinicId;
+		const { clinicInfo } = formData;
+		console.log({ formData, clinicInfo });
+		if (clinicInfo && clinicInfo.email) {
+			const clinic = await Clinic.findOne({ email: clinicInfo.email });
+			if (clinic) clinicId = clinic.id;
+		}
+
 		const dateUpdated = new Date();
 		const update = { ...filterPet(formData), dateUpdated };
+		if (clinicId) update.clinicId = clinicId;
 		const pet = await Pet.findByIdAndUpdate(id, update);
 		if (!pet) return res.status(404).json("Pet doesn't exist");
 

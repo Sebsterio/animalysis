@@ -15,6 +15,7 @@ import { getConfig, getTokenConfig } from "utils/ajax";
 export const updateClinicInfo = (formData) => (dispatch) => {
 	dispatch($.modify(formData));
 	dispatch(updateUser({ clinicInfo: formData }));
+	dispatch(modifyAllPets({ clinicInfo: formData }));
 };
 
 // ============================ All =============================

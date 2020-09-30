@@ -41,7 +41,8 @@ export const getUserRole = (state) => {
 	if (getIsSuperuser(state)) return "owner";
 	const userEmail = getEmail(state);
 	const members = getMembers(state);
-	const user = members ? members.find((m) => m.email === userEmail) : null;
+	if (!members || !members.length) return null;
+	const user = members.find((m) => m.email === userEmail);
 	return user ? user.role : null;
 };
 

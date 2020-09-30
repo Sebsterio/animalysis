@@ -29,8 +29,8 @@ const mapStateToProps = (state) => ({
 	isSuperuser: getIsSuperuser(state),
 	isDemo: getIsDemo(state),
 	isMember: getIsMember(state),
-	isOwner: getIsAdmin(state),
-	isAdmin: getIsOwner(state),
+	isOwner: getIsOwner(state),
+	isAdmin: getIsAdmin(state),
 	isAllowedToDeleteMember: (email, role) =>
 		getIsAllowedToDeleteMember(state, email, role),
 });
