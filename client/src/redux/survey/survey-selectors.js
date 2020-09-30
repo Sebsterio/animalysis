@@ -195,21 +195,29 @@ export const getCurrentAnswerData = (state) => {
 // Problem List
 
 // Get an array with print and printNote values from answers given
-export const getProblemListFromHistory = (state) =>
-	getHistory(state)
-		.map(({ sectionName, questionIndex, answer }) => {
+export const getProblemListFromHistory = (state, debug) => {
+	const problems = getHistory(state).map(
+		({ sectionName, questionIndex, answer }) => {
 			if (typeof answer === "string") return null;
 			const section = getSectionData(state, sectionName);
 			const question = getQuestionData(section, questionIndex);
 			const answerData = getAnswerData(question, answer);
+			if (!answerData) return null;
 			return arrayify(answerData).map(({ print, printNote }) => {
 				return { print, printNote };
 			});
-		})
-		.filter((problem) => problem && problem.length)
-		.flat()
-		.filter((problem) => problem.print || problem.printNote);
-
+		}
+	);
+	const filtered1 = problems.filter((problem) => problem && problem.length);
+	debug("filtered1: " + filtered1);
+	const flat = filtered1.flat();
+	debug("flat: " + flat);
+	const filtered2 = flat.filter(
+		(problem) => problem.print || problem.printNote
+	);
+	debug("filtered2: " + filtered2);
+	return filtered2;
+};
 // -------------------- Alert -------------------------
 
 export const getCurrentAlert = (state) => state.survey.currentAlert;

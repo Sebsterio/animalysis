@@ -81,11 +81,15 @@ export const initOptionalSurvey = (history) => (dispatch, getState) => {
 // --------------------- Termination -------------------------
 
 export const endSurvey = (history, debug) => (dispatch) => {
-	const reportId = shortid.generate();
-	debug("reportId: " + reportId);
-	dispatch(generateReport({ reportId, debug }));
-	dispatch($.clear());
-	history.replace(`/report/${reportId}`);
+	try {
+		const reportId = shortid.generate();
+		debug("reportId: " + reportId);
+		dispatch(generateReport({ reportId, debug }));
+		dispatch($.clear());
+		history.replace(`/report/${reportId}`);
+	} catch (err) {
+		alert("ERROR 1");
+	}
 };
 
 const generateReport = ({ reportId, debug }) => (dispatch, getState) => {
@@ -97,7 +101,7 @@ const generateReport = ({ reportId, debug }) => (dispatch, getState) => {
 			dateCreated: new Date(),
 			title: getTitle(state),
 			alert: getMaxAlertFromHistory(state),
-			problemList: getProblemListFromHistory(state),
+			problemList: getProblemListFromHistory(state, debug),
 			debug,
 		})
 	);
