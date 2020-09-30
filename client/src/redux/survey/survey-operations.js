@@ -97,7 +97,7 @@ const generateReport = ({ reportId, debug }) => (dispatch, getState) => {
 			dateCreated: new Date(),
 			title: getTitle(state),
 			alert: getMaxAlertFromHistory(state),
-			problemList: getProblemListFromHistory(state, debug),
+			problemList: getProblemListFromHistory(state),
 			debug,
 		})
 	);

@@ -111,16 +111,15 @@ export const syncPets = () => (dispatch, getState) => {
 // Add report to store (then go to Report page)
 // Client: POST report and add id to pet doc (sync status shows on Report page)
 export const addReportToPet = (data) => (dispatch, getState) => {
-	const { debug } = data;
-	debug("adReportToPet start");
 	const state = getState();
 	const isVet = getIsVet(state);
-	// const isDemo = getIsDemo(state);
+	const isDemo = getIsDemo(state);
 	dispatch($.addReportToPet(data));
 	// if (isVet || isDemo) return;
-	if (isVet) return; // TEMP <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-	debug("addReportToPet POST request start");
+	// TEMP <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	if (isVet) return;
+	console.log(isDemo);
+	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	const { petId, id } = data;
 	const endpoint = "/api/report/add";
@@ -129,12 +128,8 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 	dispatch($.sendReportStart({ id, petId }));
 	axios
 		.post(endpoint, reqData, config)
-		.then(() => {
-			debug("addReportToPet POST request success");
-			dispatch($.sendReportSuccess({ id, petId }));
-		})
+		.then(() => dispatch($.sendReportSuccess({ id, petId })))
 		.catch((err) => {
-			debug("addReportToPet POST request failed");
 			dispatch($.sendReportFail({ id, petId }));
 			dispatch(error(err));
 		});

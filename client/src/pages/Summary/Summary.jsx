@@ -46,10 +46,7 @@ const Summary = ({
 					textLeft={canContinue && "Continue Analysis"}
 					onClickLeft={continueSurvey}
 					textRight="Submit report"
-					onClickRight={() => {
-						debug("click event received");
-						endSurvey(debug);
-					}}
+					onClickRight={() => endSurvey(debug)}
 					noArrows
 				/>
 			}
