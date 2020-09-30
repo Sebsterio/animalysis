@@ -11,6 +11,7 @@ import {
 	sortRows,
 } from "redux/reports-history/reports-history-operations";
 import { modifyReport } from "redux/pets/pets-operations";
+import { setError } from "redux/error/error-actions";
 
 import { VetReports } from "./VetReports";
 
@@ -28,6 +29,7 @@ const mapDispatchToProps = (dispatch) => ({
 	modifyReport: (data) => dispatch(modifyReport(data)),
 	setRows: (data) => dispatch(setRows(data)),
 	toggleSeenHidden: (data) => dispatch(toggleSeenHidden(data)),
+	setError: (data) => dispatch(setError(data)),
 });
 
 const VetReportsContainer = (props) => <VetReports {...props} />;

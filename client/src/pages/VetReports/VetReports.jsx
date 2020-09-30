@@ -33,6 +33,7 @@ export const VetReports = ({
 	initTable,
 	sortRows,
 	modifyReport,
+	setError,
 }) => {
 	const c = useStyles();
 
@@ -55,6 +56,15 @@ export const VetReports = ({
 		markAsSeen(id);
 	};
 
+	const handleMarkAsSeenClick = (id) => {
+		if (!isDemo) markAsSeen(id);
+		else
+			setError({
+				target: "generic",
+				msg: "Action not allowed in demo mode",
+			});
+	};
+
 	return (
 		<Paper className={c.root}>
 			<TableContainer className={c.container}>
@@ -63,7 +73,7 @@ export const VetReports = ({
 					<Body openReport={openReport} />
 				</Table>
 			</TableContainer>
-			<Footer markAsSeen={markAsSeen} />
+			<Footer markAsSeen={handleMarkAsSeenClick} />
 		</Paper>
 	);
 };

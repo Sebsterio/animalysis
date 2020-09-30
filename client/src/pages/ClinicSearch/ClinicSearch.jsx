@@ -16,6 +16,7 @@ export const ClinicSearch = ({
 	// dispatch
 	fetchClinics,
 	joinClinic,
+	setError,
 }) => {
 	const [query, setQuery] = useState("");
 	const [results, setResults] = useState([]);
@@ -60,7 +61,11 @@ export const ClinicSearch = ({
 		);
 
 	const handleSnippetClick = async (data) => {
-		if (isDemo) return;
+		if (isDemo)
+			return setError({
+				target: "generic",
+				msg: "Changing clinic is not allowed in demo mode",
+			});
 		const success = await joinClinic(data);
 		if (success) history.push("/my-clinic");
 	};

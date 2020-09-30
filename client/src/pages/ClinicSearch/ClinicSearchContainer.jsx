@@ -5,6 +5,7 @@ import { getIsVet, getIsDemo } from "redux/user/user-selectors";
 import { getClinicId } from "redux/profile/profile-selectors";
 import { getIsRegistered } from "redux/clinic/clinic-selectors";
 import { fetchClinics, joinClinic } from "redux/clinic/clinic-operations";
+import { setError } from "redux/error/error-actions";
 
 import { ClinicSearch } from "./ClinicSearch";
 
@@ -18,6 +19,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	fetchClinics: (data) => dispatch(fetchClinics(data)),
 	joinClinic: (data) => dispatch(joinClinic(data)),
+	setError: (data) => dispatch(setError(data)),
 });
 
 const ClinicSearchContainer = (props) => <ClinicSearch {...props} />;
