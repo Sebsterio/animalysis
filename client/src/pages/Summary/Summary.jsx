@@ -15,8 +15,6 @@ const Summary = ({
 
 	const canContinue = optionalQueueExists && alertLevel < 4;
 
-	const debug = (msg) => (pet.name === "Elsie" ? alert(msg) : null);
-
 	return (
 		<Page
 			header={<Alert level={alertLevel} />}
@@ -46,7 +44,7 @@ const Summary = ({
 					textLeft={canContinue && "Continue Analysis"}
 					onClickLeft={continueSurvey}
 					textRight="Submit report"
-					onClickRight={() => endSurvey(debug)}
+					onClickRight={endSurvey}
 					noArrows
 				/>
 			}

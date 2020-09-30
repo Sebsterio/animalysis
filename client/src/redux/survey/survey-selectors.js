@@ -202,11 +202,11 @@ export const getProblemListFromHistory = (state) => {
 		const section = getSectionData(state, sectionName);
 		const question = getQuestionData(section, questionIndex);
 		const answerData = getAnswerData(question, answer);
-		if (answerData)
-			arrayify(answerData).forEach(({ print, printNote }) => {
-				if (print) problems.push({ print });
-				if (printNote) problems.push({ printNote });
-			});
+		if (!answerData) return;
+		arrayify(answerData).forEach(({ print, printNote }) => {
+			if (print) problems.push({ print });
+			if (printNote) problems.push({ printNote });
+		});
 	});
 	return problems;
 };

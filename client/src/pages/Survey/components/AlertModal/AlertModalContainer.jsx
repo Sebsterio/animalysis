@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, props) => ({
 	closeModal: () => dispatch(deactivateAlertModal()),
-	endSurvey: () => dispatch(endSurvey(props.history, () => {})),
+	endSurvey: () => dispatch(endSurvey(props.history)),
 });
 
 const AlertModalContainer = (props) => <AlertModal {...props} />;
