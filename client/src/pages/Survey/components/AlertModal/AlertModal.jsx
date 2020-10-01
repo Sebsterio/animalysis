@@ -47,7 +47,7 @@ const AlertModal = ({ isActive, phone, closeModal, endSurvey }) => {
 					id="alert-modal-title"
 				/>
 				<Typography
-					children="Your pet's issue is urgent. Please book an appointment immediately."
+					children="Your pet's issue should be seen by a vet today. Please book an appointment. "
 					className={c.subHeading}
 					color="error"
 					id="alert-modal-description"
@@ -62,7 +62,7 @@ const AlertModal = ({ isActive, phone, closeModal, endSurvey }) => {
 					href={"tel:" + phone}
 					disabled={!phone}
 				/>
-				<Typography children="You may complete the analysis at any time or send it to your vet now." />
+				<Typography children="If you have time before the appointment, please continue the survey, as it will help your vet." />
 
 				<Nav
 					textLeft="Continue Analysis"

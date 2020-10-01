@@ -11,8 +11,8 @@ export const summaryData = [
 		),
 		textContinue: () => (
 			<>
-				You may answer questions about areas that weren't noted as problems by
-				pressing "continue".
+				If you continue the survey, further questions will be asked that may
+				discover hidden health problems.
 			</>
 		),
 		textEnd: () => (
@@ -26,7 +26,7 @@ export const summaryData = [
 	{
 		textMain: (pet) => (
 			<>
-				You should book an appointment for {pet.name} with the vet in{" "}
+				You should book an appointment for {pet.name} with the vet{" "}
 				<b>in the next 2 days</b>.
 			</>
 		),
@@ -36,7 +36,7 @@ export const summaryData = [
 				help your vet with {pet.name}'s' case.
 			</>
 		),
-		textEnd: (pet) => (
+		textEnd: () => (
 			<>
 				If you wish to end the survey now, a report based on this analysis will
 				be sent to your vet and they may instruct you further.
@@ -47,7 +47,7 @@ export const summaryData = [
 	{
 		textMain: (pet) => (
 			<>
-				You should book an appointment for {pet.name} with the vet in{" "}
+				You should book an appointment for {pet.name} with the vet{" "}
 				<b>in the next 24 hours</b>.
 			</>
 		),
@@ -68,8 +68,7 @@ export const summaryData = [
 	{
 		textMain: (pet) => (
 			<>
-				You should book an appointment for {pet.name} with the vet{" "}
-				<b>as soon as possible</b>.
+				You should book an appointment for {pet.name} with the vet <b>today</b>.
 			</>
 		),
 		textContinue: () => (
