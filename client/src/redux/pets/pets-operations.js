@@ -115,10 +115,10 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 	const isVet = getIsVet(state);
 	const isDemo = getIsDemo(state);
 	dispatch($.addReportToPet(data));
-	if (isVet || isDemo) return;
+	// if (isVet || isDemo) return;
 	// TEMP <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	// if (isVet) return;
-	// console.log(isDemo); // avoid warning
+	if (isVet) return;
+	console.log(isDemo); // avoid warning
 	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 	const { petId, id } = data;
