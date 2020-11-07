@@ -87,12 +87,13 @@ export const App = ({
 					) : (
 						// Main routes
 						<Switch>
+							<Route path="/demo" component={Demo} />
 							{routesArray.map((route) => {
 								const { path, component, exact, demoOnly } = route;
-								if (demoOnly && !isDemo) return null; // TEMP <<<<<<<<<<<<<<<<<<<<<<
+								if (demoOnly && !isDemo) return null;
 								return <Route key={path} {...{ exact, path, component }} />;
 							})}
-							<Route key={404} component={NotFound} />
+							<Route component={NotFound} />
 						</Switch>
 					)}
 				</main>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
@@ -23,8 +23,12 @@ const useStyles = makeStyles((theme) => ({
 	link: { textAlign: "right" },
 }));
 
-export const Demo = ({ history, signIn }) => {
+export const Demo = ({ history, signIn, signOut }) => {
 	const c = useStyles();
+
+	useEffect(() => {
+		signOut();
+	}, [signOut]);
 
 	const runDemo = (email, password) => {
 		signIn({ email, password });

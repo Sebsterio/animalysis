@@ -13,11 +13,12 @@ const Report = lazy(() => import("pages/Report"));
 const Pet = lazy(() => import("pages/Pet"));
 const VetReports = lazy(() => import("pages/VetReports"));
 const Profile = lazy(() => import("pages/Profile"));
+const Demo = lazy(() => import("pages/Demo"));
 
 // Aux
 const exact = true;
 const inNav = true;
-const demoOnly = true; // temp; v.1 only
+const demoOnly = true;
 
 export const vetRoutes = [
 	{
@@ -134,5 +135,14 @@ export const vetRoutes = [
 		title: "Client Profile",
 		component: Profile,
 		exact,
+	},
+	// --- Exit demo ---
+	{
+		path: "/demo",
+		title: "Exit Demo",
+		component: Demo,
+		exact,
+		inNav,
+		demoOnly,
 	},
 ];

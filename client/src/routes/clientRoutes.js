@@ -10,10 +10,12 @@ const Summary = lazy(() => import("pages/Summary"));
 const ClinicForm = lazy(() => import("pages/ClinicForm"));
 const ClinicSearch = lazy(() => import("pages/ClinicSearch"));
 const ProfileForm = lazy(() => import("pages/ProfileForm"));
+const Demo = lazy(() => import("pages/Demo"));
 
 // Aux
 const exact = true;
 const inNav = true;
+const demoOnly = true;
 
 export const clientRoutes = [
 	{
@@ -109,5 +111,14 @@ export const clientRoutes = [
 		linkText: "Account",
 		component: Account,
 		exact,
+	},
+	// --- Exit demo ---
+	{
+		path: "/demo",
+		title: "Exit Demo",
+		component: Demo,
+		exact,
+		inNav,
+		demoOnly,
 	},
 ];
