@@ -115,11 +115,7 @@ export const addReportToPet = (data) => (dispatch, getState) => {
 	const isVet = getIsVet(state);
 	const isDemo = getIsDemo(state);
 	dispatch($.addReportToPet(data));
-	// if (isVet || isDemo) return;
-	// TEMP <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	if (isVet) return;
-	console.log(isDemo); // avoid warning
-	// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	if (isVet || isDemo) return;
 
 	const { petId, id } = data;
 	const endpoint = "/api/report/add";

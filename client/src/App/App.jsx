@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 
 import { Spinner } from "components";
 import { Navbar, ErrorAlert } from "./components";
@@ -15,16 +15,18 @@ import { useStyles } from "./App-styles";
  *******************************/
 
 export const App = ({
+	// store
 	loading,
 	authenticated,
 	isVet,
 	isSuperuser,
 	isDemo,
-	syncData,
 	isError,
+	// dispatch
+	syncData,
 	clearError,
 }) => {
-	// TEMP
+	// TEMP: clear localStorage on ESC key (ends session on page refresh)
 	useEffect(() => {
 		const ESCAPE_KEY = 27;
 		const clearStorage = (e) =>

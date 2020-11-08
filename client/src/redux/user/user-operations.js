@@ -15,6 +15,7 @@ import { syncPets, deletePet } from "redux/pets/pets-operations";
 import { syncSurvey } from "redux/survey-data/survey-data-operations";
 import { error } from "redux/error/error-operations";
 import { getConfig, getTokenConfig } from "utils/ajax";
+import { getSearchParams } from "utils/window";
 
 // ------------------- createUser (sing-up) ----------------------
 
@@ -135,6 +136,11 @@ export const syncData = () => (dispatch, getState) => {
 			// 409 impossible as all changes pass through db
 			dispatch($.syncFail());
 			dispatch(error(err));
+		})
+		.finally(() => {
+			// Search query "?write" disables demo UI limitations until sign-out
+			const { write } = getSearchParams();
+			if (write !== undefined) dispatch($.modify({ demo: !write }));
 		});
 };
 
